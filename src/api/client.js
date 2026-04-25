@@ -49,6 +49,22 @@ export const api = {
   // in place if a block is missing (graceful degradation).
   getContent:     ()     => request('GET',  '/api/v1/content'),
   getContentBlock:(key)  => request('GET',  `/api/v1/content/${key}`),
+  // ── Geospatial ─────────────────────────────────────────────────────────────
+  getSites:       ()     => request('GET',  '/api/v1/geo/sites'),
+  createSite:     (data) => request('POST', '/api/v1/geo/sites',     data),
+  updateSite:     (id, data) => request('PUT', `/api/v1/geo/sites/${id}`, data),
+  getPermitLeads: (params = {}) => {
+    const q = new URLSearchParams(params).toString()
+    return request('GET', `/api/v1/geo/permit-leads${q ? '?' + q : ''}`)
+  },
+  triggerScrape:  (maxPages = 5) => request('POST', `/api/v1/geo/permit-leads/scrape?max_pages=${maxPages}`),
+  radiusQuery:    (lat, lng, miles = 20) => request('GET', `/api/v1/geo/radius-query?lat=${lat}&lng=${lng}&radius_miles=${miles}`),
+  getTrucks:      ()     => request('GET',  '/api/v1/geo/trucks'),
+  pingTruck:      (id, data) => request('POST', `/api/v1/geo/trucks/${id}`, data),
+  // ── Virtual Foreman ────────────────────────────────────────────────────────
+  askForeman:     (data) => request('POST', '/api/v1/foreman/chat',  data),
+  getForemanStatus: ()   => request('GET',  '/api/v1/foreman/status'),
+  getVisionResult: (jobId) => request('GET', `/api/v1/ai/vision-result/${jobId}`),
 }
 
 // ── GA4 event helpers ─────────────────────────────────────────────────────────

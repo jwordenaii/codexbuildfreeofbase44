@@ -23,6 +23,7 @@ from .services.telemetry import FleetOperations
 from .routers import leads, reviews, schema_ld, ai as ai_router
 from .routers import admin as admin_router, content as content_router
 from .routers import advisor as advisor_router
+from .routers import geo as geo_router, foreman as foreman_router
 
 logger = logging.getLogger(__name__)
 
@@ -79,6 +80,8 @@ app.include_router(ai_router.router)
 app.include_router(content_router.router)
 app.include_router(advisor_router.router)
 app.include_router(admin_router.router)
+app.include_router(geo_router.router)
+app.include_router(foreman_router.router)
 
 
 # ── Legacy endpoints (kept for backward compatibility) ────────────────────────

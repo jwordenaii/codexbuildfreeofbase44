@@ -11,16 +11,21 @@
     "format": "prettier --write src"
   },
   "dependencies": {
+    "@tensorflow/tfjs": "^4.22.0",
+    "framer-motion": "^12.4.10",
+    "leaflet": "^1.9.4",
+    "leaflet-draw": "^1.0.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.30.0",
     "react-helmet-async": "^2.0.5",
-    "framer-motion": "^12.4.10",
+    "react-leaflet": "^4.2.1",
+    "react-router-dom": "^6.30.0",
     "web-vitals": "^4.2.4"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^4.4.1",
     "@eslint/js": "^9.25.0",
+    "@tailwindcss/forms": "^0.5.10",
+    "@vitejs/plugin-react": "^4.4.1",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.25.0",
     "eslint-plugin-react": "^7.37.5",
@@ -30,7 +35,6 @@
     "postcss": "^8.5.3",
     "prettier": "^3.5.3",
     "tailwindcss": "^3.4.17",
-    "@tailwindcss/forms": "^0.5.10",
     "vite": "^6.3.3",
     "vite-plugin-sitemap": "^0.6.1"
   }

@@ -11,3 +11,20 @@ slowapi==0.1.9
 python-dotenv==1.0.1
 httpx==0.28.1
 jinja2==3.1.6
+
+# ── Geospatial (PostGIS) ─────────────────────────────────────────────────────
+# GeoAlchemy2 adds native PostGIS GEOMETRY column types and spatial index
+# support to SQLAlchemy.  Required in production with PostgreSQL + PostGIS.
+# Install separately when running with PostgreSQL:
+#   pip install geoalchemy2==0.15.2
+# geoalchemy2==0.15.2   # uncomment for production PostGIS support
+
+# ── Background tasks: Celery + Redis ────────────────────────────────────────
+celery[redis]==5.4.0
+redis==5.2.1
+
+# ── LangChain RAG pipeline ───────────────────────────────────────────────────
+langchain==0.3.25
+langchain-openai==0.3.16
+langchain-community==0.3.27
+chromadb==0.6.3
