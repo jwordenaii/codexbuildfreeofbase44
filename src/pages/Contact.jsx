@@ -67,8 +67,8 @@ export default function Contact() {
                 {
                   icon: '📞',
                   label: 'Phone',
-                  value: '(555) 555-5555',
-                  href: 'tel:+15555555555',
+                  value: '(804) 446-1296',
+                  href: 'tel:+18044461296',
                 },
                 {
                   icon: '📧',

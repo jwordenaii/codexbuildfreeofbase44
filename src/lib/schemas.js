@@ -9,7 +9,7 @@
  */
 
 export const SITE_URL =
-  import.meta.env.VITE_SITE_URL || 'https://jworden.netlify.app'
+  import.meta.env.VITE_SITE_URL || 'https://www.jwordenasphaltpaving.com'
 
 export const LOCAL_BUSINESS_SCHEMA = {
   '@context': 'https://schema.org',
@@ -18,16 +18,21 @@ export const LOCAL_BUSINESS_SCHEMA = {
   description:
     'Fourth-generation asphalt paving company serving residential and commercial clients since 1984.',
   foundingDate: '1984',
-  telephone: '+1-555-555-5555',
+  telephone: '+1-804-446-1296',
   email: 'contact@jworden.com',
   url: SITE_URL,
   logo: `${SITE_URL}/logo.png`,
+  sameAs: [
+    'https://www.facebook.com/jwordenpaving/',
+    'https://www.linkedin.com/showcase/j.-worden-%26-sons-paving-l.l.c./',
+    'https://nextdoor.com/pages/nashville-asphalt-paving-pros-chester-va/photos/',
+    'https://www.alignable.com/chester-va/j-worden-sons-paving',
+    'https://www.houzz.com/professionals/stone-pavers-and-concrete/j-worden-and-sons-paving-l-l-c-pfvwus-pf~663227484',
+  ],
   address: {
     '@type': 'PostalAddress',
-    streetAddress: '123 Paving Way',
-    addressLocality: 'Your City',
-    addressRegion: 'ST',
-    postalCode: '00000',
+    addressLocality: 'Chester',
+    addressRegion: 'VA',
     addressCountry: 'US',
   },
   openingHoursSpecification: [

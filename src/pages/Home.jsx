@@ -156,7 +156,7 @@ export default function Home() {
               Get a Free Quote
             </Link>
             <a
-              href="tel:+15555555555"
+              href="tel:+18044461296"
               className="btn-outline text-lg px-8 py-4"
               onClick={() => trackEvent('phone_click', { location: 'hero' })}
             >
@@ -304,11 +304,11 @@ export default function Home() {
               Request a Free Quote
             </Link>
             <a
-              href="tel:+15555555555"
+              href="tel:+18044461296"
               className="border-2 border-brand-navy text-brand-navy font-bold px-8 py-4 rounded-lg hover:bg-brand-navy hover:text-white transition-colors text-lg"
               onClick={() => trackEvent('phone_click', { location: 'home_bottom_banner' })}
             >
-              📞 (555) 555-5555
+              📞 (804) 446-1296
             </a>
           </div>
         </div>
