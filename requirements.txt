@@ -24,7 +24,7 @@ celery[redis]==5.4.0
 redis==5.2.1
 
 # ── LangChain RAG pipeline ───────────────────────────────────────────────────
-langchain==0.3.25
+langchain==0.3.27
 langchain-openai==0.3.16
-langchain-community==0.3.25
+langchain-community==0.3.27
 chromadb==0.6.3
