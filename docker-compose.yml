@@ -120,7 +120,10 @@ services:
       --loglevel=info
       --schedule=/tmp/celerybeat-schedule
     depends_on:
-      - redis
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
   # ── Vite frontend dev server ─────────────────────────────────────────────────
   frontend:
