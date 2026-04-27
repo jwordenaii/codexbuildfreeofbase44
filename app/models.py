@@ -1,7 +1,7 @@
 """
 SQLAlchemy ORM models for J. Worden & Sons lead persistence.
 
-Tables created automatically by create_all_tables() on startup.
+Schema managed by Alembic migrations; optional AUTO_CREATE_TABLES bootstrap for local dev.
 All timestamps are stored in UTC.
 
 Geospatial notes:
@@ -43,6 +43,16 @@ class Lead(Base):
     score_label     = Column(String(10), nullable=True)   # HOT | WARM | COOL
     score_priority  = Column(Integer, nullable=True)
 
+    # Pipeline CRM stage tracking (Feature 3)
+    pipeline_stage    = Column(String(30), default='new', nullable=False)
+    contacted_at      = Column(DateTime(timezone=True), nullable=True)
+    proposal_sent_at  = Column(DateTime(timezone=True), nullable=True)
+    closed_at         = Column(DateTime(timezone=True), nullable=True)
+    closed_reason     = Column(String(100), nullable=True)
+
+    # Multi-tenant (Feature 15)
+    tenant_id       = Column(String(60), nullable=True, index=True, default='default')
+
     created_at      = Column(DateTime(timezone=True), default=_utcnow, nullable=False)
 
     def __repr__(self) -> str:
@@ -59,6 +69,9 @@ class ContactMessage(Base):
     email      = Column(String(254), nullable=False, index=True)
     phone      = Column(String(30), nullable=True)
     message    = Column(Text, nullable=False)
+    # Multi-tenant (Feature 15)
+    tenant_id       = Column(String(60), nullable=True, index=True, default='default')
+
     created_at = Column(DateTime(timezone=True), default=_utcnow, nullable=False)
 
     def __repr__(self) -> str:

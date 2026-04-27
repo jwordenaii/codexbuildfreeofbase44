@@ -1,13 +1,17 @@
 import { Link } from 'react-router-dom'
+import SocialLinks from './SocialLinks'
 
 const LINKS = [
-  { to: '/',         label: 'Home' },
-  { to: '/services', label: 'Services' },
-  { to: '/about',    label: 'About' },
-  { to: '/reviews',  label: 'Reviews' },
-  { to: '/advisory', label: 'Advisory Board' },
-  { to: '/quote',    label: 'Free Quote' },
-  { to: '/contact',  label: 'Contact' },
+  { to: '/',               label: 'Home' },
+  { to: '/services',       label: 'Services' },
+  { to: '/projects',       label: 'Projects' },
+  { to: '/service-areas',  label: 'Service Areas' },
+  { to: '/blog',           label: 'Blog & Resources' },
+  { to: '/about',          label: 'About' },
+  { to: '/reviews',        label: 'Reviews' },
+  { to: '/advisory',       label: 'Advisory Board' },
+  { to: '/quote',          label: 'Free Quote' },
+  { to: '/contact',        label: 'Contact' },
 ]
 
 const SERVICES = [
@@ -22,6 +26,29 @@ export default function Footer() {
   const year = new Date().getFullYear()
   return (
     <footer className="bg-brand-navy text-white/80">
+
+      {/* ── Social bar ─────────────────────────────────────────────────── */}
+      <div className="border-b border-white/10 bg-white/5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div>
+              <p className="font-display font-black text-white text-lg mb-1">
+                Follow Our Work
+              </p>
+              <p className="text-white/50 text-sm">
+                Before &amp; afters, crew in the field, and local paving tips.
+              </p>
+            </div>
+            <SocialLinks
+              size="lg"
+              variant="badge"
+              className="flex-wrap justify-center md:justify-end"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* ── Main footer ────────────────────────────────────────────────── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {/* Brand */}
@@ -42,6 +69,9 @@ export default function Footer() {
               <span>⭐ 4.9/5</span>
               <span>·</span>
               <span>87 Google Reviews</span>
+            </div>
+            <div className="mt-5">
+              <SocialLinks size="md" variant="icon" />
             </div>
           </div>
 
@@ -98,9 +128,7 @@ export default function Footer() {
 
         <div className="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-white/30">
           <p>© {year} J. Worden &amp; Sons Asphalt Paving. All rights reserved.</p>
-          <p>
-            Licensed &amp; Insured · Est. 1984 · 4th Generation
-          </p>
+          <p>Licensed &amp; Insured · Est. 1984 · 4th Generation</p>
         </div>
       </div>
     </footer>

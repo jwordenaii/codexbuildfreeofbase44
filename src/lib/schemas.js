@@ -8,18 +8,37 @@
  * production deployments automatically use the correct canonical domain.
  */
 
+import { SAME_AS_URLS } from './social'
+import STATES, { WORDEN_ACTIVE_STATES } from './states50'
+
 export const SITE_URL =
   import.meta.env.VITE_SITE_URL || 'https://jworden.netlify.app'
+
+// National area served — all 50 states + DC via Schema.org State objects.
+// Google uses this to understand the contractor's service geography.
+// WORDEN_ACTIVE_STATES are listed first (verified completed work).
+const _activeSet = new Set(WORDEN_ACTIVE_STATES)
+const _sortedStates = [
+  ...STATES.filter(s => _activeSet.has(s.abbr)),
+  ...STATES.filter(s => !_activeSet.has(s.abbr)),
+]
+const NATIONAL_AREA_SERVED = _sortedStates.map(s => ({
+  '@type': 'State',
+  name: s.name,
+  containedInPlace: { '@type': 'Country', name: 'United States' },
+}))
 
 export const LOCAL_BUSINESS_SCHEMA = {
   '@context': 'https://schema.org',
   '@type': ['PavingContractor', 'LocalBusiness'],
   name: 'J. Worden & Sons Asphalt Paving',
   description:
-    'Fourth-generation asphalt paving company serving residential and commercial clients since 1984.',
+    'Family-owned asphalt paving contractor est. 1984. KFC national QSR new-build and remodel program across 12+ states. ' +
+    'Pavement Magazine Top 75 (4 categories). Best of Houzz. 2026 Top Contractor Nominee.',
   foundingDate: '1984',
+  sameAs: SAME_AS_URLS,
   telephone: '+18044461296',
-  email: 'contact@jwordenasphalt.com',
+  email: 'contact@jwordenasphaltpaving.com',
   url: SITE_URL,
   logo: `${SITE_URL}/logo.png`,
   address: {
@@ -35,14 +54,7 @@ export const LOCAL_BUSINESS_SCHEMA = {
     latitude: 37.3529,
     longitude: -77.4326,
   },
-  areaServed: [
-    { '@type': 'City', name: 'Chester', containedInPlace: { '@type': 'State', name: 'Virginia' } },
-    { '@type': 'City', name: 'Richmond', containedInPlace: { '@type': 'State', name: 'Virginia' } },
-    { '@type': 'City', name: 'Chesterfield', containedInPlace: { '@type': 'State', name: 'Virginia' } },
-    { '@type': 'City', name: 'Colonial Heights', containedInPlace: { '@type': 'State', name: 'Virginia' } },
-    { '@type': 'City', name: 'Hopewell', containedInPlace: { '@type': 'State', name: 'Virginia' } },
-    { '@type': 'City', name: 'Petersburg', containedInPlace: { '@type': 'State', name: 'Virginia' } },
-  ],
+  areaServed: NATIONAL_AREA_SERVED,
   openingHoursSpecification: [
     {
       '@type': 'OpeningHoursSpecification',
@@ -72,12 +84,7 @@ export function serviceSchema(name, description, url, priceRange) {
       telephone: '+18044461296',
       url: SITE_URL,
     },
-    areaServed: [
-      { '@type': 'City', name: 'Chester', containedInPlace: { '@type': 'State', name: 'Virginia' } },
-      { '@type': 'City', name: 'Richmond', containedInPlace: { '@type': 'State', name: 'Virginia' } },
-      { '@type': 'City', name: 'Chesterfield', containedInPlace: { '@type': 'State', name: 'Virginia' } },
-      { '@type': 'City', name: 'Colonial Heights', containedInPlace: { '@type': 'State', name: 'Virginia' } },
-    ],
+    areaServed: NATIONAL_AREA_SERVED,
     ...(priceRange
       ? {
           offers: {

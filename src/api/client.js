@@ -9,14 +9,18 @@
 
 const BASE = import.meta.env.VITE_API_BASE_URL || ''
 const DEFAULT_TIMEOUT_MS = 10_000
+const MASTER_KEY = import.meta.env.VITE_MASTER_API_KEY || ''
 
 async function request(method, path, body) {
   const controller = new AbortController()
   const timeoutId = setTimeout(() => controller.abort(), DEFAULT_TIMEOUT_MS)
 
+  const headers = { 'Content-Type': 'application/json' }
+  if (MASTER_KEY) headers.Authorization = `Bearer ${MASTER_KEY}`
+
   const opts = {
     method,
-    headers: { 'Content-Type': 'application/json' },
+    headers,
     signal: controller.signal,
   }
   if (body) opts.body = JSON.stringify(body)
@@ -36,6 +40,14 @@ async function request(method, path, body) {
   } finally {
     clearTimeout(timeoutId)
   }
+}
+
+/** Build a query string from an object, omitting null/undefined/empty values. */
+function buildQS(params) {
+  const qs = new URLSearchParams(
+    Object.fromEntries(Object.entries(params).filter(([, v]) => v !== undefined && v !== null && v !== ''))
+  ).toString()
+  return qs ? `?${qs}` : ''
 }
 
 export const api = {

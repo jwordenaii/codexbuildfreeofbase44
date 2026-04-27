@@ -6,7 +6,7 @@ const CONTACT_SCHEMA = {
   '@context': 'https://schema.org',
   '@type': 'ContactPage',
   name: 'Contact J. Worden & Sons',
-  url: 'https://jwordenasphalt.com/contact',
+  url: 'https://jwordenasphaltpaving.com/contact',
 }
 
 const INITIAL = { name: '', email: '', phone: '', message: '' }
@@ -73,8 +73,8 @@ export default function Contact() {
                 {
                   icon: '📧',
                   label: 'Email',
-                  value: 'contact@jwordenasphalt.com',
-                  href: 'mailto:contact@jwordenasphalt.com',
+                  value: 'contact@jwordenasphaltpaving.com',
+                  href: 'mailto:contact@jwordenasphaltpaving.com',
                 },
                 {
                   icon: '📍',
