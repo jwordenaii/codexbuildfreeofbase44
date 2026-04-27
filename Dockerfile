@@ -52,19 +52,14 @@ ENV PATH="/opt/venv/bin:$PATH" \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
-# ── Gunicorn + Uvicorn workers ────────────────────────────────────────────────
-# 2 Gunicorn workers × 1 Uvicorn worker class = 2 async worker processes.
-# Scale workers via the WEB_CONCURRENCY env var (Cloud Run sets this automatically).
-ENV WEB_CONCURRENCY=2
+# ── Uvicorn runtime ───────────────────────────────────────────────────────────
+# Run the ASGI app directly with Uvicorn to avoid a hard dependency on Gunicorn
+# in the runtime image.
 
 EXPOSE 8000
 
 USER appuser
 
-CMD ["sh", "-c", "gunicorn app.main:app \
-  --worker-class uvicorn.workers.UvicornWorker \
-  --workers ${WEB_CONCURRENCY:-2} \
-  --bind 0.0.0.0:8000 \
-  --timeout 120 \
-  --access-logfile - \
-  --error-logfile -"]
+CMD ["sh", "-c", "uvicorn app.main:app \
+  --host 0.0.0.0 \
+  --port 8000"]
