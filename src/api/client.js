@@ -206,6 +206,16 @@ export const api = {
   scanParcel:            (data)  => request('POST', '/api/v1/visualizer/parcel',         data),
   submitVisualProposal:  (data)  => request('POST', '/api/v1/visualizer/proposal',       data),
   getAIDesignSuggestions:(data)  => request('POST', '/api/v1/visualizer/ai-suggestions', data),
+
+  // ── iGrade Engine ─────────────────────────────────────────────────────
+  getIGradeStats:         ()            => request('GET',    '/api/v1/igrade/stats'),
+  listGradeLogs:          (params = {}) => request('GET',    `/api/v1/igrade/logs${buildQS(params)}`),
+  runSelfCorrectionSweep: ()            => request('POST',   '/api/v1/igrade/sweep'),
+
+  // Media File Storage Registry
+  listMediaFiles:         (params = {}) => request('GET',    `/api/v1/igrade/media${buildQS(params)}`),
+  registerMediaFile:      (data)        => request('POST',   '/api/v1/igrade/media', data),
+  deleteMediaFile:        (id)          => request('DELETE', `/api/v1/igrade/media/${id}`),
 }
 
 // ── GA4 event helpers ─────────────────────────────────────────────────────────

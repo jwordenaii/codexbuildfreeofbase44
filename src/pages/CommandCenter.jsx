@@ -47,6 +47,7 @@ import WorkforcePanel from '../components/commandCenter/WorkforcePanel'
 import BidIntelPanel from '../components/commandCenter/BidIntelPanel'
 import KPIWallPanel from '../components/commandCenter/KPIWallPanel'
 import InnovationPanel from '../components/commandCenter/InnovationPanel'
+import IGradePanel from '../components/commandCenter/IGradePanel'
 
 // Lazy-load TakeoffMap because @vis.gl/react-google-maps is a heavier dep
 const TakeoffMap = lazy(() => import('../components/TakeoffMap'))
@@ -163,6 +164,7 @@ const PANELS = [
   { id: 'bid-intel',     label: '🎯 Bid Intel' },
   { id: 'kpi-wall',      label: '📈 KPI Wall' },
   { id: 'innovations',   label: '🔬 Innovation Lab' },
+  { id: 'igrade',        label: '🎓 iGrade Engine' },
 ]
 
 export default function CommandCenter() {
@@ -437,6 +439,9 @@ function CommandCenterInner() {
 
         {/* ── Innovation Lab panel ── */}
         {activePanel === 'innovations' && <InnovationPanel />}
+
+        {/* ── iGrade Engine panel ── */}
+        {activePanel === 'igrade' && <IGradePanel />}
 
         {/* ── Bottom CTA ── */}
         <section className="mt-12 bg-brand-navy rounded-2xl p-8 text-center text-white">

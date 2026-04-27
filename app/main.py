@@ -61,6 +61,9 @@ from .routers import kpi_wall as kpi_wall_router
 from .routers import innovations as innovations_router
 from .routers import visualizer as visualizer_router
 from .routers import payments as payments_router
+from .routers import foreman as foreman_router
+from .routers import geo as geo_router
+from .routers import igrade as igrade_router
 
 logger = logging.getLogger(__name__)
 
@@ -148,6 +151,9 @@ app.include_router(kpi_wall_router.router)
 app.include_router(innovations_router.router)
 app.include_router(visualizer_router.router)
 app.include_router(payments_router.router)
+app.include_router(foreman_router.router)
+app.include_router(geo_router.router)
+app.include_router(igrade_router.router)
 
 
 # ── Legacy endpoints (kept for backward compatibility) ────────────────────────

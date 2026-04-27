@@ -25,11 +25,23 @@ def get_database_url() -> str:
 _DATABASE_URL = get_database_url()
 _connect_args = {'check_same_thread': False} if _DATABASE_URL.startswith('sqlite') else {}
 
+# Pool sizing: SQLite gets minimal settings; PostgreSQL gets a larger pool
+# for high-throughput iGrade processing.
+_pool_kwargs: dict = {}
+if not _DATABASE_URL.startswith("sqlite"):
+    _pool_kwargs = {
+        "pool_size":    int(os.getenv("DB_POOL_SIZE",    "10")),
+        "max_overflow": int(os.getenv("DB_MAX_OVERFLOW", "20")),
+        "pool_recycle": int(os.getenv("DB_POOL_RECYCLE", "1800")),  # recycle idle connections every 30 min
+        "pool_timeout": int(os.getenv("DB_POOL_TIMEOUT", "30")),
+    }
+
 engine = create_engine(
     _DATABASE_URL,
     connect_args=_connect_args,
     pool_pre_ping=True,
     echo=False,
+    **_pool_kwargs,
 )
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
