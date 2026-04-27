@@ -19,7 +19,7 @@ import json
 import logging
 import os
 from datetime import datetime, timezone
-from typing import Optional
+from typing import Any, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -28,17 +28,23 @@ _SESSION_TTL = 60 * 60 * 24 * 7  # 7 days
 _MAX_MESSAGES = 20
 _KEY_PREFIX = "jworden:chat:"
 
+# Module-level Redis singleton — created once, reused across all session ops.
+_redis_client: Optional[Any] = None
+
 # ── Redis helpers ─────────────────────────────────────────────────────────────
 
 def _get_redis():
-    """Return a Redis client or None if unavailable."""
+    """Return a shared Redis client or None if unavailable."""
+    global _redis_client
     if not _REDIS_URL:
         return None
+    if _redis_client is not None:
+        return _redis_client
     try:
         import redis  # type: ignore
-        client = redis.from_url(_REDIS_URL, decode_responses=True)
-        client.ping()
-        return client
+        _redis_client = redis.from_url(_REDIS_URL, decode_responses=True)
+        _redis_client.ping()
+        return _redis_client
     except Exception as exc:  # noqa: BLE001
         logger.warning("Redis unavailable, falling back to DB: %s", exc)
         return None

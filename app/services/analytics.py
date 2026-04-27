@@ -222,13 +222,16 @@ def get_review_approval_rate(db) -> dict:
 
 
 def get_monthly_lead_volume(db) -> list:
-    """Return monthly lead counts for the last 12 months."""
+    """Return monthly lead counts for the last 12 months.
+
+    Uses a single aggregated SQL query instead of 24 individual COUNT queries.
+    """
     try:
         from ..models import Lead  # noqa: PLC0415
 
         now = datetime.now(timezone.utc)
-        results = []
-
+        # Build the 12 month-bucket boundaries (oldest first)
+        buckets: list[tuple[datetime, datetime, str, str]] = []
         for i in range(11, -1, -1):
             month_start = (now - timedelta(days=i * 30)).replace(
                 day=1, hour=0, minute=0, second=0, microsecond=0
@@ -239,29 +242,45 @@ def get_monthly_lead_volume(db) -> list:
                 )
             else:
                 month_end = now
+            buckets.append((
+                month_start,
+                month_end,
+                month_start.strftime("%Y-%m"),
+                month_start.strftime("%b %Y"),
+            ))
 
-            count = (
-                db.query(Lead)
-                .filter(Lead.created_at >= month_start, Lead.created_at < month_end)
-                .count()
-            )
-            hot = (
-                db.query(Lead)
-                .filter(
-                    Lead.created_at >= month_start,
-                    Lead.created_at < month_end,
-                    Lead.score_label == "HOT",
-                )
-                .count()
-            )
+        window_start = buckets[0][0]
 
+        # Single query: count all leads and HOT leads per month bucket in one pass.
+        rows = (
+            db.query(
+                Lead.created_at,
+                Lead.score_label,
+            )
+            .filter(Lead.created_at >= window_start, Lead.created_at <= now)
+            .all()
+        )
+
+        # Aggregate in Python — one pass over the result set.
+        totals: dict[str, int] = {}
+        hots: dict[str, int] = {}
+        for created_at, score_label in rows:
+            # Find which bucket this row belongs to
+            for start, end, month_key, _ in buckets:
+                if start <= created_at < end:
+                    totals[month_key] = totals.get(month_key, 0) + 1
+                    if score_label == "HOT":
+                        hots[month_key] = hots.get(month_key, 0) + 1
+                    break
+
+        results = []
+        for start, _end, month_key, label in buckets:
             results.append({
-                "month": month_start.strftime("%Y-%m"),
-                "label": month_start.strftime("%b %Y"),
-                "total_leads": count,
-                "hot_leads": hot,
+                "month": month_key,
+                "label": label,
+                "total_leads": totals.get(month_key, 0),
+                "hot_leads": hots.get(month_key, 0),
             })
-
         return results
     except Exception as exc:  # noqa: BLE001
         logger.error("get_monthly_lead_volume error: %s", exc)

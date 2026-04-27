@@ -19,11 +19,12 @@ Public API
 
 from __future__ import annotations
 
+import concurrent.futures
 import json
 import logging
 import os
 from datetime import datetime, timezone
-from typing import Optional
+from typing import Any, Optional
 
 import httpx
 
@@ -33,17 +34,23 @@ _REDIS_URL = os.getenv("REDIS_URL", "")
 _CACHE_TTL = 60 * 60 * 6  # 6-hour cache per state
 _DEFAULT_TIMEOUT = 15.0
 
+# Module-level Redis singleton — created once, reused across all cache operations.
+_redis_client: Any = None
+
 
 # ── Redis cache ───────────────────────────────────────────────────────────────
 
 def _get_redis():
+    global _redis_client
     if not _REDIS_URL:
         return None
+    if _redis_client is not None:
+        return _redis_client
     try:
         import redis  # type: ignore
-        client = redis.from_url(_REDIS_URL, decode_responses=True)
-        client.ping()
-        return client
+        _redis_client = redis.from_url(_REDIS_URL, decode_responses=True)
+        _redis_client.ping()
+        return _redis_client
     except Exception:  # noqa: BLE001
         return None
 
@@ -381,7 +388,7 @@ def fetch_all_permits(
     keyword: str = "paving",
     max_results: int = 50,
 ) -> list[dict]:
-    """Fetch permits from all requested states and merge results."""
+    """Fetch permits from all requested states concurrently and merge results."""
     _FETCHERS = {
         "TX": fetch_texas_permits,
         "FL": fetch_florida_permits,
@@ -392,16 +399,23 @@ def fetch_all_permits(
         "MI": fetch_michigan_permits,
     }
 
-    all_results: list[dict] = []
     per_state = max(1, max_results // max(len(states), 1))
 
-    for state in states:
+    def _fetch_one(state: str) -> list[dict]:
         fetcher = _FETCHERS.get(state.upper())
-        if fetcher:
-            results = fetcher(keyword=keyword, max_results=per_state)
-            all_results.extend(results)
-        else:
+        if not fetcher:
             logger.warning("No permit scraper for state: %s", state)
+            return []
+        return fetcher(keyword=keyword, max_results=per_state)
+
+    all_results: list[dict] = []
+    with concurrent.futures.ThreadPoolExecutor(max_workers=len(states)) as pool:
+        futures = {pool.submit(_fetch_one, s): s for s in states}
+        for future in concurrent.futures.as_completed(futures):
+            try:
+                all_results.extend(future.result())
+            except Exception as exc:  # noqa: BLE001
+                logger.error("Permit fetch failed for %s: %s", futures[future], exc)
 
     return all_results[:max_results]
 

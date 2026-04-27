@@ -5,15 +5,18 @@ photo-inspect  — GPT-4 Vision asphalt damage assessment (existing)
 chat           — Natural language Q&A about construction law / paving services
 """
 
-import os
 import base64
 import logging
-from io import BytesIO
+import os
+import uuid
+from typing import Optional
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from pydantic import BaseModel, Field
-from typing import Optional
+from sqlalchemy.orm import Session
+
 from ..core.security import verify_premium_security
+from ..database import get_db
 
 logger = logging.getLogger(__name__)
 
@@ -21,6 +24,27 @@ router = APIRouter(prefix="/api/v1/ai", tags=["ai"])
 
 _ALLOWED_MIME = {"image/jpeg", "image/png", "image/webp"}
 _MAX_SIZE_BYTES = 10 * 1024 * 1024  # 10 MB
+
+# ── OpenAI client singleton ───────────────────────────────────────────────────
+# Shared across all requests to reuse the underlying httpx connection pool.
+
+_openai_client = None
+
+
+def _get_openai_client():
+    global _openai_client
+    api_key = os.getenv("OPENAI_API_KEY", "")
+    if not api_key:
+        return None
+    if _openai_client is not None:
+        return _openai_client
+    try:
+        from openai import OpenAI  # type: ignore
+        _openai_client = OpenAI(api_key=api_key)
+        return _openai_client
+    except Exception as exc:  # noqa: BLE001
+        logger.error("Could not create OpenAI client: %s", exc)
+        return None
 
 
 # ── Photo Inspect ─────────────────────────────────────────────────────────────
@@ -54,9 +78,10 @@ def _stub_analysis() -> dict:
 def _openai_analysis(image_bytes: bytes, mime_type: str) -> dict:
     import json
     try:
-        from openai import OpenAI  # type: ignore
+        client = _get_openai_client()
+        if client is None:
+            raise RuntimeError("OPENAI_API_KEY not configured")
 
-        client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
         b64 = base64.b64encode(image_bytes).decode()
         data_url = f"data:{mime_type};base64,{b64}"
 
@@ -243,9 +268,10 @@ def _stub_chat(question: str) -> str:
 
 def _openai_chat(question: str, state_code: Optional[str]) -> str:
     try:
-        from openai import OpenAI  # type: ignore
+        client = _get_openai_client()
+        if client is None:
+            return _stub_chat(question)
 
-        client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
         user_msg = question
         if state_code:
             user_msg = f"[State context: {state_code.upper()}] {question}"
@@ -270,14 +296,13 @@ def _openai_chat(question: str, state_code: Optional[str]) -> str:
     summary="JWordenAI natural language Q&A",
     response_model=ChatResponse,
 )
-async def chat(req: ChatRequest, db=None):
+async def chat(req: ChatRequest, db: Session = Depends(get_db)):
     """
     Public endpoint — no auth required.
     Supports multi-turn conversation via session_id (Feature 1).
     Uses GPT-4o / GPT-4o-mini via the premium AI engine with confidence scoring.
     Decisions below HUMAN_REVIEW_THRESHOLD are logged to the review queue.
     """
-    import uuid  # noqa: PLC0415
     from ..services.ai_engine import run_chat, HUMAN_REVIEW_THRESHOLD  # noqa: PLC0415
     from ..models import HumanReviewQueue  # noqa: PLC0415
     from ..services.conversation_memory import get_session, save_message  # noqa: PLC0415
@@ -286,26 +311,19 @@ async def chat(req: ChatRequest, db=None):
     session_id = req.session_id or str(uuid.uuid4())
 
     # Load conversation history
-    _db = None
-    try:
-        from ..database import SessionLocal  # noqa: PLC0415
-        _db = SessionLocal()
-    except Exception:  # noqa: BLE001
-        pass
-
-    history = get_session(session_id, db=_db)
+    history = get_session(session_id, db=db)
 
     decision = run_chat(req.question, state_code=req.state_code, history=history)
 
     # Save user message + AI response to session
     try:
-        save_message(session_id, "user", req.question, db=_db)
-        save_message(session_id, "assistant", decision.answer, db=_db)
+        save_message(session_id, "user", req.question, db=db)
+        save_message(session_id, "assistant", decision.answer, db=db)
     except Exception as exc:  # noqa: BLE001
         logger.warning("Could not save session messages: %s", exc)
 
     # Persist low-confidence decisions for human review
-    if decision.needs_human_review and _db:
+    if decision.needs_human_review:
         try:
             item = HumanReviewQueue(
                 decision_type  = "chat",
@@ -314,15 +332,9 @@ async def chat(req: ChatRequest, db=None):
                 ai_engine      = decision.engine,
                 confidence     = decision.confidence,
             )
-            _db.add(item)
-            _db.commit()
+            db.add(item)
+            db.commit()
         except Exception as exc:  # noqa: BLE001
             logger.warning("Could not save review queue item: %s", exc)
-
-    if _db:
-        try:
-            _db.close()
-        except Exception:  # noqa: BLE001
-            pass
 
     return ChatResponse(answer=decision.answer, engine=decision.engine, session_id=session_id)

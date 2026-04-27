@@ -8,7 +8,9 @@ import './index.css'
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 30_000,
+      // 5 minutes for most queries; callers can override per-query for
+      // highly dynamic data (e.g. CRM leads, permit feed).
+      staleTime: 5 * 60 * 1000,
       refetchOnWindowFocus: false,
       retry: 1,
     },

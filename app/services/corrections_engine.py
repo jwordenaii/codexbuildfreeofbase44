@@ -43,7 +43,7 @@ def get_corrections(
             db.query(AICorrection)
             .filter(AICorrection.decision_type == decision_type)
             .order_by(AICorrection.usage_count.desc())
-            .limit(limit * 3)
+            .limit(limit * 2)
             .all()
         )
 

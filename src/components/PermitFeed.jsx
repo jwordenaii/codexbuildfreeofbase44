@@ -9,6 +9,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getVptPermits, getDeqPermits } from '../api/permits'
+import { api } from '../api/client'
 
 const SCORE_COLORS = {
   HOT:  'bg-red-100 text-red-700 border-red-200',
@@ -96,7 +97,6 @@ export default function PermitFeed({
         data = await getDeqPermits(limit)
         setPermits(data.permits || [])
       } else if (source === 'national') {
-        const { api } = await import('../api/client')
         data = await api.getNationalPermits(states, keyword, limit)
         setPermits(data.results || [])
       } else {

@@ -24,33 +24,33 @@ import { lazy, Suspense, useState } from 'react'
 import { Link } from 'react-router-dom'
 import SchemaMarkup from '../components/SchemaMarkup'
 import PermitFeed from '../components/PermitFeed'
-import AnalyticsPanel from '../components/commandCenter/AnalyticsPanel'
-import CRMPanel from '../components/commandCenter/CRMPanel'
-import WeatherPanel from '../components/commandCenter/WeatherPanel'
-import MaterialsPanel from '../components/commandCenter/MaterialsPanel'
-import LienCalendarPanel from '../components/commandCenter/LienCalendarPanel'
-import SubcontractorPanel from '../components/commandCenter/SubcontractorPanel'
-import MarketIntelPanel from '../components/commandCenter/MarketIntelPanel'
-import ProposalsPanel from '../components/commandCenter/ProposalsPanel'
-import HumanReviewPanel from '../components/commandCenter/HumanReviewPanel'
-import DocumentsPanel from '../components/commandCenter/DocumentsPanel'
-import VoicePanel from '../components/commandCenter/VoicePanel'
-import FollowUpsPanel from '../components/commandCenter/FollowUpsPanel'
-import SchedulingPanel from '../components/commandCenter/SchedulingPanel'
-import JobCostingPanel from '../components/commandCenter/JobCostingPanel'
-import RFIChangeOrderPanel from '../components/commandCenter/RFIChangeOrderPanel'
-import RetrospectivesPanel from '../components/commandCenter/RetrospectivesPanel'
-import SafetyPanel from '../components/commandCenter/SafetyPanel'
-import CashFlowPanel from '../components/commandCenter/CashFlowPanel'
-import ScorecardPanel from '../components/commandCenter/ScorecardPanel'
-import WorkforcePanel from '../components/commandCenter/WorkforcePanel'
-import BidIntelPanel from '../components/commandCenter/BidIntelPanel'
-import KPIWallPanel from '../components/commandCenter/KPIWallPanel'
-import InnovationPanel from '../components/commandCenter/InnovationPanel'
-import IGradePanel from '../components/commandCenter/IGradePanel'
 
-// Lazy-load TakeoffMap because @vis.gl/react-google-maps is a heavier dep
-const TakeoffMap = lazy(() => import('../components/TakeoffMap'))
+// Lazy-load every panel so only the active panel's JS is downloaded.
+const TakeoffMap         = lazy(() => import('../components/TakeoffMap'))
+const AnalyticsPanel     = lazy(() => import('../components/commandCenter/AnalyticsPanel'))
+const CRMPanel           = lazy(() => import('../components/commandCenter/CRMPanel'))
+const WeatherPanel       = lazy(() => import('../components/commandCenter/WeatherPanel'))
+const MaterialsPanel     = lazy(() => import('../components/commandCenter/MaterialsPanel'))
+const LienCalendarPanel  = lazy(() => import('../components/commandCenter/LienCalendarPanel'))
+const SubcontractorPanel = lazy(() => import('../components/commandCenter/SubcontractorPanel'))
+const MarketIntelPanel   = lazy(() => import('../components/commandCenter/MarketIntelPanel'))
+const ProposalsPanel     = lazy(() => import('../components/commandCenter/ProposalsPanel'))
+const HumanReviewPanel   = lazy(() => import('../components/commandCenter/HumanReviewPanel'))
+const DocumentsPanel     = lazy(() => import('../components/commandCenter/DocumentsPanel'))
+const VoicePanel         = lazy(() => import('../components/commandCenter/VoicePanel'))
+const FollowUpsPanel     = lazy(() => import('../components/commandCenter/FollowUpsPanel'))
+const SchedulingPanel    = lazy(() => import('../components/commandCenter/SchedulingPanel'))
+const JobCostingPanel    = lazy(() => import('../components/commandCenter/JobCostingPanel'))
+const RFIChangeOrderPanel    = lazy(() => import('../components/commandCenter/RFIChangeOrderPanel'))
+const RetrospectivesPanel    = lazy(() => import('../components/commandCenter/RetrospectivesPanel'))
+const SafetyPanel        = lazy(() => import('../components/commandCenter/SafetyPanel'))
+const CashFlowPanel      = lazy(() => import('../components/commandCenter/CashFlowPanel'))
+const ScorecardPanel     = lazy(() => import('../components/commandCenter/ScorecardPanel'))
+const WorkforcePanel     = lazy(() => import('../components/commandCenter/WorkforcePanel'))
+const BidIntelPanel      = lazy(() => import('../components/commandCenter/BidIntelPanel'))
+const KPIWallPanel       = lazy(() => import('../components/commandCenter/KPIWallPanel'))
+const InnovationPanel    = lazy(() => import('../components/commandCenter/InnovationPanel'))
+const IGradePanel        = lazy(() => import('../components/commandCenter/IGradePanel'))
 
 // ── Login Guard ───────────────────────────────────────────────────────────────
 const CC_PASSWORD = import.meta.env.VITE_CC_PASSWORD || ''
@@ -227,6 +227,7 @@ function CommandCenterInner() {
 
       {/* ── Content ── */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <Suspense fallback={<MapLoader />}>
 
         {/* ── Permit Feed panel ── */}
         {activePanel === 'permits' && (
@@ -442,6 +443,8 @@ function CommandCenterInner() {
 
         {/* ── iGrade Engine panel ── */}
         {activePanel === 'igrade' && <IGradePanel />}
+
+        </Suspense>
 
         {/* ── Bottom CTA ── */}
         <section className="mt-12 bg-brand-navy rounded-2xl p-8 text-center text-white">

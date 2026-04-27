@@ -30,15 +30,22 @@ TTL_SECONDS = int(os.getenv("PERMIT_CACHE_TTL_SECONDS", "300"))  # 5 min default
 
 _cache: dict[str, tuple[float, Any]] = {}
 
+# Module-level Redis singleton — created once, reused across all cache operations.
+_redis_client: Any = None
+
 
 def _get_redis():
-    """Return a Redis client or None if Redis is not configured."""
+    """Return a shared Redis client or None if Redis is not configured."""
+    global _redis_client
     redis_url = os.getenv("REDIS_URL", "")
     if not redis_url:
         return None
+    if _redis_client is not None:
+        return _redis_client
     try:
         import redis  # noqa: PLC0415
-        return redis.from_url(redis_url, decode_responses=True)
+        _redis_client = redis.from_url(redis_url, decode_responses=True)
+        return _redis_client
     except Exception:  # noqa: BLE001
         return None
 

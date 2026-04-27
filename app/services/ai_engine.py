@@ -30,7 +30,7 @@ from __future__ import annotations
 import logging
 import os
 from dataclasses import dataclass, field
-from typing import Optional
+from typing import Any, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -39,6 +39,26 @@ logger = logging.getLogger(__name__)
 HUMAN_REVIEW_THRESHOLD: float = float(
     os.getenv("HUMAN_REVIEW_THRESHOLD", "0.75")
 )
+
+# Module-level OpenAI client singleton — avoids creating a new httpx session per request.
+_openai_client: Any = None
+
+
+def _get_openai_client() -> Any:
+    """Return a shared OpenAI client, or None if the API key is not set."""
+    global _openai_client
+    api_key = os.getenv("OPENAI_API_KEY", "")
+    if not api_key:
+        return None
+    if _openai_client is not None:
+        return _openai_client
+    try:
+        from openai import OpenAI  # type: ignore
+        _openai_client = OpenAI(api_key=api_key)
+        return _openai_client
+    except Exception as exc:  # noqa: BLE001
+        logger.error("Could not create OpenAI client: %s", exc)
+        return None
 
 # Domain keywords — questions touching these topics are "in domain" for this AI
 _PAVING_DOMAIN = {
@@ -186,8 +206,9 @@ def _call_openai(
     Falls back gracefully — never raises.
     """
     try:
-        from openai import OpenAI  # type: ignore
-        client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+        client = _get_openai_client()
+        if client is None:
+            return "", True
         resp = client.chat.completions.create(
             model=model,
             messages=messages,
