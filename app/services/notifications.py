@@ -1,51 +1,39 @@
 """
 Notification stubs for J. Worden & Sons lead pipeline.
 
-All credentials are read from environment variables so nothing sensitive is
-committed to source control.  When env vars are absent the functions log
-locally and return gracefully — safe for dev/staging.
-
-Required env vars for production:
-  Email (SMTP):
-    SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD
-    NOTIFY_TO_EMAIL  (owner inbox, comma-separated for multiple)
-
-  Email (SendGrid alternative):
-    SENDGRID_API_KEY, NOTIFY_TO_EMAIL
-
-  SMS (Twilio):
-    TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN
-    TWILIO_FROM_NUMBER, NOTIFY_TO_PHONE  (E.164, comma-separated)
+Primary email provider: Resend (RESEND_API_KEY + RESEND_FROM_EMAIL)
+Fallback provider: SMTP (SMTP_HOST/SMTP_PORT/SMTP_USER/SMTP_PASSWORD)
 """
 
-import os
-import re
+from __future__ import annotations
+
+import base64
 import json
 import logging
+import os
+import re
 import smtplib
+from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 logger = logging.getLogger(__name__)
+_EMAIL_RE = re.compile(r'^[^@\s]+@[^@\s]+\.[^@\s]+$')
 
-
-# ── helpers ──────────────────────────────────────────────────────────────────
 
 def _build_email_body(data: dict) -> tuple[str, str]:
-    """Return (subject, HTML body) for a lead notification."""
-    lead_type = data.get("type", "lead").upper()
-    name = data.get("name", "Unknown")
-    score = data.get("score", {})
-    label = score.get("label", "—") if isinstance(score, dict) else "—"
-    priority = score.get("priority", "—") if isinstance(score, dict) else "—"
+    lead_type = data.get('type', 'lead').upper()
+    name = data.get('name', 'Unknown')
+    score = data.get('score', {})
+    label = score.get('label', '—') if isinstance(score, dict) else '—'
+    priority = score.get('priority', '—') if isinstance(score, dict) else '—'
 
-    subject = f"[{label}] New {lead_type} – {name} | JWordenAI"
-
-    rows = "".join(
-        f"<tr><td style='padding:6px 12px;font-weight:bold'>{k.replace('_',' ').title()}</td>"
+    subject = f'[{label}] New {lead_type} – {name} | JWordenAI'
+    rows = ''.join(
+        f"<tr><td style='padding:6px 12px;font-weight:bold'>{k.replace('_', ' ').title()}</td>"
         f"<td style='padding:6px 12px'>{v}</td></tr>"
         for k, v in data.items()
-        if k not in ("type",)
+        if k not in ('type',)
     )
 
     html = f"""
@@ -64,37 +52,69 @@ def _build_email_body(data: dict) -> tuple[str, str]:
     return subject, html
 
 
-_EMAIL_RE = re.compile(r'^[^@\s]+@[^@\s]+\.[^@\s]+$')
-
-
 def _validate_emails(addresses: list[str]) -> list[str]:
     valid = [e for e in addresses if _EMAIL_RE.match(e)]
     invalid = [e for e in addresses if not _EMAIL_RE.match(e)]
     if invalid:
-        logger.warning("Skipping malformed recipient address(es): %s", invalid)
+        logger.warning('Skipping malformed recipient address(es): %s', invalid)
     return valid
 
 
-def _send_smtp(subject: str, html_body: str, to_addresses: list[str]) -> None:
-    host = os.getenv("SMTP_HOST", "")
-    port = int(os.getenv("SMTP_PORT", "587"))
-    user = os.getenv("SMTP_USER", "")
-    password = os.getenv("SMTP_PASSWORD", "")
-
-    if not (host and user and password):
-        logger.info("SMTP not configured – skipping email. subject=%s", subject)
-        return
+def _send_resend(subject: str, html_body: str, to_addresses: list[str], attachments: list[dict] | None = None) -> bool:
+    api_key = os.getenv('RESEND_API_KEY', '').strip()
+    from_email = os.getenv('RESEND_FROM_EMAIL', '').strip()
+    if not (api_key and from_email):
+        return False
 
     to_addresses = _validate_emails(to_addresses)
     if not to_addresses:
-        logger.warning("No valid recipient addresses — skipping email")
-        return
+        return False
 
-    msg = MIMEMultipart("alternative")
-    msg["Subject"] = subject
-    msg["From"] = user
-    msg["To"] = ", ".join(to_addresses)
-    msg.attach(MIMEText(html_body, "html"))
+    try:
+        import resend  # type: ignore  # noqa: PLC0415
+
+        resend.api_key = api_key
+        payload = {
+            'from': from_email,
+            'to': to_addresses,
+            'subject': subject,
+            'html': html_body,
+        }
+        if attachments:
+            payload['attachments'] = attachments
+        resend.Emails.send(payload)
+        logger.info('Email sent via Resend to %s', to_addresses)
+        return True
+    except Exception as exc:  # noqa: BLE001
+        logger.error('Resend send failed: %s', exc)
+        return False
+
+
+def _send_smtp(subject: str, html_body: str, to_addresses: list[str], attachment_bytes: bytes | None = None, attachment_name: str = 'attachment.pdf') -> bool:
+    host = os.getenv('SMTP_HOST', '')
+    port = int(os.getenv('SMTP_PORT', '587'))
+    user = os.getenv('SMTP_USER', '')
+    password = os.getenv('SMTP_PASSWORD', '')
+
+    if not (host and user and password):
+        logger.info('SMTP not configured – skipping email. subject=%s', subject)
+        return False
+
+    to_addresses = _validate_emails(to_addresses)
+    if not to_addresses:
+        logger.warning('No valid recipient addresses — skipping email')
+        return False
+
+    msg = MIMEMultipart('mixed' if attachment_bytes else 'alternative')
+    msg['Subject'] = subject
+    msg['From'] = user
+    msg['To'] = ', '.join(to_addresses)
+    msg.attach(MIMEText(html_body, 'html'))
+
+    if attachment_bytes:
+        pdf_part = MIMEApplication(attachment_bytes, _subtype='pdf')
+        pdf_part.add_header('Content-Disposition', 'attachment', filename=attachment_name)
+        msg.attach(pdf_part)
 
     try:
         with smtplib.SMTP(host, port) as server:
@@ -102,64 +122,76 @@ def _send_smtp(subject: str, html_body: str, to_addresses: list[str]) -> None:
             server.starttls()
             server.login(user, password)
             server.sendmail(user, to_addresses, msg.as_string())
-        logger.info("Lead email sent to %s", to_addresses)
+        logger.info('Email sent via SMTP to %s', to_addresses)
+        return True
     except Exception as exc:  # noqa: BLE001
-        logger.error("Failed to send lead email: %s", exc)
+        logger.error('Failed to send SMTP email: %s', exc)
+        return False
+
+
+def send_transactional_email(
+    *,
+    subject: str,
+    html_body: str,
+    to_addresses: list[str],
+    attachment_bytes: bytes | None = None,
+    attachment_name: str = 'attachment.pdf',
+) -> bool:
+    """Send email via Resend first, then fallback to SMTP."""
+    resend_attachments = None
+    if attachment_bytes:
+        resend_attachments = [
+            {
+                'filename': attachment_name,
+                'content': base64.b64encode(attachment_bytes).decode(),
+            }
+        ]
+
+    if _send_resend(subject, html_body, to_addresses, resend_attachments):
+        return True
+
+    return _send_smtp(subject, html_body, to_addresses, attachment_bytes, attachment_name)
 
 
 def _send_twilio_sms(message: str, to_numbers: list[str]) -> None:
-    sid = os.getenv("TWILIO_ACCOUNT_SID", "")
-    auth = os.getenv("TWILIO_AUTH_TOKEN", "")
-    from_number = os.getenv("TWILIO_FROM_NUMBER", "")
+    sid = os.getenv('TWILIO_ACCOUNT_SID', '')
+    auth = os.getenv('TWILIO_AUTH_TOKEN', '')
+    from_number = os.getenv('TWILIO_FROM_NUMBER', '')
 
     if not (sid and auth and from_number):
-        logger.info("Twilio not configured – skipping SMS. message=%s", message)
+        logger.info('Twilio not configured – skipping SMS. message=%s', message)
         return
 
     try:
-        from twilio.rest import Client  # type: ignore
+        from twilio.rest import Client  # type: ignore  # noqa: PLC0415
 
         client = Client(sid, auth)
         for number in to_numbers:
             client.messages.create(body=message, from_=from_number, to=number)
-        logger.info("Lead SMS sent to %s", to_numbers)
+        logger.info('Lead SMS sent to %s', to_numbers)
     except ImportError:
-        logger.warning("twilio package not installed – SMS skipped")
+        logger.warning('twilio package not installed – SMS skipped')
     except Exception as exc:  # noqa: BLE001
-        logger.error("Failed to send SMS: %s", exc)
+        logger.error('Failed to send SMS: %s', exc)
 
-
-# ── public API ────────────────────────────────────────────────────────────────
 
 def send_lead_notification(data: dict) -> None:
     """Fire-and-forget notification for a new lead or contact form submission."""
 
-    # Always log locally
-    logger.info("NEW LEAD: %s", json.dumps(data, default=str))
+    logger.info('NEW LEAD: %s', json.dumps(data, default=str))
 
-    to_emails = [
-        e.strip()
-        for e in os.getenv("NOTIFY_TO_EMAIL", "").split(",")
-        if e.strip()
-    ]
-    to_phones = [
-        p.strip()
-        for p in os.getenv("NOTIFY_TO_PHONE", "").split(",")
-        if p.strip()
-    ]
+    to_emails = [e.strip() for e in os.getenv('NOTIFY_TO_EMAIL', '').split(',') if e.strip()]
+    to_phones = [p.strip() for p in os.getenv('NOTIFY_TO_PHONE', '').split(',') if p.strip()]
 
     subject, html_body = _build_email_body(data)
 
     if to_emails:
-        _send_smtp(subject, html_body, to_emails)
+        send_transactional_email(subject=subject, html_body=html_body, to_addresses=to_emails)
 
     if to_phones:
-        score = data.get("score", {})
-        label = score.get("label", "") if isinstance(score, dict) else ""
-        name = data.get("name", "Someone")
-        phone = data.get("phone", "N/A")
-        sms_body = (
-            f"[{label}] New lead: {name} | {phone} | "
-            f"{data.get('service_type','contact')} | {data.get('urgency','')}"
-        )
+        score = data.get('score', {})
+        label = score.get('label', '') if isinstance(score, dict) else ''
+        name = data.get('name', 'Someone')
+        phone = data.get('phone', 'N/A')
+        sms_body = f"[{label}] New lead: {name} | {phone} | {data.get('service_type','contact')} | {data.get('urgency','')}"
         _send_twilio_sms(sms_body, to_phones)

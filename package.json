@@ -8,11 +8,18 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint src",
-    "format": "prettier --write src"
+    "format": "prettier --write src",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed"
   },
   "dependencies": {
     "@react-three/drei": "^9.121.5",
     "@react-three/fiber": "^8.17.10",
+    "@stripe/react-stripe-js": "^3.7.0",
+    "@stripe/stripe-js": "^5.4.0",
+    "@tanstack/react-query": "^5.59.16",
     "@vis.gl/react-google-maps": "^1.5.2",
     "framer-motion": "^12.4.10",
     "react": "^18.3.1",
@@ -24,7 +31,11 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
+    "@playwright/test": "^1.55.1",
     "@tailwindcss/forms": "^0.5.10",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.2.0",
+    "@testing-library/user-event": "^14.5.2",
     "@vitejs/plugin-react": "^4.4.1",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.25.0",
@@ -32,10 +43,12 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.0.0",
+    "jsdom": "^25.0.1",
     "postcss": "^8.5.3",
     "prettier": "^3.5.3",
     "tailwindcss": "^3.4.17",
     "vite": "^6.3.3",
-    "vite-plugin-sitemap": "^0.6.1"
+    "vite-plugin-sitemap": "^0.6.1",
+    "vitest": "^3.0.5"
   }
 }

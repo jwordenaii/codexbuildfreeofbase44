@@ -4,6 +4,7 @@ import { api, trackEvent } from '../api/client'
 import { estimatePrice } from '../lib/pricing'
 import { STATE_OPTIONS, getStateSummary } from '../lib/states50'
 import { downloadPdf } from '../lib/pdfUtils'
+import { loadStripe } from '@stripe/stripe-js'
 // ── Step definitions ──────────────────────────────────────────────────────────
 
 const STEPS = [
@@ -111,6 +112,8 @@ export default function Quote() {
   const [proposalError, setProposalError]   = useState('')
   const [sendStatus, setSendStatus]         = useState('idle')
   const [sendMsg, setSendMsg]               = useState('')
+  const [paymentStatus, setPaymentStatus]   = useState('idle')
+  const [paymentMsg, setPaymentMsg]         = useState('')
 
   const set = (key, val) => setForm((f) => ({ ...f, [key]: val }))
   const handleChange = (e) => set(e.target.name, e.target.value)
@@ -163,13 +166,43 @@ export default function Quote() {
     downloadPdf(proposal.pdf_b64, `proposal-lead-${result.lead_id}.pdf`)
   }
 
+
+  const handleStartDepositCheckout = async () => {
+    if (!result?.lead_id) return
+    setPaymentStatus('starting')
+    setPaymentMsg('')
+    try {
+      const successUrl = `${window.location.origin}/quote?payment=success`
+      const cancelUrl = `${window.location.origin}/quote?payment=cancel`
+      const data = await api.createCheckoutSession(result.lead_id, successUrl, cancelUrl)
+      const stripeKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || ''
+      if (stripeKey && data.checkout_session_id?.startsWith('cs_')) {
+        const stripe = await loadStripe(stripeKey)
+        const redirect = await stripe?.redirectToCheckout({ sessionId: data.checkout_session_id })
+        if (redirect?.error) {
+          throw new Error(redirect.error.message || 'Stripe redirect failed')
+        }
+        return
+      }
+      if (data.checkout_url) {
+        window.location.href = data.checkout_url
+        return
+      }
+      setPaymentStatus('error')
+      setPaymentMsg('Payment link unavailable. Please try again.')
+    } catch (e) {
+      setPaymentStatus('error')
+      setPaymentMsg(e.message)
+    }
+  }
+
   const handleSendProposal = async () => {
     if (!proposal?.proposal_id) return
     setSendStatus('sending')
     setSendMsg('')
     try {
       const data = await api.sendProposal(proposal.proposal_id)
-      setSendMsg(data.detail || 'Proposal emailed successfully!')
+      setSendMsg(data.message || data.detail || 'Proposal emailed successfully!')
       setSendStatus('done')
     } catch (e) {
       setSendMsg(`Error: ${e.message}`)
@@ -213,9 +246,22 @@ export default function Quote() {
               <p className="text-sm text-brand-navy/50 mb-6">
                 ⏱ We respond within 2 hours during business hours.
               </p>
-              <a href="/" className="btn-primary">
-                Back to Home
-              </a>
+              <div className="flex flex-wrap items-center justify-center gap-3">
+                <button
+                  type="button"
+                  onClick={handleStartDepositCheckout}
+                  disabled={paymentStatus === 'starting'}
+                  className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {paymentStatus === 'starting' ? 'Starting checkout…' : '💳 Pay Deposit'}
+                </button>
+                <a href="/" className="btn-outline">
+                  Back to Home
+                </a>
+              </div>
+              {paymentMsg && (
+                <p className="text-sm text-red-600 mt-3">{paymentMsg}</p>
+              )}
             </div>
 
             {/* Proposal pipeline card — only shown when a lead_id was returned */}

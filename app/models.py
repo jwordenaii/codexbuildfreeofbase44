@@ -1,7 +1,7 @@
 """
 SQLAlchemy ORM models for J. Worden & Sons lead persistence.
 
-Tables created automatically by create_all_tables() on startup.
+Schema managed by Alembic migrations; optional AUTO_CREATE_TABLES bootstrap for local dev.
 All timestamps are stored in UTC.
 
 New models added for enterprise features:
@@ -703,3 +703,24 @@ class Innovation(Base):
 
     def __repr__(self) -> str:
         return f"<Innovation id={self.id} method={self.method_name!r} result={self.result!r}>"
+
+
+
+class PaymentTransaction(Base):
+    """Stripe checkout/payment tracking linked to leads."""
+
+    __tablename__ = "payment_transactions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    lead_id = Column(Integer, nullable=False, index=True)
+    stripe_checkout_session_id = Column(String(120), nullable=True, index=True)
+    stripe_payment_intent_id = Column(String(120), nullable=True, index=True)
+    amount_usd = Column(Float, nullable=False, default=0.0)
+    currency = Column(String(10), nullable=False, default='usd')
+    status = Column(String(30), nullable=False, default='pending')
+    paid_at = Column(DateTime(timezone=True), nullable=True)
+    tenant_id = Column(String(60), nullable=True, index=True, default='default')
+    created_at = Column(DateTime(timezone=True), default=_utcnow, nullable=False)
+
+    def __repr__(self) -> str:
+        return f"<PaymentTransaction id={self.id} lead_id={self.lead_id} status={self.status!r}>"

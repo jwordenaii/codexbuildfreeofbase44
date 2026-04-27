@@ -59,3 +59,45 @@ jobs:
         env:
           JWORDEN_MASTER_KEY: ci-test-key
           JWT_SECRET_KEY: ci-test-secret
+
+  tests:
+    name: Tests — Frontend Unit, Backend API, E2E Smoke
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Install backend dependencies
+        run: pip install -r requirements.txt
+
+      - name: Frontend unit tests
+        run: npm test
+
+      - name: Backend API tests
+        run: pytest -q
+        env:
+          JWORDEN_MASTER_KEY: test-master-key
+          JWT_SECRET_KEY: test-jwt-secret
+          AUTO_CREATE_TABLES: "true"
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: E2E smoke tests
+        run: npm run test:e2e
+        env:
+          VITE_API_BASE_URL: http://127.0.0.1:9999
+          VITE_CC_PASSWORD: e2e-pin

@@ -9,14 +9,18 @@
 
 const BASE = import.meta.env.VITE_API_BASE_URL || ''
 const DEFAULT_TIMEOUT_MS = 10_000
+const MASTER_KEY = import.meta.env.VITE_MASTER_API_KEY || ''
 
 async function request(method, path, body) {
   const controller = new AbortController()
   const timeoutId = setTimeout(() => controller.abort(), DEFAULT_TIMEOUT_MS)
 
+  const headers = { 'Content-Type': 'application/json' }
+  if (MASTER_KEY) headers.Authorization = `Bearer ${MASTER_KEY}`
+
   const opts = {
     method,
-    headers: { 'Content-Type': 'application/json' },
+    headers,
     signal: controller.signal,
   }
   if (body) opts.body = JSON.stringify(body)
@@ -99,6 +103,10 @@ export const api = {
   generateProposal: (leadId) => request('POST', `/api/v1/proposals/generate`, { lead_id: leadId }),
   sendProposal:     (proposalId) => request('POST', `/api/v1/proposals/${proposalId}/send`),
 
+
+  // ── Payments (Stripe) ───────────────────────────────────────────────
+  createCheckoutSession: (leadId, success_url, cancel_url) => request('POST', '/api/v1/payments/checkout-session', { lead_id: leadId, success_url, cancel_url }),
+  getPaymentStatus:      (leadId) => request('GET', `/api/v1/payments/status/${leadId}`),
   // ── Human Review Queue (Feature 5) ────────────────────────────────
   listReviewQueue:   (params = {}) => request('GET', `/api/v1/review/queue${buildQS(params)}`),
   getReviewStats:    () => request('GET', '/api/v1/review/stats'),

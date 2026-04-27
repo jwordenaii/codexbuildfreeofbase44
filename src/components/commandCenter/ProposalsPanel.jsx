@@ -70,7 +70,7 @@ export default function ProposalsPanel() {
     setSendResult('')
     try {
       const data = await api.sendProposal(proposal.proposal_id)
-      setSendResult(data.detail || 'Proposal sent successfully!')
+      setSendResult(data.message || data.detail || 'Proposal sent successfully!')
     } catch (e) {
       setSendResult(`Error: ${e.message}`)
     } finally {
@@ -116,7 +116,7 @@ export default function ProposalsPanel() {
                 <option value="">— choose a lead —</option>
                 {leads.map((l) => (
                   <option key={l.id} value={l.id}>
-                    #{l.id} · {l.name} · {l.email} ({l.lead_score || '—'})
+                    #{l.id} · {l.name} · {l.email} ({l.score_label || '—'})
                   </option>
                 ))}
               </select>
@@ -126,7 +126,7 @@ export default function ProposalsPanel() {
               <div className="bg-gray-50 rounded-xl p-4 text-sm space-y-1">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="font-bold text-brand-navy">{selectedLead.name}</span>
-                  <Badge color={scoreColor(selectedLead.lead_score)}>{selectedLead.lead_score || 'N/A'}</Badge>
+                  <Badge color={scoreColor(selectedLead.score_label)}>{selectedLead.score_label || 'N/A'}</Badge>
                 </div>
                 {[
                   ['Email',   selectedLead.email],

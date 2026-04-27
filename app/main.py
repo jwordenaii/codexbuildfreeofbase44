@@ -29,7 +29,7 @@ from slowapi.errors import RateLimitExceeded
 
 from .core.security import verify_premium_security
 from .core.limiter import limiter
-from .database import create_all_tables
+from .database import create_all_tables, should_auto_create_tables
 from . import models  # noqa: F401 — registers ORM models with Base.metadata
 from .services.ai_brain import SupremeCourtAI
 from .services.telemetry import FleetOperations
@@ -60,6 +60,7 @@ from .routers import bid_intelligence as bid_intelligence_router
 from .routers import kpi_wall as kpi_wall_router
 from .routers import innovations as innovations_router
 from .routers import visualizer as visualizer_router
+from .routers import payments as payments_router
 
 logger = logging.getLogger(__name__)
 
@@ -68,7 +69,10 @@ logger = logging.getLogger(__name__)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     logger.info("JWordenAI backend starting up (FastAPI %s)", __import__("fastapi").__version__)
-    create_all_tables()
+    if should_auto_create_tables():
+        create_all_tables()
+    else:
+        logger.info("AUTO_CREATE_TABLES disabled; expecting Alembic migrations to manage schema")
     yield
     logger.info("JWordenAI backend shutting down")
 
@@ -143,6 +147,7 @@ app.include_router(bid_intelligence_router.router)
 app.include_router(kpi_wall_router.router)
 app.include_router(innovations_router.router)
 app.include_router(visualizer_router.router)
+app.include_router(payments_router.router)
 
 
 # ── Legacy endpoints (kept for backward compatibility) ────────────────────────

@@ -2,38 +2,28 @@
  * CRMPanel — Lead pipeline stage management panel for the Command Center.
  * Pulls from /api/v1/crm/* (Feature 3).
  */
-import { useState, useEffect, useCallback } from 'react'
+import { useMemo, useState } from 'react'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { api } from '../../api/client'
 
 const STAGES = ['new', 'contacted', 'proposal_sent', 'negotiating', 'won', 'lost']
 
 const STAGE_STYLE = {
-  new:           'bg-gray-100 text-gray-700 border-gray-200',
-  contacted:     'bg-blue-100 text-blue-800 border-blue-200',
+  new: 'bg-gray-100 text-gray-700 border-gray-200',
+  contacted: 'bg-blue-100 text-blue-800 border-blue-200',
   proposal_sent: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-  negotiating:   'bg-orange-100 text-orange-800 border-orange-200',
-  won:           'bg-green-100 text-green-800 border-green-200',
-  lost:          'bg-red-100 text-red-700 border-red-200',
+  negotiating: 'bg-orange-100 text-orange-800 border-orange-200',
+  won: 'bg-green-100 text-green-800 border-green-200',
+  lost: 'bg-red-100 text-red-700 border-red-200',
 }
 
 const SCORE_STYLE = {
-  HOT:  'bg-red-500 text-white',
+  HOT: 'bg-red-500 text-white',
   WARM: 'bg-yellow-400 text-brand-navy',
   COOL: 'bg-blue-400 text-white',
 }
 
-function LeadRow({ lead, onStageChange }) {
-  const [updating, setUpdating] = useState(false)
-
-  const handleStage = async (newStage) => {
-    setUpdating(true)
-    try {
-      await onStageChange(lead.id, newStage)
-    } finally {
-      setUpdating(false)
-    }
-  }
-
+function LeadRow({ lead, onStageChange, updating }) {
   return (
     <tr className="border-b border-brand-navy/5 hover:bg-brand-navy/2 text-sm">
       <td className="py-2.5 pr-3">
@@ -54,7 +44,7 @@ function LeadRow({ lead, onStageChange }) {
       <td className="py-2.5">
         <select
           value={lead.pipeline_stage}
-          onChange={(e) => handleStage(e.target.value)}
+          onChange={(e) => onStageChange({ leadId: lead.id, newStage: e.target.value })}
           disabled={updating}
           className={`text-xs font-semibold border rounded-full px-2 py-1 appearance-none cursor-pointer disabled:opacity-50 ${STAGE_STYLE[lead.pipeline_stage] || 'bg-gray-100'}`}
         >
@@ -68,43 +58,36 @@ function LeadRow({ lead, onStageChange }) {
 }
 
 export default function CRMPanel() {
-  const [leads, setLeads] = useState([])
-  const [funnel, setFunnel] = useState(null)
   const [stageFilter, setStageFilter] = useState('')
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const queryClient = useQueryClient()
 
-  const load = useCallback(async () => {
-    setLoading(true)
-    setError(null)
-    try {
-      const [leadsRes, funnelRes] = await Promise.all([
-        api.getCRMLeads(stageFilter ? { pipeline_stage: stageFilter } : {}),
-        api.getCRMFunnel(),
-      ])
-      setLeads(leadsRes.leads || [])
-      setFunnel(funnelRes)
-    } catch (e) {
-      setError(e.message)
-    } finally {
-      setLoading(false)
-    }
-  }, [stageFilter])
+  const leadsQueryKey = useMemo(() => ['crm-leads', stageFilter], [stageFilter])
 
-  useEffect(() => { load() }, [load])
+  const leadsQuery = useQuery({
+    queryKey: leadsQueryKey,
+    queryFn: () => api.getCRMLeads(stageFilter ? { pipeline_stage: stageFilter } : {}),
+  })
 
-  const handleStageChange = async (leadId, newStage) => {
-    await api.updateLeadStage(leadId, newStage)
-    setLeads((prev) =>
-      prev.map((l) => l.id === leadId ? { ...l, pipeline_stage: newStage } : l)
-    )
-    // Refresh funnel counts silently
-    api.getCRMFunnel().then(setFunnel).catch(() => {})
-  }
+  const funnelQuery = useQuery({
+    queryKey: ['crm-funnel'],
+    queryFn: () => api.getCRMFunnel(),
+  })
+
+  const updateStageMutation = useMutation({
+    mutationFn: ({ leadId, newStage }) => api.updateLeadStage(leadId, newStage),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['crm-leads'] })
+      queryClient.invalidateQueries({ queryKey: ['crm-funnel'] })
+    },
+  })
+
+  const leads = leadsQuery.data?.leads || []
+  const funnel = funnelQuery.data
+  const loading = leadsQuery.isLoading || funnelQuery.isLoading
+  const error = leadsQuery.error?.message || funnelQuery.error?.message
 
   return (
     <div className="space-y-6">
-      {/* Funnel summary pills */}
       {funnel && (
         <div className="flex flex-wrap gap-2">
           <button
@@ -136,7 +119,16 @@ export default function CRMPanel() {
       {error && (
         <div className="card p-4 bg-red-50 border-red-200 text-red-700 text-sm">
           <strong>CRM unavailable:</strong> {error}
-          <button type="button" onClick={load} className="ml-3 underline text-xs">Retry</button>
+          <button
+            type="button"
+            onClick={() => {
+              leadsQuery.refetch()
+              funnelQuery.refetch()
+            }}
+            className="ml-3 underline text-xs"
+          >
+            Retry
+          </button>
         </div>
       )}
 
@@ -163,7 +155,12 @@ export default function CRMPanel() {
               </thead>
               <tbody>
                 {leads.map((lead) => (
-                  <LeadRow key={lead.id} lead={lead} onStageChange={handleStageChange} />
+                  <LeadRow
+                    key={lead.id}
+                    lead={lead}
+                    updating={updateStageMutation.isPending}
+                    onStageChange={updateStageMutation.mutateAsync}
+                  />
                 ))}
               </tbody>
             </table>
@@ -172,7 +169,14 @@ export default function CRMPanel() {
       </div>
 
       <div className="text-right">
-        <button type="button" onClick={load} className="text-xs text-brand-navy/40 hover:text-brand-navy underline">
+        <button
+          type="button"
+          onClick={() => {
+            leadsQuery.refetch()
+            funnelQuery.refetch()
+          }}
+          className="text-xs text-brand-navy/40 hover:text-brand-navy underline"
+        >
           Refresh
         </button>
       </div>
