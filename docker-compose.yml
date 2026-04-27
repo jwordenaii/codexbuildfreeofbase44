@@ -1,0 +1,146 @@
+# ── JWordenAI — Local development stack ──────────────────────────────────────
+#
+# Services:
+#   db       — PostgreSQL 16 + PostGIS 3 (port 5432)
+#   redis    — Redis 7 (port 6379, broker + result backend + vision queue)
+#   api      — FastAPI + Uvicorn (port 8000, hot-reload)
+#   worker   — Celery worker (scraper + vision tasks)
+#   beat     — Celery Beat (periodic task scheduler)
+#   frontend — Vite dev server (port 5173)
+#
+# Usage:
+#   docker compose up --build
+#   docker compose up db redis api worker   # without frontend
+#   docker compose run --rm api alembic upgrade head  # run migrations
+
+version: "3.9"
+
+services:
+
+  # ── PostgreSQL + PostGIS ────────────────────────────────────────────────────
+  db:
+    image: postgis/postgis:16-3.4-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: jworden
+      POSTGRES_PASSWORD: jworden_dev_pass
+      POSTGRES_DB: jworden_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/migrations:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U jworden -d jworden_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Redis ────────────────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  # ── FastAPI backend ──────────────────────────────────────────────────────────
+  api:
+    build:
+      context: .
+      target: builder          # Use builder stage for hot-reload (has all tools)
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    env_file: .env.local
+    environment:
+      DATABASE_URL: postgresql://jworden:jworden_dev_pass@db:5432/jworden_db
+      REDIS_URL: redis://redis:6379/0
+    volumes:
+      - ./app:/app/app        # Hot-reload: mount app source directly
+    command: >
+      uvicorn app.main:app
+      --host 0.0.0.0
+      --port 8000
+      --reload
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=5).read()"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+  # ── Celery worker (scraper + vision tasks) ───────────────────────────────────
+  worker:
+    build:
+      context: .
+      target: builder
+    restart: unless-stopped
+    env_file: .env.local
+    environment:
+      DATABASE_URL: postgresql://jworden:jworden_dev_pass@db:5432/jworden_db
+      REDIS_URL: redis://redis:6379/0
+    volumes:
+      - ./app:/app/app
+    command: >
+      celery -A app.celery_app worker
+      --loglevel=info
+      --concurrency=4
+      --queues=celery
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  # ── Celery Beat (periodic task scheduler) ───────────────────────────────────
+  beat:
+    build:
+      context: .
+      target: builder
+    restart: unless-stopped
+    env_file: .env.local
+    environment:
+      DATABASE_URL: postgresql://jworden:jworden_dev_pass@db:5432/jworden_db
+      REDIS_URL: redis://redis:6379/0
+    volumes:
+      - ./app:/app/app
+    command: >
+      celery -A app.celery_app beat
+      --loglevel=info
+      --schedule=/tmp/celerybeat-schedule
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  # ── Vite frontend dev server ─────────────────────────────────────────────────
+  frontend:
+    image: node:20-alpine
+    working_dir: /app
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_BASE_URL: http://localhost:8000
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+    depends_on:
+      - api
+
+
+volumes:
+  postgres_data:
+  redis_data:

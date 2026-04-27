@@ -20,23 +20,23 @@ def _build_schema() -> dict:
             "parking lots, and driveways."
         ),
         "foundingDate": "1984",
-        "telephone": os.getenv("BUSINESS_PHONE", "+1-555-WORDEN1"),
-        "email": os.getenv("BUSINESS_EMAIL", "contact@jworden.com"),
-        "url": os.getenv("SITE_URL", "https://jworden.netlify.app"),
-        "logo": os.getenv("SITE_URL", "https://jworden.netlify.app") + "/logo.png",
-        "image": os.getenv("SITE_URL", "https://jworden.netlify.app") + "/hero.jpg",
+        "telephone": os.getenv("BUSINESS_PHONE", "+18044461296"),
+        "email": os.getenv("BUSINESS_EMAIL", "contact@jwordenasphaltpaving.com"),
+        "url": os.getenv("SITE_URL", "https://jwordenasphaltpaving.com"),
+        "logo": os.getenv("SITE_URL", "https://jwordenasphaltpaving.com") + "/logo.png",
+        "image": os.getenv("SITE_URL", "https://jwordenasphaltpaving.com") + "/hero.jpg",
         "address": {
             "@type": "PostalAddress",
-            "streetAddress": os.getenv("BUSINESS_STREET", "123 Paving Way"),
-            "addressLocality": os.getenv("BUSINESS_CITY", "Your City"),
-            "addressRegion": os.getenv("BUSINESS_STATE", "ST"),
-            "postalCode": os.getenv("BUSINESS_ZIP", "00000"),
+            "streetAddress": os.getenv("BUSINESS_STREET", "1601 Ware Bottom Springs Rd Suite 214"),
+            "addressLocality": os.getenv("BUSINESS_CITY", "Chester"),
+            "addressRegion": os.getenv("BUSINESS_STATE", "VA"),
+            "postalCode": os.getenv("BUSINESS_ZIP", "23836"),
             "addressCountry": "US",
         },
         "geo": {
             "@type": "GeoCoordinates",
-            "latitude": float(os.getenv("BUSINESS_LAT", "0.0")),
-            "longitude": float(os.getenv("BUSINESS_LNG", "0.0")),
+            "latitude": float(os.getenv("BUSINESS_LAT", "37.3529")),
+            "longitude": float(os.getenv("BUSINESS_LNG", "-77.4326")),
         },
         "openingHoursSpecification": [
             {
@@ -92,7 +92,7 @@ def _build_schema() -> dict:
             ],
         },
         "sameAs": [
-            os.getenv("GOOGLE_MAPS_URL", "https://www.google.com/maps/place/JWordenSons"),
+            os.getenv("GOOGLE_MAPS_URL", "https://www.google.com/maps/place/J.+Worden+%26+Sons+Asphalt+Paving"),
         ],
     }
 

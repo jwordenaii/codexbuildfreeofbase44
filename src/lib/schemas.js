@@ -8,15 +8,33 @@
  * production deployments automatically use the correct canonical domain.
  */
 
+import { SAME_AS_URLS } from './social'
+import STATES, { WORDEN_ACTIVE_STATES } from './states50'
+
 export const SITE_URL =
   import.meta.env.VITE_SITE_URL || 'https://www.jwordenasphaltpaving.com'
+
+// National area served — all 50 states + DC via Schema.org State objects.
+// Google uses this to understand the contractor's service geography.
+// WORDEN_ACTIVE_STATES are listed first (verified completed work).
+const _activeSet = new Set(WORDEN_ACTIVE_STATES)
+const _sortedStates = [
+  ...STATES.filter(s => _activeSet.has(s.abbr)),
+  ...STATES.filter(s => !_activeSet.has(s.abbr)),
+]
+const NATIONAL_AREA_SERVED = _sortedStates.map(s => ({
+  '@type': 'State',
+  name: s.name,
+  containedInPlace: { '@type': 'Country', name: 'United States' },
+}))
 
 export const LOCAL_BUSINESS_SCHEMA = {
   '@context': 'https://schema.org',
   '@type': ['PavingContractor', 'LocalBusiness'],
   name: 'J. Worden & Sons Asphalt Paving',
   description:
-    'Fourth-generation asphalt paving company serving residential and commercial clients since 1984.',
+    'Family-owned asphalt paving contractor est. 1984. KFC national QSR new-build and remodel program across 12+ states. ' +
+    'Pavement Magazine Top 75 (4 categories). Best of Houzz. 2026 Top Contractor Nominee.',
   foundingDate: '1984',
   telephone: '+1-804-446-1296',
   email: 'contact@jworden.com',
@@ -35,6 +53,12 @@ export const LOCAL_BUSINESS_SCHEMA = {
     addressRegion: 'VA',
     addressCountry: 'US',
   },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: 37.3529,
+    longitude: -77.4326,
+  },
+  areaServed: NATIONAL_AREA_SERVED,
   openingHoursSpecification: [
     {
       '@type': 'OpeningHoursSpecification',
@@ -52,7 +76,7 @@ export const LOCAL_BUSINESS_SCHEMA = {
   },
 }
 
-export function serviceSchema(name, description, url) {
+export function serviceSchema(name, description, url, priceRange) {
   return {
     '@context': 'https://schema.org',
     '@type': 'Service',
@@ -61,10 +85,55 @@ export function serviceSchema(name, description, url) {
     provider: {
       '@type': 'LocalBusiness',
       name: 'J. Worden & Sons Asphalt Paving',
+      telephone: '+18044461296',
       url: SITE_URL,
     },
-    areaServed: { '@type': 'State', name: 'Your State' },
+    areaServed: NATIONAL_AREA_SERVED,
+    ...(priceRange
+      ? {
+          offers: {
+            '@type': 'Offer',
+            priceSpecification: {
+              '@type': 'PriceSpecification',
+              priceCurrency: 'USD',
+              description: priceRange,
+            },
+          },
+        }
+      : {}),
     url: `${SITE_URL}${url}`,
+  }
+}
+
+export function howToSchema(name, description, steps) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name,
+    description,
+    step: steps.map((s, i) => ({
+      '@type': 'HowToStep',
+      position: i + 1,
+      name: s.name,
+      text: s.text,
+    })),
+  }
+}
+
+export function videoObjectSchema({ name, description, thumbnailUrl, uploadDate, contentUrl }) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'VideoObject',
+    name,
+    description,
+    thumbnailUrl,
+    uploadDate,
+    ...(contentUrl ? { contentUrl } : {}),
+    publisher: {
+      '@type': 'Organization',
+      name: 'J. Worden & Sons Asphalt Paving',
+      url: SITE_URL,
+    },
   }
 }
 

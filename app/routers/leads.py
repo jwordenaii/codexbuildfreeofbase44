@@ -1,3 +1,4 @@
+import logging
 from fastapi import APIRouter, BackgroundTasks, Depends, Request
 from pydantic import BaseModel, EmailStr, Field
 from sqlalchemy.orm import Session
@@ -11,6 +12,8 @@ from ..services.notifications import send_lead_notification
 from ..services.pricing import estimate_price
 
 router = APIRouter(prefix="/api/v1/leads", tags=["leads"])
+
+logger = logging.getLogger(__name__)
 
 
 class QuoteRequest(BaseModel):
@@ -71,6 +74,19 @@ async def submit_quote(
     lead_data["db_id"] = db_lead.id
 
     background_tasks.add_task(send_lead_notification, lead_data)
+
+    # Feature 4: Schedule follow-up based on lead score
+    try:
+        from ..services.follow_up_tasks import schedule_follow_up  # noqa: PLC0415
+        label = scoring.get("label", "COOL")
+        if label == "HOT":
+            schedule_follow_up(db_lead.id, "hot_1h", delay_seconds=3600, db=db)
+        elif label == "WARM":
+            schedule_follow_up(db_lead.id, "warm_3d", delay_seconds=3 * 86400, db=db)
+        else:
+            schedule_follow_up(db_lead.id, "cool_7d", delay_seconds=7 * 86400, db=db)
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("Could not schedule follow-up: %s", exc)
 
     return {
         "status": "received",

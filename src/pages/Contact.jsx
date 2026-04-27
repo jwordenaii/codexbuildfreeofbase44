@@ -6,7 +6,7 @@ const CONTACT_SCHEMA = {
   '@context': 'https://schema.org',
   '@type': 'ContactPage',
   name: 'Contact J. Worden & Sons',
-  url: 'https://jworden.netlify.app/contact',
+  url: 'https://jwordenasphaltpaving.com/contact',
 }
 
 const INITIAL = { name: '', email: '', phone: '', message: '' }
@@ -73,14 +73,14 @@ export default function Contact() {
                 {
                   icon: '📧',
                   label: 'Email',
-                  value: 'contact@jworden.com',
-                  href: 'mailto:contact@jworden.com',
+                  value: 'contact@jwordenasphaltpaving.com',
+                  href: 'mailto:contact@jwordenasphaltpaving.com',
                 },
                 {
                   icon: '📍',
                   label: 'Address',
-                  value: '123 Paving Way, Your City, ST 00000',
-                  href: 'https://maps.google.com',
+                  value: '1601 Ware Bottom Springs Rd Suite 214, Chester VA 23836',
+                  href: 'https://www.google.com/maps/search/1601+Ware+Bottom+Springs+Rd+Chester+VA+23836',
                 },
                 {
                   icon: '🕐',

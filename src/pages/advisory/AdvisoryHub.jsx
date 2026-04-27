@@ -1,6 +1,5 @@
-import { Link } from 'react-router-dom'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import SchemaMarkup from '../../components/SchemaMarkup'
 import DisclaimerBanner from '../../components/advisory/DisclaimerBanner'
 import StateSelector from '../../components/advisory/StateSelector'
