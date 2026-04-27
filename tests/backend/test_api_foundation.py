@@ -1,6 +1,3 @@
-from app.models import Lead
-
-
 def _quote_payload(**overrides):
     payload = {
         'name': 'Test User',
@@ -45,6 +42,8 @@ async def test_proposal_generation_flow(client, auth_headers, monkeypatch, app_m
 
     quote = await client.post('/api/v1/leads/quote', json=_quote_payload(email='proposal@example.com'))
     assert quote.status_code == 200
+
+    from app.models import Lead
 
     with dbmod.SessionLocal() as db:
         lead = db.query(Lead).filter(Lead.email == 'proposal@example.com').first()

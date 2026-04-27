@@ -37,6 +37,17 @@ export default [
       'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     },
   },
+
+  {
+    files: ['src/**/*.test.{js,jsx}', 'src/**/__tests__/**/*.{js,jsx}'],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.es2024,
+        ...globals.vitest,
+      },
+    },
+  },
   {
     ignores: ['dist/**', 'node_modules/**'],
   },
