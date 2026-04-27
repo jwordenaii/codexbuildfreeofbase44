@@ -80,7 +80,7 @@ export default defineConfig(({ mode }) => {
             if (id.includes('react-router')) return 'router'
             if (id.includes('@tanstack')) return 'query'
             if (id.includes('@vis.gl') || id.includes('google-maps')) return 'maps'
-            if (id.includes('react-pdf') || id.includes('pdfmake') || id.includes('reportlab')) return 'pdf'
+            if (id.includes('react-pdf') || id.includes('pdfmake')) return 'pdf'
             if (id.includes('recharts') || id.includes('d3-') || id.includes('victory')) return 'charts'
             return 'vendor'
           }

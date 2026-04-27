@@ -257,7 +257,7 @@ def get_monthly_lead_volume(db) -> list:
                 Lead.created_at,
                 Lead.score_label,
             )
-            .filter(Lead.created_at >= window_start, Lead.created_at <= now)
+            .filter(Lead.created_at >= window_start, Lead.created_at < now)
             .all()
         )
 
