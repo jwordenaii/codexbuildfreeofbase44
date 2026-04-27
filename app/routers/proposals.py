@@ -6,13 +6,11 @@ Routes:
   POST /api/v1/proposals/{lead_id}/send — generate and email proposal to lead
 """
 
-from __future__ import annotations
-
 import base64
 import logging
 from datetime import datetime, timezone
 
-from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Request
+from fastapi import APIRouter, BackgroundTasks, Body, Depends, HTTPException, Request
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
@@ -55,7 +53,7 @@ def _build_lead_dict(lead: Lead) -> dict:
 @limiter.limit('10/minute')
 async def generate_proposal(
     request: Request,
-    req: ProposalRequest,
+    req: ProposalRequest = Body(...),
     db: Session = Depends(get_db),
     _: dict = Depends(verify_premium_security),
 ):

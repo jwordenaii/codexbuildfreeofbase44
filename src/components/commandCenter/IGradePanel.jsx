@@ -335,7 +335,7 @@ export default function IGradePanel() {
                         <div className="flex items-center gap-2 mb-1">
                           <span className="text-xs font-bold text-amber-700 uppercase">{s.decision_type}</span>
                           <span className="text-xs bg-amber-200 text-amber-800 px-2 py-0.5 rounded-full font-semibold">
-                            "{s.pattern}" ×{s.frequency}
+                            &quot;{s.pattern}&quot; ×{s.frequency}
                           </span>
                         </div>
                         <p className="text-sm text-brand-navy/70">{s.recommendation}</p>
