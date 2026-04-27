@@ -9,6 +9,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getVptPermits, getDeqPermits } from '../api/permits'
+import { api } from '../api/client'
 
 const SCORE_COLORS = {
   HOT:  'bg-red-100 text-red-700 border-red-200',
@@ -67,14 +68,16 @@ function PermitRow({ permit, onCreateQuote }) {
  * PermitFeed component.
  *
  * Props:
- *   source          'vpt' | 'deq' (default: 'vpt')
- *   keyword         Search keyword for VPT (default: 'paving')
+ *   source          'vpt' | 'deq' | 'national' (default: 'vpt')
+ *   keyword         Search keyword for VPT/national (default: 'paving')
+ *   states          Comma-separated state codes for national feed (default: 'VA,TX,FL,NC,GA,NY,NJ,MI')
  *   limit           Max permits (default: 50)
  *   pollIntervalMs  Auto-refresh interval in ms, 0 to disable (default: 300_000 = 5 min)
  */
 export default function PermitFeed({
   source = 'vpt',
   keyword = 'paving',
+  states = 'VA,TX,FL,NC,GA,NY,NJ,MI',
   limit = 50,
   pollIntervalMs = 300_000,
 }) {
@@ -89,17 +92,24 @@ export default function PermitFeed({
     setLoading(true)
     setError(null)
     try {
-      const data = source === 'deq'
-        ? await getDeqPermits(limit)
-        : await getVptPermits(keyword, limit)
-      setPermits(data.permits || [])
+      let data
+      if (source === 'deq') {
+        data = await getDeqPermits(limit)
+        setPermits(data.permits || [])
+      } else if (source === 'national') {
+        data = await api.getNationalPermits(states, keyword, limit)
+        setPermits(data.results || [])
+      } else {
+        data = await getVptPermits(keyword, limit)
+        setPermits(data.permits || [])
+      }
       setLastFetched(new Date())
     } catch (err) {
       setError(err.message)
     } finally {
       setLoading(false)
     }
-  }, [source, keyword, limit])
+  }, [source, keyword, states, limit])
 
   useEffect(() => {
     fetchPermits()
@@ -124,7 +134,7 @@ export default function PermitFeed({
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div className="flex items-center gap-3">
           <h3 className="font-display font-bold text-brand-navy text-lg">
-            {source === 'deq' ? 'DEQ PEEP Permits' : 'VPT Permit Feed'}
+            {source === 'deq' ? 'DEQ PEEP Permits' : source === 'national' ? 'National Permit Feed' : 'VPT Permit Feed'}
           </h3>
           {loading && (
             <span className="w-4 h-4 border-2 border-brand-amber border-t-transparent rounded-full animate-spin inline-block" />

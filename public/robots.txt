@@ -1,4 +1,14 @@
 User-agent: *
 Allow: /
 
+# Keep admin and API endpoints out of crawl index
+Disallow: /admin
+Disallow: /admin/
+Disallow: /api/
+Disallow: /command-center
+
+# Allow Googlebot full access to pages
+User-agent: Googlebot
+Allow: /
+
 Sitemap: https://jworden.netlify.app/sitemap.xml

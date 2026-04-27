@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import SchemaMarkup, { reviewsSchema } from '../components/SchemaMarkup'
 import { api, trackEvent } from '../api/client'
+import SocialShare from '../components/SocialShare'
 
 // Fallback in case API is unavailable
 const FALLBACK = {
@@ -112,7 +113,14 @@ export default function Reviews() {
           <h1 className="font-display font-black text-5xl md:text-6xl mb-4">
             Customer <span className="text-brand-amber">Reviews</span>
           </h1>
-          <p className="text-white/70 text-xl">What our clients say after the job is done.</p>
+          <p className="text-white/70 text-xl mb-6">What our clients say after the job is done.</p>
+          <div className="flex justify-center">
+            <SocialShare
+              path="/reviews"
+              text="J. Worden & Sons — 4.9★ across 87 Google reviews. See what customers say."
+              compact
+            />
+          </div>
         </div>
       </div>
 

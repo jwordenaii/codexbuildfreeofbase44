@@ -4,6 +4,9 @@ import SchemaMarkup, { LOCAL_BUSINESS_SCHEMA, faqSchema } from '../components/Sc
 import { trackEvent } from '../api/client'
 import CountUp from '../components/CountUp'
 import FAQAccordion from '../components/FAQAccordion'
+import SocialLinks from '../components/SocialLinks'
+import EstimateWidget from '../components/EstimateWidget'
+import InspirationGallery from '../components/InspirationGallery'
 
 const SERVICES = [
   {
@@ -42,15 +45,41 @@ const SERVICES = [
     desc: 'Annual maintenance programs for commercial properties — sealcoat, crack fill, and touch-up on a schedule.',
     href: '/services#maintenance',
   },
+  {
+    icon: '🏗',
+    title: 'General Contracting',
+    desc: 'Full GC services — permits, subcontractor management, budget control, and turnkey delivery for commercial and residential builds.',
+    href: '/services#general-contracting',
+  },
+  {
+    icon: '🎨',
+    title: 'Interior Design',
+    desc: 'Best of Houzz–recognized design team. Mood boards, 3D renders, FF&E procurement, and full project management.',
+    href: '/services#interior-design',
+  },
+  {
+    icon: '🪨',
+    title: 'Cobblestone & Brick Paver Patios',
+    desc: 'Timeless hardscapes — herringbone, fan pattern, and custom cobblestone or brick installations with engineered bases.',
+    href: '/services#cobblestone-pavers',
+  },
+  {
+    icon: '🧱',
+    title: 'Stone Masonry',
+    desc: 'Natural fieldstone walls, flagstone patios, stone steps, retaining walls, and outdoor fireplace surrounds.',
+    href: '/services#stone-masonry',
+  },
 ]
 
 const TRUST_BADGES = [
-  { label: 'KFC',      desc: 'Trusted vendor' },
-  { label: "Arby's",   desc: 'Franchise partner' },
-  { label: 'Taco Bell',desc: 'Commercial client' },
-  { label: '40 Years', desc: 'Est. 1984' },
-  { label: '4th Gen',  desc: 'Family owned' },
-  { label: '⭐ 4.9',   desc: '87 Google Reviews' },
+  { label: 'KFC',              desc: 'National QSR vendor'       },
+  { label: 'Pavement Mag',     desc: 'Top 75 · 4 categories'     },
+  { label: 'Best of Houzz',    desc: 'Interior design award'     },
+  { label: '2026 Nominee',     desc: 'Top Contractor Award'      },
+  { label: '12+ States',       desc: 'Verified QSR work'         },
+  { label: 'Est. 1984',        desc: 'Family owned'              },
+  { label: 'VA Class A GC',    desc: 'Licensed & Insured'        },
+  { label: 'Stone Masonry',    desc: 'Patio · Wall · Fireplace'  },
 ]
 
 const HOME_FAQS = [
@@ -72,7 +101,17 @@ const HOME_FAQS = [
   {
     question: 'Are you licensed and insured?',
     answer:
-      "Yes. J. Worden & Sons is fully licensed and carries general liability and workers' compensation insurance.",
+      "Yes. J. Worden & Sons is fully licensed as a VA Class A General Contractor and carries general liability and workers' compensation insurance.",
+  },
+  {
+    question: 'Do you do interior design as well as construction?',
+    answer:
+      'Yes — our Best of Houzz–recognized interior design team handles everything from mood boards and material selection to full FF&E procurement and install coordination. We are a true one-stop shop from the foundation up to the finishing touches.',
+  },
+  {
+    question: 'What outdoor hardscape options do you offer?',
+    answer:
+      'We install cobblestone and brick paver patios, natural stone masonry walls, flagstone paths, stone steps, retaining walls, and outdoor fireplace surrounds. Every hardscape project starts with a properly engineered base for lasting stability.',
   },
 ]
 
@@ -136,9 +175,11 @@ export default function Home() {
             custom={2}
             variants={fadeUp}
           >
-            J. Worden &amp; Sons has been laying down quality asphalt for four
+            J. Worden &amp; Sons has been building and beautifying properties for four
             generations. Trusted by KFC, Arby&apos;s, Taco Bell, and hundreds of
-            homeowners — we show up, we do it right, and we stand behind every job.
+            homeowners — asphalt paving, stone masonry, cobblestone patios, interior
+            design, and full GC services. We show up, we do it right, and we stand
+            behind every job.
           </motion.p>
 
           <motion.div
@@ -194,8 +235,8 @@ export default function Home() {
           <div className="text-center mb-14">
             <h2 className="section-heading mb-4">Our Services</h2>
             <p className="text-brand-navy/60 max-w-xl mx-auto">
-              From new construction to annual maintenance — we handle every phase of
-              commercial and residential asphalt work.
+              Full-service General Contractor — from asphalt paving and stone masonry to interior
+              design and ground-up commercial builds. One call handles it all.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -222,6 +263,23 @@ export default function Home() {
               View All Services
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* ── Project Inspiration Gallery (Houzz-style) ─────────────────── */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <span className="text-brand-amber text-xs font-bold uppercase tracking-widest">
+              Project Inspiration
+            </span>
+            <h2 className="section-heading mt-2 mb-4">Browse by Style &amp; Service</h2>
+            <p className="text-brand-navy/60 max-w-xl mx-auto">
+              From Houzz-award–winning interior spaces to hand-laid cobblestone courtyards
+              and natural stone masonry — explore the range of work we deliver.
+            </p>
+          </div>
+          <InspirationGallery maxItems={8} />
         </div>
       </section>
 
@@ -278,11 +336,143 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── Estimate Calculator ──────────────────────────────────────── */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <span className="text-brand-amber text-xs font-bold uppercase tracking-widest">
+                Instant Ballpark
+              </span>
+              <h2 className="section-heading mt-2 mb-4">
+                How Much Will My
+                <span className="text-brand-amber block">Project Cost?</span>
+              </h2>
+              <p className="text-brand-navy/60 leading-relaxed mb-6">
+                Use our quick calculator to get a ballpark estimate in seconds — 50-state
+                pricing data, adjusted for your region. Then submit the quote form for a
+                precise, no-obligation number from our team.
+              </p>
+              <ul className="space-y-3 text-sm text-brand-navy/70">
+                {[
+                  'Residential &amp; commercial pricing',
+                  'Adjusted for your state\'s labor &amp; material costs',
+                  'All major services covered',
+                  'Free on-site estimate always included',
+                ].map((item) => (
+                  <li key={item} className="flex items-center gap-3">
+                    <span className="w-5 h-5 rounded-full bg-brand-amber/20 flex items-center justify-center text-brand-amber font-bold text-xs">✓</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <EstimateWidget />
+          </div>
+        </div>
+      </section>
+
+      {/* ── Service Areas strip ──────────────────────────────────────── */}
+      <section className="py-16 bg-brand-charcoal text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-10">
+            <div>
+              <span className="text-brand-amber text-xs font-bold uppercase tracking-widest">Where We Work</span>
+              <h2 className="font-display font-black text-2xl mt-1">Serving 20+ Virginia Cities</h2>
+            </div>
+            <Link to="/service-areas" className="btn-outline text-sm flex-shrink-0">
+              View All Service Areas →
+            </Link>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            {['Chester', 'Richmond', 'Chesterfield', 'Henrico', 'Colonial Heights',
+              'Petersburg', 'Hopewell', 'Midlothian', 'Mechanicsville', 'Glen Allen',
+              'Ashland', 'Powhatan', 'Virginia Beach', 'Norfolk', 'Fredericksburg'].map((city) => (
+              <Link
+                key={city}
+                to={`/service-areas/${city.toLowerCase().replace(/\s+/g, '-')}-va`}
+                className="bg-white/10 hover:bg-brand-amber hover:text-brand-navy text-white/80 text-sm px-4 py-2 rounded-full transition-all"
+                onClick={() => trackEvent('city_pill_click', { city })}
+              >
+                📍 {city}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Award badges / trust strip ───────────────────────────────── */}
+      <section className="py-16 bg-white border-y border-gray-100">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <p className="text-center text-brand-navy/40 text-xs font-bold uppercase tracking-widest mb-8">
+            Trusted By Industry Leaders &amp; National Franchise Programs
+          </p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 text-center">
+            {[
+              { emoji: '🍗', name: 'KFC',             sub: '12+ states' },
+              { emoji: '🥩', name: "Arby's",           sub: 'Regional ops' },
+              { emoji: '🌮', name: 'Taco Bell',        sub: 'QSR program' },
+              { emoji: '🏆', name: 'Pavement Mag',     sub: 'Top 75 · 4 cats' },
+              { emoji: '🏠', name: 'Best of Houzz',    sub: 'Multi-year' },
+              { emoji: '⭐', name: '2026 Nominee',      sub: 'Top Contractor' },
+            ].map(({ emoji, name, sub }) => (
+              <div key={name} className="flex flex-col items-center gap-1">
+                <span className="text-3xl">{emoji}</span>
+                <div className="font-display font-black text-brand-navy text-sm">{name}</div>
+                <div className="text-brand-navy/40 text-xs">{sub}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── FAQ ──────────────────────────────────────────────────────── */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="section-heading text-center mb-12">Common Questions</h2>
+          <div className="text-center mb-12">
+            <span className="text-brand-amber text-xs font-bold uppercase tracking-widest">Got Questions?</span>
+            <h2 className="section-heading mt-2">Common Questions</h2>
+          </div>
           <FAQAccordion items={HOME_FAQS} />
+          <div className="text-center mt-10">
+            <Link to="/contact" className="text-brand-amber font-semibold hover:underline text-sm">
+              Have a different question? Contact us →
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Social Follow ─────────────────────────────────────────────── */}
+      <section className="py-16 bg-brand-navy text-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <span className="text-brand-amber text-xs font-bold uppercase tracking-widest">
+            Follow Along
+          </span>
+          <h2 className="font-display font-black text-3xl mt-2 mb-3">
+            See the Work Before You Call
+          </h2>
+          <p className="text-white/60 mb-8 max-w-xl mx-auto">
+            Before &amp; afters, crew in the field, and paving tips for homeowners and
+            property managers — across every platform.
+          </p>
+          <SocialLinks
+            size="lg"
+            variant="badge"
+            className="justify-center flex-wrap"
+          />
+          <div className="mt-10 pt-8 border-t border-white/10 grid grid-cols-3 gap-6 max-w-sm mx-auto">
+            {[
+              { icon: '⭐', stat: '4.9', label: 'Google Rating' },
+              { icon: '💬', stat: '87',  label: 'Reviews' },
+              { icon: '📍', stat: '40+', label: 'Years Local' },
+            ].map(({ icon, stat, label }) => (
+              <div key={label} className="text-center">
+                <div className="text-2xl mb-1">{icon}</div>
+                <div className="font-display font-black text-brand-amber text-xl">{stat}</div>
+                <div className="text-white/40 text-xs">{label}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 

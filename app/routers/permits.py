@@ -5,14 +5,16 @@ Routes:
   GET  /api/v1/permits/virginia/vpt   — Virginia Permit Transparency permit feed
   GET  /api/v1/permits/virginia/deq   — DEQ PEEP stormwater permit feed
   POST /api/v1/permits/virginia/dpor  — DPOR license lookup via Apify
+  GET  /api/v1/permits/national       — Multi-state national permit feed
 """
 
 from __future__ import annotations
 
-from fastapi import APIRouter, HTTPException, Query, Request
+from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from pydantic import BaseModel, Field
 
 from ..core.limiter import limiter
+from ..core.security import verify_premium_security
 from ..services.permit_scraper import fetch_vpt_permits, fetch_deq_permits, lookup_dpor_license
 from ..services.lead_scorer import score_lead
 
@@ -115,3 +117,29 @@ async def dpor_lookup(request: Request, req: DporRequest):
         "source": "Virginia DPOR (via Apify)",
         **result,
     }
+
+
+@router.get("/national", summary="Multi-state national permit feed (Feature 6)")
+@limiter.limit("10/minute")
+async def national_permits(
+    request: Request,
+    states: str = "VA,TX,FL,NC,GA,NY,NJ,MI",
+    keyword: str = "asphalt",
+    limit: int = 25,
+    _: dict = Depends(verify_premium_security),
+):
+    """
+    Aggregate permit leads across multiple states using the national permit scrapers.
+    Pass `states` as a comma-separated list of 2-letter codes.
+    """
+    from ..services.national_permits import fetch_all_permits  # noqa: PLC0415
+
+    state_list = [s.strip().upper() for s in states.split(",") if s.strip()]
+    if not state_list:
+        raise HTTPException(status_code=422, detail="No valid states provided.")
+
+    import asyncio  # noqa: PLC0415
+    results = await asyncio.get_event_loop().run_in_executor(
+        None, lambda: fetch_all_permits(state_list, keyword=keyword, max_results=limit)
+    )
+    return {"status": "ok", "count": len(results), "results": results}

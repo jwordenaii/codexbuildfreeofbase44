@@ -1,9 +1,11 @@
-import { Helmet } from 'react-helmet-async'
+import { Helmet, HelmetData } from 'react-helmet-async'
 import { SITE_URL } from '../lib/schemas'
 
 // Re-export schema helpers so existing page imports still work via this path.
 // eslint-disable-next-line react-refresh/only-export-components
 export { LOCAL_BUSINESS_SCHEMA, serviceSchema, faqSchema, reviewsSchema, howToSchema, videoObjectSchema } from '../lib/schemas'
+
+const standaloneHelmetData = new HelmetData({})
 
 /**
  * Injects SEO meta tags, Open Graph, Twitter Card, and JSON-LD
@@ -51,7 +53,7 @@ export default function SchemaMarkup({
   }
 
   return (
-    <Helmet>
+    <Helmet helmetData={standaloneHelmetData}>
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
       <link rel="canonical" href={canonicalUrl} />

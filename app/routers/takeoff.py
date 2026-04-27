@@ -7,8 +7,6 @@ Routes:
   GET  /api/v1/takeoff/aerial   — Google Aerial View API (3D video URL)
 """
 
-from __future__ import annotations
-
 import logging
 
 from fastapi import APIRouter, File, HTTPException, Query, Request, UploadFile
