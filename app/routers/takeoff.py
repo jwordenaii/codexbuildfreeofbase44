@@ -30,6 +30,21 @@ _MIN_SCAN_CONFIDENCE = 0.35
 _MAX_SCAN_CONFIDENCE = 0.98
 _BASE_SCAN_CONFIDENCE = 0.95
 _SCAN_RISK_NORMALIZER = 180
+_GROUND_RISK_SCORE = {"LOW": 92, "MEDIUM": 68, "HIGH": 38}
+_TRAFFIC_LOAD_SCORE = {"low": 94, "medium": 84, "high": 70, "heavy_truck": 56}
+_DRAINAGE_SCORE_PENALTY = {"good": 0, "fair": 18, "poor": 38}
+_PAVEMENT_TRAFFIC_DECAY = {"low": 0.0, "medium": 1.0, "high": 2.2, "heavy_truck": 4.0}
+_PAVEMENT_DRAINAGE_DECAY = {"good": 0.0, "fair": 1.0, "poor": 3.0}
+_PAVEMENT_CRACK_DECAY = {"none": 0.0, "low": 0.8, "medium": 2.0, "high": 4.0}
+_PREMIUM_MODULE_WEIGHTS = {
+    "utility": 0.24,
+    "gpr": 0.16,
+    "pavement": 0.18,
+    "thermal": 0.12,
+    "drainage": 0.14,
+    "traffic": 0.10,
+    "potholing": 0.06,
+}
 
 
 class UtilityFinding(BaseModel):
@@ -313,9 +328,9 @@ def _base_condition(req: PavementDecayRequest) -> float:
 
 def _annual_decay(req: PavementDecayRequest) -> float:
     decay = 3.0
-    decay += {"low": 0.0, "medium": 1.0, "high": 2.2, "heavy_truck": 4.0}.get(req.traffic_level, 1.0)
-    decay += {"good": 0.0, "fair": 1.0, "poor": 3.0}.get(req.drainage_quality, 1.0)
-    decay += {"none": 0.0, "low": 0.8, "medium": 2.0, "high": 4.0}.get(req.crack_severity, 0.0)
+    decay += _PAVEMENT_TRAFFIC_DECAY.get(req.traffic_level, 1.0)
+    decay += _PAVEMENT_DRAINAGE_DECAY.get(req.drainage_quality, 1.0)
+    decay += _PAVEMENT_CRACK_DECAY.get(req.crack_severity, 0.0)
     decay += min(5.0, req.potholes * 0.25)
     decay += min(4.0, (req.rutting_inches or 0) * 1.5)
     if req.freeze_thaw:
@@ -438,20 +453,20 @@ async def premium_civil_stack(request: Request, req: PremiumCivilStackRequest):
         projected_drop = min(35, (req.estimated_arrival_minutes or 0) * 0.18)
         projected_temp = req.asphalt_temp_f - projected_drop
 
-    utility_score = {"LOW": 92, "MEDIUM": 68, "HIGH": 38}[ground["risk_level"]]
+    utility_score = _GROUND_RISK_SCORE[ground["risk_level"]]
     gpr_score = 50 + (22 if gpr_ready else 0) + (6 if em_ready else 0) + (12 if gis_ready else 0) + (10 if lidar_ready else 0) - (18 if req.anomalies_detected else 0)
     pavement_score = max(0, 100 - ((100 - pci_now) * 0.7) - (annual_decay * 2.2))
     thermal_score = (92 if thermal_ready else 84) if projected_temp is None else 100 - max(0, req.target_delivery_temp_f - projected_temp) * 1.8
-    drainage_score = 92 - {"good": 0, "fair": 18, "poor": 38}.get(req.drainage_quality, 18) - (18 if req.soil_moisture == "saturated" else 0)
-    traffic_score = 94 - {"low": 0, "medium": 10, "high": 24, "heavy_truck": 38}.get(req.traffic_level, 10)
+    drainage_score = 92 - _DRAINAGE_SCORE_PENALTY.get(req.drainage_quality, 18) - (18 if req.soil_moisture == "saturated" else 0)
+    traffic_score = _TRAFFIC_LOAD_SCORE.get(req.traffic_level, 84)
     autonomous_score = (
-        utility_score * 0.24
-        + gpr_score * 0.16
-        + pavement_score * 0.18
-        + thermal_score * 0.12
-        + drainage_score * 0.14
-        + traffic_score * 0.10
-        + (95 if pothole_ready else 60) * 0.06
+        utility_score * _PREMIUM_MODULE_WEIGHTS["utility"]
+        + gpr_score * _PREMIUM_MODULE_WEIGHTS["gpr"]
+        + pavement_score * _PREMIUM_MODULE_WEIGHTS["pavement"]
+        + thermal_score * _PREMIUM_MODULE_WEIGHTS["thermal"]
+        + drainage_score * _PREMIUM_MODULE_WEIGHTS["drainage"]
+        + traffic_score * _PREMIUM_MODULE_WEIGHTS["traffic"]
+        + (95 if pothole_ready else 60) * _PREMIUM_MODULE_WEIGHTS["potholing"]
     )
 
     modules = [
