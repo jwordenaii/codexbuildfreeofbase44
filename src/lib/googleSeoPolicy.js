@@ -26,6 +26,20 @@ export const GOOGLE_SEO_POLICY_TRACKER = {
         'State pages include trust requirements and service proof placeholders until real content is added.',
     },
     {
+      area: 'Competitor reference adaptation',
+      currentRule:
+        'Use competitor research only for strategy patterns; never copy competitor wording, page structure verbatim, photos, claims, testimonials, or proprietary brand language.',
+      implementation:
+        'Adapt patterns from Rose Paving, Sunland Asphalt, Asphalt Paving Systems, and future references into original service depth, sector pages, preservation guidance, project proof, and localized CTAs.',
+    },
+    {
+      area: 'Pavement preservation usefulness',
+      currentRule:
+        'Preservation content must help owners decide between maintenance, overlay, recycling, reconstruction, and replacement instead of using vague ranking copy.',
+      implementation:
+        'State and service pages require pavement condition, lifecycle, drainage, traffic, materials, and budget-timing guidance before broad indexing.',
+    },
+    {
       area: 'Structured data',
       currentRule:
         'Use accurate LocalBusiness, Service, FAQ, Breadcrumb, and areaServed schema without fake ratings, fake offices, or unsupported claims.',

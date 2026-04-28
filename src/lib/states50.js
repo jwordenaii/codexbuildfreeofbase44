@@ -160,8 +160,8 @@ export function getStatePavingPageModel(slugOrAbbr) {
     slug: stateSlug(state),
     path: `/states/${stateSlug(state)}`,
     title: `Asphalt Paving Contractor in ${state.name}`,
-    metaDescription: `Future-ready ${state.name} asphalt paving page model for parking lots, driveways, sealcoating, crack filling, repair, 811 planning, pricing, climate, and compliance guidance.`,
-    h1: `${state.name} Asphalt Paving, Parking Lots, Driveways & Sealcoating`,
+    metaDescription: `Future-ready ${state.name} asphalt paving page model for parking lots, driveways, sealcoating, crack filling, pavement preservation, 811 planning, pricing, climate, and compliance guidance.`,
+    h1: `${state.name} Asphalt Paving, Preservation, Parking Lots & Driveways`,
     pricingSignal: multiplier > 1.05
       ? `${state.name} tends to run above national average paving costs because labor or material indexes are higher.`
       : multiplier < 0.9
@@ -174,6 +174,8 @@ export function getStatePavingPageModel(slugOrAbbr) {
       'Residential driveway paving',
       'Sealcoating and crack filling',
       'Asphalt repair and pothole patching',
+      'Pavement preservation and lifecycle planning',
+      'Resurfacing, recycling, and reconstruction decision support',
       'Mill-and-overlay planning',
       'ADA parking layout and line striping',
       '811 utility-safe planning before excavation',
@@ -183,6 +185,7 @@ export function getStatePavingPageModel(slugOrAbbr) {
       'Use original local content; do not mass-publish thin doorway pages.',
       'Add real service proof, photos, reviews, project examples, or market-specific details before indexing.',
       'Explain climate, drainage, traffic load, pricing, and compliance differences for the state.',
+      'Include preservation-specific guidance so buyers understand when to seal, repair, overlay, recycle, or rebuild.',
       'Keep calls to action honest about current service capacity and travel limits.',
     ],
   }

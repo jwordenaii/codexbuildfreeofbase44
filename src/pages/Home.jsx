@@ -88,9 +88,16 @@ const ASPHALT_RANKING_CLUSTERS = [
   },
   {
     title: 'Asphalt Repair & Preventive Maintenance',
-    keywords: 'asphalt repair, crack filling, sealcoating, pothole repair',
+    keywords: 'asphalt repair, crack filling, sealcoating, pothole repair, preservation',
     copy:
-      'For owners who want to stop water intrusion early, protect pavement from oxidation, and avoid full-depth replacement too soon.',
+      'For owners who want preservation-first planning: stop water intrusion early, protect pavement from oxidation, and avoid full-depth replacement too soon.',
+    href: '/services#maintenance',
+  },
+  {
+    title: 'Pavement Preservation & Lifecycle Planning',
+    keywords: 'pavement preservation, resurfacing, recycling, reconstruction',
+    copy:
+      'For DOT-style, HOA, municipal, industrial, and commercial buyers who need the right fix at the right time: preserve, repair, overlay, recycle, or rebuild.',
     href: '/services#maintenance',
   },
   {
@@ -105,6 +112,7 @@ const ASPHALT_RANKING_CLUSTERS = [
 const LOCAL_SEO_SIGNALS = [
   'Richmond, Chester, Chesterfield, Henrico, Midlothian, Glen Allen, Petersburg, Hopewell, Fredericksburg, Hampton Roads, and Virginia Beach pages',
   'Virginia-specific climate guidance for freeze/thaw, summer heat, coastal salt air, clay soils, drainage, and sealcoating cycles',
+  'Preservation-first content that explains when to seal, crack fill, overlay, recycle, reconstruct, or fully replace pavement',
   'Commercial buyer language for property managers, QSR/franchise operators, retail centers, churches, HOAs, schools, and industrial lots',
   'Trust proof from 1984 roots, 4th-generation ownership, VA Class A GC licensing, national QSR work, and 4.9-star reputation',
 ]

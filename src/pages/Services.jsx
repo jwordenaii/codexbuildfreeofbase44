@@ -94,17 +94,19 @@ const SERVICES = [
     id: 'maintenance',
     icon: '🔄',
     title: 'Maintenance Plans',
-    tagline: 'One contract — zero pavement headaches',
+    tagline: 'Preservation-first pavement lifecycle planning',
     priceRange: 'Custom pricing based on lot square footage and services included',
     description:
-      'Commercial property managers rely on our annual maintenance plans to keep lots looking sharp and code-compliant year after year. We schedule sealcoating, crack fill, and minor repairs on a rotating calendar.',
+      'Commercial property managers rely on our annual maintenance and preservation plans to keep lots looking sharp and code-compliant year after year. We schedule inspections, crack filling, sealcoating, patching, resurfacing recommendations, and phased budgeting so owners preserve good pavement before replacement becomes the only option.',
     features: [
       'Annual site inspection',
+      'Pavement preservation timing',
       'Priority scheduling',
       'Multi-year volume pricing',
       'Documentation for property records',
+      'Repair vs overlay vs reconstruction guidance',
     ],
-    ideal: 'Property managers, commercial landlords, HOAs',
+    ideal: 'Property managers, commercial landlords, HOAs, municipalities, schools, industrial owners',
   },
   {
     id: 'general-contracting',
@@ -213,6 +215,18 @@ const PAVING_INTENT_CLUSTERS = [
     proof:
       '811 response checks, GPR/EM locate logic, LiDAR/drone overlays, potholing recommendations, pavement age-decay scoring, and go/no-go production decisions.',
   },
+  {
+    audience: 'Municipal, HOA, and institutional buyers',
+    searches: ['pavement preservation', 'asphalt resurfacing', 'asphalt recycling', 'road maintenance contractor'],
+    proof:
+      'Lifecycle-first recommendations that compare sealcoating, crack sealing, patching, overlay, reconstruction, drainage repair, and documentation for board or public-facility decisions.',
+  },
+  {
+    audience: 'Evidence-driven owners',
+    searches: ['asphalt testing', 'pavement condition assessment', 'asphalt lifecycle planning', 'pavement preservation contractor'],
+    proof:
+      'Plain-English condition scoring, photos, measurements, traffic/drainage review, material-temperature awareness, and preservation vs replacement reasoning.',
+  },
 ]
 
 const SERVICE_FAQS = [
@@ -245,6 +259,16 @@ const SERVICE_FAQS = [
     question: 'Can you help property managers plan annual asphalt maintenance?',
     answer:
       'Yes. We build maintenance plans that combine inspection, crack filling, sealcoating, patching, line striping, ADA upkeep, and phased budgeting so commercial lots stay safe and presentable without surprise failures.',
+  },
+  {
+    question: 'What is pavement preservation?',
+    answer:
+      'Pavement preservation means using the right lower-disruption treatment before pavement fails completely. Depending on condition, that can include crack filling, sealcoating, patching, drainage correction, resurfacing, or planned reconstruction instead of waiting for full-depth failure.',
+  },
+  {
+    question: 'How do you decide between repair, overlay, and replacement?',
+    answer:
+      'We look at pavement age, base stability, drainage, crack pattern, rutting, potholes, traffic load, and utility conflicts. If the base is sound, preservation or overlay may make sense; if the base has failed, reconstruction is the better long-term fix.',
   },
   {
     question: 'What does a General Contractor actually manage on my project?',

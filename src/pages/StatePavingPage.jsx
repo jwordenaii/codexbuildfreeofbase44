@@ -7,7 +7,7 @@ import NotFound from './NotFound'
 function statePavingSchema(model) {
   return [
     serviceSchema(
-      `${model.name} Asphalt Paving, Parking Lots, Driveways and Sealcoating`,
+      `${model.name} Asphalt Paving, Pavement Preservation, Parking Lots and Driveways`,
       model.metaDescription,
       model.path,
       model.pricingSignal
@@ -77,6 +77,11 @@ export default function StatePavingPage() {
               <h2 className="section-heading mb-4">{model.name} Page Logic</h2>
               <p className="text-brand-navy/70 leading-relaxed mb-4">{model.pricingSignal}</p>
               <p className="text-brand-navy/70 leading-relaxed">{model.climateNote}</p>
+              <p className="text-brand-navy/70 leading-relaxed mt-4">
+                The model is also ready for preservation-first content: when to seal,
+                crack fill, patch, resurface, recycle, reconstruct, or fully replace
+                based on condition, traffic, drainage, and budget timing.
+              </p>
             </div>
 
             <div>
