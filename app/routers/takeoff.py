@@ -26,6 +26,10 @@ router = APIRouter(prefix="/api/v1/takeoff", tags=["takeoff"])
 
 _MAX_UPLOAD_BYTES = 20 * 1024 * 1024  # 20 MB
 _CRITICAL_UTILITY_TYPES = {"gas", "electric", "fiber", "water", "sewer"}
+_MIN_SCAN_CONFIDENCE = 0.35
+_MAX_SCAN_CONFIDENCE = 0.98
+_BASE_SCAN_CONFIDENCE = 0.95
+_SCAN_RISK_NORMALIZER = 180
 
 
 class UtilityFinding(BaseModel):
@@ -221,7 +225,12 @@ def _ground_scan_analysis(req: GroundScanRequest) -> dict:
     if not recommended_steps:
         recommended_steps.append("Proceed with documented marks, photos, and tolerance-zone hand digging per local law.")
 
-    confidence = max(0.35, min(0.98, 0.95 - (score / 180)))
+    # Confidence starts near 95% for complete locate packages and degrades as
+    # unresolved utility, 811, GPR, EM, potholing, and anomaly risks accumulate.
+    confidence = max(
+        _MIN_SCAN_CONFIDENCE,
+        min(_MAX_SCAN_CONFIDENCE, _BASE_SCAN_CONFIDENCE - (score / _SCAN_RISK_NORMALIZER)),
+    )
     return {
         "risk_level": risk,
         "confidence": round(confidence, 2),

@@ -18,16 +18,22 @@ const STATUS_STYLES = {
   idle:     { dot: 'bg-white/30',    label: 'Idle',     text: 'text-white/50' },
 }
 
+const MAX_PROJECTED_TEMP_DROP_F = 35
+const TEMP_DROP_RATE_F_PER_MIN = 0.18
+const DEFAULT_TARGET_DELIVERY_TEMP_F = 275
+const CRITICAL_DELIVERY_TEMP_F = 250
+const HOT_LOAD_TEMP_F = 350
+
 function TruckCard({ truck }) {
   const style = STATUS_STYLES[truck.status] || STATUS_STYLES.idle
-  const targetTemp = truck.target_delivery_temp_f || 275
+  const targetTemp = truck.target_delivery_temp_f || DEFAULT_TARGET_DELIVERY_TEMP_F
   const temp = truck.asphalt_temp_f
   const eta = truck.estimated_arrival_minutes || 0
-  const projectedDrop = eta > 0 ? Math.min(35, eta * 0.18) : 0
+  const projectedDrop = eta > 0 ? Math.min(MAX_PROJECTED_TEMP_DROP_F, eta * TEMP_DROP_RATE_F_PER_MIN) : 0
   const projectedArrivalTemp = temp != null ? temp - projectedDrop : null
-  const tempCritical = projectedArrivalTemp != null && projectedArrivalTemp < 250
+  const tempCritical = projectedArrivalTemp != null && projectedArrivalTemp < CRITICAL_DELIVERY_TEMP_F
   const tempWarning = projectedArrivalTemp != null && projectedArrivalTemp < targetTemp && !tempCritical
-  const tempHot = temp != null && temp > 350
+  const tempHot = temp != null && temp > HOT_LOAD_TEMP_F
   const departedAt = truck.plant_departed_at ? new Date(truck.plant_departed_at) : null
 
   return (
@@ -234,7 +240,7 @@ export default function TruckTracker() {
       </div>
 
       {/* Temperature alert */}
-      {trucks.some((t) => t.asphalt_temp_f != null && t.asphalt_temp_f < (t.target_delivery_temp_f || 275)) && (
+      {trucks.some((t) => t.asphalt_temp_f != null && t.asphalt_temp_f < (t.target_delivery_temp_f || DEFAULT_TARGET_DELIVERY_TEMP_F)) && (
         <div className="bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-3 flex items-center gap-2">
           <span>⚠️</span>
           <p className="text-red-400 text-sm">

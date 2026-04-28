@@ -314,10 +314,7 @@ export default function TakeoffMap() {
         technologies: scanForm.technologies,
         soil_moisture: scanForm.soil_moisture,
         anomalies_detected: scanForm.anomalies_detected,
-        utilities: [
-          { utility_type: 'gas', marked: scanForm.ticket_status === 'clear', confidence: 0.82 },
-          { utility_type: 'electric', marked: scanForm.ticket_status === 'clear', confidence: 0.78 },
-        ],
+        utilities: [],
       }
       setGroundScanData(await analyzeGroundScan(payload))
     } catch (err) {
