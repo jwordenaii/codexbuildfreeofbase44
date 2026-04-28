@@ -71,6 +71,44 @@ const SERVICES = [
   },
 ]
 
+const ASPHALT_RANKING_CLUSTERS = [
+  {
+    title: 'Commercial Parking Lot Paving',
+    keywords: 'parking lot paving, mill & overlay, ADA stalls, line striping',
+    copy:
+      'For property managers, restaurants, retail centers, churches, schools, warehouses, and franchise operators that need durable traffic flow and clean curb appeal.',
+    href: '/services#parking',
+  },
+  {
+    title: 'Residential Driveway Paving',
+    keywords: 'driveway paving, resurfacing, replacement, grading',
+    copy:
+      'For Virginia homeowners comparing new asphalt, resurfacing, base repair, drainage correction, and long-term sealcoating schedules.',
+    href: '/services#driveways',
+  },
+  {
+    title: 'Asphalt Repair & Preventive Maintenance',
+    keywords: 'asphalt repair, crack filling, sealcoating, pothole repair',
+    copy:
+      'For owners who want to stop water intrusion early, protect pavement from oxidation, and avoid full-depth replacement too soon.',
+    href: '/services#maintenance',
+  },
+  {
+    title: 'Pavement Intelligence & Utility-Safe Production',
+    keywords: '811, GPR, utility locating, pavement decay, thermal asphalt checks',
+    copy:
+      'For commercial buyers who want premium planning: 811 response checks, GPR/EM locating, pavement age-decay review, drainage risk, and asphalt temperature logic.',
+    href: '/command-center',
+  },
+]
+
+const LOCAL_SEO_SIGNALS = [
+  'Richmond, Chester, Chesterfield, Henrico, Midlothian, Glen Allen, Petersburg, Hopewell, Fredericksburg, Hampton Roads, and Virginia Beach pages',
+  'Virginia-specific climate guidance for freeze/thaw, summer heat, coastal salt air, clay soils, drainage, and sealcoating cycles',
+  'Commercial buyer language for property managers, QSR/franchise operators, retail centers, churches, HOAs, schools, and industrial lots',
+  'Trust proof from 1984 roots, 4th-generation ownership, VA Class A GC licensing, national QSR work, and 4.9-star reputation',
+]
+
 const TRUST_BADGES = [
   { label: 'KFC',              desc: 'National QSR vendor'       },
   { label: 'Pavement Mag',     desc: 'Top 75 · 4 categories'     },
@@ -97,6 +135,16 @@ const HOME_FAQS = [
     question: 'Do you offer free estimates?',
     answer:
       'Yes. All quotes are free and come with a detailed breakdown. Fill out our quote form or call us directly.',
+  },
+  {
+    question: 'What makes J. Worden & Sons different from other paving companies in Virginia?',
+    answer:
+      'We combine 4th-generation paving experience with commercial-grade planning: drainage review, base prep, 811/utility awareness, asphalt temperature checks, pavement lifecycle thinking, and documented maintenance recommendations.',
+  },
+  {
+    question: 'Do you work with commercial property managers and franchise operators?',
+    answer:
+      'Yes. We handle commercial parking lots, QSR/franchise projects, retail centers, churches, HOAs, schools, maintenance programs, ADA layout, line striping, sealcoating, crack filling, and mill-and-overlay work across Virginia and other served states.',
   },
   {
     question: 'Are you licensed and insured?',
@@ -233,10 +281,14 @@ export default function Home() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
-            <h2 className="section-heading mb-4">Our Services</h2>
+            <span className="text-brand-amber text-xs font-bold uppercase tracking-widest">
+              Asphalt-first service depth
+            </span>
+            <h2 className="section-heading mb-4 mt-2">Virginia Asphalt Paving Services</h2>
             <p className="text-brand-navy/60 max-w-xl mx-auto">
-              Full-service General Contractor — from asphalt paving and stone masonry to interior
-              design and ground-up commercial builds. One call handles it all.
+              The highest-ranking paving sites win by answering every buying intent clearly.
+              We make asphalt paving, parking lots, driveways, sealcoating, crack filling,
+              repair, maintenance, and utility-safe planning easy to compare in one place.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -262,6 +314,46 @@ export default function Home() {
             <Link to="/services" className="btn-primary">
               View All Services
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Search-intent asphalt clusters ─────────────────────────────── */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-[0.9fr_1.1fr] gap-12 items-start">
+            <div>
+              <span className="text-brand-amber text-xs font-bold uppercase tracking-widest">
+                Built for how customers search
+              </span>
+              <h2 className="section-heading mt-2 mb-4">
+                More Than “Paving Near Me”
+              </h2>
+              <p className="text-brand-navy/70 leading-relaxed mb-6">
+                Property owners compare contractors by service clarity, local proof,
+                pricing guidance, reviews, photos, and confidence that the crew can
+                handle drainage, base failure, traffic, 811 utility issues, and long-term
+                maintenance. These are the signals we now surface across the site.
+              </p>
+              <Link to="/service-areas" className="btn-primary">
+                Compare Our Virginia Service Areas
+              </Link>
+            </div>
+            <div className="grid sm:grid-cols-2 gap-4">
+              {ASPHALT_RANKING_CLUSTERS.map((cluster) => (
+                <Link
+                  key={cluster.title}
+                  to={cluster.href}
+                  className="card p-5 border-2 border-transparent hover:border-brand-amber group"
+                >
+                  <h3 className="font-display font-bold text-brand-navy group-hover:text-brand-amber">
+                    {cluster.title}
+                  </h3>
+                  <p className="text-xs text-brand-amber font-semibold mt-2">{cluster.keywords}</p>
+                  <p className="text-sm text-brand-navy/60 leading-relaxed mt-3">{cluster.copy}</p>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -397,6 +489,39 @@ export default function Home() {
                 📍 {city}
               </Link>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Local authority signals ───────────────────────────────────── */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <span className="text-brand-amber text-xs font-bold uppercase tracking-widest">
+                Why our Virginia pages can outrank generic paving sites
+              </span>
+              <h2 className="section-heading mt-2 mb-4">
+                Local Proof, Service Depth, and Premium Job Logic
+              </h2>
+              <p className="text-brand-navy/70 leading-relaxed">
+                Search engines reward paving contractors that prove where they work,
+                explain what they do, and answer the questions buyers ask before calling.
+                Our content now connects local service areas, asphalt-specific services,
+                commercial trust, pricing guidance, FAQs, and the Command Center&rsquo;s
+                advanced scan logic into one stronger authority system.
+              </p>
+            </div>
+            <div className="space-y-3">
+              {LOCAL_SEO_SIGNALS.map((signal) => (
+                <div key={signal} className="rounded-xl border border-brand-navy/10 p-4 flex gap-3">
+                  <span className="w-6 h-6 rounded-full bg-brand-amber text-brand-navy font-bold text-xs flex items-center justify-center flex-shrink-0">
+                    ✓
+                  </span>
+                  <p className="text-sm text-brand-navy/70 leading-relaxed">{signal}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>

@@ -62,6 +62,36 @@ const NEARBY_SERVICES = [
   { icon: '🔄', name: 'Maintenance Plans' },
 ]
 
+const SERVICE_LINKS = {
+  'Asphalt Paving': '/services#paving',
+  Sealcoating: '/services#sealcoating',
+  'Crack Filling': '/services#crackfill',
+  'Parking Lots': '/services#parking',
+  Driveways: '/services#driveways',
+  'Maintenance Plans': '/services#maintenance',
+}
+
+function cityRankingSignals(area) {
+  return [
+    {
+      title: `${area.city} service-area relevance`,
+      text: `This page connects asphalt paving, sealcoating, crack filling, parking lots, driveways, and maintenance to ${area.city}, ${area.stateCode} instead of relying on one generic statewide claim.`,
+    },
+    {
+      title: 'Local corridors and landmarks',
+      text: `${area.nearbyLandmarks.join(', ')} help customers and search engines understand the real local market we serve.`,
+    },
+    {
+      title: 'Virginia pavement conditions',
+      text: 'We account for summer heat, freeze/thaw cycles, clay soils, drainage, rutting, base failure, oxidation, and the maintenance timing that affects asphalt in Virginia.',
+    },
+    {
+      title: 'Commercial-grade proof',
+      text: 'The same planning used for QSR/franchise work — traffic control, ADA layout, drainage review, utility awareness, asphalt temperature logic, and maintenance records — supports local jobs.',
+    },
+  ]
+}
+
 export default function CityPage() {
   const { citySlug } = useParams()
   const area = getServiceArea(citySlug)
@@ -70,6 +100,7 @@ export default function CityPage() {
 
   // 3 nearby areas (different slugs)
   const nearbyAreas = SERVICE_AREAS.filter((a) => a.slug !== area.slug).slice(0, 3)
+  const localSignals = cityRankingSignals(area)
 
   return (
     <>
@@ -132,11 +163,12 @@ export default function CityPage() {
       <section className="py-16 bg-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <h2 className="section-heading mb-3">
-            Asphalt Services in {area.city}, {area.stateCode}
+            Asphalt Paving Services in {area.city}, {area.stateCode}
           </h2>
           <p className="text-brand-navy/60 mb-10 max-w-2xl">
-            J. Worden &amp; Sons offers a full range of asphalt paving services to
-            {' '}{area.city} homeowners and commercial property managers.
+            J. Worden &amp; Sons gives {area.city} homeowners and commercial
+            property managers clear service choices for asphalt paving, parking
+            lots, driveways, sealcoating, crack filling, repair, and maintenance.
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
             {NEARBY_SERVICES.filter((s) => area.services.includes(s.name)).map((svc, i) => (
@@ -148,8 +180,11 @@ export default function CityPage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.35, delay: i * 0.06 }}
               >
-                <div className="text-3xl mb-2">{svc.icon}</div>
-                <div className="font-display font-bold text-brand-navy">{svc.name}</div>
+                <Link to={SERVICE_LINKS[svc.name] || '/services'} className="block">
+                  <div className="text-3xl mb-2">{svc.icon}</div>
+                  <div className="font-display font-bold text-brand-navy">{svc.name}</div>
+                  <div className="text-xs text-brand-amber mt-2">View service →</div>
+                </Link>
               </motion.div>
             ))}
           </div>
@@ -214,6 +249,33 @@ export default function CityPage() {
                 Get My Free Quote
               </Link>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Local ranking / buyer proof ── */}
+      <section className="py-16 bg-white">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-10">
+            <span className="text-brand-amber text-xs font-bold uppercase tracking-widest">
+              Local paving proof for {area.city}
+            </span>
+            <h2 className="section-heading mt-2 mb-3">
+              Why This Page Is Built to Help {area.city} Buyers Decide
+            </h2>
+            <p className="text-brand-navy/60 max-w-2xl mx-auto">
+              Strong paving pages win when they prove the service, the place, the
+              buyer type, and the production details. This content connects those
+              signals for {area.city}, {area.stateCode}.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-4">
+            {localSignals.map((signal) => (
+              <div key={signal.title} className="rounded-xl border border-brand-navy/10 p-5">
+                <h3 className="font-display font-bold text-brand-navy">{signal.title}</h3>
+                <p className="text-sm text-brand-navy/65 leading-relaxed mt-2">{signal.text}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>

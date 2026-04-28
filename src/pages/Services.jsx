@@ -188,6 +188,33 @@ const SERVICES = [
   },
 ]
 
+const PAVING_INTENT_CLUSTERS = [
+  {
+    audience: 'Commercial property managers',
+    searches: ['commercial asphalt paving', 'parking lot paving', 'parking lot repair', 'sealcoating contractor'],
+    proof:
+      'Parking lot construction, mill-and-overlay planning, ADA stalls, striping, drainage review, night/weekend phasing, and maintenance calendars.',
+  },
+  {
+    audience: 'Homeowners',
+    searches: ['driveway paving near me', 'asphalt driveway cost', 'driveway replacement', 'driveway resurfacing'],
+    proof:
+      'Driveway removal, stone base prep, grading, apron tie-ins, drainage corrections, curing guidance, and sealcoating recommendations.',
+  },
+  {
+    audience: 'Franchise and QSR operators',
+    searches: ['restaurant parking lot paving', 'QSR asphalt contractor', 'drive lane paving', 'commercial asphalt maintenance'],
+    proof:
+      'National QSR experience, traffic control, production phasing, asphalt temperature awareness, safety documentation, and multi-state coordination.',
+  },
+  {
+    audience: 'Risk-aware project owners',
+    searches: ['811 before paving', 'utility locating before excavation', 'GPR utility scan', 'pavement condition assessment'],
+    proof:
+      '811 response checks, GPR/EM locate logic, LiDAR/drone overlays, potholing recommendations, pavement age-decay scoring, and go/no-go production decisions.',
+  },
+]
+
 const SERVICE_FAQS = [
   {
     question: 'How thick should a commercial parking lot asphalt be?',
@@ -208,6 +235,16 @@ const SERVICE_FAQS = [
     question: 'Do you handle ADA compliance for parking lots?',
     answer:
       'Yes. We install ADA-compliant handicapped stalls, access aisles, curb ramps, and signage to current ADAAG standards.',
+  },
+  {
+    question: 'Do you inspect drainage and base failure before recommending overlay?',
+    answer:
+      'Yes. Overlay only works when the base and drainage can support it. We look for rutting, potholes, alligator cracking, ponding, soft base, utility conflicts, and traffic load before recommending repair, overlay, or full-depth replacement.',
+  },
+  {
+    question: 'Can you help property managers plan annual asphalt maintenance?',
+    answer:
+      'Yes. We build maintenance plans that combine inspection, crack filling, sealcoating, patching, line striping, ADA upkeep, and phased budgeting so commercial lots stay safe and presentable without surprise failures.',
   },
   {
     question: 'What does a General Contractor actually manage on my project?',
@@ -262,8 +299,8 @@ export default function Services() {
   return (
     <>
       <SchemaMarkup
-        title="Construction, Paving, Interior Design & Stone Masonry Services"
-        description="Full-service General Contractor — asphalt paving, sealcoating, interior design, cobblestone & brick paver patios, and stone masonry. Best of Houzz recognized. Free estimates."
+        title="Asphalt Paving, Parking Lots, Driveways, Sealcoating & Repair Services"
+        description="Virginia asphalt paving contractor for parking lots, driveways, sealcoating, crack filling, asphalt repair, maintenance plans, GC work, masonry, and design. Free estimates."
         canonical="/services"
         schema={[
           ...SERVICES.map((s) =>
@@ -285,7 +322,8 @@ export default function Services() {
             Our <span className="text-brand-amber">Services</span>
           </h1>
           <p className="text-white/70 text-xl max-w-2xl mx-auto">
-            Full-service General Contractor — asphalt paving, stone masonry, cobblestone patios, interior design, and ground-up construction.
+            Asphalt paving, parking lots, driveways, sealcoating, crack filling,
+            repair, maintenance, utility-safe planning, and full GC support.
           </p>
         </div>
       </div>
@@ -340,6 +378,40 @@ export default function Services() {
           </motion.section>
         ))}
       </div>
+
+      {/* Buyer-intent service logic */}
+      <section className="py-20 bg-brand-navy text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <span className="text-brand-amber text-xs font-bold uppercase tracking-widest">
+              Service logic built around real search intent
+            </span>
+            <h2 className="font-display font-black text-3xl md:text-4xl mt-2 mb-4">
+              The Questions Buyers Ask Before They Call
+            </h2>
+            <p className="text-white/60 max-w-2xl mx-auto">
+              High-performing paving pages do more than list services. They match each
+              buyer type with the exact problems, keywords, proof, and next step needed
+              to make a confident estimate request.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-5">
+            {PAVING_INTENT_CLUSTERS.map((cluster) => (
+              <div key={cluster.audience} className="rounded-2xl bg-white/5 border border-white/10 p-6">
+                <h3 className="font-display font-bold text-xl text-white">{cluster.audience}</h3>
+                <div className="flex flex-wrap gap-2 my-4">
+                  {cluster.searches.map((search) => (
+                    <span key={search} className="text-xs bg-brand-amber/15 text-brand-amber px-2 py-1 rounded-full">
+                      {search}
+                    </span>
+                  ))}
+                </div>
+                <p className="text-white/70 text-sm leading-relaxed">{cluster.proof}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* FAQ */}
       <section className="py-20 bg-gray-50">
