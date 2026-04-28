@@ -13,6 +13,7 @@
 import { useEffect, useRef, useState } from 'react'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
+import 'leaflet-draw'
 import 'leaflet-draw/dist/leaflet.draw.css'
 
 // Fix default marker icon paths broken by Vite/webpack bundling
@@ -83,6 +84,10 @@ export default function RichmondGrid({ sites = [], permitLeads = [], onPolygonSa
 
   useEffect(() => {
     if (mapInstanceRef.current) return  // Already initialised
+    if (!mapRef.current) return
+    if (mapRef.current._leaflet_id) {
+      delete mapRef.current._leaflet_id
+    }
 
     const map = L.map(mapRef.current, {
       center: RICHMOND,
@@ -168,25 +173,27 @@ export default function RichmondGrid({ sites = [], permitLeads = [], onPolygonSa
     const drawnItems = new L.FeatureGroup()
     map.addLayer(drawnItems)
 
-    const drawControl = new L.Control.Draw({
-      edit: { featureGroup: drawnItems, remove: true },
-      draw: {
-        polygon: {
-          allowIntersection: false,
-          showArea: true,
-          shapeOptions: { color: '#f5a623', weight: 2 },
+    if (L.Control.Draw) {
+      const drawControl = new L.Control.Draw({
+        edit: { featureGroup: drawnItems, remove: true },
+        draw: {
+          polygon: {
+            allowIntersection: false,
+            showArea: true,
+            shapeOptions: { color: '#f5a623', weight: 2 },
+          },
+          rectangle: {
+            shapeOptions: { color: '#f5a623', weight: 2 },
+          },
+          // Disable tools we don't need
+          polyline: false,
+          circle: false,
+          circlemarker: false,
+          marker: false,
         },
-        rectangle: {
-          shapeOptions: { color: '#f5a623', weight: 2 },
-        },
-        // Disable tools we don't need
-        polyline: false,
-        circle: false,
-        circlemarker: false,
-        marker: false,
-      },
-    })
-    map.addControl(drawControl)
+      })
+      map.addControl(drawControl)
+    }
 
     map.on(L.Draw.Event.CREATED, (e) => {
       drawnItems.clearLayers()
