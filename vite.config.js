@@ -2,7 +2,7 @@ import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
 import sitemap from 'vite-plugin-sitemap'
 
-const SITE_URL = 'https://jworden.netlify.app'
+const DEFAULT_SITE_URL = 'https://jworden.netlify.app'
 
 // City slugs for service area pages — keep in sync with src/data/serviceAreas.js
 const CITY_SLUGS = [
@@ -25,12 +25,13 @@ const BLOG_SLUGS = [
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
+  const siteUrl = env.VITE_SITE_URL || process.env.URL || DEFAULT_SITE_URL
 
   return {
   plugins: [
     react(),
     sitemap({
-      hostname: SITE_URL,
+      hostname: siteUrl,
       generateRobotsTxt: false,
       routes: [
         // Core pages
