@@ -135,7 +135,9 @@ def _parse_optional_dt(value: Optional[str]) -> Optional[datetime]:
         return None
     try:
         dt = datetime.fromisoformat(value.replace("Z", "+00:00"))
-        return dt.replace(tzinfo=timezone.utc) if dt.tzinfo is None else dt
+        if dt.tzinfo is None:
+            return dt.replace(tzinfo=timezone.utc)
+        return dt.astimezone(timezone.utc)
     except ValueError as exc:
         raise HTTPException(status_code=422, detail=f"Invalid datetime: {value}. Use ISO 8601.") from exc
 

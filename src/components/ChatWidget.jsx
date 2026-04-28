@@ -234,8 +234,7 @@ export default function ChatWidget() {
     if (!pageLabel || messages.length < 2) return
     const hintText = `Just so you know — you're now on our ${pageLabel}. Feel free to keep chatting or browse the quick help below.`
     setMessages((prev) => {
-      const last = prev[prev.length - 1]
-      if (last?.isHint && last.text === hintText) return prev
+      if (prev.some((msg) => msg.isHint && msg.text === hintText)) return prev
       return [...prev, { id: Date.now(), role: 'bot', text: hintText, isHint: true }]
     })
   // eslint-disable-next-line react-hooks/exhaustive-deps

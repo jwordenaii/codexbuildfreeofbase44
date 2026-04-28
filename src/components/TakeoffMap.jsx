@@ -170,7 +170,7 @@ function DecayPanel({ data }) {
           {data.risk_level}
         </span>
       </div>
-      <p><span className="text-brand-navy/60">Current score:</span>{' '}
+      <p><span className="text-brand-navy/60">Current score: </span>
         <strong>{data.current_condition_score}/100</strong>
         <span className="text-brand-navy/40 ml-1">({data.annual_decay_points} pts/year decay)</span>
       </p>

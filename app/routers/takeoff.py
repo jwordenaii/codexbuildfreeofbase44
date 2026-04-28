@@ -25,6 +25,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v1/takeoff", tags=["takeoff"])
 
 _MAX_UPLOAD_BYTES = 20 * 1024 * 1024  # 20 MB
+_CRITICAL_UTILITY_TYPES = {"gas", "electric", "fiber", "water", "sewer"}
 
 
 class UtilityFinding(BaseModel):
@@ -190,7 +191,7 @@ def _ground_scan_analysis(req: GroundScanRequest) -> dict:
 
     critical_unmarked = [
         u for u in req.utilities
-        if u.utility_type.lower() in {"gas", "electric", "fiber", "water", "sewer"} and not u.marked
+        if u.utility_type.lower() in _CRITICAL_UTILITY_TYPES and not u.marked
     ]
     if critical_unmarked:
         score += 25
