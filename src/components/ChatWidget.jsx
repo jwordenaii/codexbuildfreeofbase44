@@ -94,10 +94,17 @@ export default function ChatWidget() {
   // Stable session ID — persisted across page navigations within the same tab
   const sessionIdRef = useRef(getOrCreateSessionId())
 
-  // Auto-open once per session after a short delay to proactively greet visitors
+  // Auto-open once per session after a short delay to proactively greet visitors.
+  // Skip on mobile (viewport narrower than 640 px) to avoid covering the page.
   useEffect(() => {
     const greeted = sessionStorage.getItem('jworden_greeted')
     if (greeted) return
+    const isMobile = window.innerWidth < 640
+    if (isMobile) {
+      // Mark greeted so the check doesn't fire again, but don't open the panel.
+      sessionStorage.setItem('jworden_greeted', '1')
+      return
+    }
     const timer = setTimeout(() => {
       setOpen(true)
       sessionStorage.setItem('jworden_greeted', '1')
@@ -154,11 +161,12 @@ export default function ChatWidget() {
   }
 
   return (
-    <div className="fixed bottom-6 left-6 z-50 flex flex-col items-start">
+    <div className="fixed bottom-6 left-4 sm:left-6 z-50 flex flex-col items-start">
       {/* Chat panel */}
       {open && (
-        <div className="mb-3 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-brand-navy/10 flex flex-col overflow-hidden"
-          style={{ maxHeight: '75vh' }}
+        <div
+          className="mb-3 w-[calc(100vw-2rem)] sm:w-96 bg-white rounded-2xl shadow-2xl border border-brand-navy/10 flex flex-col overflow-hidden"
+          style={{ maxHeight: 'min(75vh, 520px)' }}
         >
           {/* Header */}
           <div className="bg-brand-navy text-white px-4 py-3 flex items-center justify-between flex-shrink-0">
