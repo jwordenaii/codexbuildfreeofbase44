@@ -9,12 +9,14 @@ import { api } from '../../api/client'
 
 function StatusBadge({ status }) {
   const map = {
-    pending:  'bg-yellow-100 text-yellow-700',
+    pending: 'bg-yellow-100 text-yellow-700',
     approved: 'bg-green-100 text-green-700',
     rejected: 'bg-red-100 text-red-700',
   }
   return (
-    <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-bold ${map[status] || 'bg-gray-100 text-gray-600'}`}>
+    <span
+      className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-bold ${map[status] || 'bg-gray-100 text-gray-600'}`}
+    >
       {status}
     </span>
   )
@@ -26,24 +28,41 @@ function ReviewItem({ item, onApprove, onReject }) {
 
   const act = async (fn) => {
     setBusy(true)
-    try { await fn(item.id, note) } finally { setBusy(false) }
+    try {
+      await fn(item.id, note)
+    } finally {
+      setBusy(false)
+    }
   }
 
   return (
     <div className="card p-5 space-y-3">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <span className="font-bold text-brand-navy text-sm">#{item.id} · {item.decision_type}</span>
+          <span className="font-bold text-brand-navy text-sm">
+            #{item.id} · {item.decision_type}
+          </span>
           <StatusBadge status={item.status} />
         </div>
-        <span className="text-xs text-brand-navy/40 flex-shrink-0">{item.created_at ? new Date(item.created_at).toLocaleDateString() : ''}</span>
+        <span className="text-xs text-brand-navy/40 flex-shrink-0">
+          {item.created_at ? new Date(item.created_at).toLocaleDateString() : ''}
+        </span>
       </div>
 
       <div className="bg-gray-50 rounded-lg p-3 text-xs text-brand-navy/70 space-y-1">
-        <div><span className="font-semibold text-brand-navy">Context:</span> {item.context_summary || '—'}</div>
-        <div><span className="font-semibold text-brand-navy">AI Decision:</span> {item.ai_decision || '—'}</div>
+        <div>
+          <span className="font-semibold text-brand-navy">Context:</span>{' '}
+          {item.context_summary || '—'}
+        </div>
+        <div>
+          <span className="font-semibold text-brand-navy">AI Decision:</span>{' '}
+          {item.ai_decision || '—'}
+        </div>
         {item.confidence_score != null && (
-          <div><span className="font-semibold text-brand-navy">Confidence:</span> {(item.confidence_score * 100).toFixed(0)}%</div>
+          <div>
+            <span className="font-semibold text-brand-navy">Confidence:</span>{' '}
+            {(item.confidence_score * 100).toFixed(0)}%
+          </div>
         )}
       </div>
 
@@ -81,24 +100,26 @@ function ReviewItem({ item, onApprove, onReject }) {
 }
 
 export default function HumanReviewPanel() {
-  const [items, setItems]     = useState([])
-  const [stats, setStats]     = useState(null)
+  const [items, setItems] = useState([])
+  const [stats, setStats] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [error, setError]     = useState('')
-  const [filter, setFilter]   = useState('pending')
+  const [error, setError] = useState('')
+  const [filter, setFilter] = useState('pending')
 
   const load = useCallback(() => {
     setLoading(true)
-    Promise.all([
-      api.listReviewQueue({ status: filter }),
-      api.getReviewStats(),
-    ])
-      .then(([q, s]) => { setItems(q.items || []); setStats(s) })
+    Promise.all([api.listReviewQueue({ status: filter }), api.getReviewStats()])
+      .then(([q, s]) => {
+        setItems(q.items || [])
+        setStats(s)
+      })
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false))
   }, [filter])
 
-  useEffect(() => { load() }, [load])
+  useEffect(() => {
+    load()
+  }, [load])
 
   const handleApprove = async (id, correction) => {
     await api.approveReviewItem(id, correction)
@@ -115,7 +136,7 @@ export default function HumanReviewPanel() {
       {stats && (
         <div className="grid grid-cols-3 gap-4">
           {[
-            { label: 'Pending',  value: stats.pending,  color: 'text-yellow-600' },
+            { label: 'Pending', value: stats.pending, color: 'text-yellow-600' },
             { label: 'Approved', value: stats.approved, color: 'text-green-600' },
             { label: 'Rejected', value: stats.rejected, color: 'text-red-600' },
           ].map(({ label, value, color }) => (
@@ -145,14 +166,18 @@ export default function HumanReviewPanel() {
                 {s}
               </button>
             ))}
-            <button type="button" onClick={load} className="text-xs text-brand-amber underline ml-1">
+            <button
+              type="button"
+              onClick={load}
+              className="text-xs text-brand-amber underline ml-1"
+            >
               Refresh
             </button>
           </div>
         </div>
 
         {loading && <div className="text-brand-navy/40 text-sm">Loading…</div>}
-        {error   && <div className="text-red-500 text-sm">{error}</div>}
+        {error && <div className="text-red-500 text-sm">{error}</div>}
 
         {!loading && !error && items.length === 0 && (
           <div className="text-brand-navy/40 text-sm text-center py-8">

@@ -108,10 +108,7 @@ export default function CityPage() {
         title={area.headline}
         description={`${area.description.slice(0, 155)}…`}
         canonical={`/service-areas/${area.slug}`}
-        schema={[
-          cityLocalBusinessSchema(area),
-          faqSchema(area.faqs),
-        ]}
+        schema={[cityLocalBusinessSchema(area), faqSchema(area.faqs)]}
         breadcrumb={[
           { name: 'Home', path: '/' },
           { name: 'Service Areas', path: '/service-areas' },
@@ -123,14 +120,24 @@ export default function CityPage() {
       <section className="bg-brand-navy text-white py-20">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <nav className="text-white/40 text-sm mb-8 flex items-center gap-2">
-            <Link to="/" className="hover:text-brand-amber transition-colors">Home</Link>
+            <Link to="/" className="hover:text-brand-amber transition-colors">
+              Home
+            </Link>
             <span>/</span>
-            <Link to="/service-areas" className="hover:text-brand-amber transition-colors">Service Areas</Link>
+            <Link to="/service-areas" className="hover:text-brand-amber transition-colors">
+              Service Areas
+            </Link>
             <span>/</span>
-            <span className="text-white/80">{area.city}, {area.stateCode}</span>
+            <span className="text-white/80">
+              {area.city}, {area.stateCode}
+            </span>
           </nav>
 
-          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
             <span className="text-brand-amber text-xs font-bold uppercase tracking-widest">
               📍 {area.county}
             </span>
@@ -166,9 +173,9 @@ export default function CityPage() {
             Asphalt Paving Services in {area.city}, {area.stateCode}
           </h2>
           <p className="text-brand-navy/60 mb-10 max-w-2xl">
-            J. Worden &amp; Sons gives {area.city} homeowners and commercial
-            property managers clear service choices for asphalt paving, parking
-            lots, driveways, sealcoating, crack filling, repair, and maintenance.
+            J. Worden &amp; Sons gives {area.city} homeowners and commercial property managers clear
+            service choices for asphalt paving, parking lots, driveways, sealcoating, crack filling,
+            repair, and maintenance.
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
             {NEARBY_SERVICES.filter((s) => area.services.includes(s.name)).map((svc, i) => (
@@ -209,7 +216,9 @@ export default function CityPage() {
                   'KFC national QSR vendor — 12+ states',
                 ].map((item) => (
                   <li key={item} className="flex items-center gap-3">
-                    <span className="w-5 h-5 rounded-full bg-brand-amber flex-shrink-0 flex items-center justify-center text-brand-navy font-bold text-xs">✓</span>
+                    <span className="w-5 h-5 rounded-full bg-brand-amber flex-shrink-0 flex items-center justify-center text-brand-navy font-bold text-xs">
+                      ✓
+                    </span>
                     <span className="text-brand-navy/80 text-sm">{item}</span>
                   </li>
                 ))}
@@ -226,7 +235,9 @@ export default function CityPage() {
                 </div>
                 <div className="flex justify-between border-b border-white/10 pb-2">
                   <span>Phone</span>
-                  <a href="tel:+18044461296" className="text-brand-amber font-medium">(804) 446-1296</a>
+                  <a href="tel:+18044461296" className="text-brand-amber font-medium">
+                    (804) 446-1296
+                  </a>
                 </div>
                 <div className="flex justify-between border-b border-white/10 pb-2">
                   <span>Est.</span>
@@ -264,9 +275,9 @@ export default function CityPage() {
               Why This Page Is Built to Help {area.city} Buyers Decide
             </h2>
             <p className="text-brand-navy/60 max-w-2xl mx-auto">
-              Strong paving pages win when they prove the service, the place, the
-              buyer type, and the production details. This content connects those
-              signals for {area.city}, {area.stateCode}.
+              Strong paving pages win when they prove the service, the place, the buyer type, and
+              the production details. This content connects those signals for {area.city},{' '}
+              {area.stateCode}.
             </p>
           </div>
           <div className="grid md:grid-cols-2 gap-4">
@@ -334,7 +345,10 @@ export default function CityPage() {
             ))}
           </div>
           <div className="mt-6 text-center">
-            <Link to="/service-areas" className="text-brand-amber font-semibold hover:underline text-sm">
+            <Link
+              to="/service-areas"
+              className="text-brand-amber font-semibold hover:underline text-sm"
+            >
               View all service areas →
             </Link>
           </div>

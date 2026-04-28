@@ -6,10 +6,56 @@ import { useState, useEffect, useCallback } from 'react'
 import { api } from '../../api/client'
 
 const STATES = [
-  'AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID','IL','IN','IA',
-  'KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ',
-  'NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT',
-  'VA','WA','WV','WI','WY',
+  'AL',
+  'AK',
+  'AZ',
+  'AR',
+  'CA',
+  'CO',
+  'CT',
+  'DE',
+  'FL',
+  'GA',
+  'HI',
+  'ID',
+  'IL',
+  'IN',
+  'IA',
+  'KS',
+  'KY',
+  'LA',
+  'ME',
+  'MD',
+  'MA',
+  'MI',
+  'MN',
+  'MS',
+  'MO',
+  'MT',
+  'NE',
+  'NV',
+  'NH',
+  'NJ',
+  'NM',
+  'NY',
+  'NC',
+  'ND',
+  'OH',
+  'OK',
+  'OR',
+  'PA',
+  'RI',
+  'SC',
+  'SD',
+  'TN',
+  'TX',
+  'UT',
+  'VT',
+  'VA',
+  'WA',
+  'WV',
+  'WI',
+  'WY',
 ]
 
 function DeadlinePill({ label, date }) {
@@ -19,18 +65,28 @@ function DeadlinePill({ label, date }) {
   const urgent = daysLeft <= 14
   const overdue = daysLeft < 0
   return (
-    <div className={`rounded-lg p-3 border text-xs ${
-      overdue ? 'bg-red-50 border-red-200' :
-      urgent ? 'bg-orange-50 border-orange-200' :
-      'bg-gray-50 border-gray-200'
-    }`}>
-      <div className={`font-semibold mb-0.5 ${overdue ? 'text-red-700' : urgent ? 'text-orange-700' : 'text-brand-navy'}`}>
+    <div
+      className={`rounded-lg p-3 border text-xs ${
+        overdue
+          ? 'bg-red-50 border-red-200'
+          : urgent
+            ? 'bg-orange-50 border-orange-200'
+            : 'bg-gray-50 border-gray-200'
+      }`}
+    >
+      <div
+        className={`font-semibold mb-0.5 ${overdue ? 'text-red-700' : urgent ? 'text-orange-700' : 'text-brand-navy'}`}
+      >
         {label}
       </div>
-      <div className={`text-sm font-bold ${overdue ? 'text-red-600' : urgent ? 'text-orange-600' : 'text-brand-navy'}`}>
+      <div
+        className={`text-sm font-bold ${overdue ? 'text-red-600' : urgent ? 'text-orange-600' : 'text-brand-navy'}`}
+      >
         {d.toLocaleDateString()}
       </div>
-      <div className={`mt-0.5 ${overdue ? 'text-red-500' : urgent ? 'text-orange-500' : 'text-brand-navy/40'}`}>
+      <div
+        className={`mt-0.5 ${overdue ? 'text-red-500' : urgent ? 'text-orange-500' : 'text-brand-navy/40'}`}
+      >
         {overdue ? `${Math.abs(daysLeft)}d overdue` : `${daysLeft}d remaining`}
       </div>
     </div>
@@ -61,7 +117,9 @@ export default function LienCalendarPanel() {
     }
   }, [])
 
-  useEffect(() => { loadUpcoming() }, [loadUpcoming])
+  useEffect(() => {
+    loadUpcoming()
+  }, [loadUpcoming])
 
   const handleCalc = async (e) => {
     e.preventDefault()
@@ -123,12 +181,18 @@ export default function LienCalendarPanel() {
               onChange={(e) => set('state_code', e.target.value)}
               className="input text-sm w-full"
             >
-              {STATES.map((s) => <option key={s} value={s}>{s}</option>)}
+              {STATES.map((s) => (
+                <option key={s} value={s}>
+                  {s}
+                </option>
+              ))}
             </select>
           </div>
           <div className="sm:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-brand-navy/60 mb-1">Project Start Date</label>
+              <label className="block text-xs font-semibold text-brand-navy/60 mb-1">
+                Project Start Date
+              </label>
               <input
                 type="date"
                 value={form.project_start_date}
@@ -138,7 +202,9 @@ export default function LienCalendarPanel() {
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-brand-navy/60 mb-1">Last Furnishing Date</label>
+              <label className="block text-xs font-semibold text-brand-navy/60 mb-1">
+                Last Furnishing Date
+              </label>
               <input
                 type="date"
                 value={form.last_furnishing_date}
@@ -149,7 +215,9 @@ export default function LienCalendarPanel() {
             </div>
           </div>
           <div>
-            <label className="block text-xs font-semibold text-brand-navy/60 mb-1">Customer Name (to save)</label>
+            <label className="block text-xs font-semibold text-brand-navy/60 mb-1">
+              Customer Name (to save)
+            </label>
             <input
               type="text"
               value={form.customer_name}
@@ -159,7 +227,9 @@ export default function LienCalendarPanel() {
             />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-brand-navy/60 mb-1">Project Address (to save)</label>
+            <label className="block text-xs font-semibold text-brand-navy/60 mb-1">
+              Project Address (to save)
+            </label>
             <input
               type="text"
               value={form.project_address}
@@ -190,7 +260,11 @@ export default function LienCalendarPanel() {
         </form>
 
         {error && <div className="mt-3 text-red-600 text-sm">{error}</div>}
-        {saved && <div className="mt-3 text-green-600 text-sm font-semibold">✅ Saved to lien calendar.</div>}
+        {saved && (
+          <div className="mt-3 text-green-600 text-sm font-semibold">
+            ✅ Saved to lien calendar.
+          </div>
+        )}
       </div>
 
       {/* Calculated deadlines */}
@@ -204,9 +278,7 @@ export default function LienCalendarPanel() {
             <DeadlinePill label="Lien Filing" date={calc.lien_filing_deadline} />
             <DeadlinePill label="Foreclosure" date={calc.foreclosure_deadline} />
           </div>
-          {calc.notes && (
-            <div className="mt-3 text-xs text-brand-navy/50">{calc.notes}</div>
-          )}
+          {calc.notes && <div className="mt-3 text-xs text-brand-navy/50">{calc.notes}</div>}
         </div>
       )}
 
@@ -233,14 +305,20 @@ export default function LienCalendarPanel() {
                   return (
                     <tr key={e.id} className="border-b border-brand-navy/5">
                       <td className="py-2 font-semibold text-brand-navy">{e.customer_name}</td>
-                      <td className="py-2 text-brand-navy/50 hidden sm:table-cell text-xs">{e.project_address}</td>
+                      <td className="py-2 text-brand-navy/50 hidden sm:table-cell text-xs">
+                        {e.project_address}
+                      </td>
                       <td className="py-2 text-center">{e.state_code}</td>
                       <td className="py-2 text-right">
                         {d ? (
-                          <span className={`text-xs font-bold ${daysLeft <= 7 ? 'text-red-600' : daysLeft <= 14 ? 'text-orange-600' : 'text-brand-navy'}`}>
+                          <span
+                            className={`text-xs font-bold ${daysLeft <= 7 ? 'text-red-600' : daysLeft <= 14 ? 'text-orange-600' : 'text-brand-navy'}`}
+                          >
                             {d.toLocaleDateString()} ({daysLeft}d)
                           </span>
-                        ) : '—'}
+                        ) : (
+                          '—'
+                        )}
                       </td>
                     </tr>
                   )

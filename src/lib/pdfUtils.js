@@ -12,12 +12,12 @@
  */
 export function downloadPdf(b64, filename) {
   const bytes = atob(b64)
-  const arr   = new Uint8Array(Array.from(bytes, (c) => c.charCodeAt(0)))
-  const blob  = new Blob([arr], { type: 'application/pdf' })
-  const url   = URL.createObjectURL(blob)
-  const a     = document.createElement('a')
-  a.href      = url
-  a.download  = filename
+  const arr = new Uint8Array(Array.from(bytes, (c) => c.charCodeAt(0)))
+  const blob = new Blob([arr], { type: 'application/pdf' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = filename
   a.click()
   URL.revokeObjectURL(url)
 }

@@ -19,28 +19,28 @@ import { STATE_OPTIONS } from '../lib/states50'
 // ── Option lists ──────────────────────────────────────────────────────────────
 
 const BUILD_TYPES = [
-  { value: 'driveway',                    label: '🚗 Driveway',              category: 'paving'    },
-  { value: 'parking_lot',                 label: '🏢 Parking Lot',           category: 'paving'    },
-  { value: 'new_construction_residential',label: '🏠 New Home Build',        category: 'structure' },
-  { value: 'addition',                    label: '➕ Addition / Remodel',    category: 'structure' },
-  { value: 'adu',                         label: '🏡 ADU / Guest House',     category: 'structure' },
-  { value: 'commercial_build',            label: '🏗 Commercial Build',      category: 'structure' },
+  { value: 'driveway', label: '🚗 Driveway', category: 'paving' },
+  { value: 'parking_lot', label: '🏢 Parking Lot', category: 'paving' },
+  { value: 'new_construction_residential', label: '🏠 New Home Build', category: 'structure' },
+  { value: 'addition', label: '➕ Addition / Remodel', category: 'structure' },
+  { value: 'adu', label: '🏡 ADU / Guest House', category: 'structure' },
+  { value: 'commercial_build', label: '🏗 Commercial Build', category: 'structure' },
 ]
 
 const PAVING_MATERIALS = [
-  { value: 'asphalt',     label: 'Asphalt',      color: '#2d2d2d' },
-  { value: 'concrete',    label: 'Concrete',     color: '#b0aca4' },
-  { value: 'cobblestone', label: 'Cobblestone',  color: '#7a6a58' },
-  { value: 'pavers',      label: 'Brick Pavers', color: '#c8a87a' },
-  { value: 'gravel',      label: 'Gravel',       color: '#9a9080' },
+  { value: 'asphalt', label: 'Asphalt', color: '#2d2d2d' },
+  { value: 'concrete', label: 'Concrete', color: '#b0aca4' },
+  { value: 'cobblestone', label: 'Cobblestone', color: '#7a6a58' },
+  { value: 'pavers', label: 'Brick Pavers', color: '#c8a87a' },
+  { value: 'gravel', label: 'Gravel', color: '#9a9080' },
 ]
 
 const EXTERIOR_MATERIALS = [
-  { value: 'brick',       label: 'Brick',         color: '#b5563c' },
-  { value: 'stucco',      label: 'Stucco',        color: '#e8dcc8' },
-  { value: 'hardieplank', label: 'Hardie-Plank',  color: '#5a7fa0' },
-  { value: 'vinyl',       label: 'Vinyl Siding',  color: '#e8e4dc' },
-  { value: 'stone',       label: 'Stone Veneer',  color: '#7a7062' },
+  { value: 'brick', label: 'Brick', color: '#b5563c' },
+  { value: 'stucco', label: 'Stucco', color: '#e8dcc8' },
+  { value: 'hardieplank', label: 'Hardie-Plank', color: '#5a7fa0' },
+  { value: 'vinyl', label: 'Vinyl Siding', color: '#e8e4dc' },
+  { value: 'stone', label: 'Stone Veneer', color: '#7a7062' },
 ]
 
 const ROOF_COLORS = [
@@ -53,23 +53,23 @@ const ROOF_COLORS = [
 
 const PROPERTY_TYPES = [
   { value: 'residential', label: 'Residential' },
-  { value: 'commercial',  label: 'Commercial'  },
+  { value: 'commercial', label: 'Commercial' },
 ]
 
 const FLOOR_OPTIONS = [1, 2, 3, 4]
 
 const SIZE_PRESETS = {
   paving: [
-    { label: 'Small driveway',      sqft: 700   },
-    { label: 'Large driveway',      sqft: 1400  },
-    { label: 'Small lot',           sqft: 10000 },
-    { label: 'Medium lot',          sqft: 40000 },
+    { label: 'Small driveway', sqft: 700 },
+    { label: 'Large driveway', sqft: 1400 },
+    { label: 'Small lot', sqft: 10000 },
+    { label: 'Medium lot', sqft: 40000 },
   ],
   structure: [
-    { label: 'Starter (1,000 sf)',  sqft: 1000  },
-    { label: 'Mid (1,800 sf)',      sqft: 1800  },
-    { label: 'Large (3,000 sf)',    sqft: 3000  },
-    { label: 'Estate (5,000 sf)',   sqft: 5000  },
+    { label: 'Starter (1,000 sf)', sqft: 1000 },
+    { label: 'Mid (1,800 sf)', sqft: 1800 },
+    { label: 'Large (3,000 sf)', sqft: 3000 },
+    { label: 'Estate (5,000 sf)', sqft: 5000 },
   ],
 }
 
@@ -107,31 +107,29 @@ function ColorSwatch({ color, label, active, onClick }) {
 }
 
 function SectionLabel({ children }) {
-  return (
-    <label className="block text-sm font-semibold text-brand-navy mb-2">{children}</label>
-  )
+  return <label className="block text-sm font-semibold text-brand-navy mb-2">{children}</label>
 }
 
 // ── Main component ────────────────────────────────────────────────────────────
 
 export default function BuildConfigurator({ config, onChange }) {
   const {
-    buildType        = 'driveway',
-    sqft             = 2000,
-    propertyType     = 'residential',
-    groundMaterial   = 'asphalt',
+    buildType = 'driveway',
+    sqft = 2000,
+    propertyType = 'residential',
+    groundMaterial = 'asphalt',
     exteriorMaterial = 'brick',
-    roofColor        = '#4a4a4a',
-    floors           = 1,
-    stateCode        = '',
+    roofColor = '#4a4a4a',
+    floors = 1,
+    stateCode = '',
   } = config
 
-  const selectedBuild   = BUILD_TYPES.find((b) => b.value === buildType) ?? BUILD_TYPES[0]
-  const isStructure     = selectedBuild.category === 'structure'
-  const presets         = isStructure ? SIZE_PRESETS.structure : SIZE_PRESETS.paving
+  const selectedBuild = BUILD_TYPES.find((b) => b.value === buildType) ?? BUILD_TYPES[0]
+  const isStructure = selectedBuild.category === 'structure'
+  const presets = isStructure ? SIZE_PRESETS.structure : SIZE_PRESETS.paving
 
   // Resolve effective service type for pricing (structures use buildType directly)
-  const pricingService  = buildType
+  const pricingService = buildType
 
   const estimate = estimatePrice(pricingService, propertyType, sqft, stateCode || null)
 
@@ -148,7 +146,6 @@ export default function BuildConfigurator({ config, onChange }) {
 
   return (
     <div className="space-y-5">
-
       {/* ── Build Type ──────────────────────────────────────────────────── */}
       <div>
         <SectionLabel>Build Type</SectionLabel>
@@ -298,7 +295,8 @@ export default function BuildConfigurator({ config, onChange }) {
       {/* ── State selector ──────────────────────────────────────────────── */}
       <div>
         <SectionLabel>
-          State <span className="font-normal text-brand-navy/40">(optional — refines estimate)</span>
+          State{' '}
+          <span className="font-normal text-brand-navy/40">(optional — refines estimate)</span>
         </SectionLabel>
         <select
           value={stateCode}
@@ -307,7 +305,9 @@ export default function BuildConfigurator({ config, onChange }) {
         >
           <option value="">Select a state…</option>
           {STATE_OPTIONS.map((s) => (
-            <option key={s.value} value={s.value}>{s.label}</option>
+            <option key={s.value} value={s.value}>
+              {s.label}
+            </option>
           ))}
         </select>
       </div>
@@ -323,7 +323,9 @@ export default function BuildConfigurator({ config, onChange }) {
               {estimate.lowFmt} – {estimate.highFmt}
             </div>
             {estimate.stateNote && (
-              <div className="text-brand-navy/50 text-xs text-center mt-1">{estimate.stateNote}</div>
+              <div className="text-brand-navy/50 text-xs text-center mt-1">
+                {estimate.stateNote}
+              </div>
             )}
             <p className="text-brand-navy/40 text-[11px] text-center mt-2 leading-relaxed">
               {estimate.disclaimer}

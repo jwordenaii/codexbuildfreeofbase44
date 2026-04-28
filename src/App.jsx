@@ -8,34 +8,34 @@ import ScrollToTop from './components/ScrollToTop'
 import ErrorBoundary from './components/ErrorBoundary'
 
 // Lazy-loaded pages for code splitting
-const Home          = lazy(() => import('./pages/Home'))
-const Services      = lazy(() => import('./pages/Services'))
-const About         = lazy(() => import('./pages/About'))
-const Contact       = lazy(() => import('./pages/Contact'))
-const Quote         = lazy(() => import('./pages/Quote'))
-const Reviews       = lazy(() => import('./pages/Reviews'))
-const NotFound      = lazy(() => import('./pages/NotFound'))
+const Home = lazy(() => import('./pages/Home'))
+const Services = lazy(() => import('./pages/Services'))
+const About = lazy(() => import('./pages/About'))
+const Contact = lazy(() => import('./pages/Contact'))
+const Quote = lazy(() => import('./pages/Quote'))
+const Reviews = lazy(() => import('./pages/Reviews'))
+const NotFound = lazy(() => import('./pages/NotFound'))
 const CommandCenter = lazy(() => import('./pages/CommandCenter'))
-const Projects      = lazy(() => import('./pages/Projects'))
-const Visualizer    = lazy(() => import('./pages/Visualizer'))
+const Projects = lazy(() => import('./pages/Projects'))
+const Visualizer = lazy(() => import('./pages/Visualizer'))
 
 // Service area pages
-const ServiceAreas  = lazy(() => import('./pages/ServiceAreas'))
-const CityPage      = lazy(() => import('./pages/CityPage'))
+const ServiceAreas = lazy(() => import('./pages/ServiceAreas'))
+const CityPage = lazy(() => import('./pages/CityPage'))
 const StatePavingPage = lazy(() => import('./pages/StatePavingPage'))
 
 // Blog / knowledge center
-const Blog          = lazy(() => import('./pages/Blog'))
-const BlogPost      = lazy(() => import('./pages/BlogPost'))
+const Blog = lazy(() => import('./pages/Blog'))
+const BlogPost = lazy(() => import('./pages/BlogPost'))
 
 // Advisory pages — lazy-loaded so the 512KB legal dataset never hits the main bundle
-const AdvisoryHub          = lazy(() => import('./pages/advisory/AdvisoryHub'))
-const StateDetail          = lazy(() => import('./pages/advisory/StateDetail'))
-const UtilitiesHub         = lazy(() => import('./pages/advisory/UtilitiesHub'))
-const StateCompare         = lazy(() => import('./pages/advisory/StateCompare'))
-const CategoryHub          = lazy(() => import('./pages/advisory/CategoryHub'))
+const AdvisoryHub = lazy(() => import('./pages/advisory/AdvisoryHub'))
+const StateDetail = lazy(() => import('./pages/advisory/StateDetail'))
+const UtilitiesHub = lazy(() => import('./pages/advisory/UtilitiesHub'))
+const StateCompare = lazy(() => import('./pages/advisory/StateCompare'))
+const CategoryHub = lazy(() => import('./pages/advisory/CategoryHub'))
 const LegalStrategyAdvisor = lazy(() => import('./pages/advisory/LegalStrategyAdvisor'))
-const ContractorRanker     = lazy(() => import('./pages/advisory/ContractorRanker'))
+const ContractorRanker = lazy(() => import('./pages/advisory/ContractorRanker'))
 
 function PageLoader() {
   return (
@@ -55,35 +55,35 @@ export default function App() {
           <main className="flex-1">
             <Suspense fallback={<PageLoader />}>
               <Routes>
-                <Route path="/"              element={<Home />} />
-                <Route path="/services"      element={<Services />} />
-                <Route path="/about"         element={<About />} />
-                <Route path="/contact"       element={<Contact />} />
-                <Route path="/quote"         element={<Quote />} />
-                <Route path="/reviews"       element={<Reviews />} />
+                <Route path="/" element={<Home />} />
+                <Route path="/services" element={<Services />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/quote" element={<Quote />} />
+                <Route path="/reviews" element={<Reviews />} />
                 {/* Service areas */}
-                <Route path="/service-areas"             element={<ServiceAreas />} />
-                <Route path="/service-areas/:citySlug"   element={<CityPage />} />
-                <Route path="/states/:stateSlug"         element={<StatePavingPage />} />
+                <Route path="/service-areas" element={<ServiceAreas />} />
+                <Route path="/service-areas/:citySlug" element={<CityPage />} />
+                <Route path="/states/:stateSlug" element={<StatePavingPage />} />
                 {/* Blog / Knowledge Center */}
-                <Route path="/blog"          element={<Blog />} />
-                <Route path="/blog/:slug"    element={<BlogPost />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/blog/:slug" element={<BlogPost />} />
                 {/* Command Center — operations dashboard */}
                 <Route path="/command-center" element={<CommandCenter />} />
                 {/* Projects / Portfolio */}
-                <Route path="/projects"      element={<Projects />} />
+                <Route path="/projects" element={<Projects />} />
                 {/* 3-D Property Visualizer */}
-                <Route path="/visualizer"    element={<Visualizer />} />
+                <Route path="/visualizer" element={<Visualizer />} />
                 {/* Advisory Board routes */}
-                <Route path="/advisory"                            element={<AdvisoryHub />} />
-                <Route path="/advisory/state/:stateCode"           element={<StateDetail />} />
-                <Route path="/advisory/utilities"                  element={<UtilitiesHub />} />
-                <Route path="/advisory/compare"                    element={<StateCompare />} />
-                <Route path="/advisory/legal-strategy"             element={<LegalStrategyAdvisor />} />
-                <Route path="/advisory/contractor-ranker"          element={<ContractorRanker />} />
+                <Route path="/advisory" element={<AdvisoryHub />} />
+                <Route path="/advisory/state/:stateCode" element={<StateDetail />} />
+                <Route path="/advisory/utilities" element={<UtilitiesHub />} />
+                <Route path="/advisory/compare" element={<StateCompare />} />
+                <Route path="/advisory/legal-strategy" element={<LegalStrategyAdvisor />} />
+                <Route path="/advisory/contractor-ranker" element={<ContractorRanker />} />
                 {/* Generic category hub — handles licensing, construction-law, safety, etc. */}
-                <Route path="/advisory/:category"                  element={<CategoryHub />} />
-                <Route path="*"         element={<NotFound />} />
+                <Route path="/advisory/:category" element={<CategoryHub />} />
+                <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>
           </main>

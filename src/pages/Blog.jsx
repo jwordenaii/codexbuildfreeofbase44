@@ -60,10 +60,15 @@ function BlogCard({ post, index, featured = false }) {
       {/* Category + date bar */}
       <div className="bg-brand-navy/5 px-6 pt-5 pb-3 flex items-center justify-between gap-4">
         <span className="text-xs font-bold uppercase tracking-widest text-brand-amber">
-          {CATEGORY_ICONS[post.category]} {BLOG_CATEGORIES.find((c) => c.value === post.category)?.label ?? post.category}
+          {CATEGORY_ICONS[post.category]}{' '}
+          {BLOG_CATEGORIES.find((c) => c.value === post.category)?.label ?? post.category}
         </span>
         <span className="text-brand-navy/40 text-xs">
-          {new Date(post.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+          {new Date(post.date).toLocaleDateString('en-US', {
+            month: 'long',
+            day: 'numeric',
+            year: 'numeric',
+          })}
         </span>
       </div>
 
@@ -125,7 +130,9 @@ export default function Blog() {
   }, [activeCategory, searchQuery])
 
   const featuredPost = BLOG_POSTS.find((p) => p.featured)
-  const remainingPosts = filteredPosts.filter((p) => !p.featured || activeCategory !== 'all' || searchQuery)
+  const remainingPosts = filteredPosts.filter(
+    (p) => !p.featured || activeCategory !== 'all' || searchQuery
+  )
 
   return (
     <>
@@ -150,8 +157,8 @@ export default function Blog() {
             Paving Tips &amp; Resources
           </h1>
           <p className="text-white/70 text-xl max-w-2xl mx-auto">
-            40 years of asphalt expertise — maintenance guides, how-to articles,
-            commercial paving standards, and local Virginia insights.
+            40 years of asphalt expertise — maintenance guides, how-to articles, commercial paving
+            standards, and local Virginia insights.
           </p>
         </div>
       </section>
@@ -191,10 +198,16 @@ export default function Blog() {
             />
             <svg
               className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-navy/30"
-              fill="none" stroke="currentColor" viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
             </svg>
           </div>
         </div>
@@ -203,7 +216,6 @@ export default function Blog() {
       {/* ── Posts grid ── */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
           {/* Featured post (only on unfiltered view) */}
           {featuredPost && activeCategory === 'all' && !searchQuery && (
             <div className="mb-12">
@@ -218,7 +230,10 @@ export default function Blog() {
               <div className="font-display font-bold text-xl mb-2">No articles found</div>
               <button
                 type="button"
-                onClick={() => { setActiveCategory('all'); setSearchQuery('') }}
+                onClick={() => {
+                  setActiveCategory('all')
+                  setSearchQuery('')
+                }}
                 className="text-brand-amber font-semibold hover:underline text-sm"
               >
                 Clear filters →
@@ -237,13 +252,15 @@ export default function Blog() {
       {/* ── Newsletter / Contact CTA ── */}
       <section className="py-16 bg-brand-navy text-white">
         <div className="max-w-3xl mx-auto px-4 text-center">
-          <span className="text-brand-amber text-xs font-bold uppercase tracking-widest">Get Expert Help</span>
+          <span className="text-brand-amber text-xs font-bold uppercase tracking-widest">
+            Get Expert Help
+          </span>
           <h2 className="font-display font-black text-3xl mt-2 mb-3">
             Have a Specific Project Question?
           </h2>
           <p className="text-white/60 mb-8">
-            Our team has 40 years of answers. Ask us directly — free estimates and
-            free advice, no sales pressure.
+            Our team has 40 years of answers. Ask us directly — free estimates and free advice, no
+            sales pressure.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/quote" className="btn-primary">

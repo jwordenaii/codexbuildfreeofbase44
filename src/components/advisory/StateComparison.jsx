@@ -13,9 +13,7 @@ export default function StateComparison({ states = [], fields = [], title }) {
   return (
     <div className="overflow-x-auto rounded-xl border border-brand-navy/10 shadow-sm">
       {title && (
-        <div className="bg-brand-navy text-white px-4 py-3 font-semibold text-sm">
-          {title}
-        </div>
+        <div className="bg-brand-navy text-white px-4 py-3 font-semibold text-sm">{title}</div>
       )}
       <table className="min-w-full text-sm">
         <thead className="bg-brand-navy/5">
@@ -46,7 +44,7 @@ export default function StateComparison({ states = [], fields = [], title }) {
               </td>
               {states.map((s) => (
                 <td key={s.abbr ?? s.state} className="px-4 py-3 align-top text-brand-navy">
-                  {render ? render(s[key], s) : (s[key] != null ? String(s[key]) : '—')}
+                  {render ? render(s[key], s) : s[key] != null ? String(s[key]) : '—'}
                 </td>
               ))}
             </tr>

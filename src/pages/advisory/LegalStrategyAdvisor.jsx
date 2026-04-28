@@ -28,8 +28,8 @@ async function loadLegalData() {
     import('../../data/legal/contractLaw'),
   ])
   return {
-    lienData:     lien.default,
-    payData:      pay.default,
+    lienData: lien.default,
+    payData: pay.default,
     contractData: contract.default,
   }
 }
@@ -38,11 +38,15 @@ async function loadLegalData() {
 
 function ScoreBadge({ score, label }) {
   const colorClass =
-    score >= 75 ? 'bg-green-100 text-green-800 border-green-200' :
-    score >= 55 ? 'bg-yellow-100 text-yellow-800 border-yellow-200' :
-                  'bg-red-100 text-red-800 border-red-200'
+    score >= 75
+      ? 'bg-green-100 text-green-800 border-green-200'
+      : score >= 55
+        ? 'bg-yellow-100 text-yellow-800 border-yellow-200'
+        : 'bg-red-100 text-red-800 border-red-200'
   return (
-    <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold border ${colorClass}`}>
+    <span
+      className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold border ${colorClass}`}
+    >
       {score}/100 · {label}
     </span>
   )
@@ -50,9 +54,7 @@ function ScoreBadge({ score, label }) {
 
 function ScoreBar({ score, label, color }) {
   const barColor =
-    color === 'green' ? 'bg-green-500' :
-    color === 'yellow' ? 'bg-yellow-400' :
-    'bg-red-500'
+    color === 'green' ? 'bg-green-500' : color === 'yellow' ? 'bg-yellow-400' : 'bg-red-500'
   return (
     <div>
       <div className="flex justify-between text-xs font-medium text-brand-navy/60 mb-1">
@@ -86,18 +88,27 @@ function TopStatesTable({ states }) {
         </thead>
         <tbody>
           {states.slice(0, 10).map((s, i) => (
-            <tr key={s.abbr} className="border-t border-brand-navy/5 hover:bg-brand-amber/5 transition-colors">
+            <tr
+              key={s.abbr}
+              className="border-t border-brand-navy/5 hover:bg-brand-amber/5 transition-colors"
+            >
               <td className="px-4 py-2 text-brand-navy/50">#{i + 1}</td>
               <td className="px-4 py-2 font-medium text-brand-navy">
                 <Link to={`/advisory/state/${s.abbr}`} className="hover:text-brand-amber">
                   {s.state} ({s.abbr})
                 </Link>
               </td>
-              <td className="px-4 py-2">{(s.weighted ?? s.composite ?? 0)}/100</td>
+              <td className="px-4 py-2">{s.weighted ?? s.composite ?? 0}/100</td>
               <td className="px-4 py-2">
                 <ScoreBadge
                   score={s.weighted ?? s.composite ?? 0}
-                  label={(s.weighted ?? s.composite ?? 0) >= 75 ? 'STRONG' : (s.weighted ?? s.composite ?? 0) >= 55 ? 'MODERATE' : 'WEAK'}
+                  label={
+                    (s.weighted ?? s.composite ?? 0) >= 75
+                      ? 'STRONG'
+                      : (s.weighted ?? s.composite ?? 0) >= 55
+                        ? 'MODERATE'
+                        : 'WEAK'
+                  }
                 />
               </td>
             </tr>
@@ -115,12 +126,12 @@ export default function LegalStrategyAdvisor() {
   const [loading, setLoading] = useState(true)
 
   const [selectedState, setSelectedState] = useState('CA')
-  const [disputeType, setDisputeType]     = useState('lien')
-  const [role, setRole]                   = useState('gc')
-  const [analyzed, setAnalyzed]           = useState(false)
+  const [disputeType, setDisputeType] = useState('lien')
+  const [role, setRole] = useState('gc')
+  const [analyzed, setAnalyzed] = useState(false)
 
   useEffect(() => {
-    loadLegalData().then(data => {
+    loadLegalData().then((data) => {
       setLegalData(data)
       setLoading(false)
     })
@@ -132,17 +143,23 @@ export default function LegalStrategyAdvisor() {
       disputeType,
       legalData.lienData,
       legalData.payData,
-      legalData.contractData,
+      legalData.contractData
     )
   }, [legalData, disputeType])
 
   const recommendation = useMemo(() => {
     if (!legalData || !selectedState || !analyzed) return null
     const abbr = selectedState
-    const lienEntry     = legalData.lienData.find(e => e.abbr === abbr)
-    const payEntry      = legalData.payData.find(e => e.abbr === abbr)
-    const contractEntry = legalData.contractData.find(e => e.abbr === abbr)
-    return recommendStrategy(abbr, disputeType, role, { lienEntry, payEntry, contractEntry }, allRanked)
+    const lienEntry = legalData.lienData.find((e) => e.abbr === abbr)
+    const payEntry = legalData.payData.find((e) => e.abbr === abbr)
+    const contractEntry = legalData.contractData.find((e) => e.abbr === abbr)
+    return recommendStrategy(
+      abbr,
+      disputeType,
+      role,
+      { lienEntry, payEntry, contractEntry },
+      allRanked
+    )
   }, [legalData, selectedState, disputeType, role, analyzed, allRanked])
 
   const handleAnalyze = () => setAnalyzed(true)
@@ -167,8 +184,7 @@ export default function LegalStrategyAdvisor() {
             Legal Strategy Advisor · All 50 States
           </span>
           <h1 className="font-display font-black text-5xl md:text-6xl mb-4">
-            Negotiation &amp;{' '}
-            <span className="text-brand-amber">Legal Strategy</span>
+            Negotiation &amp; <span className="text-brand-amber">Legal Strategy</span>
           </h1>
           <p className="text-white/70 text-xl max-w-3xl mx-auto">
             Score your state&apos;s legal environment, identify your strongest negotiating position,
@@ -189,20 +205,30 @@ export default function LegalStrategyAdvisor() {
             {/* State */}
             <StateSelector
               value={selectedState}
-              onChange={v => { setSelectedState(v); setAnalyzed(false) }}
+              onChange={(v) => {
+                setSelectedState(v)
+                setAnalyzed(false)
+              }}
               label="Project State"
             />
 
             {/* Dispute type */}
             <div className="space-y-1">
-              <label className="block text-sm font-medium text-brand-navy">Dispute / Situation Type</label>
+              <label className="block text-sm font-medium text-brand-navy">
+                Dispute / Situation Type
+              </label>
               <select
                 value={disputeType}
-                onChange={e => { setDisputeType(e.target.value); setAnalyzed(false) }}
+                onChange={(e) => {
+                  setDisputeType(e.target.value)
+                  setAnalyzed(false)
+                }}
                 className="block w-full px-3 py-2 border border-brand-navy/20 rounded-lg bg-white text-brand-navy text-sm focus:outline-none focus:ring-2 focus:ring-brand-amber"
               >
-                {DISPUTE_TYPES.map(d => (
-                  <option key={d.value} value={d.value}>{d.label}</option>
+                {DISPUTE_TYPES.map((d) => (
+                  <option key={d.value} value={d.value}>
+                    {d.label}
+                  </option>
                 ))}
               </select>
             </div>
@@ -212,11 +238,16 @@ export default function LegalStrategyAdvisor() {
               <label className="block text-sm font-medium text-brand-navy">Your Role</label>
               <select
                 value={role}
-                onChange={e => { setRole(e.target.value); setAnalyzed(false) }}
+                onChange={(e) => {
+                  setRole(e.target.value)
+                  setAnalyzed(false)
+                }}
                 className="block w-full px-3 py-2 border border-brand-navy/20 rounded-lg bg-white text-brand-navy text-sm focus:outline-none focus:ring-2 focus:ring-brand-amber"
               >
-                {ROLES.map(r => (
-                  <option key={r.value} value={r.value}>{r.label}</option>
+                {ROLES.map((r) => (
+                  <option key={r.value} value={r.value}>
+                    {r.label}
+                  </option>
                 ))}
               </select>
             </div>
@@ -243,20 +274,57 @@ export default function LegalStrategyAdvisor() {
                   {recommendation.scores.abbr} · Legal Strength
                 </h3>
                 <div className="text-center py-4">
-                  <div className={`text-5xl font-black mb-1 ${
-                    recommendation.strengthColor === 'green' ? 'text-green-600' :
-                    recommendation.strengthColor === 'yellow' ? 'text-yellow-600' :
-                    'text-red-600'
-                  }`}>
+                  <div
+                    className={`text-5xl font-black mb-1 ${
+                      recommendation.strengthColor === 'green'
+                        ? 'text-green-600'
+                        : recommendation.strengthColor === 'yellow'
+                          ? 'text-yellow-600'
+                          : 'text-red-600'
+                    }`}
+                  >
                     {recommendation.composite}
                   </div>
                   <div className="text-sm text-brand-navy/60">out of 100</div>
-                  <ScoreBadge score={recommendation.composite} label={recommendation.strengthLabel} />
+                  <ScoreBadge
+                    score={recommendation.composite}
+                    label={recommendation.strengthLabel}
+                  />
                 </div>
                 <div className="space-y-3">
-                  <ScoreBar score={recommendation.scores.lien}    label="Lien Law"     color={recommendation.scores.lien    >= 75 ? 'green' : recommendation.scores.lien    >= 55 ? 'yellow' : 'red'} />
-                  <ScoreBar score={recommendation.scores.payment}  label="Prompt Pay"  color={recommendation.scores.payment  >= 75 ? 'green' : recommendation.scores.payment  >= 55 ? 'yellow' : 'red'} />
-                  <ScoreBar score={recommendation.scores.contract} label="Contract Law" color={recommendation.scores.contract >= 75 ? 'green' : recommendation.scores.contract >= 55 ? 'yellow' : 'red'} />
+                  <ScoreBar
+                    score={recommendation.scores.lien}
+                    label="Lien Law"
+                    color={
+                      recommendation.scores.lien >= 75
+                        ? 'green'
+                        : recommendation.scores.lien >= 55
+                          ? 'yellow'
+                          : 'red'
+                    }
+                  />
+                  <ScoreBar
+                    score={recommendation.scores.payment}
+                    label="Prompt Pay"
+                    color={
+                      recommendation.scores.payment >= 75
+                        ? 'green'
+                        : recommendation.scores.payment >= 55
+                          ? 'yellow'
+                          : 'red'
+                    }
+                  />
+                  <ScoreBar
+                    score={recommendation.scores.contract}
+                    label="Contract Law"
+                    color={
+                      recommendation.scores.contract >= 75
+                        ? 'green'
+                        : recommendation.scores.contract >= 55
+                          ? 'yellow'
+                          : 'red'
+                    }
+                  />
                 </div>
               </div>
 
@@ -283,7 +351,7 @@ export default function LegalStrategyAdvisor() {
 
                 <div>
                   <h4 className="text-sm font-bold text-brand-navy mb-2">
-                    Your Leverage ({ROLES.find(r => r.value === recommendation.role)?.label})
+                    Your Leverage ({ROLES.find((r) => r.value === recommendation.role)?.label})
                   </h4>
                   <ul className="space-y-1">
                     {recommendation.strategy.roleLeverage.map((point, i) => (
@@ -297,12 +365,18 @@ export default function LegalStrategyAdvisor() {
 
                 {recommendation.strategy.weakPositionAdvice && (
                   <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
-                    <p className="text-xs font-bold text-yellow-800 mb-1">⚠️ If in a Weak Position</p>
-                    <p className="text-xs text-yellow-700">{recommendation.strategy.weakPositionAdvice}</p>
+                    <p className="text-xs font-bold text-yellow-800 mb-1">
+                      ⚠️ If in a Weak Position
+                    </p>
+                    <p className="text-xs text-yellow-700">
+                      {recommendation.strategy.weakPositionAdvice}
+                    </p>
                   </div>
                 )}
 
-                <p className="text-xs text-brand-navy/40 italic">{recommendation.strategy.citationNote}</p>
+                <p className="text-xs text-brand-navy/40 italic">
+                  {recommendation.strategy.citationNote}
+                </p>
               </div>
             </div>
 
@@ -310,11 +384,12 @@ export default function LegalStrategyAdvisor() {
             <div className="card p-6">
               <h3 className="font-display font-bold text-brand-navy text-lg mb-2">
                 Strongest States for{' '}
-                {DISPUTE_TYPES.find(d => d.value === recommendation.disputeType)?.label}
+                {DISPUTE_TYPES.find((d) => d.value === recommendation.disputeType)?.label}
               </h3>
               <p className="text-brand-navy/60 text-sm mb-4">
-                When jurisdiction is negotiable, these states offer the strongest contractor protections
-                for this dispute type. Consider specifying governing law in your contract accordingly.
+                When jurisdiction is negotiable, these states offer the strongest contractor
+                protections for this dispute type. Consider specifying governing law in your
+                contract accordingly.
               </p>
               <TopStatesTable states={allRanked} />
             </div>
@@ -323,12 +398,10 @@ export default function LegalStrategyAdvisor() {
 
         {/* Bottom CTA */}
         <section className="bg-brand-navy rounded-2xl p-8 text-center text-white">
-          <h2 className="font-display font-black text-2xl mb-3">
-            Need a Contractor Ranking Tool?
-          </h2>
+          <h2 className="font-display font-black text-2xl mb-3">Need a Contractor Ranking Tool?</h2>
           <p className="text-white/70 mb-6 max-w-xl mx-auto">
-            Compare and rank contractor bids by price, licensing, bonding, and experience
-            to make confident hiring decisions.
+            Compare and rank contractor bids by price, licensing, bonding, and experience to make
+            confident hiring decisions.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/advisory/contractor-ranker" className="btn-primary">

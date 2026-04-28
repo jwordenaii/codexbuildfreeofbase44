@@ -13,8 +13,9 @@ export default [
     citation: 'Ala. Code § 41-16-3; § 8-29-1 et seq.',
     publicProjectsCovered: true,
     privateProjectsCovered: false,
-    notes: 'Alabama Prompt Payment Act covers public works. Private projects governed by contract terms.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Alabama Prompt Payment Act covers public works. Private projects governed by contract terms.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Alaska',
@@ -24,14 +25,16 @@ export default [
     interestRatePercent: 1.5,
     interestRateNote: 'Interest at 1.5% per month (18% annually) on overdue amounts',
     retainageMaxPercent: 5,
-    retainageReleaseNote: 'Retainage reduced to 5% after 50% completion; released within 30 days of final acceptance',
+    retainageReleaseNote:
+      'Retainage reduced to 5% after 50% completion; released within 30 days of final acceptance',
     payIfPaidEnforceable: true,
     payWhenPaidRule: 'Conditional',
     citation: 'AS § 36.90.200 et seq.; AS § 36.25.020',
     publicProjectsCovered: true,
     privateProjectsCovered: true,
-    notes: 'Alaska has both public and limited private prompt payment protections. Pay-if-paid clauses are recognized but subject to equitable limits.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Alaska has both public and limited private prompt payment protections. Pay-if-paid clauses are recognized but subject to equitable limits.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Arizona',
@@ -47,8 +50,9 @@ export default [
     citation: 'A.R.S. § 32-1129.01 et seq.',
     publicProjectsCovered: true,
     privateProjectsCovered: true,
-    notes: 'Prompt payment applies to both public and private construction. 7 days after owner payment to pass through.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Prompt payment applies to both public and private construction. 7 days after owner payment to pass through.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Arkansas',
@@ -64,8 +68,9 @@ export default [
     citation: 'Ark. Code Ann. § 22-9-203 et seq.',
     publicProjectsCovered: true,
     privateProjectsCovered: false,
-    notes: 'Covers state and local government contracts. Private sector governed by contract terms.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Covers state and local government contracts. Private sector governed by contract terms.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'California',
@@ -73,16 +78,19 @@ export default [
     ownerToGcDays: 30,
     gcToSubDays: 7,
     interestRatePercent: 2,
-    interestRateNote: 'Interest at 2% per month on late public contract payments; private at legal rate',
+    interestRateNote:
+      'Interest at 2% per month on late public contract payments; private at legal rate',
     retainageMaxPercent: 5,
-    retainageReleaseNote: 'Public works retainage reduced to 5%; released within 60 days of final completion',
+    retainageReleaseNote:
+      'Public works retainage reduced to 5%; released within 60 days of final completion',
     payIfPaidEnforceable: false,
     payWhenPaidRule: 'Not recognized',
     citation: 'Cal. Pub. Cont. Code § 7107; Cal. Civ. Code § 8800 et seq.',
     publicProjectsCovered: true,
     privateProjectsCovered: true,
-    notes: 'California does not enforce pay-if-paid clauses on construction contracts. Both public and private projects covered. Strong protections for subcontractors and suppliers.',
-    lastVerified: '2026-01-01'
+    notes:
+      'California does not enforce pay-if-paid clauses on construction contracts. Both public and private projects covered. Strong protections for subcontractors and suppliers.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Colorado',
@@ -92,14 +100,16 @@ export default [
     interestRatePercent: 1,
     interestRateNote: 'Interest at 1% per month (12% annually) on late amounts',
     retainageMaxPercent: 5,
-    retainageReleaseNote: 'Retainage released within 60 days of substantial completion on public works',
+    retainageReleaseNote:
+      'Retainage released within 60 days of substantial completion on public works',
     payIfPaidEnforceable: true,
     payWhenPaidRule: 'Conditional',
     citation: 'Colo. Rev. Stat. § 24-91-103 et seq.',
     publicProjectsCovered: true,
     privateProjectsCovered: false,
-    notes: 'Public Works Prompt Payment Act covers state and local public works. 5% retainage cap after 50% completion on public projects.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Public Works Prompt Payment Act covers state and local public works. 5% retainage cap after 50% completion on public projects.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Connecticut',
@@ -109,14 +119,16 @@ export default [
     interestRatePercent: 1,
     interestRateNote: 'Interest at 1% per month on overdue payments',
     retainageMaxPercent: 5,
-    retainageReleaseNote: 'Retainage released within 45 days of final acceptance on public contracts',
+    retainageReleaseNote:
+      'Retainage released within 45 days of final acceptance on public contracts',
     payIfPaidEnforceable: true,
     payWhenPaidRule: 'Conditional',
     citation: 'Conn. Gen. Stat. § 49-41a et seq.',
     publicProjectsCovered: true,
     privateProjectsCovered: false,
-    notes: 'Prompt Payment Act covers public construction contracts. Retainage reduced to 5% on public works.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Prompt Payment Act covers public construction contracts. Retainage reduced to 5% on public works.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Delaware',
@@ -133,7 +145,7 @@ export default [
     publicProjectsCovered: true,
     privateProjectsCovered: false,
     notes: 'Public works prompt payment statute. Private projects governed by contract.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Florida',
@@ -141,16 +153,19 @@ export default [
     ownerToGcDays: 25,
     gcToSubDays: 10,
     interestRatePercent: 1,
-    interestRateNote: 'Interest at 1% per month on overdue amounts (or current prevailing interest rate, whichever is greater)',
+    interestRateNote:
+      'Interest at 1% per month on overdue amounts (or current prevailing interest rate, whichever is greater)',
     retainageMaxPercent: 10,
-    retainageReleaseNote: 'Reduced to 5% after 50% completion; released within 20 days of final payment',
+    retainageReleaseNote:
+      'Reduced to 5% after 50% completion; released within 20 days of final payment',
     payIfPaidEnforceable: true,
     payWhenPaidRule: 'Conditional',
     citation: 'Fla. Stat. § 255.073 et seq. (public); Fla. Stat. § 715.12 (private)',
     publicProjectsCovered: true,
     privateProjectsCovered: true,
-    notes: 'Florida has one of the most comprehensive prompt payment laws. Covers both public and private construction. Owner must pay within 25 days of invoice; GC to sub within 10 days of receipt of payment.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Florida has one of the most comprehensive prompt payment laws. Covers both public and private construction. Owner must pay within 25 days of invoice; GC to sub within 10 days of receipt of payment.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Georgia',
@@ -166,8 +181,9 @@ export default [
     citation: 'O.C.G.A. § 13-11-1 et seq.',
     publicProjectsCovered: true,
     privateProjectsCovered: true,
-    notes: 'Georgia Prompt Payment Act covers both public and private commercial construction. Owner has 15 days after receipt of payment request.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Georgia Prompt Payment Act covers both public and private commercial construction. Owner has 15 days after receipt of payment request.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Hawaii',
@@ -183,8 +199,9 @@ export default [
     citation: 'Haw. Rev. Stat. § 103-10 et seq.',
     publicProjectsCovered: true,
     privateProjectsCovered: false,
-    notes: 'Public works prompt payment law. Retainage limited to 5% after 50% completion on state contracts.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Public works prompt payment law. Retainage limited to 5% after 50% completion on state contracts.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Idaho',
@@ -200,8 +217,9 @@ export default [
     citation: 'Idaho Code § 54-1908 et seq.',
     publicProjectsCovered: true,
     privateProjectsCovered: false,
-    notes: 'Idaho prompt payment law covers public construction. Retainage reduced to 5% after 50% completion.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Idaho prompt payment law covers public construction. Retainage reduced to 5% after 50% completion.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Illinois',
@@ -217,8 +235,9 @@ export default [
     citation: '30 ILCS 550/1 et seq. (State Prompt Payment Act); 815 ILCS 603 (Private)',
     publicProjectsCovered: true,
     privateProjectsCovered: true,
-    notes: 'Illinois has both public and private prompt payment laws. The Illinois Private Prompt Payment Act (815 ILCS 603) covers private commercial construction.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Illinois has both public and private prompt payment laws. The Illinois Private Prompt Payment Act (815 ILCS 603) covers private commercial construction.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Indiana',
@@ -235,7 +254,7 @@ export default [
     publicProjectsCovered: true,
     privateProjectsCovered: false,
     notes: 'Public works prompt payment law. Owner has 35 days from receipt of payment request.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Iowa',
@@ -252,7 +271,7 @@ export default [
     publicProjectsCovered: true,
     privateProjectsCovered: false,
     notes: 'Iowa public works prompt payment. 5% retainage cap on public projects.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Kansas',
@@ -269,7 +288,7 @@ export default [
     publicProjectsCovered: true,
     privateProjectsCovered: false,
     notes: 'Public works prompt payment law. 5% retainage cap on public contracts.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Kentucky',
@@ -286,7 +305,7 @@ export default [
     publicProjectsCovered: true,
     privateProjectsCovered: true,
     notes: 'Kentucky prompt payment law covers both public and private construction projects.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Louisiana',
@@ -302,8 +321,9 @@ export default [
     citation: 'La. Rev. Stat. § 38:2241 et seq.',
     publicProjectsCovered: true,
     privateProjectsCovered: false,
-    notes: 'Louisiana Public Works Act governs payment on public projects. Private governed by contract.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Louisiana Public Works Act governs payment on public projects. Private governed by contract.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Maine',
@@ -320,7 +340,7 @@ export default [
     publicProjectsCovered: true,
     privateProjectsCovered: false,
     notes: 'Maine public prompt payment law. Private projects governed by contract.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Maryland',
@@ -336,8 +356,9 @@ export default [
     citation: 'Md. Code Ann., State Fin. & Proc. § 17-101 et seq.',
     publicProjectsCovered: true,
     privateProjectsCovered: false,
-    notes: 'Maryland Prompt Payment Act covers state and local public works. Private sector by contract.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Maryland Prompt Payment Act covers state and local public works. Private sector by contract.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Massachusetts',
@@ -347,14 +368,16 @@ export default [
     interestRatePercent: 1,
     interestRateNote: 'Interest at 1% per month on overdue amounts on public contracts',
     retainageMaxPercent: 5,
-    retainageReleaseNote: 'Retainage released within 65 days of substantial completion on public works',
+    retainageReleaseNote:
+      'Retainage released within 65 days of substantial completion on public works',
     payIfPaidEnforceable: false,
     payWhenPaidRule: 'Not recognized',
     citation: 'M.G.L. c. 30, § 39K; M.G.L. c. 149, § 29F',
     publicProjectsCovered: true,
     privateProjectsCovered: true,
-    notes: 'Massachusetts does not enforce pay-if-paid clauses. Both public and private projects covered. M.G.L. c. 149, § 29F covers private construction.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Massachusetts does not enforce pay-if-paid clauses. Both public and private projects covered. M.G.L. c. 149, § 29F covers private construction.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Michigan',
@@ -370,8 +393,9 @@ export default [
     citation: 'MCL § 570.1115 et seq.',
     publicProjectsCovered: true,
     privateProjectsCovered: true,
-    notes: 'Michigan Construction Lien Act provides payment protections on both public and private projects.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Michigan Construction Lien Act provides payment protections on both public and private projects.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Minnesota',
@@ -388,7 +412,7 @@ export default [
     publicProjectsCovered: true,
     privateProjectsCovered: false,
     notes: 'Public agency prompt payment law. 5% retainage cap on public construction.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Mississippi',
@@ -405,7 +429,7 @@ export default [
     publicProjectsCovered: true,
     privateProjectsCovered: false,
     notes: 'Mississippi public works prompt payment. Longer payment periods than most states.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Missouri',
@@ -422,7 +446,7 @@ export default [
     publicProjectsCovered: true,
     privateProjectsCovered: false,
     notes: 'Missouri public works prompt payment. Private projects governed by contract.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Montana',
@@ -439,7 +463,7 @@ export default [
     publicProjectsCovered: true,
     privateProjectsCovered: false,
     notes: 'Montana public works prompt payment. 5% retainage cap.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Nebraska',
@@ -456,7 +480,7 @@ export default [
     publicProjectsCovered: true,
     privateProjectsCovered: false,
     notes: 'Nebraska public works prompt payment act.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Nevada',
@@ -473,7 +497,7 @@ export default [
     publicProjectsCovered: true,
     privateProjectsCovered: false,
     notes: 'Nevada public works prompt payment law. Private governed by contract.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New Hampshire',
@@ -490,7 +514,7 @@ export default [
     publicProjectsCovered: true,
     privateProjectsCovered: false,
     notes: 'Public works prompt payment. Private projects governed by contract.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New Jersey',
@@ -500,14 +524,16 @@ export default [
     interestRatePercent: 2,
     interestRateNote: 'Interest at 2% per month on overdue amounts',
     retainageMaxPercent: 2,
-    retainageReleaseNote: 'Retainage reduced after 50% completion; released within 30 days of substantial completion',
+    retainageReleaseNote:
+      'Retainage reduced after 50% completion; released within 30 days of substantial completion',
     payIfPaidEnforceable: true,
     payWhenPaidRule: 'Conditional',
     citation: 'N.J. Stat. Ann. § 2A:30A-1 et seq.',
     publicProjectsCovered: true,
     privateProjectsCovered: true,
-    notes: 'New Jersey Prompt Payment Act covers public and private construction. High interest rate of 2% per month.',
-    lastVerified: '2026-01-01'
+    notes:
+      'New Jersey Prompt Payment Act covers public and private construction. High interest rate of 2% per month.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New Mexico',
@@ -524,7 +550,7 @@ export default [
     publicProjectsCovered: true,
     privateProjectsCovered: false,
     notes: 'New Mexico Prompt Payment Act for public works.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New York',
@@ -534,14 +560,15 @@ export default [
     interestRatePercent: 1,
     interestRateNote: 'Interest at 1% per month on overdue payments',
     retainageMaxPercent: 5,
-    retainageReleaseNote: 'Retainage reduced to 5% after 50% completion; released within 30 days of final acceptance',
+    retainageReleaseNote:
+      'Retainage reduced to 5% after 50% completion; released within 30 days of final acceptance',
     payIfPaidEnforceable: true,
     payWhenPaidRule: 'Conditional',
     citation: 'NY Gen. Mun. Law § 106-b et seq.; NY State Finance Law § 179',
     publicProjectsCovered: true,
     privateProjectsCovered: false,
     notes: 'New York Prompt Payment Act covers public agencies. 5% retainage cap on public works.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'North Carolina',
@@ -551,14 +578,16 @@ export default [
     interestRatePercent: 1,
     interestRateNote: 'Interest at 1% per month on overdue amounts',
     retainageMaxPercent: 5,
-    retainageReleaseNote: 'Retainage reduced to 5% after 50% completion; released within 60 days of completion',
+    retainageReleaseNote:
+      'Retainage reduced to 5% after 50% completion; released within 60 days of completion',
     payIfPaidEnforceable: false,
     payWhenPaidRule: 'Not recognized',
     citation: 'N.C. Gen. Stat. § 22C-1 et seq.',
     publicProjectsCovered: true,
     privateProjectsCovered: true,
-    notes: 'North Carolina does not enforce pay-if-paid clauses. Covers both public and private commercial construction. Strong sub-tier protections.',
-    lastVerified: '2026-01-01'
+    notes:
+      'North Carolina does not enforce pay-if-paid clauses. Covers both public and private commercial construction. Strong sub-tier protections.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'North Dakota',
@@ -575,7 +604,7 @@ export default [
     publicProjectsCovered: true,
     privateProjectsCovered: false,
     notes: 'North Dakota public works prompt payment.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Ohio',
@@ -591,8 +620,9 @@ export default [
     citation: 'Ohio Rev. Code § 4113.15 et seq.',
     publicProjectsCovered: true,
     privateProjectsCovered: true,
-    notes: 'Ohio Prompt Pay Act covers both public and private projects. Private project interest rate tied to statute.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Ohio Prompt Pay Act covers both public and private projects. Private project interest rate tied to statute.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Oklahoma',
@@ -609,7 +639,7 @@ export default [
     publicProjectsCovered: true,
     privateProjectsCovered: false,
     notes: 'Oklahoma public works prompt payment act.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Oregon',
@@ -626,7 +656,7 @@ export default [
     publicProjectsCovered: true,
     privateProjectsCovered: false,
     notes: 'Oregon public works prompt payment. 5% retainage cap. Private by contract.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Pennsylvania',
@@ -639,11 +669,13 @@ export default [
     retainageReleaseNote: 'Released within 30 days of final completion and acceptance',
     payIfPaidEnforceable: true,
     payWhenPaidRule: 'Conditional',
-    citation: '62 Pa. Stat. Ann. § 3901 et seq. (Commonwealth); 73 Pa. Stat. § 501 (Contractor and Subcontractor Payment Act)',
+    citation:
+      '62 Pa. Stat. Ann. § 3901 et seq. (Commonwealth); 73 Pa. Stat. § 501 (Contractor and Subcontractor Payment Act)',
     publicProjectsCovered: true,
     privateProjectsCovered: true,
-    notes: 'Pennsylvania Contractor and Subcontractor Payment Act (CASPA) covers private commercial construction. Commonwealth Procurement Code covers public.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Pennsylvania Contractor and Subcontractor Payment Act (CASPA) covers private commercial construction. Commonwealth Procurement Code covers public.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Rhode Island',
@@ -660,7 +692,7 @@ export default [
     publicProjectsCovered: true,
     privateProjectsCovered: false,
     notes: 'Rhode Island public works prompt payment.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'South Carolina',
@@ -676,8 +708,9 @@ export default [
     citation: 'S.C. Code Ann. § 11-35-3030 et seq.',
     publicProjectsCovered: true,
     privateProjectsCovered: false,
-    notes: 'South Carolina prompt payment on public procurement. 6% retainage cap after 50% completion.',
-    lastVerified: '2026-01-01'
+    notes:
+      'South Carolina prompt payment on public procurement. 6% retainage cap after 50% completion.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'South Dakota',
@@ -694,7 +727,7 @@ export default [
     publicProjectsCovered: true,
     privateProjectsCovered: false,
     notes: 'South Dakota public works prompt payment act.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Tennessee',
@@ -704,14 +737,16 @@ export default [
     interestRatePercent: 1.5,
     interestRateNote: 'Interest at 1.5% per month on overdue amounts',
     retainageMaxPercent: 5,
-    retainageReleaseNote: 'Released within 60 days of completion; retainage reduced to 5% after 50% completion',
+    retainageReleaseNote:
+      'Released within 60 days of completion; retainage reduced to 5% after 50% completion',
     payIfPaidEnforceable: true,
     payWhenPaidRule: 'Conditional',
     citation: 'Tenn. Code Ann. § 66-34-101 et seq. (Prompt Pay Act of 1991)',
     publicProjectsCovered: true,
     privateProjectsCovered: true,
-    notes: 'Tennessee Prompt Pay Act covers both public and private construction. One of the more comprehensive state laws.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Tennessee Prompt Pay Act covers both public and private construction. One of the more comprehensive state laws.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Texas',
@@ -719,16 +754,20 @@ export default [
     ownerToGcDays: 30,
     gcToSubDays: 7,
     interestRatePercent: 1.5,
-    interestRateNote: 'Interest at 1.5% per month (18% annually) on overdue public amounts; 1% per month on private',
+    interestRateNote:
+      'Interest at 1.5% per month (18% annually) on overdue public amounts; 1% per month on private',
     retainageMaxPercent: 10,
-    retainageReleaseNote: 'Released within 30 days of completion on public works; 30 days after acceptance on private',
+    retainageReleaseNote:
+      'Released within 30 days of completion on public works; 30 days after acceptance on private',
     payIfPaidEnforceable: true,
     payWhenPaidRule: 'Conditional',
-    citation: 'Tex. Gov\'t Code § 2251.001 et seq. (public); Tex. Prop. Code § 28.001 et seq. (private)',
+    citation:
+      "Tex. Gov't Code § 2251.001 et seq. (public); Tex. Prop. Code § 28.001 et seq. (private)",
     publicProjectsCovered: true,
     privateProjectsCovered: true,
-    notes: 'Texas has separate public and private prompt payment laws. Private Prompt Payment Act (Tex. Prop. Code Ch. 28) covers private construction. Strong subcontractor protections.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Texas has separate public and private prompt payment laws. Private Prompt Payment Act (Tex. Prop. Code Ch. 28) covers private construction. Strong subcontractor protections.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Utah',
@@ -745,7 +784,7 @@ export default [
     publicProjectsCovered: true,
     privateProjectsCovered: false,
     notes: 'Utah public works prompt payment law.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Vermont',
@@ -762,7 +801,7 @@ export default [
     publicProjectsCovered: true,
     privateProjectsCovered: false,
     notes: 'Vermont public works prompt payment. Private by contract.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Virginia',
@@ -772,14 +811,16 @@ export default [
     interestRatePercent: 1,
     interestRateNote: 'Interest at 1% per month on overdue amounts under public contracts',
     retainageMaxPercent: 5,
-    retainageReleaseNote: 'Reduced to 5% after 50% completion; released within 60 days of final completion',
+    retainageReleaseNote:
+      'Reduced to 5% after 50% completion; released within 60 days of final completion',
     payIfPaidEnforceable: true,
     payWhenPaidRule: 'Conditional',
     citation: 'Va. Code Ann. § 11-4.1 et seq.; § 2.2-4347 et seq.',
     publicProjectsCovered: true,
     privateProjectsCovered: true,
-    notes: 'Virginia Prompt Payment Act covers public contracts. Private sector also covered for commercial construction. 5% retainage cap.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Virginia Prompt Payment Act covers public contracts. Private sector also covered for commercial construction. 5% retainage cap.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Washington',
@@ -787,16 +828,19 @@ export default [
     ownerToGcDays: 30,
     gcToSubDays: 10,
     interestRatePercent: 1,
-    interestRateNote: 'Interest at 1% per month on overdue amounts; retainage earns interest if held more than 45 days',
+    interestRateNote:
+      'Interest at 1% per month on overdue amounts; retainage earns interest if held more than 45 days',
     retainageMaxPercent: 5,
-    retainageReleaseNote: 'Released within 60 days of final acceptance or 45 days if lien release provided',
+    retainageReleaseNote:
+      'Released within 60 days of final acceptance or 45 days if lien release provided',
     payIfPaidEnforceable: true,
     payWhenPaidRule: 'Conditional',
     citation: 'RCW § 60.28.011 et seq.',
     publicProjectsCovered: true,
     privateProjectsCovered: false,
-    notes: 'Washington public works prompt payment. Retainage fund held by public agency; can be converted to bonds after substantial completion.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Washington public works prompt payment. Retainage fund held by public agency; can be converted to bonds after substantial completion.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'West Virginia',
@@ -813,7 +857,7 @@ export default [
     publicProjectsCovered: true,
     privateProjectsCovered: false,
     notes: 'West Virginia public works prompt payment act.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Wisconsin',
@@ -830,7 +874,7 @@ export default [
     publicProjectsCovered: true,
     privateProjectsCovered: false,
     notes: 'Wisconsin public works prompt payment. Private by contract.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Wyoming',
@@ -847,6 +891,6 @@ export default [
     publicProjectsCovered: true,
     privateProjectsCovered: false,
     notes: 'Wyoming public works prompt payment act.',
-    lastVerified: '2026-01-01'
-  }
+    lastVerified: '2026-01-01',
+  },
 ]

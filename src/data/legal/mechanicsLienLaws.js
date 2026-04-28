@@ -14,7 +14,7 @@ export default [
     residentialOwnerOccupiedExceptions: true,
     citation: 'Ala. Code § 35-11-210 et seq.',
     notes: 'Homestead exemptions may limit lien rights on owner-occupied residential property.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Alaska',
@@ -23,15 +23,17 @@ export default [
     preliminaryNoticeDeadline: 'Before or within 5 days after first furnishing',
     preliminaryNoticeWho: ['Subcontractor', 'Supplier'],
     lienFilingDeadlineDays: 120,
-    lienFilingDeadlineNote: '120 days from completion of construction; 15-day written notice of lien rights required for subcontractors before first furnishing',
+    lienFilingDeadlineNote:
+      '120 days from completion of construction; 15-day written notice of lien rights required for subcontractors before first furnishing',
     lienForeClosureDeadlineDays: 180,
     noticeOfIntentRequired: true,
     noticeOfIntentDeadlineDays: 10,
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'AS § 34.35.050 et seq.',
-    notes: 'Notice of right to lien required within 5 days of first furnishing. 10-day notice of intent to lien required before filing.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Notice of right to lien required within 5 days of first furnishing. 10-day notice of intent to lien required before filing.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Arizona',
@@ -40,15 +42,17 @@ export default [
     preliminaryNoticeDeadline: 'Within 20 days of first furnishing',
     preliminaryNoticeWho: ['Subcontractor', 'Supplier', 'Equipment rental'],
     lienFilingDeadlineDays: 120,
-    lienFilingDeadlineNote: '120 days from completion, abandonment, or last furnishing of materials',
+    lienFilingDeadlineNote:
+      '120 days from completion, abandonment, or last furnishing of materials',
     lienForeClosureDeadlineDays: 180,
     noticeOfIntentRequired: false,
     noticeOfIntentDeadlineDays: null,
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'A.R.S. § 33-981 et seq.',
-    notes: 'Preliminary 20-day notice required for all parties except GC with direct contract with owner. Residential properties have same rules.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Preliminary 20-day notice required for all parties except GC with direct contract with owner. Residential properties have same rules.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Arkansas',
@@ -64,8 +68,9 @@ export default [
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment'],
     residentialOwnerOccupiedExceptions: true,
     citation: 'Ark. Code Ann. § 18-44-101 et seq.',
-    notes: 'Foreclosure suit must be filed within 15 months of last furnishing. Residential property has special notice requirements.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Foreclosure suit must be filed within 15 months of last furnishing. Residential property has special notice requirements.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'California',
@@ -74,15 +79,17 @@ export default [
     preliminaryNoticeDeadline: 'Within 20 days of first furnishing',
     preliminaryNoticeWho: ['Subcontractor', 'Supplier', 'Equipment rental', 'Design professional'],
     lienFilingDeadlineDays: 90,
-    lienFilingDeadlineNote: '90 days from completion of the project (notice of completion triggers 30-day filing period for GCs, 60 days for subs/suppliers)',
+    lienFilingDeadlineNote:
+      '90 days from completion of the project (notice of completion triggers 30-day filing period for GCs, 60 days for subs/suppliers)',
     lienForeClosureDeadlineDays: 90,
     noticeOfIntentRequired: false,
     noticeOfIntentDeadlineDays: null,
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment', 'Design professional'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'Cal. Civ. Code § 8100 et seq.',
-    notes: 'Preliminary 20-day notice required for all claimants except direct contractors. If owner records Notice of Completion: GC has 60 days, subs/suppliers have 30 days. Joint check protections available. Most robust lien law in the US.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Preliminary 20-day notice required for all claimants except direct contractors. If owner records Notice of Completion: GC has 60 days, subs/suppliers have 30 days. Joint check protections available. Most robust lien law in the US.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Colorado',
@@ -98,8 +105,9 @@ export default [
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'Colo. Rev. Stat. § 38-22-101 et seq.',
-    notes: 'No preliminary notice required. Lien statement must be filed within 4 months. Must commence foreclosure within 6 months of last furnishing or date lien filed.',
-    lastVerified: '2026-01-01'
+    notes:
+      'No preliminary notice required. Lien statement must be filed within 4 months. Must commence foreclosure within 6 months of last furnishing or date lien filed.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Connecticut',
@@ -115,8 +123,9 @@ export default [
     claimantTypes: ['GC', 'Subcontractor', 'Supplier'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'Conn. Gen. Stat. § 49-33 et seq.',
-    notes: 'Certificate of lien must be filed within 90 days. No preliminary notice required. Must serve copy of certificate on property owner within 30 days of filing.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Certificate of lien must be filed within 90 days. No preliminary notice required. Must serve copy of certificate on property owner within 30 days of filing.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Delaware',
@@ -125,15 +134,17 @@ export default [
     preliminaryNoticeDeadline: null,
     preliminaryNoticeWho: [],
     lienFilingDeadlineDays: 120,
-    lienFilingDeadlineNote: 'Within 120 days of last work: 60 days for original contractors; 90 days for subcontractors and suppliers from notice of completion',
+    lienFilingDeadlineNote:
+      'Within 120 days of last work: 60 days for original contractors; 90 days for subcontractors and suppliers from notice of completion',
     lienForeClosureDeadlineDays: 365,
     noticeOfIntentRequired: false,
     noticeOfIntentDeadlineDays: null,
     claimantTypes: ['GC', 'Subcontractor', 'Supplier'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'Del. Code Ann. tit. 25, § 2701 et seq.',
-    notes: 'Suit must commence within 1 year of lien filing. Statement of lien filed with Prothonotary.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Suit must commence within 1 year of lien filing. Statement of lien filed with Prothonotary.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Florida',
@@ -149,8 +160,9 @@ export default [
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment', 'Design professional'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'Fla. Stat. § 713.001 et seq.',
-    notes: 'Notice to Owner (NTO) required for all lienors except direct contractors. NTO must be served before first furnishing or within 45 days. Claim of lien must be filed within 90 days of last furnishing. Foreclose within 1 year of recording.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Notice to Owner (NTO) required for all lienors except direct contractors. NTO must be served before first furnishing or within 45 days. Claim of lien must be filed within 90 days of last furnishing. Foreclose within 1 year of recording.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Georgia',
@@ -166,8 +178,9 @@ export default [
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'O.C.G.A. § 44-14-360 et seq.',
-    notes: 'Preliminary notice (Notice to Contractor) required for subs within 30 days of first furnishing. Claim of lien must be filed within 90 days of completion. Must commence foreclosure within 365 days of lien filing.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Preliminary notice (Notice to Contractor) required for subs within 30 days of first furnishing. Claim of lien must be filed within 90 days of completion. Must commence foreclosure within 365 days of lien filing.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Hawaii',
@@ -183,8 +196,9 @@ export default [
     claimantTypes: ['GC', 'Subcontractor', 'Supplier'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'Haw. Rev. Stat. § 507-41 et seq.',
-    notes: 'Notice of lien rights required within 10 days for subcontractors. Claim of lien filed within 45 days. Must commence suit within 1 year of last furnishing.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Notice of lien rights required within 10 days for subcontractors. Claim of lien filed within 45 days. Must commence suit within 1 year of last furnishing.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Idaho',
@@ -200,8 +214,9 @@ export default [
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'Idaho Code § 45-501 et seq.',
-    notes: 'Claim of lien filed within 90 days of completion. Suit must be commenced within 6 months of filing. Residential property: notice to owner required.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Claim of lien filed within 90 days of completion. Suit must be commenced within 6 months of filing. Residential property: notice to owner required.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Illinois',
@@ -217,14 +232,16 @@ export default [
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Architect/Engineer'],
     residentialOwnerOccupiedExceptions: false,
     citation: '770 ILCS 60/1 et seq. (Illinois Mechanics Lien Act)',
-    notes: 'Subcontractors must send 90-day notice to owner to preserve lien rights. Two-year foreclosure period. Owner-occupied residential under $10,000 exempt.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Subcontractors must send 90-day notice to owner to preserve lien rights. Two-year foreclosure period. Owner-occupied residential under $10,000 exempt.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Indiana',
     abbr: 'IN',
     preliminaryNoticeRequired: true,
-    preliminaryNoticeDeadline: 'Within 60 days of first furnishing for subs/suppliers to give notice to owner',
+    preliminaryNoticeDeadline:
+      'Within 60 days of first furnishing for subs/suppliers to give notice to owner',
     preliminaryNoticeWho: ['Subcontractor', 'Supplier'],
     lienFilingDeadlineDays: 90,
     lienFilingDeadlineNote: '90 days from completion of work or last furnishing',
@@ -234,8 +251,9 @@ export default [
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'Ind. Code § 32-28-3-1 et seq.',
-    notes: 'Prior notice not required to file lien but sub-contractors must notify owner within 60 days of first furnishing to preserve rights against owner. Lien statement filed within 90 days of last work.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Prior notice not required to file lien but sub-contractors must notify owner within 60 days of first furnishing to preserve rights against owner. Lien statement filed within 90 days of last work.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Iowa',
@@ -251,8 +269,9 @@ export default [
     claimantTypes: ['GC', 'Subcontractor', 'Supplier'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'Iowa Code § 572.1 et seq.',
-    notes: 'Subcontractors must serve preliminary notice on owner within 30 days of first furnishing. Lien statement filed within 90 days. Foreclosure within 2 years.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Subcontractors must serve preliminary notice on owner within 30 days of first furnishing. Lien statement filed within 90 days. Foreclosure within 2 years.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Kansas',
@@ -268,8 +287,9 @@ export default [
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'Kan. Stat. Ann. § 60-1101 et seq.',
-    notes: 'Material suppliers must give notice of furnishing within 3 months. Lien statement filed within 4 months of completion. Foreclosure within 1 year of lien filing.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Material suppliers must give notice of furnishing within 3 months. Lien statement filed within 4 months of completion. Foreclosure within 1 year of lien filing.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Kentucky',
@@ -285,25 +305,29 @@ export default [
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'Ky. Rev. Stat. § 376.010 et seq.',
-    notes: 'No preliminary notice required. Statement of lien must be filed within 6 months. Foreclosure suit must be filed within 1 year of the debt becoming due.',
-    lastVerified: '2026-01-01'
+    notes:
+      'No preliminary notice required. Statement of lien must be filed within 6 months. Foreclosure suit must be filed within 1 year of the debt becoming due.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Louisiana',
     abbr: 'LA',
     preliminaryNoticeRequired: true,
-    preliminaryNoticeDeadline: 'Notice of contract must be filed within 30 days of contract execution',
+    preliminaryNoticeDeadline:
+      'Notice of contract must be filed within 30 days of contract execution',
     preliminaryNoticeWho: ['GC', 'Subcontractor', 'Supplier'],
     lienFilingDeadlineDays: 60,
-    lienFilingDeadlineNote: '60 days from filing of Notice of Termination of Work or substantial completion',
+    lienFilingDeadlineNote:
+      '60 days from filing of Notice of Termination of Work or substantial completion',
     lienForeClosureDeadlineDays: 365,
     noticeOfIntentRequired: false,
     noticeOfIntentDeadlineDays: null,
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment'],
     residentialOwnerOccupiedExceptions: true,
     citation: 'La. Rev. Stat. § 9:4801 et seq. (Louisiana Private Works Act)',
-    notes: 'Owner must file Notice of Termination to trigger 60-day period; without this, claimants have up to 1 year from last work. Statement of claim filed in mortgage records.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Owner must file Notice of Termination to trigger 60-day period; without this, claimants have up to 1 year from last work. Statement of claim filed in mortgage records.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Maine',
@@ -319,8 +343,9 @@ export default [
     claimantTypes: ['GC', 'Subcontractor', 'Supplier'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'Me. Rev. Stat. tit. 10, § 3251 et seq.',
-    notes: 'No preliminary notice required. Attested statement of lien must be filed within 90 days. Foreclose within 1 year of last furnishing.',
-    lastVerified: '2026-01-01'
+    notes:
+      'No preliminary notice required. Attested statement of lien must be filed within 90 days. Foreclose within 1 year of last furnishing.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Maryland',
@@ -336,14 +361,16 @@ export default [
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'Md. Code Ann., Real Prop. § 9-101 et seq.',
-    notes: 'Preliminary notice required from subcontractors and material suppliers within 120 days of first furnishing. Petition for mechanics lien filed in circuit court within 180 days.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Preliminary notice required from subcontractors and material suppliers within 120 days of first furnishing. Petition for mechanics lien filed in circuit court within 180 days.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Massachusetts',
     abbr: 'MA',
     preliminaryNoticeRequired: true,
-    preliminaryNoticeDeadline: 'Within 30 days of first furnishing for subcontractors and suppliers',
+    preliminaryNoticeDeadline:
+      'Within 30 days of first furnishing for subcontractors and suppliers',
     preliminaryNoticeWho: ['Subcontractor', 'Supplier'],
     lienFilingDeadlineDays: 90,
     lienFilingDeadlineNote: '90 days from last date of furnishing labor or materials',
@@ -353,8 +380,9 @@ export default [
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Design professional'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'M.G.L. c. 254, § 1 et seq.',
-    notes: 'Subcontractors must give notice to owner within 30 days of first furnishing to preserve lien rights. Statement of lien recorded within 90 days. Commence enforcement within 90 days of recording.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Subcontractors must give notice to owner within 30 days of first furnishing to preserve lien rights. Statement of lien recorded within 90 days. Commence enforcement within 90 days of recording.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Michigan',
@@ -370,8 +398,9 @@ export default [
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment', 'Design professional'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'MCL § 570.1101 et seq. (Construction Lien Act)',
-    notes: 'Notice of furnishing required within 20 days for subcontractors and suppliers to preserve lien rights. Claim of lien recorded within 90 days. Residential lien fund available for homeowners.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Notice of furnishing required within 20 days for subcontractors and suppliers to preserve lien rights. Claim of lien recorded within 90 days. Residential lien fund available for homeowners.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Minnesota',
@@ -387,8 +416,9 @@ export default [
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'Minn. Stat. § 514.01 et seq.',
-    notes: 'Pre-lien notice required within 45 days of first furnishing for subcontractors. Lien statement filed within 120 days. Foreclosure commenced within 1 year.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Pre-lien notice required within 45 days of first furnishing for subcontractors. Lien statement filed within 120 days. Foreclosure commenced within 1 year.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Mississippi',
@@ -404,8 +434,9 @@ export default [
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment'],
     residentialOwnerOccupiedExceptions: true,
     citation: 'Miss. Code Ann. § 85-7-131 et seq.',
-    notes: 'Mississippi has a relatively long 1-year filing period. No preliminary notice required. Enforcement suit within 1 year of lien filing. Residential homestead exemptions apply.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Mississippi has a relatively long 1-year filing period. No preliminary notice required. Enforcement suit within 1 year of lien filing. Residential homestead exemptions apply.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Missouri',
@@ -421,8 +452,9 @@ export default [
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'Mo. Rev. Stat. § 429.010 et seq.',
-    notes: 'Material suppliers must give written notice to owner within 10 days of first delivery. Just and true account filed within 6 months. Suit commenced within 1 year.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Material suppliers must give written notice to owner within 10 days of first delivery. Just and true account filed within 6 months. Suit commenced within 1 year.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Montana',
@@ -438,8 +470,9 @@ export default [
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'Mont. Code Ann. § 71-3-521 et seq.',
-    notes: 'Notice of right to lien must be served on owner within 20 days of first furnishing. Claim filed within 90 days. Suit commenced within 2 years.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Notice of right to lien must be served on owner within 20 days of first furnishing. Claim filed within 90 days. Suit commenced within 2 years.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Nebraska',
@@ -455,8 +488,9 @@ export default [
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'Neb. Rev. Stat. § 52-125 et seq.',
-    notes: 'Material suppliers must give notice within 10 days. Lien filed within 120 days. Foreclosure within 2 years.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Material suppliers must give notice within 10 days. Lien filed within 120 days. Foreclosure within 2 years.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Nevada',
@@ -472,8 +506,9 @@ export default [
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'NRS § 108.221 et seq.',
-    notes: 'Preliminary notice (Notice of Right to Lien) required within 31 days of first furnishing for subs/suppliers. Notice of lien must be filed within 90 days. Suit within 6 months.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Preliminary notice (Notice of Right to Lien) required within 31 days of first furnishing for subs/suppliers. Notice of lien must be filed within 90 days. Suit within 6 months.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New Hampshire',
@@ -489,8 +524,9 @@ export default [
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'RSA 447:1 et seq.',
-    notes: 'No preliminary notice required. Claim must be filed within 120 days. Suit within 1 year.',
-    lastVerified: '2026-01-01'
+    notes:
+      'No preliminary notice required. Claim must be filed within 120 days. Suit within 1 year.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New Jersey',
@@ -506,8 +542,9 @@ export default [
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment', 'Design professional'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'N.J. Stat. Ann. § 2A:44A-1 et seq. (New Jersey Construction Lien Law)',
-    notes: 'No preliminary notice required. Lien claim filed within 90 days of last furnishing. Copy served on owner within 30 days of filing. Suit within 1 year of filing.',
-    lastVerified: '2026-01-01'
+    notes:
+      'No preliminary notice required. Lien claim filed within 90 days of last furnishing. Copy served on owner within 30 days of filing. Suit within 1 year of filing.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New Mexico',
@@ -516,15 +553,17 @@ export default [
     preliminaryNoticeDeadline: 'Within 60 days of first furnishing',
     preliminaryNoticeWho: ['Subcontractor', 'Supplier'],
     lienFilingDeadlineDays: 120,
-    lienFilingDeadlineNote: '120 days from the date that substantial completion occurs or work is abandoned',
+    lienFilingDeadlineNote:
+      '120 days from the date that substantial completion occurs or work is abandoned',
     lienForeClosureDeadlineDays: 730,
     noticeOfIntentRequired: false,
     noticeOfIntentDeadlineDays: null,
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'N.M. Stat. Ann. § 48-2-1 et seq.',
-    notes: 'Notice of right to lien required from subcontractors within 60 days. Claim of lien filed within 120 days. Suit within 2 years.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Notice of right to lien required from subcontractors within 60 days. Claim of lien filed within 120 days. Suit within 2 years.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New York',
@@ -533,15 +572,17 @@ export default [
     preliminaryNoticeDeadline: null,
     preliminaryNoticeWho: [],
     lienFilingDeadlineDays: 240,
-    lienFilingDeadlineNote: '8 months from last furnishing on private projects; 30 days on public projects from final payment date',
+    lienFilingDeadlineNote:
+      '8 months from last furnishing on private projects; 30 days on public projects from final payment date',
     lienForeClosureDeadlineDays: 365,
     noticeOfIntentRequired: false,
     noticeOfIntentDeadlineDays: null,
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment', 'Design professional'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'NY Lien Law § 3 et seq.',
-    notes: 'Notice of lien filed with county clerk within 8 months on private projects. Must be verified. Foreclose or extend within 1 year of filing. Public works use Mechanic\'s Lien Law Art. 2.',
-    lastVerified: '2026-01-01'
+    notes:
+      "Notice of lien filed with county clerk within 8 months on private projects. Must be verified. Foreclose or extend within 1 year of filing. Public works use Mechanic's Lien Law Art. 2.",
+    lastVerified: '2026-01-01',
   },
   {
     state: 'North Carolina',
@@ -557,8 +598,9 @@ export default [
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment', 'Design professional'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'N.C. Gen. Stat. § 44A-7 et seq.',
-    notes: 'Notice to lien agent required for projects over $30,000. Subs must serve notice within 15 days of first furnishing. Claim of lien on real property filed within 120 days. Commence action within 180 days of filing.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Notice to lien agent required for projects over $30,000. Subs must serve notice within 15 days of first furnishing. Claim of lien on real property filed within 120 days. Commence action within 180 days of filing.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'North Dakota',
@@ -574,8 +616,9 @@ export default [
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'N.D. Cent. Code § 35-27-01 et seq.',
-    notes: 'No preliminary notice required. Verified statement of lien filed within 90 days. Suit within 3 years of filing.',
-    lastVerified: '2026-01-01'
+    notes:
+      'No preliminary notice required. Verified statement of lien filed within 90 days. Suit within 3 years of filing.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Ohio',
@@ -584,15 +627,17 @@ export default [
     preliminaryNoticeDeadline: 'Within 21 days of first furnishing for subcontractors',
     preliminaryNoticeWho: ['Subcontractor', 'Supplier'],
     lienFilingDeadlineDays: 75,
-    lienFilingDeadlineNote: '75 days from last furnishing of labor or materials; 60 days from original contractor\'s last work',
+    lienFilingDeadlineNote:
+      "75 days from last furnishing of labor or materials; 60 days from original contractor's last work",
     lienForeClosureDeadlineDays: 730,
     noticeOfIntentRequired: false,
     noticeOfIntentDeadlineDays: null,
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment', 'Design professional'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'Ohio Rev. Code § 1311.01 et seq.',
-    notes: 'Subcontractors must serve Notice of Furnishing within 21 days of first furnishing. Affidavit of mechanics lien filed within 75 days. Suit within 6 years of filing.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Subcontractors must serve Notice of Furnishing within 21 days of first furnishing. Affidavit of mechanics lien filed within 75 days. Suit within 6 years of filing.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Oklahoma',
@@ -608,8 +653,9 @@ export default [
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment'],
     residentialOwnerOccupiedExceptions: true,
     citation: 'Okla. Stat. Ann. tit. 42, § 141 et seq.',
-    notes: 'Written notice to owner by subs required within 75 days of first furnishing. Claim filed within 90 days of last work. Suit within 1 year.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Written notice to owner by subs required within 75 days of first furnishing. Claim filed within 90 days of last work. Suit within 1 year.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Oregon',
@@ -618,15 +664,17 @@ export default [
     preliminaryNoticeDeadline: 'Within 8 days of first furnishing',
     preliminaryNoticeWho: ['Subcontractor', 'Supplier', 'Equipment rental'],
     lienFilingDeadlineDays: 75,
-    lienFilingDeadlineNote: '75 days from completion of construction for subcontractors; 120 days for original contractors',
+    lienFilingDeadlineNote:
+      '75 days from completion of construction for subcontractors; 120 days for original contractors',
     lienForeClosureDeadlineDays: 120,
     noticeOfIntentRequired: false,
     noticeOfIntentDeadlineDays: null,
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment', 'Design professional'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'ORS § 87.001 et seq.',
-    notes: 'Notice of right to lien must be served on owner within 8 days of first furnishing for subs/suppliers. Claim of lien filed within 75 days (subs) or 120 days (GC). Enforcement within 120 days of filing.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Notice of right to lien must be served on owner within 8 days of first furnishing for subs/suppliers. Claim of lien filed within 75 days (subs) or 120 days (GC). Enforcement within 120 days of filing.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Pennsylvania',
@@ -641,9 +689,10 @@ export default [
     noticeOfIntentDeadlineDays: null,
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment', 'Design professional'],
     residentialOwnerOccupiedExceptions: false,
-    citation: '49 Pa. Stat. Ann. § 1101 et seq. (Pennsylvania Mechanics\' Lien Law)',
-    notes: 'Subcontractors must file a preliminary notice with the prothonotary within 30 days of first furnishing. Claim of lien filed within 6 months. Suit within 2 years.',
-    lastVerified: '2026-01-01'
+    citation: "49 Pa. Stat. Ann. § 1101 et seq. (Pennsylvania Mechanics' Lien Law)",
+    notes:
+      'Subcontractors must file a preliminary notice with the prothonotary within 30 days of first furnishing. Claim of lien filed within 6 months. Suit within 2 years.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Rhode Island',
@@ -652,15 +701,17 @@ export default [
     preliminaryNoticeDeadline: null,
     preliminaryNoticeWho: [],
     lienFilingDeadlineDays: 200,
-    lienFilingDeadlineNote: '200 days from last furnishing of labor or materials; if completion posted, 100 days from posting',
+    lienFilingDeadlineNote:
+      '200 days from last furnishing of labor or materials; if completion posted, 100 days from posting',
     lienForeClosureDeadlineDays: 365,
     noticeOfIntentRequired: false,
     noticeOfIntentDeadlineDays: null,
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'R.I. Gen. Laws § 34-28-1 et seq.',
-    notes: 'No preliminary notice required. Notice of intention to claim lien filed within 200 days. Suit within 1 year of filing.',
-    lastVerified: '2026-01-01'
+    notes:
+      'No preliminary notice required. Notice of intention to claim lien filed within 200 days. Suit within 1 year of filing.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'South Carolina',
@@ -676,8 +727,9 @@ export default [
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'S.C. Code Ann. § 29-5-10 et seq.',
-    notes: 'Subcontractors must serve notice within 30 days of first furnishing. Mechanic\'s lien filed within 90 days. Enforcement within 1 year.',
-    lastVerified: '2026-01-01'
+    notes:
+      "Subcontractors must serve notice within 30 days of first furnishing. Mechanic's lien filed within 90 days. Enforcement within 1 year.",
+    lastVerified: '2026-01-01',
   },
   {
     state: 'South Dakota',
@@ -693,14 +745,16 @@ export default [
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'S.D. Codified Laws § 44-9-1 et seq.',
-    notes: 'No preliminary notice required. Statement of lien filed within 120 days. Suit within 6 years.',
-    lastVerified: '2026-01-01'
+    notes:
+      'No preliminary notice required. Statement of lien filed within 120 days. Suit within 6 years.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Tennessee',
     abbr: 'TN',
     preliminaryNoticeRequired: true,
-    preliminaryNoticeDeadline: 'Within 90 days of first furnishing (remote contractors notice to prime)',
+    preliminaryNoticeDeadline:
+      'Within 90 days of first furnishing (remote contractors notice to prime)',
     preliminaryNoticeWho: ['Subcontractor', 'Supplier'],
     lienFilingDeadlineDays: 90,
     lienFilingDeadlineNote: '90 days from last furnishing of labor or materials',
@@ -710,8 +764,9 @@ export default [
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment', 'Design professional'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'Tenn. Code Ann. § 66-11-101 et seq.',
-    notes: 'Notice of nonpayment required from remote contractors. Lien notice filed within 90 days. 10-day notice of intent to lien required. Suit within 1 year.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Notice of nonpayment required from remote contractors. Lien notice filed within 90 days. 10-day notice of intent to lien required. Suit within 1 year.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Texas',
@@ -720,15 +775,17 @@ export default [
     preliminaryNoticeDeadline: 'Monthly notice by 15th of 2nd month following furnishing',
     preliminaryNoticeWho: ['Subcontractor', 'Supplier'],
     lienFilingDeadlineDays: 15,
-    lienFilingDeadlineNote: 'Affidavit filed by 15th day of 4th calendar month after day work completed (residential: 3rd month); constitutional lien attaches automatically',
+    lienFilingDeadlineNote:
+      'Affidavit filed by 15th day of 4th calendar month after day work completed (residential: 3rd month); constitutional lien attaches automatically',
     lienForeClosureDeadlineDays: 730,
     noticeOfIntentRequired: true,
     noticeOfIntentDeadlineDays: null,
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment', 'Design professional'],
     residentialOwnerOccupiedExceptions: true,
     citation: 'Tex. Prop. Code Ch. 53',
-    notes: 'Texas has dual lien system: constitutional (auto-attaches) and statutory. Statutory lien requires monthly notices by 15th of 2nd month following furnishing for each unpaid month. Residential projects have different rules under Ch. 53. Deadline calculated from last work month. Highly technical - errors forfeit rights.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Texas has dual lien system: constitutional (auto-attaches) and statutory. Statutory lien requires monthly notices by 15th of 2nd month following furnishing for each unpaid month. Residential projects have different rules under Ch. 53. Deadline calculated from last work month. Highly technical - errors forfeit rights.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Utah',
@@ -744,8 +801,9 @@ export default [
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment', 'Design professional'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'Utah Code Ann. § 38-1a-101 et seq.',
-    notes: 'Preliminary notice required within 20 days of first furnishing for all lienors except direct contractors. Lien filed within 90 days of completion. Suit within 12 months.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Preliminary notice required within 20 days of first furnishing for all lienors except direct contractors. Lien filed within 90 days of completion. Suit within 12 months.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Vermont',
@@ -761,8 +819,9 @@ export default [
     claimantTypes: ['GC', 'Subcontractor', 'Supplier'],
     residentialOwnerOccupiedExceptions: false,
     citation: '9 V.S.A. § 1921 et seq.',
-    notes: 'No preliminary notice required. Statement of lien recorded within 180 days. Suit within 1 year.',
-    lastVerified: '2026-01-01'
+    notes:
+      'No preliminary notice required. Statement of lien recorded within 180 days. Suit within 1 year.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Virginia',
@@ -778,8 +837,9 @@ export default [
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment', 'Design professional'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'Va. Code Ann. § 43-1 et seq.',
-    notes: 'Subcontractors must give notice to owner of intent to file lien within 150 days of last furnishing. Memorandum of mechanic\'s lien filed within 90 days. Action to enforce within 6 months.',
-    lastVerified: '2026-01-01'
+    notes:
+      "Subcontractors must give notice to owner of intent to file lien within 150 days of last furnishing. Memorandum of mechanic's lien filed within 90 days. Action to enforce within 6 months.",
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Washington',
@@ -795,8 +855,9 @@ export default [
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment', 'Design professional'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'RCW § 60.04.011 et seq.',
-    notes: 'Notice to owner/prime required within 60 days of first furnishing for subs/suppliers. Claim of lien filed within 90 days. Suit within 8 months.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Notice to owner/prime required within 60 days of first furnishing for subs/suppliers. Claim of lien filed within 90 days. Suit within 8 months.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'West Virginia',
@@ -812,8 +873,9 @@ export default [
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'W. Va. Code § 38-2-1 et seq.',
-    notes: 'No preliminary notice required. Verified notice of lien filed within 100 days. Suit within 1 year.',
-    lastVerified: '2026-01-01'
+    notes:
+      'No preliminary notice required. Verified notice of lien filed within 100 days. Suit within 1 year.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Wisconsin',
@@ -829,8 +891,9 @@ export default [
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'Wis. Stat. § 779.01 et seq.',
-    notes: 'Subcontractors and suppliers must serve owner/prime with notice within 60 days of first furnishing. Claim for lien filed within 6 months. Suit within 2 years.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Subcontractors and suppliers must serve owner/prime with notice within 60 days of first furnishing. Claim for lien filed within 6 months. Suit within 2 years.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Wyoming',
@@ -846,7 +909,8 @@ export default [
     claimantTypes: ['GC', 'Subcontractor', 'Supplier', 'Equipment'],
     residentialOwnerOccupiedExceptions: false,
     citation: 'Wyo. Stat. Ann. § 29-1-101 et seq.',
-    notes: 'No preliminary notice required. Lien filed within 150 days. Suit within 180 days of lien filing.',
-    lastVerified: '2026-01-01'
-  }
+    notes:
+      'No preliminary notice required. Lien filed within 150 days. Suit within 180 days of lien filing.',
+    lastVerified: '2026-01-01',
+  },
 ]

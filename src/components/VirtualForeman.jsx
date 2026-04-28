@@ -110,7 +110,12 @@ export default function VirtualForeman({ context = null }) {
     } catch {
       setMessages((prev) => [
         ...prev,
-        { id: Date.now() + 1, role: 'bot', text: 'Connection issue — please try again.', sources: [] },
+        {
+          id: Date.now() + 1,
+          role: 'bot',
+          text: 'Connection issue — please try again.',
+          sources: [],
+        },
       ])
     } finally {
       setLoading(false)
@@ -165,7 +170,10 @@ export default function VirtualForeman({ context = null }) {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(input) }
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault()
+              sendMessage(input)
+            }
           }}
           placeholder="Ask about sites, leads, trucks, specs…"
           maxLength={1500}

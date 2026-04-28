@@ -21,22 +21,22 @@ const PropertyVisualizer = lazy(() => import('../components/PropertyVisualizer')
 
 // ── Default visualizer config ─────────────────────────────────────────────────
 const DEFAULT_CONFIG = {
-  buildType:        'driveway',
-  sqft:             2000,
-  propertyType:     'residential',
-  groundMaterial:   'asphalt',
+  buildType: 'driveway',
+  sqft: 2000,
+  propertyType: 'residential',
+  groundMaterial: 'asphalt',
   exteriorMaterial: 'brick',
-  roofColor:        '#4a4a4a',
-  floors:           1,
-  stateCode:        '',
-  aerialUrl:        null,
+  roofColor: '#4a4a4a',
+  floors: 1,
+  stateCode: '',
+  aerialUrl: null,
 }
 
 // ── Address Lookup Panel ──────────────────────────────────────────────────────
 function AddressStep({ onParcelFound, onSkip }) {
-  const [address,  setAddress]  = useState('')
-  const [loading,  setLoading]  = useState(false)
-  const [error,    setError]    = useState(null)
+  const [address, setAddress] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
 
   const handleLookup = async () => {
     if (!address.trim()) return
@@ -45,12 +45,14 @@ function AddressStep({ onParcelFound, onSkip }) {
     try {
       const result = await api.scanParcel({ address })
       trackEvent('visualizer_parcel_scan', {
-        source:     result.source,
+        source: result.source,
         confidence: result.confidence,
       })
       onParcelFound(result)
     } catch (err) {
-      setError(err.message || 'Could not look up that address. You can skip and enter sq ft manually.')
+      setError(
+        err.message || 'Could not look up that address. You can skip and enter sq ft manually.'
+      )
     } finally {
       setLoading(false)
     }
@@ -67,8 +69,8 @@ function AddressStep({ onParcelFound, onSkip }) {
         Start with Your Property
       </h2>
       <p className="text-brand-navy/60 mb-6 text-sm leading-relaxed">
-        Enter your address to auto-size the 3-D model to your parcel, or skip to
-        configure by square footage.
+        Enter your address to auto-size the 3-D model to your parcel, or skip to configure by square
+        footage.
       </p>
 
       <div className="flex gap-2 mb-3">
@@ -90,9 +92,7 @@ function AddressStep({ onParcelFound, onSkip }) {
         </button>
       </div>
 
-      {error && (
-        <p className="text-red-500 text-xs mb-3">{error}</p>
-      )}
+      {error && <p className="text-red-500 text-xs mb-3">{error}</p>}
 
       <button
         type="button"
@@ -117,9 +117,9 @@ function SuggestionCard({ title, description }) {
 
 // ── Quote Submission Form ─────────────────────────────────────────────────────
 function QuoteForm({ config, onSuccess, onCancel }) {
-  const [form,    setForm]    = useState({ name: '', email: '', phone: '', notes: '' })
+  const [form, setForm] = useState({ name: '', email: '', phone: '', notes: '' })
   const [loading, setLoading] = useState(false)
-  const [error,   setError]   = useState(null)
+  const [error, setError] = useState(null)
 
   const update = (k, v) => setForm((f) => ({ ...f, [k]: v }))
 
@@ -131,20 +131,20 @@ function QuoteForm({ config, onSuccess, onCancel }) {
     try {
       const result = await api.submitVisualProposal({
         ...form,
-        build_type:        config.buildType,
-        property_type:     config.propertyType,
-        sqft:              config.sqft,
-        floors:            config.floors,
-        ground_material:   config.groundMaterial,
+        build_type: config.buildType,
+        property_type: config.propertyType,
+        sqft: config.sqft,
+        floors: config.floors,
+        ground_material: config.groundMaterial,
         exterior_material: config.exteriorMaterial,
-        roof_color:        config.roofColor,
-        state_code:        config.stateCode || null,
-        address:           config.address || null,
+        roof_color: config.roofColor,
+        state_code: config.stateCode || null,
+        address: config.address || null,
       })
       trackEvent('visualizer_quote_submitted', {
-        build_type:    config.buildType,
+        build_type: config.buildType,
         property_type: config.propertyType,
-        sqft:          config.sqft,
+        sqft: config.sqft,
       })
       onSuccess(result)
     } catch (err) {
@@ -154,7 +154,8 @@ function QuoteForm({ config, onSuccess, onCancel }) {
     }
   }
 
-  const inputCls = 'w-full border border-gray-200 rounded-lg px-4 py-2.5 text-brand-navy text-sm focus:outline-none focus:ring-2 focus:ring-brand-amber/50'
+  const inputCls =
+    'w-full border border-gray-200 rounded-lg px-4 py-2.5 text-brand-navy text-sm focus:outline-none focus:ring-2 focus:ring-brand-amber/50'
 
   return (
     <motion.div
@@ -163,10 +164,12 @@ function QuoteForm({ config, onSuccess, onCancel }) {
       className="bg-white rounded-2xl shadow-xl border border-brand-navy/10 p-6"
     >
       <div className="flex items-center justify-between mb-4">
-        <h3 className="font-display font-black text-brand-navy text-lg">
-          Request This Build
-        </h3>
-        <button type="button" onClick={onCancel} className="text-brand-navy/30 hover:text-brand-navy text-xl">
+        <h3 className="font-display font-black text-brand-navy text-lg">Request This Build</h3>
+        <button
+          type="button"
+          onClick={onCancel}
+          className="text-brand-navy/30 hover:text-brand-navy text-xl"
+        >
           ×
         </button>
       </div>
@@ -225,15 +228,13 @@ function SuccessPanel({ result }) {
       className="bg-green-50 border border-green-200 rounded-2xl p-6 text-center"
     >
       <div className="text-4xl mb-3">✅</div>
-      <h3 className="font-display font-black text-brand-navy text-xl mb-2">
-        Design Received!
-      </h3>
-      <p className="text-brand-navy/60 text-sm mb-4 leading-relaxed">
-        {result.message}
-      </p>
+      <h3 className="font-display font-black text-brand-navy text-xl mb-2">Design Received!</h3>
+      <p className="text-brand-navy/60 text-sm mb-4 leading-relaxed">{result.message}</p>
       {result.price_low && (
         <div className="bg-white rounded-xl border border-green-200 p-4 mb-4">
-          <div className="text-brand-navy/50 text-xs uppercase tracking-wide mb-1">Estimated Range</div>
+          <div className="text-brand-navy/50 text-xs uppercase tracking-wide mb-1">
+            Estimated Range
+          </div>
           <div className="font-display font-black text-brand-navy text-2xl">
             {result.price_low} – {result.price_high}
           </div>
@@ -264,22 +265,22 @@ function SuccessPanel({ result }) {
 
 // ── Main Page ─────────────────────────────────────────────────────────────────
 export default function Visualizer() {
-  const [step,        setStep]        = useState('address')  // 'address' | 'builder'
-  const [config,      setConfig]      = useState(DEFAULT_CONFIG)
-  const [parcelInfo,  setParcelInfo]  = useState(null)
+  const [step, setStep] = useState('address') // 'address' | 'builder'
+  const [config, setConfig] = useState(DEFAULT_CONFIG)
+  const [parcelInfo, setParcelInfo] = useState(null)
   const [suggestions, setSuggestions] = useState(null)
-  const [sugLoading,  setSugLoading]  = useState(false)
-  const [showForm,    setShowForm]    = useState(false)
-  const [submitResult,setSubmitResult]= useState(null)
+  const [sugLoading, setSugLoading] = useState(false)
+  const [showForm, setShowForm] = useState(false)
+  const [submitResult, setSubmitResult] = useState(null)
 
   // ── Parcel found callback ───────────────────────────────────────────────
   const handleParcelFound = useCallback((result) => {
     setParcelInfo(result)
     setConfig((prev) => ({
       ...prev,
-      sqft:    result.sqft_estimated || prev.sqft,
-      aerialUrl: result.aerial_url   || null,
-      address: result.address        || prev.address,
+      sqft: result.sqft_estimated || prev.sqft,
+      aerialUrl: result.aerial_url || null,
+      address: result.address || prev.address,
     }))
     setStep('builder')
   }, [])
@@ -289,7 +290,7 @@ export default function Visualizer() {
   // ── Config change from BuildConfigurator ───────────────────────────────
   const handleConfigChange = useCallback((newConfig) => {
     setConfig(newConfig)
-    setSuggestions(null)  // reset suggestions on any config change
+    setSuggestions(null) // reset suggestions on any config change
   }, [])
 
   // ── Fetch AI suggestions ───────────────────────────────────────────────
@@ -298,10 +299,10 @@ export default function Visualizer() {
     setSuggestions(null)
     try {
       const result = await api.getAIDesignSuggestions({
-        build_type:       config.buildType,
-        property_type:    config.propertyType,
-        sqft:             config.sqft,
-        state_code:       config.stateCode || null,
+        build_type: config.buildType,
+        property_type: config.propertyType,
+        sqft: config.sqft,
+        state_code: config.stateCode || null,
       })
       setSuggestions(result.suggestions || [])
       trackEvent('visualizer_ai_suggestions', { build_type: config.buildType })
@@ -325,21 +326,17 @@ export default function Visualizer() {
       {/* ── Hero ────────────────────────────────────────────────────────── */}
       <section className="bg-brand-navy text-white py-14 px-4">
         <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <span className="text-brand-amber text-sm font-semibold uppercase tracking-widest mb-3 block">
               3-D Property Visualizer
             </span>
             <h1 className="font-display font-black text-4xl sm:text-5xl mb-4 leading-tight">
-              See Your Build{' '}
-              <span className="text-brand-amber">Before We Break Ground</span>
+              See Your Build <span className="text-brand-amber">Before We Break Ground</span>
             </h1>
             <p className="text-white/60 text-lg max-w-2xl mx-auto leading-relaxed">
-              Design your driveway, parking lot, new home, or addition in an interactive
-              3-D model — choose materials, colors, and get a live price estimate.
-              Then submit your design as a quote with one click.
+              Design your driveway, parking lot, new home, or addition in an interactive 3-D model —
+              choose materials, colors, and get a live price estimate. Then submit your design as a
+              quote with one click.
             </p>
           </motion.div>
         </div>
@@ -348,7 +345,6 @@ export default function Visualizer() {
       {/* ── Main content ────────────────────────────────────────────────── */}
       <div className="min-h-screen bg-gray-50 py-10 px-4">
         <div className="max-w-7xl mx-auto">
-
           {/* Address step */}
           {step === 'address' && (
             <AddressStep onParcelFound={handleParcelFound} onSkip={handleSkip} />
@@ -363,7 +359,6 @@ export default function Visualizer() {
             >
               {/* ── Left: 3-D canvas + AI suggestions ─────────────────── */}
               <div className="lg:col-span-2 space-y-5">
-
                 {/* Parcel info banner */}
                 {parcelInfo && (
                   <div className="bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 flex items-center gap-3">
@@ -377,7 +372,10 @@ export default function Visualizer() {
                     </div>
                     <button
                       type="button"
-                      onClick={() => { setStep('address'); setParcelInfo(null) }}
+                      onClick={() => {
+                        setStep('address')
+                        setParcelInfo(null)
+                      }}
                       className="ml-auto text-brand-navy/40 hover:text-brand-navy text-xs underline"
                     >
                       Change
@@ -388,16 +386,17 @@ export default function Visualizer() {
                 {/* 3-D Canvas */}
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <h2 className="font-display font-bold text-brand-navy text-lg">
-                      3-D Preview
-                    </h2>
+                    <h2 className="font-display font-bold text-brand-navy text-lg">3-D Preview</h2>
                     <span className="text-xs text-brand-navy/40">
                       Drag to rotate · Scroll to zoom · Right-click to pan
                     </span>
                   </div>
                   <Suspense
                     fallback={
-                      <div className="w-full rounded-2xl bg-brand-navy/5 border border-brand-navy/10 flex items-center justify-center" style={{ height: 420 }}>
+                      <div
+                        className="w-full rounded-2xl bg-brand-navy/5 border border-brand-navy/10 flex items-center justify-center"
+                        style={{ height: 420 }}
+                      >
                         <div className="w-8 h-8 border-4 border-brand-amber border-t-transparent rounded-full animate-spin" />
                       </div>
                     }
@@ -412,8 +411,12 @@ export default function Visualizer() {
                     <div className="flex items-center gap-2">
                       <span className="text-xl">🤖</span>
                       <div>
-                        <div className="font-semibold text-brand-navy text-sm">Jay Worden AI — Design Suggestions</div>
-                        <div className="text-brand-navy/40 text-xs">Upgrade ideas based on your configuration</div>
+                        <div className="font-semibold text-brand-navy text-sm">
+                          Jay Worden AI — Design Suggestions
+                        </div>
+                        <div className="text-brand-navy/40 text-xs">
+                          Upgrade ideas based on your configuration
+                        </div>
                       </div>
                     </div>
                     <button
@@ -447,19 +450,19 @@ export default function Visualizer() {
 
                 {/* Submit result */}
                 {submitResult && <SuccessPanel result={submitResult} />}
-
               </div>
 
               {/* ── Right: Config panel ──────────────────────────────── */}
               <div className="space-y-4">
-
                 {/* Config card */}
                 <div className="bg-white rounded-2xl shadow border border-brand-navy/10 overflow-hidden">
                   <div className="bg-brand-navy text-white px-5 py-4 flex items-center gap-3">
                     <span className="text-2xl">🏗</span>
                     <div>
                       <div className="font-display font-bold text-base">Configure Your Build</div>
-                      <div className="text-white/50 text-xs">Every change updates the 3-D model instantly</div>
+                      <div className="text-white/50 text-xs">
+                        Every change updates the 3-D model instantly
+                      </div>
                     </div>
                   </div>
                   <div className="p-5">
@@ -499,11 +502,9 @@ export default function Visualizer() {
                   <div>✅ Best of Houzz — interior design award</div>
                   <div>✅ Free on-site consultation always included</div>
                 </div>
-
               </div>
             </motion.div>
           )}
-
         </div>
       </div>
     </>

@@ -16,12 +16,12 @@ function StatCard({ label, value, sub, accent = 'text-brand-amber' }) {
 }
 
 const STAGE_COLORS = {
-  new:           'bg-gray-200',
-  contacted:     'bg-blue-300',
+  new: 'bg-gray-200',
+  contacted: 'bg-blue-300',
   proposal_sent: 'bg-yellow-400',
-  negotiating:   'bg-orange-400',
-  won:           'bg-green-500',
-  lost:          'bg-red-400',
+  negotiating: 'bg-orange-400',
+  won: 'bg-green-500',
+  lost: 'bg-red-400',
 }
 
 function FunnelBar({ stage, count, total }) {
@@ -54,10 +54,7 @@ export default function AnalyticsPanel() {
     setLoading(true)
     setError(null)
     try {
-      const [dash, fun] = await Promise.all([
-        api.getAnalyticsDashboard(),
-        api.getCRMFunnel(),
-      ])
+      const [dash, fun] = await Promise.all([api.getAnalyticsDashboard(), api.getCRMFunnel()])
       setData(dash)
       setFunnel(fun)
     } catch (e) {
@@ -67,7 +64,9 @@ export default function AnalyticsPanel() {
     }
   }, [])
 
-  useEffect(() => { load() }, [load])
+  useEffect(() => {
+    load()
+  }, [load])
 
   if (loading) {
     return (
@@ -82,7 +81,9 @@ export default function AnalyticsPanel() {
     return (
       <div className="card p-6 bg-red-50 border-red-200 text-red-700 text-sm">
         <strong>Analytics unavailable:</strong> {error}
-        <button type="button" onClick={load} className="ml-4 underline text-xs">Retry</button>
+        <button type="button" onClick={load} className="ml-4 underline text-xs">
+          Retry
+        </button>
       </div>
     )
   }
@@ -123,12 +124,7 @@ export default function AnalyticsPanel() {
         </h3>
         <div className="space-y-2">
           {funnelData.map((row) => (
-            <FunnelBar
-              key={row.stage}
-              stage={row.stage}
-              count={row.count}
-              total={funnelTotal}
-            />
+            <FunnelBar key={row.stage} stage={row.stage} count={row.count} total={funnelTotal} />
           ))}
         </div>
       </div>
@@ -178,7 +174,11 @@ export default function AnalyticsPanel() {
       )}
 
       <div className="text-right">
-        <button type="button" onClick={load} className="text-xs text-brand-navy/40 hover:text-brand-navy underline">
+        <button
+          type="button"
+          onClick={load}
+          className="text-xs text-brand-navy/40 hover:text-brand-navy underline"
+        >
           Refresh analytics
         </button>
       </div>

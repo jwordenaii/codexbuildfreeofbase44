@@ -17,22 +17,26 @@ logger = logging.getLogger(__name__)
 
 
 class QuoteRequest(BaseModel):
-    name: str = Field(..., min_length=1, max_length=120, strip_whitespace=True)
+    model_config = {"str_strip_whitespace": True}
+
+    name: str = Field(..., min_length=1, max_length=120)
     email: EmailStr
-    phone: str = Field(..., min_length=7, max_length=30, strip_whitespace=True)
+    phone: str = Field(..., min_length=7, max_length=30)
     service_type: str = Field(..., max_length=60)   # paving | sealcoating | crackfill | parking_lot | driveway
     property_type: str = Field(..., max_length=30)  # residential | commercial
     urgency: str = Field(..., max_length=30)         # asap | within_1_week | within_1_month | flexible
     project_size_sqft: Optional[float] = Field(default=None, ge=0, le=10_000_000)
-    address: Optional[str] = Field(default=None, max_length=300, strip_whitespace=True)
-    message: Optional[str] = Field(default=None, max_length=2000, strip_whitespace=True)
+    address: Optional[str] = Field(default=None, max_length=300)
+    message: Optional[str] = Field(default=None, max_length=2000)
 
 
 class ContactRequest(BaseModel):
-    name: str = Field(..., min_length=1, max_length=120, strip_whitespace=True)
+    model_config = {"str_strip_whitespace": True}
+
+    name: str = Field(..., min_length=1, max_length=120)
     email: EmailStr
-    phone: Optional[str] = Field(default=None, max_length=30, strip_whitespace=True)
-    message: str = Field(..., min_length=1, max_length=2000, strip_whitespace=True)
+    phone: Optional[str] = Field(default=None, max_length=30)
+    message: str = Field(..., min_length=1, max_length=2000)
 
 
 class EstimateRequest(BaseModel):
@@ -134,4 +138,3 @@ async def get_estimate(request: Request, req: EstimateRequest):
     if result is None:
         return {"estimate_available": False, "reason": "Service type not recognized"}
     return {"estimate_available": True, **result}
-

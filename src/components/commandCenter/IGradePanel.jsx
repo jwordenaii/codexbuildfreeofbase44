@@ -13,17 +13,42 @@ import { useState, useEffect, useCallback } from 'react'
 import { api } from '../../api/client'
 
 const GRADE_META = {
-  A: { label: 'Grade A — Premium',  color: 'bg-purple-100 text-purple-700 border-purple-200', dot: 'bg-purple-500', desc: 'Complex / legal / compliance → GPT-4o' },
-  B: { label: 'Grade B — Standard', color: 'bg-blue-100 text-blue-700 border-blue-200',       dot: 'bg-blue-500',   desc: 'Paving & technical Q&A → GPT-4o-mini' },
-  C: { label: 'Grade C — Fast',     color: 'bg-green-100 text-green-700 border-green-200',    dot: 'bg-green-500',  desc: 'Simple / quick lookups → fast mini' },
-  D: { label: 'Grade D — Bulk',     color: 'bg-gray-100 text-gray-600 border-gray-200',       dot: 'bg-gray-400',   desc: 'Batch / rule-engine decisions' },
+  A: {
+    label: 'Grade A — Premium',
+    color: 'bg-purple-100 text-purple-700 border-purple-200',
+    dot: 'bg-purple-500',
+    desc: 'Complex / legal / compliance → GPT-4o',
+  },
+  B: {
+    label: 'Grade B — Standard',
+    color: 'bg-blue-100 text-blue-700 border-blue-200',
+    dot: 'bg-blue-500',
+    desc: 'Paving & technical Q&A → GPT-4o-mini',
+  },
+  C: {
+    label: 'Grade C — Fast',
+    color: 'bg-green-100 text-green-700 border-green-200',
+    dot: 'bg-green-500',
+    desc: 'Simple / quick lookups → fast mini',
+  },
+  D: {
+    label: 'Grade D — Bulk',
+    color: 'bg-gray-100 text-gray-600 border-gray-200',
+    dot: 'bg-gray-400',
+    desc: 'Batch / rule-engine decisions',
+  },
 }
 
 const FILE_TYPES = ['photo', 'blueprint', 'permit', 'contract', 'report', 'other']
 
 const BLANK_MEDIA = {
-  filename: '', file_type: 'photo', storage_url: '', storage_provider: 'local',
-  project_name: '', tags: '', ai_description: '',
+  filename: '',
+  file_type: 'photo',
+  storage_url: '',
+  storage_provider: 'local',
+  project_name: '',
+  tags: '',
+  ai_description: '',
 }
 
 export default function IGradePanel() {
@@ -59,7 +84,9 @@ export default function IGradePanel() {
     }
   }, [])
 
-  useEffect(() => { loadStats() }, [loadStats])
+  useEffect(() => {
+    loadStats()
+  }, [loadStats])
 
   const handleSweep = async () => {
     setSweeping(true)
@@ -82,7 +109,11 @@ export default function IGradePanel() {
       setMediaFiles((prev) => [created, ...prev])
       setMediaForm(BLANK_MEDIA)
       setShowAddMedia(false)
-    } catch (err) { setError(err.message) } finally { setSavingMedia(false) }
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setSavingMedia(false)
+    }
   }
 
   const handleDeleteMedia = async (id) => {
@@ -97,9 +128,9 @@ export default function IGradePanel() {
 
   const TABS = [
     { id: 'overview', label: '🎓 Grade Overview' },
-    { id: 'logs',     label: `📋 Grade Log (${logs.length})` },
-    { id: 'sweep',    label: '🔄 Self-Correction' },
-    { id: 'storage',  label: `🗄 Storage (${mediaFiles.length})` },
+    { id: 'logs', label: `📋 Grade Log (${logs.length})` },
+    { id: 'sweep', label: '🔄 Self-Correction' },
+    { id: 'storage', label: `🗄 Storage (${mediaFiles.length})` },
   ]
 
   return (
@@ -133,7 +164,9 @@ export default function IGradePanel() {
       {error && (
         <div className="card p-4 bg-red-50 border-red-200 text-red-700 text-sm">
           {error}{' '}
-          <button type="button" onClick={loadStats} className="underline text-xs ml-2">Retry</button>
+          <button type="button" onClick={loadStats} className="underline text-xs ml-2">
+            Retry
+          </button>
         </div>
       )}
 
@@ -143,22 +176,36 @@ export default function IGradePanel() {
           {/* Summary cards */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <div className="card p-5 text-center">
-              <div className="font-display font-black text-3xl text-brand-navy">{stats.total_decisions}</div>
-              <div className="text-xs text-brand-navy/50 mt-1 font-semibold uppercase tracking-wide">Total Decisions</div>
+              <div className="font-display font-black text-3xl text-brand-navy">
+                {stats.total_decisions}
+              </div>
+              <div className="text-xs text-brand-navy/50 mt-1 font-semibold uppercase tracking-wide">
+                Total Decisions
+              </div>
             </div>
             <div className="card p-5 text-center">
               <div className="font-display font-black text-3xl text-brand-amber">
                 {(stats.overall_avg_confidence * 100).toFixed(1)}%
               </div>
-              <div className="text-xs text-brand-navy/50 mt-1 font-semibold uppercase tracking-wide">Avg Confidence</div>
+              <div className="text-xs text-brand-navy/50 mt-1 font-semibold uppercase tracking-wide">
+                Avg Confidence
+              </div>
             </div>
             <div className="card p-5 text-center">
-              <div className="font-display font-black text-3xl text-blue-600">{stats.total_corrections}</div>
-              <div className="text-xs text-brand-navy/50 mt-1 font-semibold uppercase tracking-wide">Human Corrections</div>
+              <div className="font-display font-black text-3xl text-blue-600">
+                {stats.total_corrections}
+              </div>
+              <div className="text-xs text-brand-navy/50 mt-1 font-semibold uppercase tracking-wide">
+                Human Corrections
+              </div>
             </div>
             <div className="card p-5 text-center">
-              <div className="font-display font-black text-3xl text-green-600">{stats.auto_corrections_applied}</div>
-              <div className="text-xs text-brand-navy/50 mt-1 font-semibold uppercase tracking-wide">Auto-Corrections</div>
+              <div className="font-display font-black text-3xl text-green-600">
+                {stats.auto_corrections_applied}
+              </div>
+              <div className="text-xs text-brand-navy/50 mt-1 font-semibold uppercase tracking-wide">
+                Auto-Corrections
+              </div>
             </div>
           </div>
 
@@ -178,11 +225,19 @@ export default function IGradePanel() {
                       <div className="text-2xl font-black">{bd.count ?? 0}</div>
                     </div>
                     <div className="flex gap-4 text-xs">
-                      <span><strong>{bd.pct ?? 0}%</strong> of total</span>
-                      <span><strong>{((bd.avg_confidence ?? 0) * 100).toFixed(1)}%</strong> conf</span>
-                      <span><strong>{bd.correction_rate ?? 0}%</strong> corrected</span>
+                      <span>
+                        <strong>{bd.pct ?? 0}%</strong> of total
+                      </span>
+                      <span>
+                        <strong>{((bd.avg_confidence ?? 0) * 100).toFixed(1)}%</strong> conf
+                      </span>
+                      <span>
+                        <strong>{bd.correction_rate ?? 0}%</strong> corrected
+                      </span>
                       {bd.avg_processing_ms != null && (
-                        <span><strong>{bd.avg_processing_ms}ms</strong> avg</span>
+                        <span>
+                          <strong>{bd.avg_processing_ms}ms</strong> avg
+                        </span>
                       )}
                     </div>
                     {/* Progress bar */}
@@ -200,14 +255,17 @@ export default function IGradePanel() {
 
           {stats.total_decisions === 0 && (
             <div className="text-center py-10 text-brand-navy/30 text-sm">
-              No AI decisions recorded yet. Grade logs will appear here as the AI processes requests.
+              No AI decisions recorded yet. Grade logs will appear here as the AI processes
+              requests.
             </div>
           )}
         </div>
       )}
 
       {tab === 'overview' && !stats && !loading && (
-        <div className="text-center py-10 text-brand-navy/30 text-sm">Loading grade statistics…</div>
+        <div className="text-center py-10 text-brand-navy/30 text-sm">
+          Loading grade statistics…
+        </div>
       )}
 
       {/* ── Grade Log ── */}
@@ -254,15 +312,31 @@ export default function IGradePanel() {
                       return (
                         <tr key={l.id} className="border-b border-brand-navy/5">
                           <td className="py-2.5 pr-3">
-                            <span className={`text-xs font-bold px-2 py-0.5 rounded-full border ${meta.color}`}>
+                            <span
+                              className={`text-xs font-bold px-2 py-0.5 rounded-full border ${meta.color}`}
+                            >
                               {l.grade}
                             </span>
                           </td>
-                          <td className="py-2.5 pr-3 text-xs text-brand-navy/60">{l.decision_type}</td>
-                          <td className="py-2.5 pr-3 text-xs text-brand-navy max-w-xs truncate">{l.input_summary}</td>
-                          <td className="py-2.5 pr-3 text-xs text-brand-navy/50 hidden sm:table-cell">{l.ai_engine || '—'}</td>
+                          <td className="py-2.5 pr-3 text-xs text-brand-navy/60">
+                            {l.decision_type}
+                          </td>
+                          <td className="py-2.5 pr-3 text-xs text-brand-navy max-w-xs truncate">
+                            {l.input_summary}
+                          </td>
+                          <td className="py-2.5 pr-3 text-xs text-brand-navy/50 hidden sm:table-cell">
+                            {l.ai_engine || '—'}
+                          </td>
                           <td className="py-2.5 pr-3 text-xs font-semibold">
-                            <span className={l.confidence >= 0.75 ? 'text-green-600' : l.confidence >= 0.55 ? 'text-amber-500' : 'text-red-500'}>
+                            <span
+                              className={
+                                l.confidence >= 0.75
+                                  ? 'text-green-600'
+                                  : l.confidence >= 0.55
+                                    ? 'text-amber-500'
+                                    : 'text-red-500'
+                              }
+                            >
                               {(l.confidence * 100).toFixed(0)}%
                             </span>
                           </td>
@@ -270,7 +344,11 @@ export default function IGradePanel() {
                             {l.processing_ms != null ? `${l.processing_ms}` : '—'}
                           </td>
                           <td className="py-2.5 text-xs hidden md:table-cell">
-                            {l.was_corrected ? <span className="text-red-500">✓</span> : <span className="text-brand-navy/20">—</span>}
+                            {l.was_corrected ? (
+                              <span className="text-red-500">✓</span>
+                            ) : (
+                              <span className="text-brand-navy/20">—</span>
+                            )}
                           </td>
                         </tr>
                       )
@@ -287,11 +365,13 @@ export default function IGradePanel() {
       {tab === 'sweep' && (
         <div className="space-y-6">
           <div className="card p-6">
-            <h3 className="font-display font-bold text-brand-navy mb-2">🔄 Self-Correction Analysis</h3>
+            <h3 className="font-display font-bold text-brand-navy mb-2">
+              🔄 Self-Correction Analysis
+            </h3>
             <p className="text-sm text-brand-navy/60 mb-5">
-              The sweep analyzes every recorded human correction and grade log to identify patterns where
-              the AI performs below expectations. Suggestions are returned for your review — no changes
-              are made automatically without your approval.
+              The sweep analyzes every recorded human correction and grade log to identify patterns
+              where the AI performs below expectations. Suggestions are returned for your review —
+              no changes are made automatically without your approval.
             </p>
             <button
               type="button"
@@ -304,7 +384,9 @@ export default function IGradePanel() {
                   <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                   Running sweep…
                 </span>
-              ) : '▶ Run Self-Correction Sweep'}
+              ) : (
+                '▶ Run Self-Correction Sweep'
+              )}
             </button>
           </div>
 
@@ -314,11 +396,15 @@ export default function IGradePanel() {
               <div className="card p-5 bg-blue-50 border-blue-200">
                 <div className="flex gap-4 flex-wrap mb-2">
                   <div className="text-center">
-                    <div className="font-display font-black text-2xl text-blue-600">{sweepResult.swept_corrections}</div>
+                    <div className="font-display font-black text-2xl text-blue-600">
+                      {sweepResult.swept_corrections}
+                    </div>
                     <div className="text-xs text-brand-navy/60">Corrections Analyzed</div>
                   </div>
                   <div className="text-center">
-                    <div className="font-display font-black text-2xl text-brand-amber">{sweepResult.patterns_found}</div>
+                    <div className="font-display font-black text-2xl text-brand-amber">
+                      {sweepResult.patterns_found}
+                    </div>
                     <div className="text-xs text-brand-navy/60">Patterns Found</div>
                   </div>
                 </div>
@@ -333,7 +419,9 @@ export default function IGradePanel() {
                     {sweepResult.suggestions.map((s, i) => (
                       <div key={i} className="bg-amber-50 border border-amber-200 rounded-xl p-4">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="text-xs font-bold text-amber-700 uppercase">{s.decision_type}</span>
+                          <span className="text-xs font-bold text-amber-700 uppercase">
+                            {s.decision_type}
+                          </span>
                           <span className="text-xs bg-amber-200 text-amber-800 px-2 py-0.5 rounded-full font-semibold">
                             &quot;{s.pattern}&quot; ×{s.frequency}
                           </span>
@@ -346,7 +434,8 @@ export default function IGradePanel() {
               ) : (
                 sweepResult.swept_corrections > 0 && (
                   <div className="card p-6 text-center text-green-600 font-semibold">
-                    ✅ No recurring correction patterns found — the AI is self-correcting effectively.
+                    ✅ No recurring correction patterns found — the AI is self-correcting
+                    effectively.
                   </div>
                 )
               )}
@@ -360,9 +449,12 @@ export default function IGradePanel() {
         <div className="space-y-5">
           <div className="flex items-center justify-between flex-wrap gap-3">
             <div>
-              <h3 className="font-display font-bold text-brand-navy">🗄 Media &amp; File Storage Registry</h3>
+              <h3 className="font-display font-bold text-brand-navy">
+                🗄 Media &amp; File Storage Registry
+              </h3>
               <p className="text-xs text-brand-navy/50 mt-0.5">
-                Track all project photos, blueprints, permits, and contracts. Links to Dropbox / GCS / S3.
+                Track all project photos, blueprints, permits, and contracts. Links to Dropbox / GCS
+                / S3.
               </p>
             </div>
             <button
@@ -380,7 +472,9 @@ export default function IGradePanel() {
               <h4 className="font-semibold text-brand-navy mb-4">Register Media File</h4>
               <form onSubmit={handleSaveMedia} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-brand-navy/60 mb-1">Filename *</label>
+                  <label className="block text-xs font-semibold text-brand-navy/60 mb-1">
+                    Filename *
+                  </label>
                   <input
                     type="text"
                     value={mediaForm.filename}
@@ -391,38 +485,99 @@ export default function IGradePanel() {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-brand-navy/60 mb-1">File Type</label>
-                  <select value={mediaForm.file_type} onChange={(e) => set('file_type', e.target.value)} className="input text-sm w-full">
-                    {FILE_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
+                  <label className="block text-xs font-semibold text-brand-navy/60 mb-1">
+                    File Type
+                  </label>
+                  <select
+                    value={mediaForm.file_type}
+                    onChange={(e) => set('file_type', e.target.value)}
+                    className="input text-sm w-full"
+                  >
+                    {FILE_TYPES.map((t) => (
+                      <option key={t} value={t}>
+                        {t}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-brand-navy/60 mb-1">Storage Provider</label>
-                  <select value={mediaForm.storage_provider} onChange={(e) => set('storage_provider', e.target.value)} className="input text-sm w-full">
-                    {['local', 'dropbox', 'gcs', 's3'].map((p) => <option key={p} value={p}>{p}</option>)}
+                  <label className="block text-xs font-semibold text-brand-navy/60 mb-1">
+                    Storage Provider
+                  </label>
+                  <select
+                    value={mediaForm.storage_provider}
+                    onChange={(e) => set('storage_provider', e.target.value)}
+                    className="input text-sm w-full"
+                  >
+                    {['local', 'dropbox', 'gcs', 's3'].map((p) => (
+                      <option key={p} value={p}>
+                        {p}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-brand-navy/60 mb-1">Project Name</label>
-                  <input type="text" value={mediaForm.project_name} onChange={(e) => set('project_name', e.target.value)} className="input text-sm w-full" />
+                  <label className="block text-xs font-semibold text-brand-navy/60 mb-1">
+                    Project Name
+                  </label>
+                  <input
+                    type="text"
+                    value={mediaForm.project_name}
+                    onChange={(e) => set('project_name', e.target.value)}
+                    className="input text-sm w-full"
+                  />
                 </div>
                 <div className="sm:col-span-2">
-                  <label className="block text-xs font-semibold text-brand-navy/60 mb-1">Storage URL</label>
-                  <input type="url" value={mediaForm.storage_url} onChange={(e) => set('storage_url', e.target.value)} placeholder="https://…" className="input text-sm w-full" />
+                  <label className="block text-xs font-semibold text-brand-navy/60 mb-1">
+                    Storage URL
+                  </label>
+                  <input
+                    type="url"
+                    value={mediaForm.storage_url}
+                    onChange={(e) => set('storage_url', e.target.value)}
+                    placeholder="https://…"
+                    className="input text-sm w-full"
+                  />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-brand-navy/60 mb-1">Tags</label>
-                  <input type="text" value={mediaForm.tags} onChange={(e) => set('tags', e.target.value)} placeholder="before, kfc, va" className="input text-sm w-full" />
+                  <label className="block text-xs font-semibold text-brand-navy/60 mb-1">
+                    Tags
+                  </label>
+                  <input
+                    type="text"
+                    value={mediaForm.tags}
+                    onChange={(e) => set('tags', e.target.value)}
+                    placeholder="before, kfc, va"
+                    className="input text-sm w-full"
+                  />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-brand-navy/60 mb-1">AI Description</label>
-                  <input type="text" value={mediaForm.ai_description} onChange={(e) => set('ai_description', e.target.value)} placeholder="Optional AI-generated caption" className="input text-sm w-full" />
+                  <label className="block text-xs font-semibold text-brand-navy/60 mb-1">
+                    AI Description
+                  </label>
+                  <input
+                    type="text"
+                    value={mediaForm.ai_description}
+                    onChange={(e) => set('ai_description', e.target.value)}
+                    placeholder="Optional AI-generated caption"
+                    className="input text-sm w-full"
+                  />
                 </div>
                 <div className="sm:col-span-2 flex gap-3">
-                  <button type="submit" disabled={savingMedia} className="btn-primary text-sm !py-2 disabled:opacity-50">
+                  <button
+                    type="submit"
+                    disabled={savingMedia}
+                    className="btn-primary text-sm !py-2 disabled:opacity-50"
+                  >
                     {savingMedia ? 'Saving…' : 'Register File'}
                   </button>
-                  <button type="button" onClick={() => setShowAddMedia(false)} className="btn-outline text-sm !py-2">Cancel</button>
+                  <button
+                    type="button"
+                    onClick={() => setShowAddMedia(false)}
+                    className="btn-outline text-sm !py-2"
+                  >
+                    Cancel
+                  </button>
                 </div>
               </form>
             </div>
@@ -432,7 +587,8 @@ export default function IGradePanel() {
           <div className="card p-6">
             {mediaFiles.length === 0 ? (
               <p className="text-center py-8 text-brand-navy/30 text-sm">
-                No media files registered yet. Register project photos, blueprints, and documents to build your project archive.
+                No media files registered yet. Register project photos, blueprints, and documents to
+                build your project archive.
               </p>
             ) : (
               <div className="overflow-x-auto">
@@ -453,25 +609,57 @@ export default function IGradePanel() {
                         <td className="py-2.5 pr-3">
                           <div className="font-semibold text-brand-navy text-xs">
                             {f.storage_url ? (
-                              <a href={f.storage_url} target="_blank" rel="noopener noreferrer" className="hover:text-brand-amber underline">
+                              <a
+                                href={f.storage_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="hover:text-brand-amber underline"
+                              >
                                 {f.filename}
                               </a>
-                            ) : f.filename}
+                            ) : (
+                              f.filename
+                            )}
                           </div>
-                          {f.ai_description && <div className="text-xs text-brand-navy/40 truncate max-w-xs">{f.ai_description}</div>}
+                          {f.ai_description && (
+                            <div className="text-xs text-brand-navy/40 truncate max-w-xs">
+                              {f.ai_description}
+                            </div>
+                          )}
                         </td>
                         <td className="py-2.5 pr-3 hidden sm:table-cell">
-                          <span className="text-xs bg-brand-navy/10 text-brand-navy px-2 py-0.5 rounded-full">{f.file_type || '—'}</span>
+                          <span className="text-xs bg-brand-navy/10 text-brand-navy px-2 py-0.5 rounded-full">
+                            {f.file_type || '—'}
+                          </span>
                         </td>
-                        <td className="py-2.5 pr-3 text-xs text-brand-navy/60 hidden sm:table-cell">{f.project_name || '—'}</td>
-                        <td className="py-2.5 pr-3 text-xs text-brand-navy/40 hidden md:table-cell">{f.storage_provider || 'local'}</td>
+                        <td className="py-2.5 pr-3 text-xs text-brand-navy/60 hidden sm:table-cell">
+                          {f.project_name || '—'}
+                        </td>
                         <td className="py-2.5 pr-3 text-xs text-brand-navy/40 hidden md:table-cell">
-                          {f.tags ? f.tags.split(',').slice(0, 3).map((t, idx) => (
-                            <span key={`${t.trim()}-${idx}`} className="inline-block bg-gray-100 rounded px-1.5 mr-1">{t.trim()}</span>
-                          )) : '—'}
+                          {f.storage_provider || 'local'}
+                        </td>
+                        <td className="py-2.5 pr-3 text-xs text-brand-navy/40 hidden md:table-cell">
+                          {f.tags
+                            ? f.tags
+                                .split(',')
+                                .slice(0, 3)
+                                .map((t, idx) => (
+                                  <span
+                                    key={`${t.trim()}-${idx}`}
+                                    className="inline-block bg-gray-100 rounded px-1.5 mr-1"
+                                  >
+                                    {t.trim()}
+                                  </span>
+                                ))
+                            : '—'}
                         </td>
                         <td className="py-2.5">
-                          <button onClick={() => handleDeleteMedia(f.id)} className="text-red-400 hover:text-red-600 text-xs">✕</button>
+                          <button
+                            onClick={() => handleDeleteMedia(f.id)}
+                            className="text-red-400 hover:text-red-600 text-xs"
+                          >
+                            ✕
+                          </button>
                         </td>
                       </tr>
                     ))}

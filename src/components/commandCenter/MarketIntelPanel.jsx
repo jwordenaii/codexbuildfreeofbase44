@@ -6,10 +6,56 @@ import { useState } from 'react'
 import { api } from '../../api/client'
 
 const STATES = [
-  'AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID','IL','IN','IA',
-  'KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ',
-  'NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT',
-  'VA','WA','WV','WI','WY',
+  'AL',
+  'AK',
+  'AZ',
+  'AR',
+  'CA',
+  'CO',
+  'CT',
+  'DE',
+  'FL',
+  'GA',
+  'HI',
+  'ID',
+  'IL',
+  'IN',
+  'IA',
+  'KS',
+  'KY',
+  'LA',
+  'ME',
+  'MD',
+  'MA',
+  'MI',
+  'MN',
+  'MS',
+  'MO',
+  'MT',
+  'NE',
+  'NV',
+  'NH',
+  'NJ',
+  'NM',
+  'NY',
+  'NC',
+  'ND',
+  'OH',
+  'OK',
+  'OR',
+  'PA',
+  'RI',
+  'SC',
+  'SD',
+  'TN',
+  'TX',
+  'UT',
+  'VT',
+  'VA',
+  'WA',
+  'WV',
+  'WI',
+  'WY',
 ]
 
 function StarRating({ rating }) {
@@ -73,9 +119,7 @@ export default function MarketIntelPanel() {
     <div className="space-y-6">
       {/* Competitor search */}
       <div className="card p-6">
-        <h3 className="font-display font-bold text-brand-navy text-lg mb-1">
-          🔍 Competitor Radar
-        </h3>
+        <h3 className="font-display font-bold text-brand-navy text-lg mb-1">🔍 Competitor Radar</h3>
         <p className="text-brand-navy/50 text-sm mb-4">
           Find nearby paving contractors to understand the competitive landscape.
         </p>
@@ -119,15 +163,22 @@ export default function MarketIntelPanel() {
           ) : (
             <div className="space-y-3">
               {(competitors.competitors || []).map((c, i) => (
-                <div key={i} className="flex items-start justify-between gap-3 p-3 rounded-xl bg-brand-navy/3 border border-brand-navy/5">
+                <div
+                  key={i}
+                  className="flex items-start justify-between gap-3 p-3 rounded-xl bg-brand-navy/3 border border-brand-navy/5"
+                >
                   <div>
                     <div className="font-semibold text-brand-navy text-sm">{c.name}</div>
-                    {c.address && <div className="text-brand-navy/40 text-xs mt-0.5">{c.address}</div>}
+                    {c.address && (
+                      <div className="text-brand-navy/40 text-xs mt-0.5">{c.address}</div>
+                    )}
                     {c.phone && <div className="text-brand-navy/50 text-xs">{c.phone}</div>}
                   </div>
                   <div className="text-right shrink-0">
                     {c.rating != null ? <StarRating rating={c.rating} /> : null}
-                    {c.reviews != null && <div className="text-brand-navy/30 text-xs">{c.reviews} reviews</div>}
+                    {c.reviews != null && (
+                      <div className="text-brand-navy/30 text-xs">{c.reviews} reviews</div>
+                    )}
                   </div>
                 </div>
               ))}
@@ -147,7 +198,9 @@ export default function MarketIntelPanel() {
             onChange={(e) => setStateCode(e.target.value)}
             className="input text-sm w-28"
           >
-            {STATES.map((s) => <option key={s}>{s}</option>)}
+            {STATES.map((s) => (
+              <option key={s}>{s}</option>
+            ))}
           </select>
           <button
             type="button"
@@ -167,7 +220,9 @@ export default function MarketIntelPanel() {
       {signals && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="card p-5">
-            <h4 className="font-semibold text-brand-navy text-sm mb-3">Lead Trends ({stateCode})</h4>
+            <h4 className="font-semibold text-brand-navy text-sm mb-3">
+              Lead Trends ({stateCode})
+            </h4>
             <div className="space-y-2 text-sm">
               {Object.entries(signals.signals || {}).map(([key, value]) => (
                 <div key={key} className="flex justify-between">
@@ -179,7 +234,9 @@ export default function MarketIntelPanel() {
           </div>
           {seasonal && (
             <div className="card p-5">
-              <h4 className="font-semibold text-brand-navy text-sm mb-3">Seasonal Demand ({stateCode})</h4>
+              <h4 className="font-semibold text-brand-navy text-sm mb-3">
+                Seasonal Demand ({stateCode})
+              </h4>
               <div className="space-y-2 text-sm">
                 {Object.entries(seasonal.seasonal || {}).map(([key, value]) => (
                   <div key={key} className="flex justify-between">

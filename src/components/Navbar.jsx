@@ -2,13 +2,13 @@ import { useState, useEffect, useCallback } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 
 const NAV_LINKS = [
-  { to: '/',               label: 'Home' },
-  { to: '/services',       label: 'Services' },
-  { to: '/about',          label: 'About' },
-  { to: '/reviews',        label: 'Reviews' },
-  { to: '/advisory',       label: 'Advisory' },
+  { to: '/', label: 'Home' },
+  { to: '/services', label: 'Services' },
+  { to: '/about', label: 'About' },
+  { to: '/reviews', label: 'Reviews' },
+  { to: '/advisory', label: 'Advisory' },
   { to: '/command-center', label: 'Command Center' },
-  { to: '/contact',        label: 'Contact' },
+  { to: '/contact', label: 'Contact' },
 ]
 
 export default function Navbar() {
@@ -16,7 +16,9 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const { pathname } = useLocation()
 
-  useEffect(() => { setOpen(false) }, [pathname])
+  useEffect(() => {
+    setOpen(false)
+  }, [pathname])
 
   const handleScroll = useCallback(() => setScrolled(window.scrollY > 20), [])
   useEffect(() => {
@@ -27,7 +29,9 @@ export default function Navbar() {
   // Close mobile menu on Escape key
   useEffect(() => {
     if (!open) return
-    const onKey = (e) => { if (e.key === 'Escape') setOpen(false) }
+    const onKey = (e) => {
+      if (e.key === 'Escape') setOpen(false)
+    }
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
   }, [open])
@@ -41,7 +45,11 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 group" aria-label="J. Worden & Sons — Home">
+          <Link
+            to="/"
+            className="flex items-center gap-2 group"
+            aria-label="J. Worden & Sons — Home"
+          >
             <div className="w-8 h-8 bg-brand-amber rounded-md flex items-center justify-center font-display font-black text-brand-navy text-sm">
               JW
             </div>
@@ -91,13 +99,35 @@ export default function Navbar() {
           >
             {open ? (
               /* X icon */
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             ) : (
               /* Hamburger icon */
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
               </svg>
             )}
           </button>

@@ -57,9 +57,7 @@ export default function FAQAccordion({ items }) {
                   transition={{ duration: 0.28, ease: [0.4, 0, 0.2, 1] }}
                   style={{ overflow: 'hidden' }}
                 >
-                  <p className="px-6 pb-5 text-brand-navy/70 text-sm leading-relaxed">
-                    {answer}
-                  </p>
+                  <p className="px-6 pb-5 text-brand-navy/70 text-sm leading-relaxed">{answer}</p>
                 </motion.div>
               )}
             </AnimatePresence>

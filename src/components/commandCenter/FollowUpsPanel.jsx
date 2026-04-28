@@ -8,9 +8,9 @@ import { useState, useEffect, useCallback } from 'react'
 import { api } from '../../api/client'
 
 const PRIORITY_COLORS = {
-  high:   'bg-red-100 text-red-700',
+  high: 'bg-red-100 text-red-700',
   medium: 'bg-orange-100 text-orange-700',
-  low:    'bg-blue-100 text-blue-700',
+  low: 'bg-blue-100 text-blue-700',
 }
 
 function PriorityBadge({ priority }) {
@@ -28,21 +28,24 @@ function StatusDot({ status }) {
 }
 
 export default function FollowUpsPanel() {
-  const [tasks, setTasks]         = useState([])
-  const [loading, setLoading]     = useState(true)
-  const [error, setError]         = useState('')
-  const [filter, setFilter]       = useState('pending')
+  const [tasks, setTasks] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+  const [filter, setFilter] = useState('pending')
   const [cancelling, setCancelling] = useState(null)
 
   const load = useCallback(() => {
     setLoading(true)
-    api.listFollowUps({ status: filter })
+    api
+      .listFollowUps({ status: filter })
       .then((d) => setTasks(d.tasks || d || []))
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false))
   }, [filter])
 
-  useEffect(() => { load() }, [load])
+  useEffect(() => {
+    load()
+  }, [load])
 
   const handleCancel = async (taskId) => {
     setCancelling(taskId)
@@ -56,9 +59,7 @@ export default function FollowUpsPanel() {
     }
   }
 
-  const filtered = tasks.filter((t) =>
-    filter === 'all' ? true : t.status === filter,
-  )
+  const filtered = tasks.filter((t) => (filter === 'all' ? true : t.status === filter))
 
   return (
     <div className="space-y-6">
@@ -80,14 +81,18 @@ export default function FollowUpsPanel() {
                 {s}
               </button>
             ))}
-            <button type="button" onClick={load} className="text-xs text-brand-amber underline ml-1">
+            <button
+              type="button"
+              onClick={load}
+              className="text-xs text-brand-amber underline ml-1"
+            >
               Refresh
             </button>
           </div>
         </div>
 
         {loading && <div className="text-brand-navy/40 text-sm">Loading…</div>}
-        {error   && <div className="text-red-500 text-sm">{error}</div>}
+        {error && <div className="text-red-500 text-sm">{error}</div>}
 
         {!loading && !error && filtered.length === 0 && (
           <div className="text-brand-navy/40 text-sm text-center py-8">
@@ -97,7 +102,10 @@ export default function FollowUpsPanel() {
 
         <div className="space-y-3">
           {filtered.map((task) => (
-            <div key={task.id} className="border border-gray-100 rounded-xl p-4 flex items-start justify-between gap-4">
+            <div
+              key={task.id}
+              className="border border-gray-100 rounded-xl p-4 flex items-start justify-between gap-4"
+            >
               <div className="space-y-1 flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
                   <StatusDot status={task.status} />
@@ -113,9 +121,7 @@ export default function FollowUpsPanel() {
                   {task.scheduled_at && (
                     <span>📅 {new Date(task.scheduled_at).toLocaleString()}</span>
                   )}
-                  {task.contact_email && (
-                    <span>📧 {task.contact_email}</span>
-                  )}
+                  {task.contact_email && <span>📧 {task.contact_email}</span>}
                 </div>
               </div>
 

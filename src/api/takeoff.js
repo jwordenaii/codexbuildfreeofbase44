@@ -7,7 +7,7 @@
  */
 
 const BASE = import.meta.env.VITE_API_BASE_URL || ''
-const DEFAULT_TIMEOUT_MS = 30_000  // image processing can take a moment
+const DEFAULT_TIMEOUT_MS = 30_000 // image processing can take a moment
 
 async function request(method, path, body, isFormData = false) {
   const controller = new AbortController()

@@ -14,8 +14,8 @@ import { useState, useEffect, useCallback } from 'react'
 
 const STATUS_STYLES = {
   en_route: { dot: 'bg-brand-amber', label: 'En Route', text: 'text-brand-amber' },
-  on_site:  { dot: 'bg-green-400',   label: 'On Site',  text: 'text-green-400' },
-  idle:     { dot: 'bg-white/30',    label: 'Idle',     text: 'text-white/50' },
+  on_site: { dot: 'bg-green-400', label: 'On Site', text: 'text-green-400' },
+  idle: { dot: 'bg-white/30', label: 'Idle', text: 'text-white/50' },
 }
 
 const MAX_PROJECTED_TEMP_DROP_F = 35
@@ -29,10 +29,13 @@ function TruckCard({ truck }) {
   const targetTemp = truck.target_delivery_temp_f || DEFAULT_TARGET_DELIVERY_TEMP_F
   const temp = truck.asphalt_temp_f
   const eta = truck.estimated_arrival_minutes || 0
-  const projectedDrop = eta > 0 ? Math.min(MAX_PROJECTED_TEMP_DROP_F, eta * TEMP_DROP_RATE_F_PER_MIN) : 0
+  const projectedDrop =
+    eta > 0 ? Math.min(MAX_PROJECTED_TEMP_DROP_F, eta * TEMP_DROP_RATE_F_PER_MIN) : 0
   const projectedArrivalTemp = temp != null ? temp - projectedDrop : null
-  const tempCritical = projectedArrivalTemp != null && projectedArrivalTemp < CRITICAL_DELIVERY_TEMP_F
-  const tempWarning = projectedArrivalTemp != null && projectedArrivalTemp < targetTemp && !tempCritical
+  const tempCritical =
+    projectedArrivalTemp != null && projectedArrivalTemp < CRITICAL_DELIVERY_TEMP_F
+  const tempWarning =
+    projectedArrivalTemp != null && projectedArrivalTemp < targetTemp && !tempCritical
   const tempHot = temp != null && temp > HOT_LOAD_TEMP_F
   const departedAt = truck.plant_departed_at ? new Date(truck.plant_departed_at) : null
 
@@ -41,12 +44,12 @@ function TruckCard({ truck }) {
       <div className="flex items-start justify-between mb-3">
         <div>
           <div className="font-bold text-white text-sm">{truck.truck_id}</div>
-          {truck.driver_name && (
-            <div className="text-white/50 text-xs">{truck.driver_name}</div>
-          )}
+          {truck.driver_name && <div className="text-white/50 text-xs">{truck.driver_name}</div>}
         </div>
         <div className="flex items-center gap-1.5">
-          <span className={`w-2 h-2 rounded-full flex-shrink-0 ${style.dot} ${truck.status === 'on_site' ? 'animate-pulse' : ''}`} />
+          <span
+            className={`w-2 h-2 rounded-full flex-shrink-0 ${style.dot} ${truck.status === 'on_site' ? 'animate-pulse' : ''}`}
+          />
           <span className={`text-xs font-medium ${style.text}`}>{style.label}</span>
         </div>
       </div>
@@ -55,7 +58,9 @@ function TruckCard({ truck }) {
         {truck.lat != null && (
           <div>
             <div className="text-white/30">Position</div>
-            <div className="text-white/70 font-mono">{truck.lat.toFixed(4)}, {truck.lng.toFixed(4)}</div>
+            <div className="text-white/70 font-mono">
+              {truck.lat.toFixed(4)}, {truck.lng.toFixed(4)}
+            </div>
           </div>
         )}
         {truck.speed_mph != null && (
@@ -67,7 +72,9 @@ function TruckCard({ truck }) {
         {truck.asphalt_temp_f != null && (
           <div>
             <div className="text-white/30">HMA Temp</div>
-            <div className={`font-bold ${tempCritical ? 'text-red-400' : tempWarning || tempHot ? 'text-brand-amber' : 'text-green-400'}`}>
+            <div
+              className={`font-bold ${tempCritical ? 'text-red-400' : tempWarning || tempHot ? 'text-brand-amber' : 'text-green-400'}`}
+            >
               {truck.asphalt_temp_f.toFixed(0)}°F
               {(tempCritical || tempWarning || tempHot) && ' ⚠️'}
             </div>
@@ -76,7 +83,9 @@ function TruckCard({ truck }) {
         {projectedArrivalTemp != null && (
           <div>
             <div className="text-white/30">Projected @ Site</div>
-            <div className={`${tempCritical ? 'text-red-400' : tempWarning ? 'text-brand-amber' : 'text-white/70'} font-semibold`}>
+            <div
+              className={`${tempCritical ? 'text-red-400' : tempWarning ? 'text-brand-amber' : 'text-white/70'} font-semibold`}
+            >
               {projectedArrivalTemp.toFixed(0)}°F
             </div>
           </div>
@@ -105,7 +114,10 @@ function TruckCard({ truck }) {
           <div>
             <div className="text-white/30">Last ping</div>
             <div className="text-white/50">
-              {new Date(truck.updated_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+              {new Date(truck.updated_at).toLocaleTimeString([], {
+                hour: '2-digit',
+                minute: '2-digit',
+              })}
             </div>
           </div>
         )}
@@ -198,14 +210,16 @@ export default function TruckTracker() {
   }, [])
 
   const enRoute = trucks.filter((t) => t.status === 'en_route').length
-  const onSite   = trucks.filter((t) => t.status === 'on_site').length
-  const idle     = trucks.filter((t) => !['en_route', 'on_site'].includes(t.status)).length
+  const onSite = trucks.filter((t) => t.status === 'on_site').length
+  const idle = trucks.filter((t) => !['en_route', 'on_site'].includes(t.status)).length
 
   return (
     <div className="flex flex-col gap-4">
       {/* Header bar */}
       <div className="flex items-center justify-between">
-        <h3 className="text-white font-bold text-sm uppercase tracking-wide">🚛 Live Fleet ({trucks.length})</h3>
+        <h3 className="text-white font-bold text-sm uppercase tracking-wide">
+          🚛 Live Fleet ({trucks.length})
+        </h3>
         <div className="flex items-center gap-3 text-xs text-white/40">
           {wsConnected ? (
             <span className="flex items-center gap-1">
@@ -219,9 +233,13 @@ export default function TruckTracker() {
             </span>
           )}
           {lastUpdate && (
-            <span>Updated {lastUpdate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+            <span>
+              Updated {lastUpdate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+            </span>
           )}
-          <button onClick={fetchTrucks} className="hover:text-white transition-colors">↻</button>
+          <button onClick={fetchTrucks} className="hover:text-white transition-colors">
+            ↻
+          </button>
         </div>
       </div>
 
@@ -229,8 +247,8 @@ export default function TruckTracker() {
       <div className="grid grid-cols-3 gap-3">
         {[
           { label: 'En Route', count: enRoute, color: 'text-brand-amber' },
-          { label: 'On Site',  count: onSite,  color: 'text-green-400' },
-          { label: 'Idle',     count: idle,    color: 'text-white/50' },
+          { label: 'On Site', count: onSite, color: 'text-green-400' },
+          { label: 'Idle', count: idle, color: 'text-white/50' },
         ].map(({ label, count, color }) => (
           <div key={label} className="bg-white/5 rounded-xl p-3 text-center border border-white/10">
             <div className={`font-black text-2xl font-display ${color}`}>{count}</div>
@@ -240,7 +258,11 @@ export default function TruckTracker() {
       </div>
 
       {/* Temperature alert */}
-      {trucks.some((t) => t.asphalt_temp_f != null && t.asphalt_temp_f < (t.target_delivery_temp_f || DEFAULT_TARGET_DELIVERY_TEMP_F)) && (
+      {trucks.some(
+        (t) =>
+          t.asphalt_temp_f != null &&
+          t.asphalt_temp_f < (t.target_delivery_temp_f || DEFAULT_TARGET_DELIVERY_TEMP_F)
+      ) && (
         <div className="bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-3 flex items-center gap-2">
           <span>⚠️</span>
           <p className="text-red-400 text-sm">
@@ -251,7 +273,9 @@ export default function TruckTracker() {
 
       {/* Truck cards */}
       {loading ? (
-        <div className="flex items-center justify-center py-8 text-white/30">Loading fleet data…</div>
+        <div className="flex items-center justify-center py-8 text-white/30">
+          Loading fleet data…
+        </div>
       ) : trucks.length === 0 ? (
         <div className="text-center py-8 text-white/30 text-sm">
           No trucks online. Ping a truck via POST /api/v1/geo/trucks/{'{truck_id}'}.

@@ -24,17 +24,17 @@
 // ── License class scope scoring ───────────────────────────────────────────────
 
 const LICENSE_CLASS_WEIGHTS = [
-  { keyword: 'general engineering',  score: 100 },
-  { keyword: 'class a',              score: 100 },
-  { keyword: 'general building',     score: 90  },
-  { keyword: 'class b',              score: 85  },
-  { keyword: 'unlimited',            score: 95  },
-  { keyword: 'master',               score: 80  },
-  { keyword: 'specialty',            score: 50  },
-  { keyword: 'class c',              score: 50  },
-  { keyword: 'residential',          score: 40  },
-  { keyword: 'class cr',             score: 40  },
-  { keyword: 'subcontractor',        score: 35  },
+  { keyword: 'general engineering', score: 100 },
+  { keyword: 'class a', score: 100 },
+  { keyword: 'general building', score: 90 },
+  { keyword: 'class b', score: 85 },
+  { keyword: 'unlimited', score: 95 },
+  { keyword: 'master', score: 80 },
+  { keyword: 'specialty', score: 50 },
+  { keyword: 'class c', score: 50 },
+  { keyword: 'residential', score: 40 },
+  { keyword: 'class cr', score: 40 },
+  { keyword: 'subcontractor', score: 35 },
 ]
 
 export function scoreLicenseClasses(classes = []) {
@@ -57,12 +57,12 @@ export function scoreBidPrice(bidAmount, estimateLow, estimateHigh) {
   }
   if (bidAmount < estimateLow) {
     const pctBelow = (estimateLow - bidAmount) / estimateLow
-    if (pctBelow > 0.30) return 55 // suspiciously low
+    if (pctBelow > 0.3) return 55 // suspiciously low
     return Math.round(95 - pctBelow * 50)
   }
   // above range
   const pctAbove = (bidAmount - estimateHigh) / estimateHigh
-  if (pctAbove > 0.50) return 20
+  if (pctAbove > 0.5) return 20
   return Math.max(20, Math.round(70 - pctAbove * 100))
 }
 
@@ -72,9 +72,9 @@ export function scoreBond(bondAmount, bidAmount) {
   if (!bidAmount || bidAmount <= 0) return 50
   const ratio = bondAmount / bidAmount
   if (ratio >= 1.0) return 100
-  if (ratio >= 0.50) return 85
+  if (ratio >= 0.5) return 85
   if (ratio >= 0.25) return 70
-  if (ratio >= 0.10) return 50
+  if (ratio >= 0.1) return 50
   if (bondAmount > 0) return 35
   return 0
 }
@@ -84,8 +84,8 @@ export function scoreBond(bondAmount, bidAmount) {
 export function scoreExperience(years = 0) {
   if (years >= 20) return 100
   if (years >= 10) return 85
-  if (years >= 5)  return 70
-  if (years >= 2)  return 50
+  if (years >= 5) return 70
+  if (years >= 2) return 50
   return 30
 }
 
@@ -102,10 +102,10 @@ export function scoreCompliance(hasInsurance, workersComp) {
 export function buildFlags(bid, estimateLow) {
   const flags = []
   if (!bid.hasInsurance) flags.push('⚠️ No general liability insurance confirmed')
-  if (!bid.workersComp)  flags.push('⚠️ No workers comp insurance confirmed')
+  if (!bid.workersComp) flags.push('⚠️ No workers comp insurance confirmed')
   if (!bid.bondAmount || bid.bondAmount <= 0) flags.push('⚠️ No surety bond on file')
   if (!bid.yearsExperience || bid.yearsExperience < 2) flags.push('⚠️ Less than 2 years experience')
-  if (estimateLow > 0 && bid.bidAmount < estimateLow * 0.70) {
+  if (estimateLow > 0 && bid.bidAmount < estimateLow * 0.7) {
     flags.push('⚠️ Bid is more than 30% below estimate — verify scope and materials')
   }
   if (!bid.licenseState) flags.push('⚠️ License state not provided')
@@ -129,7 +129,7 @@ export function rankColor(score) {
 }
 
 export function buildRecommendation(score, flags) {
-  const riskFlags = flags.filter(f => f.startsWith('⚠️'))
+  const riskFlags = flags.filter((f) => f.startsWith('⚠️'))
   if (riskFlags.length > 0) {
     return `Proceed with caution. Resolve ${riskFlags.length} risk flag(s) before awarding.`
   }
@@ -151,33 +151,27 @@ export function buildRecommendation(score, flags) {
  * @returns {object} scored bid with dimension scores + composite
  */
 export function scoreContractorBid(bid, estimateLow = 0, estimateHigh = 0) {
-  const bidS     = scoreBidPrice(bid.bidAmount, estimateLow, estimateHigh)
-  const licS     = scoreLicenseClasses(bid.licenseClasses || [])
-  const bondS    = scoreBond(bid.bondAmount || 0, bid.bidAmount)
-  const expS     = scoreExperience(bid.yearsExperience || 0)
-  const compS    = scoreCompliance(bid.hasInsurance !== false, bid.workersComp !== false)
-  const flags    = buildFlags(bid, estimateLow)
+  const bidS = scoreBidPrice(bid.bidAmount, estimateLow, estimateHigh)
+  const licS = scoreLicenseClasses(bid.licenseClasses || [])
+  const bondS = scoreBond(bid.bondAmount || 0, bid.bidAmount)
+  const expS = scoreExperience(bid.yearsExperience || 0)
+  const compS = scoreCompliance(bid.hasInsurance !== false, bid.workersComp !== false)
+  const flags = buildFlags(bid, estimateLow)
 
-  const composite = Math.round(
-    bidS  * 0.35 +
-    licS  * 0.20 +
-    bondS * 0.20 +
-    expS  * 0.15 +
-    compS * 0.10
-  )
+  const composite = Math.round(bidS * 0.35 + licS * 0.2 + bondS * 0.2 + expS * 0.15 + compS * 0.1)
 
   return {
     ...bid,
     scores: {
-      bid:        bidS,
-      license:    licS,
-      bond:       bondS,
+      bid: bidS,
+      license: licS,
+      bond: bondS,
       experience: expS,
       compliance: compS,
       composite,
     },
-    rankLabel:      rankLabel(composite),
-    rankColor:      rankColor(composite),
+    rankLabel: rankLabel(composite),
+    rankColor: rankColor(composite),
     recommendation: buildRecommendation(composite, flags),
     flags,
     rank: 0, // set by rankContractorBids
@@ -193,9 +187,11 @@ export function scoreContractorBid(bid, estimateLow = 0, estimateHigh = 0) {
  * @returns {Array} sorted by composite score descending, with rank property set
  */
 export function rankContractorBids(bids = [], estimateLow = 0, estimateHigh = 0) {
-  const scored = bids.map(b => scoreContractorBid(b, estimateLow, estimateHigh))
+  const scored = bids.map((b) => scoreContractorBid(b, estimateLow, estimateHigh))
   scored.sort((a, b) => b.scores.composite - a.scores.composite)
-  scored.forEach((s, i) => { s.rank = i + 1 })
+  scored.forEach((s, i) => {
+    s.rank = i + 1
+  })
   return scored
 }
 
@@ -214,32 +210,42 @@ export function rankContractorBids(bids = [], estimateLow = 0, estimateHigh = 0)
  */
 export function optimizeLicenseStates(licensingData = []) {
   return licensingData
-    .map(entry => {
-      const reciprocity  = (entry.reciprocityStates || []).length
-      const recipNorm    = Math.min(reciprocity * 25, 100) // 0–4 states → 0–100
-      const classScope   = scoreLicenseClasses(entry.licenseClasses || [])
-      const bond         = entry.bondMinCommercial || 0
-      const bondNorm     = bond === 0        ? 100
-                         : bond <= 10_000    ? 85
-                         : bond <= 25_000    ? 70
-                         : bond <= 50_000    ? 55
-                         : bond <= 100_000   ? 40
-                         :                    20
+    .map((entry) => {
+      const reciprocity = (entry.reciprocityStates || []).length
+      const recipNorm = Math.min(reciprocity * 25, 100) // 0–4 states → 0–100
+      const classScope = scoreLicenseClasses(entry.licenseClasses || [])
+      const bond = entry.bondMinCommercial || 0
+      const bondNorm =
+        bond === 0
+          ? 100
+          : bond <= 10_000
+            ? 85
+            : bond <= 25_000
+              ? 70
+              : bond <= 50_000
+                ? 55
+                : bond <= 100_000
+                  ? 40
+                  : 20
 
-      const optimizerScore = Math.round(recipNorm * 0.40 + classScope * 0.40 + bondNorm * 0.20)
+      const optimizerScore = Math.round(recipNorm * 0.4 + classScope * 0.4 + bondNorm * 0.2)
 
-      const optimizerLabel = optimizerScore >= 80 ? 'OPTIMAL'
-                           : optimizerScore >= 60 ? 'GOOD'
-                           : optimizerScore >= 40 ? 'AVERAGE'
-                           :                        'LIMITED'
+      const optimizerLabel =
+        optimizerScore >= 80
+          ? 'OPTIMAL'
+          : optimizerScore >= 60
+            ? 'GOOD'
+            : optimizerScore >= 40
+              ? 'AVERAGE'
+              : 'LIMITED'
 
       return {
-        abbr:              entry.abbr,
-        state:             entry.state,
-        reciprocityCount:  reciprocity,
+        abbr: entry.abbr,
+        state: entry.state,
+        reciprocityCount: reciprocity,
         reciprocityStates: entry.reciprocityStates || [],
         classScope,
-        licenseClasses:    entry.licenseClasses || [],
+        licenseClasses: entry.licenseClasses || [],
         bondMinCommercial: bond,
         stateLicenseRequired: entry.stateLicenseRequired,
         optimizerScore,
@@ -260,15 +266,15 @@ export function optimizeLicenseStates(licensingData = []) {
  */
 export function getLienLeverageByState(lienData = []) {
   return lienData
-    .map(entry => {
+    .map((entry) => {
       let score = 0
 
       const days = entry.lienFilingDeadlineDays || 0
       if (days >= 180) score += 30
       else if (days >= 120) score += 25
-      else if (days >= 90)  score += 18
-      else if (days >= 60)  score += 12
-      else                  score += 5
+      else if (days >= 90) score += 18
+      else if (days >= 60) score += 12
+      else score += 5
 
       if (!entry.preliminaryNoticeRequired) score += 25
       else score += 5
@@ -282,21 +288,21 @@ export function getLienLeverageByState(lienData = []) {
       const fDays = entry.lienForeClosureDeadlineDays || 0
       if (fDays >= 365) score += 15
       else if (fDays >= 180) score += 12
-      else if (fDays >= 90)  score += 8
-      else                   score += 3
+      else if (fDays >= 90) score += 8
+      else score += 3
 
       score = Math.min(score, 100)
 
       return {
-        abbr:                    entry.abbr,
-        state:                   entry.state,
-        lienScore:               score,
-        lienLabel:               score >= 75 ? 'STRONG' : score >= 55 ? 'MODERATE' : 'WEAK',
-        lienFilingDeadlineDays:  entry.lienFilingDeadlineDays,
+        abbr: entry.abbr,
+        state: entry.state,
+        lienScore: score,
+        lienLabel: score >= 75 ? 'STRONG' : score >= 55 ? 'MODERATE' : 'WEAK',
+        lienFilingDeadlineDays: entry.lienFilingDeadlineDays,
         preliminaryNoticeRequired: entry.preliminaryNoticeRequired,
-        noticeOfIntentRequired:  entry.noticeOfIntentRequired,
-        residentialExceptions:   entry.residentialOwnerOccupiedExceptions,
-        citation:                entry.citation,
+        noticeOfIntentRequired: entry.noticeOfIntentRequired,
+        residentialExceptions: entry.residentialOwnerOccupiedExceptions,
+        citation: entry.citation,
       }
     })
     .sort((a, b) => b.lienScore - a.lienScore)

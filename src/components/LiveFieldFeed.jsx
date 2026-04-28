@@ -82,7 +82,7 @@ export default function LiveFieldFeed({ siteId = null }) {
       //   const output = model.predict(normalized)
       //   const mask = await output.squeeze().array()
       //   // Count non-zero pixels → multiply by pixel area → convert to sqft
-      await new Promise((r) => setTimeout(r, 600))  // Simulate model latency
+      await new Promise((r) => setTimeout(r, 600)) // Simulate model latency
 
       const stubResult = {
         engine: 'tfjs_stub',
@@ -133,7 +133,10 @@ export default function LiveFieldFeed({ siteId = null }) {
   return (
     <div className="flex flex-col gap-4">
       {/* Camera viewport */}
-      <div className="relative bg-black rounded-xl overflow-hidden" style={{ aspectRatio: `${ASPECT_RATIO}` }}>
+      <div
+        className="relative bg-black rounded-xl overflow-hidden"
+        style={{ aspectRatio: `${ASPECT_RATIO}` }}
+      >
         <video
           ref={videoRef}
           className={`w-full h-full object-cover ${cameraOn ? '' : 'hidden'}`}
@@ -168,10 +171,7 @@ export default function LiveFieldFeed({ siteId = null }) {
       {/* Controls */}
       <div className="flex gap-2 flex-wrap">
         {!cameraOn ? (
-          <button
-            onClick={startCamera}
-            className="btn-primary flex items-center gap-2"
-          >
+          <button onClick={startCamera} className="btn-primary flex items-center gap-2">
             <span>📷</span> Start Camera
           </button>
         ) : (
@@ -205,7 +205,9 @@ export default function LiveFieldFeed({ siteId = null }) {
         <div className="bg-brand-navy/70 border border-brand-amber/30 rounded-xl p-4 space-y-3">
           <h3 className="text-brand-amber font-bold text-sm uppercase tracking-wide">
             📐 Measurement Result
-            <span className="ml-2 text-white/30 normal-case text-xs font-normal">engine: {result.engine}</span>
+            <span className="ml-2 text-white/30 normal-case text-xs font-normal">
+              engine: {result.engine}
+            </span>
           </h3>
           {result.status === 'queued' ? (
             <p className="text-white/70 text-sm">
@@ -227,15 +229,15 @@ export default function LiveFieldFeed({ siteId = null }) {
               </div>
               <div>
                 <div className="text-xs text-white/40 mb-0.5">Detected</div>
-                <div className={`font-bold ${result.lot_detected ? 'text-green-400' : 'text-red-400'}`}>
+                <div
+                  className={`font-bold ${result.lot_detected ? 'text-green-400' : 'text-red-400'}`}
+                >
                   {result.lot_detected ? 'Yes' : 'No'}
                 </div>
               </div>
             </div>
           )}
-          {result.note && (
-            <p className="text-xs text-white/40 italic">{result.note}</p>
-          )}
+          {result.note && <p className="text-xs text-white/40 italic">{result.note}</p>}
         </div>
       )}
 
@@ -246,8 +248,8 @@ export default function LiveFieldFeed({ siteId = null }) {
       )}
 
       <p className="text-xs text-white/30">
-        On-device analysis uses TF.js (no data leaves your device). &ldquo;Measure (PyTorch)&rdquo; uploads the
-        frame to the backend for higher-accuracy inference via the Cloud Run model.
+        On-device analysis uses TF.js (no data leaves your device). &ldquo;Measure (PyTorch)&rdquo;
+        uploads the frame to the backend for higher-accuracy inference via the Cloud Run model.
       </p>
     </div>
   )

@@ -45,28 +45,40 @@ function MarkdownContent({ markdown }) {
   const flushTable = () => {
     if (!tableBuffer) return
     const [header, , ...rows] = tableBuffer
-    const headers = header.split('|').map((h) => h.trim()).filter(Boolean)
+    const headers = header
+      .split('|')
+      .map((h) => h.trim())
+      .filter(Boolean)
     elements.push(
       <div key={`table-${i}`} className="overflow-x-auto my-6 rounded-xl border border-gray-200">
         <table className="min-w-full text-sm">
           <thead className="bg-brand-navy text-white">
             <tr>
               {headers.map((h) => (
-                <th key={h} className="px-4 py-3 text-left font-semibold">{h}</th>
+                <th key={h} className="px-4 py-3 text-left font-semibold">
+                  {h}
+                </th>
               ))}
             </tr>
           </thead>
           <tbody>
-            {rows.filter((r) => r.trim()).map((row, ri) => {
-              const cells = row.split('|').map((c) => c.trim()).filter(Boolean)
-              return (
-                <tr key={ri} className={ri % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                  {cells.map((cell, ci) => (
-                    <td key={ci} className="px-4 py-3 border-t border-gray-100">{cell}</td>
-                  ))}
-                </tr>
-              )
-            })}
+            {rows
+              .filter((r) => r.trim())
+              .map((row, ri) => {
+                const cells = row
+                  .split('|')
+                  .map((c) => c.trim())
+                  .filter(Boolean)
+                return (
+                  <tr key={ri} className={ri % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                    {cells.map((cell, ci) => (
+                      <td key={ci} className="px-4 py-3 border-t border-gray-100">
+                        {cell}
+                      </td>
+                    ))}
+                  </tr>
+                )
+              })}
           </tbody>
         </table>
       </div>
@@ -93,7 +105,10 @@ function MarkdownContent({ markdown }) {
 
     if (line.startsWith('## ')) {
       elements.push(
-        <h2 key={i} className="font-display font-black text-brand-navy text-2xl mt-10 mb-4 pb-2 border-b-2 border-brand-amber/30">
+        <h2
+          key={i}
+          className="font-display font-black text-brand-navy text-2xl mt-10 mb-4 pb-2 border-b-2 border-brand-amber/30"
+        >
           {line.slice(3)}
         </h2>
       )
@@ -117,7 +132,9 @@ function MarkdownContent({ markdown }) {
           {listItems.map((item, k) => (
             <li key={k} className="flex items-start gap-3 text-brand-navy/75">
               <span className="mt-1.5 w-2 h-2 rounded-full bg-brand-amber flex-shrink-0" />
-              <span><InlineText text={item} /></span>
+              <span>
+                <InlineText text={item} />
+              </span>
             </li>
           ))}
         </ul>
@@ -136,7 +153,9 @@ function MarkdownContent({ markdown }) {
           {checklist.map((item, k) => (
             <li key={k} className="flex items-center gap-3 text-brand-navy/75">
               <span className="text-green-500 font-bold">☑</span>
-              <span><InlineText text={item} /></span>
+              <span>
+                <InlineText text={item} />
+              </span>
             </li>
           ))}
         </ul>
@@ -169,9 +188,33 @@ function InlineText({ text }) {
   let key = 0
 
   const TOKENS = [
-    { re: /\*\*(.+?)\*\*/,      render: (m, k) => <strong key={k} className="font-bold text-brand-navy">{m[1]}</strong> },
-    { re: /`(.+?)`/,             render: (m, k) => <code key={k} className="bg-gray-100 text-brand-navy px-1.5 py-0.5 rounded text-sm font-mono">{m[1]}</code> },
-    { re: /\[(.+?)\]\((.+?)\)/, render: (m, k) => <a key={k} href={m[2]} className="text-brand-amber font-semibold hover:underline">{m[1]}</a> },
+    {
+      re: /\*\*(.+?)\*\*/,
+      render: (m, k) => (
+        <strong key={k} className="font-bold text-brand-navy">
+          {m[1]}
+        </strong>
+      ),
+    },
+    {
+      re: /`(.+?)`/,
+      render: (m, k) => (
+        <code
+          key={k}
+          className="bg-gray-100 text-brand-navy px-1.5 py-0.5 rounded text-sm font-mono"
+        >
+          {m[1]}
+        </code>
+      ),
+    },
+    {
+      re: /\[(.+?)\]\((.+?)\)/,
+      render: (m, k) => (
+        <a key={k} href={m[2]} className="text-brand-amber font-semibold hover:underline">
+          {m[1]}
+        </a>
+      ),
+    },
   ]
 
   while (remaining.length > 0) {
@@ -197,7 +240,7 @@ function InlineText({ text }) {
     remaining = remaining.slice(earliest + earliestMatch[0].length)
   }
 
-  return <>{parts.map((p, i) => typeof p === 'string' ? <span key={i}>{p}</span> : p)}</>
+  return <>{parts.map((p, i) => (typeof p === 'string' ? <span key={i}>{p}</span> : p))}</>
 }
 
 const CATEGORY_ICONS = {
@@ -214,9 +257,9 @@ export default function BlogPost() {
 
   if (!post) return <NotFound />
 
-  const relatedPosts = BLOG_POSTS
-    .filter((p) => p.slug !== slug && (p.category === post.category || p.featured))
-    .slice(0, 3)
+  const relatedPosts = BLOG_POSTS.filter(
+    (p) => p.slug !== slug && (p.category === post.category || p.featured)
+  ).slice(0, 3)
 
   return (
     <>
@@ -236,20 +279,33 @@ export default function BlogPost() {
       <section className="bg-brand-navy text-white py-16 md:py-24">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <nav className="text-white/40 text-sm mb-8 flex items-center gap-2">
-            <Link to="/" className="hover:text-brand-amber transition-colors">Home</Link>
+            <Link to="/" className="hover:text-brand-amber transition-colors">
+              Home
+            </Link>
             <span>/</span>
-            <Link to="/blog" className="hover:text-brand-amber transition-colors">Blog</Link>
+            <Link to="/blog" className="hover:text-brand-amber transition-colors">
+              Blog
+            </Link>
             <span>/</span>
             <span className="text-white/60 truncate max-w-[200px]">{post.title}</span>
           </nav>
 
-          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
             <div className="flex items-center gap-3 mb-6">
               <span className="bg-brand-amber/20 text-brand-amber text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-full">
-                {CATEGORY_ICONS[post.category]} {BLOG_CATEGORIES.find((c) => c.value === post.category)?.label}
+                {CATEGORY_ICONS[post.category]}{' '}
+                {BLOG_CATEGORIES.find((c) => c.value === post.category)?.label}
               </span>
               <span className="text-white/40 text-sm">
-                {new Date(post.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                {new Date(post.date).toLocaleDateString('en-US', {
+                  month: 'long',
+                  day: 'numeric',
+                  year: 'numeric',
+                })}
               </span>
               <span className="text-white/40 text-sm">·</span>
               <span className="text-white/40 text-sm">⏱ {post.readTime} read</span>
@@ -272,7 +328,9 @@ export default function BlogPost() {
             </div>
             <div>
               <div className="font-semibold text-brand-navy text-sm">J. Worden &amp; Sons</div>
-              <div className="text-brand-navy/40 text-xs">4th-Generation Asphalt Contractor · Est. 1984</div>
+              <div className="text-brand-navy/40 text-xs">
+                4th-Generation Asphalt Contractor · Est. 1984
+              </div>
             </div>
           </div>
           <SocialShare
@@ -294,8 +352,8 @@ export default function BlogPost() {
               Ready for a Free Estimate?
             </h3>
             <p className="text-brand-navy/60 mb-6">
-              J. Worden &amp; Sons has been solving paving problems like this for
-              four generations. Free on-site estimates, fast response.
+              J. Worden &amp; Sons has been solving paving problems like this for four generations.
+              Free on-site estimates, fast response.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <Link
@@ -333,7 +391,8 @@ export default function BlogPost() {
                   transition={{ duration: 0.35, delay: i * 0.07 }}
                 >
                   <span className="text-brand-amber text-xs font-bold uppercase tracking-widest block mb-2">
-                    {CATEGORY_ICONS[related.category]} {BLOG_CATEGORIES.find((c) => c.value === related.category)?.label}
+                    {CATEGORY_ICONS[related.category]}{' '}
+                    {BLOG_CATEGORIES.find((c) => c.value === related.category)?.label}
                   </span>
                   <h3 className="font-display font-bold text-brand-navy text-lg mb-3 group-hover:text-brand-amber transition-colors leading-snug">
                     <Link to={`/blog/${related.slug}`}>{related.title}</Link>

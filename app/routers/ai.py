@@ -202,16 +202,18 @@ RULES:
 
 
 class ChatRequest(BaseModel):
+    model_config = {"str_strip_whitespace": True}
+
     # 1000 chars ≈ ~250 tokens — well within gpt-4o-mini's context window while
     # preventing abuse of the public endpoint
-    question: str = Field(..., min_length=1, max_length=1000, strip_whitespace=True)
+    question: str = Field(..., min_length=1, max_length=1000)
     state_code: Optional[str] = Field(default=None, max_length=2)
     session_id: Optional[str] = Field(default=None, max_length=100)
     # Page context: human-readable label of the page the user is on
     # (e.g. "quote / booking page", "services page"). Used to steer the AI
     # toward the most helpful response for the current page without exposing
     # internal route details to the model.
-    page_context: Optional[str] = Field(default=None, max_length=100, strip_whitespace=True)
+    page_context: Optional[str] = Field(default=None, max_length=100)
 
 
 class ChatResponse(BaseModel):
@@ -358,7 +360,9 @@ async def chat(req: ChatRequest, db: Session = Depends(get_db)):
 # ── AI-Assisted Contact Suggestion ───────────────────────────────────────────
 
 class ContactSuggestRequest(BaseModel):
-    message: str = Field(..., min_length=5, max_length=1000, strip_whitespace=True)
+    model_config = {"str_strip_whitespace": True}
+
+    message: str = Field(..., min_length=5, max_length=1000)
 
 
 class ContactSuggestResponse(BaseModel):

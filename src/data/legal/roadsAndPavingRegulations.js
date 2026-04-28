@@ -5,13 +5,15 @@ export default [
     roadAuthority: 'Alabama Department of Transportation (ALDOT)',
     roadUrl: 'https://www.dot.state.al.us',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Utility Accommodation Policy; permit required for any installation within highway right-of-way',
+    utilityPermitNote:
+      'Utility Accommodation Policy; permit required for any installation within highway right-of-way',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
     overweightUrl: 'https://www.dot.state.al.us/bureaus/Traffic/PermitOffice.html',
     roadBondRequired: false,
     restorationBondRequired: true,
-    restorationBondNote: 'Road cut bond required for work in state right-of-way; amount set by district',
+    restorationBondNote:
+      'Road cut bond required for work in state right-of-way; amount set by district',
     pavingSpecification: 'ALDOT Standard Specifications for Highway Construction',
     haulRoutePermitRequired: true,
     haulRouteNote: 'Overweight/oversize loads require route permit and may require escort',
@@ -19,7 +21,7 @@ export default [
     encroachmentPermitRequired: true,
     citation: 'Ala. Admin. Code r. 450-10-1 et seq. (Utility Accommodation)',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Alaska',
@@ -27,21 +29,25 @@ export default [
     roadAuthority: 'Alaska Department of Transportation and Public Facilities (ADOT&PF)',
     roadUrl: 'https://dot.alaska.gov',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Right-of-Way Utility Permit required for utility installations in state right-of-way',
+    utilityPermitNote:
+      'Right-of-Way Utility Permit required for utility installations in state right-of-way',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
     overweightUrl: 'https://dot.alaska.gov/stwddes/dcsadmin/permitoffice.shtml',
     roadBondRequired: false,
     restorationBondRequired: true,
-    restorationBondNote: 'Restoration bond required for road cuts; spring weight restrictions significant due to thaw cycles',
+    restorationBondNote:
+      'Restoration bond required for road cuts; spring weight restrictions significant due to thaw cycles',
     pavingSpecification: 'Alaska Standard Specifications for Highway Construction',
     haulRoutePermitRequired: true,
-    haulRouteNote: 'Overweight/oversize loads require permit; spring weight restrictions (usually Feb-May) may limit heavy haul',
+    haulRouteNote:
+      'Overweight/oversize loads require permit; spring weight restrictions (usually Feb-May) may limit heavy haul',
     localRoadAuthority: 'Borough and municipal public works departments',
     encroachmentPermitRequired: true,
     citation: '17 AAC 15 (Right-of-Way Encroachment)',
-    notes: 'Alaska has significant seasonal weight restrictions on roads due to freeze-thaw cycles. Spring breakup restrictions severely limit heavy construction vehicle access.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Alaska has significant seasonal weight restrictions on roads due to freeze-thaw cycles. Spring breakup restrictions severely limit heavy construction vehicle access.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Arizona',
@@ -49,21 +55,25 @@ export default [
     roadAuthority: 'Arizona Department of Transportation (ADOT)',
     roadUrl: 'https://azdot.gov',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Utility Installation Permit required for installations in state highway right-of-way',
+    utilityPermitNote:
+      'Utility Installation Permit required for installations in state highway right-of-way',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
-    overweightUrl: 'https://azdot.gov/motor-vehicles/commercial-vehicles/oversize-overweight-permits',
+    overweightUrl:
+      'https://azdot.gov/motor-vehicles/commercial-vehicles/oversize-overweight-permits',
     roadBondRequired: false,
     restorationBondRequired: true,
-    restorationBondNote: 'Restoration requirements specified in permit; bond may be required for larger cuts',
+    restorationBondNote:
+      'Restoration requirements specified in permit; bond may be required for larger cuts',
     pavingSpecification: 'ADOT Standard Specifications for Road and Bridge Construction',
     haulRoutePermitRequired: true,
-    haulRouteNote: 'Oversize/overweight permit required; route survey may be needed for very large loads',
+    haulRouteNote:
+      'Oversize/overweight permit required; route survey may be needed for very large loads',
     localRoadAuthority: 'County and municipal public works departments',
     encroachmentPermitRequired: true,
     citation: 'A.R.S. § 28-1091 et seq. (Utility Accommodation); § 28-1098 (Encroachment)',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Arkansas',
@@ -71,7 +81,8 @@ export default [
     roadAuthority: 'Arkansas Department of Transportation (ARDOT)',
     roadUrl: 'https://ardot.gov',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Utility Installation Permit required for installations in state highway right-of-way',
+    utilityPermitNote:
+      'Utility Installation Permit required for installations in state highway right-of-way',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
     overweightUrl: 'https://ardot.gov/programs/oversize-overweight-permits',
@@ -85,7 +96,7 @@ export default [
     encroachmentPermitRequired: true,
     citation: 'Ark. Code Ann. § 27-67-301 et seq.',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'California',
@@ -93,22 +104,28 @@ export default [
     roadAuthority: 'California Department of Transportation (Caltrans)',
     roadUrl: 'https://dot.ca.gov',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Encroachment Permit required for any work or installation within state highway right-of-way; issued by Caltrans District',
+    utilityPermitNote:
+      'Encroachment Permit required for any work or installation within state highway right-of-way; issued by Caltrans District',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
     overweightUrl: 'https://dot.ca.gov/programs/traffic-operations/transportation-permits',
     roadBondRequired: true,
-    roadBondNote: 'Performance bond often required as part of encroachment permit for significant work',
+    roadBondNote:
+      'Performance bond often required as part of encroachment permit for significant work',
     restorationBondRequired: true,
-    restorationBondNote: 'Restoration to pre-existing condition required; moratorium periods after fresh paving (typically 5 years)',
+    restorationBondNote:
+      'Restoration to pre-existing condition required; moratorium periods after fresh paving (typically 5 years)',
     pavingSpecification: 'Caltrans Standard Specifications; Highway Design Manual',
     haulRoutePermitRequired: true,
-    haulRouteNote: 'STAA/oversize/overweight permits required; Caltrans and CHP coordination needed for very large loads',
-    localRoadAuthority: 'City public works departments; county roads departments; county transportation commissions',
+    haulRouteNote:
+      'STAA/oversize/overweight permits required; Caltrans and CHP coordination needed for very large loads',
+    localRoadAuthority:
+      'City public works departments; county roads departments; county transportation commissions',
     encroachmentPermitRequired: true,
     citation: 'Cal. Sts. & Hy. Code § 670 et seq. (Encroachment Permits)',
-    notes: 'California has extensive trench paving moratorium rules. Many jurisdictions impose 5-year moratoriums on cutting newly paved roads. Caltrans Encroachment Permits require bonding, insurance, and traffic control plans.',
-    lastVerified: '2026-01-01'
+    notes:
+      'California has extensive trench paving moratorium rules. Many jurisdictions impose 5-year moratoriums on cutting newly paved roads. Caltrans Encroachment Permits require bonding, insurance, and traffic control plans.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Colorado',
@@ -116,7 +133,8 @@ export default [
     roadAuthority: 'Colorado Department of Transportation (CDOT)',
     roadUrl: 'https://www.codot.gov',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Access/Utility Permit required for encroachment on state highway right-of-way',
+    utilityPermitNote:
+      'Access/Utility Permit required for encroachment on state highway right-of-way',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
     overweightUrl: 'https://www.codot.gov/travel/permits',
@@ -125,12 +143,14 @@ export default [
     restorationBondNote: 'Restoration requirements in permit; cash bond may be required',
     pavingSpecification: 'CDOT Standard Specifications for Road and Bridge Construction',
     haulRoutePermitRequired: true,
-    haulRouteNote: 'Oversize/overweight permits required; seasonal weight restrictions apply on state highways',
+    haulRouteNote:
+      'Oversize/overweight permits required; seasonal weight restrictions apply on state highways',
     localRoadAuthority: 'County commissioners and municipal public works departments',
     encroachmentPermitRequired: true,
     citation: 'C.R.S. § 43-2-135 et seq.',
-    notes: 'Colorado has seasonal weight restrictions on state highways (typically January-May). CDOT Utility Accommodation Code governs utility installations in right-of-way.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Colorado has seasonal weight restrictions on state highways (typically January-May). CDOT Utility Accommodation Code governs utility installations in right-of-way.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Connecticut',
@@ -138,22 +158,25 @@ export default [
     roadAuthority: 'Connecticut Department of Transportation (ConnDOT)',
     roadUrl: 'https://portal.ct.gov/DOT',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Encroachment Permit required for work or installations within state right-of-way',
+    utilityPermitNote:
+      'Encroachment Permit required for work or installations within state right-of-way',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
     overweightUrl: 'https://portal.ct.gov/DOT/Traveler-Information/Permits',
     roadBondRequired: true,
     roadBondNote: 'Bond required for major encroachment work',
     restorationBondRequired: true,
-    restorationBondNote: 'Pavement must be restored per CTDOT specifications; trench cuts require specific restoration',
-    pavingSpecification: 'ConnDOT Standard Specifications for Roads, Bridges and Incidental Construction',
+    restorationBondNote:
+      'Pavement must be restored per CTDOT specifications; trench cuts require specific restoration',
+    pavingSpecification:
+      'ConnDOT Standard Specifications for Roads, Bridges and Incidental Construction',
     haulRoutePermitRequired: true,
     haulRouteNote: 'Oversize/overweight permits required; bridge weight limits strictly enforced',
     localRoadAuthority: 'Municipal public works departments',
     encroachmentPermitRequired: true,
     citation: 'CGS § 13a-148 (encroachment); § 13a-97b (utility accommodation)',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Delaware',
@@ -161,7 +184,8 @@ export default [
     roadAuthority: 'Delaware Department of Transportation (DelDOT)',
     roadUrl: 'https://deldot.gov',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Utility/Right-of-Way Permit required for installations within state right-of-way',
+    utilityPermitNote:
+      'Utility/Right-of-Way Permit required for installations within state right-of-way',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
     overweightUrl: 'https://deldot.gov/Programs/permits',
@@ -171,11 +195,13 @@ export default [
     pavingSpecification: 'DelDOT Standard Specifications for Road and Bridge Construction',
     haulRoutePermitRequired: true,
     haulRouteNote: 'Oversize/overweight permits required',
-    localRoadAuthority: 'County and municipal public works departments; DelDOT also maintains most county roads',
+    localRoadAuthority:
+      'County and municipal public works departments; DelDOT also maintains most county roads',
     encroachmentPermitRequired: true,
     citation: '21 Del. Code § 4901 et seq. (vehicle weight); DelDOT Regulations',
-    notes: 'Delaware DOT maintains an unusually large portion of the state road network compared to local governments.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Delaware DOT maintains an unusually large portion of the state road network compared to local governments.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Florida',
@@ -183,21 +209,26 @@ export default [
     roadAuthority: 'Florida Department of Transportation (FDOT)',
     roadUrl: 'https://www.fdot.gov',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Utility Permit required for any utility installation or adjustment within FDOT right-of-way',
+    utilityPermitNote:
+      'Utility Permit required for any utility installation or adjustment within FDOT right-of-way',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
     overweightUrl: 'https://www.fdot.gov/traffic/mvpermits',
     roadBondRequired: false,
     restorationBondRequired: true,
-    restorationBondNote: 'Road restoration per FDOT Standard Index requirements; 5-year warranty common',
-    pavingSpecification: 'FDOT Standard Specifications for Road and Bridge Construction (Green Book)',
+    restorationBondNote:
+      'Road restoration per FDOT Standard Index requirements; 5-year warranty common',
+    pavingSpecification:
+      'FDOT Standard Specifications for Road and Bridge Construction (Green Book)',
     haulRoutePermitRequired: true,
-    haulRouteNote: 'Oversize/overweight permits required from FDOT; special moves need FDOT/FHP coordination',
+    haulRouteNote:
+      'Oversize/overweight permits required from FDOT; special moves need FDOT/FHP coordination',
     localRoadAuthority: 'County public works departments; municipal public works departments',
     encroachmentPermitRequired: true,
     citation: 'Fla. Stat. § 337.401 (utility accommodation); § 316.550 (vehicle weight)',
-    notes: 'FDOT has detailed utility accommodation requirements. Florida has specific rules for the SIS (Strategic Intermodal System) roads. Sinkholes and karst topography may affect construction near roads.',
-    lastVerified: '2026-01-01'
+    notes:
+      'FDOT has detailed utility accommodation requirements. Florida has specific rules for the SIS (Strategic Intermodal System) roads. Sinkholes and karst topography may affect construction near roads.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Georgia',
@@ -211,7 +242,8 @@ export default [
     overweightUrl: 'https://gdot.org/permits',
     roadBondRequired: false,
     restorationBondRequired: true,
-    restorationBondNote: 'Pavement restoration required per GDOT specifications; one-year warranty period',
+    restorationBondNote:
+      'Pavement restoration required per GDOT specifications; one-year warranty period',
     pavingSpecification: 'GDOT Standard Specifications Construction of Transportation Systems',
     haulRoutePermitRequired: true,
     haulRouteNote: 'Oversize/overweight permits required; Georgia DOT coordinates special moves',
@@ -219,7 +251,7 @@ export default [
     encroachmentPermitRequired: true,
     citation: 'O.C.G.A. § 32-6-170 et seq. (utility accommodation)',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Hawaii',
@@ -236,12 +268,15 @@ export default [
     restorationBondNote: 'Pavement restoration required',
     pavingSpecification: 'HDOT Standard Specifications for Road and Bridge Construction',
     haulRoutePermitRequired: true,
-    haulRouteNote: 'Oversize/overweight permits required; island geography limits haul routes significantly',
-    localRoadAuthority: 'County Departments of Public Works (Honolulu, Hawaii, Maui, Kauai counties)',
+    haulRouteNote:
+      'Oversize/overweight permits required; island geography limits haul routes significantly',
+    localRoadAuthority:
+      'County Departments of Public Works (Honolulu, Hawaii, Maui, Kauai counties)',
     encroachmentPermitRequired: true,
     citation: 'HRS § 264-21 (encroachment permits)',
-    notes: 'Hawaii island geography creates unique haul route challenges. HDOT manages state highways; county DOT manages county roads.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Hawaii island geography creates unique haul route challenges. HDOT manages state highways; county DOT manages county roads.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Idaho',
@@ -249,7 +284,8 @@ export default [
     roadAuthority: 'Idaho Transportation Department (ITD)',
     roadUrl: 'https://itd.idaho.gov',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Encroachment Permit required for utility installations in state highway right-of-way',
+    utilityPermitNote:
+      'Encroachment Permit required for utility installations in state highway right-of-way',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
     overweightUrl: 'https://itd.idaho.gov/portals/dmv/commercialVehicle',
@@ -258,12 +294,13 @@ export default [
     restorationBondNote: 'Pavement restoration required per ITD specifications',
     pavingSpecification: 'ITD Standard Specifications for Highway Construction',
     haulRoutePermitRequired: true,
-    haulRouteNote: 'Oversize/overweight permits required; seasonal restrictions on some mountain passes',
+    haulRouteNote:
+      'Oversize/overweight permits required; seasonal restrictions on some mountain passes',
     localRoadAuthority: 'County commissioners and municipal public works departments',
     encroachmentPermitRequired: true,
     citation: 'Idaho Code § 40-2101 et seq. (utility accommodation)',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Illinois',
@@ -271,7 +308,8 @@ export default [
     roadAuthority: 'Illinois Department of Transportation (IDOT)',
     roadUrl: 'https://idot.illinois.gov',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Highway Permit required for utility installations and encroachments in state right-of-way',
+    utilityPermitNote:
+      'Highway Permit required for utility installations and encroachments in state right-of-way',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
     overweightUrl: 'https://idot.illinois.gov/doing-business/permits/oversize-overweight',
@@ -280,12 +318,15 @@ export default [
     restorationBondNote: 'Pavement restoration required per IDOT specifications; 2-year warranty',
     pavingSpecification: 'IDOT Standard Specifications for Road and Bridge Construction',
     haulRoutePermitRequired: true,
-    haulRouteNote: 'Oversize/overweight permits required; Illinois has strict overweight permit enforcement',
-    localRoadAuthority: 'County highway departments; township road commissioners; municipal public works',
+    haulRouteNote:
+      'Oversize/overweight permits required; Illinois has strict overweight permit enforcement',
+    localRoadAuthority:
+      'County highway departments; township road commissioners; municipal public works',
     encroachmentPermitRequired: true,
     citation: '605 ILCS 5/9-107.1 (utility accommodation); 605 ILCS 5/15-401 (vehicle weight)',
-    notes: 'Illinois has spring weight restrictions on state highways and township roads (typically March-April). Township roads are maintained by local township road commissioners.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Illinois has spring weight restrictions on state highways and township roads (typically March-April). Township roads are maintained by local township road commissioners.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Indiana',
@@ -306,8 +347,9 @@ export default [
     localRoadAuthority: 'County highway departments; municipal public works departments',
     encroachmentPermitRequired: true,
     citation: 'IC 8-23-1-24 et seq. (utility accommodation)',
-    notes: 'Indiana has spring weight restrictions on state highways and county roads typically from January 15 to April 15.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Indiana has spring weight restrictions on state highways and county roads typically from January 15 to April 15.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Iowa',
@@ -315,7 +357,8 @@ export default [
     roadAuthority: 'Iowa Department of Transportation (Iowa DOT)',
     roadUrl: 'https://iowadot.gov',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Utility Accommodation Policy; permit required for utility work in state right-of-way',
+    utilityPermitNote:
+      'Utility Accommodation Policy; permit required for utility work in state right-of-way',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
     overweightUrl: 'https://iowadot.gov/mvd/commercial-vehicle-registration/permits',
@@ -324,12 +367,14 @@ export default [
     restorationBondNote: 'Pavement restoration required per Iowa DOT specifications',
     pavingSpecification: 'Iowa DOT Standard Specifications for Highway and Bridge Construction',
     haulRoutePermitRequired: true,
-    haulRouteNote: 'Oversize/overweight permits required; spring weight restrictions significant in Iowa',
+    haulRouteNote:
+      'Oversize/overweight permits required; spring weight restrictions significant in Iowa',
     localRoadAuthority: 'County secondary road departments; municipal public works departments',
     encroachmentPermitRequired: true,
     citation: 'Iowa Code § 306A.8 (utility accommodation)',
-    notes: 'Iowa has significant spring weight restrictions on county roads and some state highways due to freeze-thaw cycles. Annual spring postings restrict heavy vehicles typically February-May.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Iowa has significant spring weight restrictions on county roads and some state highways due to freeze-thaw cycles. Annual spring postings restrict heavy vehicles typically February-May.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Kansas',
@@ -337,7 +382,8 @@ export default [
     roadAuthority: 'Kansas Department of Transportation (KDOT)',
     roadUrl: 'https://www.ksdot.org',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Encroachment Permit required for utility installations in state right-of-way',
+    utilityPermitNote:
+      'Encroachment Permit required for utility installations in state right-of-way',
     overweightPermitRequired: true,
     overweightThresholdLbs: 85500,
     overweightUrl: 'https://www.ksdot.org/bureaus/burtransplan/opermitapp.asp',
@@ -346,12 +392,14 @@ export default [
     restorationBondNote: 'Pavement restoration required per KDOT specifications',
     pavingSpecification: 'KDOT Standard Specifications for State Road and Bridge Construction',
     haulRoutePermitRequired: true,
-    haulRouteNote: 'Oversize/overweight permits required; Kansas has SH&C roads network for heavy loads',
+    haulRouteNote:
+      'Oversize/overweight permits required; Kansas has SH&C roads network for heavy loads',
     localRoadAuthority: 'County road and bridge departments; municipal public works departments',
     encroachmentPermitRequired: true,
     citation: 'K.S.A. 68-419 et seq. (encroachment); 8-1908 (vehicle weight)',
-    notes: 'Kansas has a Special Highway and Commerce (SH&C) network allowing higher weight limits on designated routes. Standard limit is 85,500 lbs on state highways.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Kansas has a Special Highway and Commerce (SH&C) network allowing higher weight limits on designated routes. Standard limit is 85,500 lbs on state highways.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Kentucky',
@@ -359,21 +407,25 @@ export default [
     roadAuthority: 'Kentucky Transportation Cabinet (KYTC)',
     roadUrl: 'https://transportation.ky.gov',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Utility Accommodation Policy; permit required for any utility work in state right-of-way',
+    utilityPermitNote:
+      'Utility Accommodation Policy; permit required for any utility work in state right-of-way',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
     overweightUrl: 'https://transportation.ky.gov/Permits',
     roadBondRequired: false,
     restorationBondRequired: true,
-    restorationBondNote: 'Pavement restoration required; performance bond may be required for large projects',
+    restorationBondNote:
+      'Pavement restoration required; performance bond may be required for large projects',
     pavingSpecification: 'Kentucky Standard Specifications for Road and Bridge Construction',
     haulRoutePermitRequired: true,
     haulRouteNote: 'Oversize/overweight permits required; Kentucky has spring weight restrictions',
-    localRoadAuthority: 'County fiscal courts (county road departments); municipal public works departments',
+    localRoadAuthority:
+      'County fiscal courts (county road departments); municipal public works departments',
     encroachmentPermitRequired: true,
     citation: 'KRS 177.310 et seq. (utility accommodation); KRS 189.222 (vehicle weight)',
-    notes: 'Kentucky has spring weight restrictions on county rural secondary roads. Mountain area roads (eastern Kentucky) have particular limitations.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Kentucky has spring weight restrictions on county rural secondary roads. Mountain area roads (eastern Kentucky) have particular limitations.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Louisiana',
@@ -381,21 +433,25 @@ export default [
     roadAuthority: 'Louisiana Department of Transportation and Development (DOTD)',
     roadUrl: 'https://www.dotd.la.gov',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Utility Accommodation Policy; permit required for utility installations in state right-of-way',
+    utilityPermitNote:
+      'Utility Accommodation Policy; permit required for utility installations in state right-of-way',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
     overweightUrl: 'https://www.dotd.la.gov/permits',
     roadBondRequired: false,
     restorationBondRequired: true,
-    restorationBondNote: 'Pavement restoration required; specifications in Utility Accommodation Policy',
+    restorationBondNote:
+      'Pavement restoration required; specifications in Utility Accommodation Policy',
     pavingSpecification: 'Louisiana Standard Specifications for Roads and Bridges',
     haulRoutePermitRequired: true,
     haulRouteNote: 'Oversize/overweight permits required; permits for heavy haul on LA roads',
-    localRoadAuthority: 'Parish police juries (police jury road departments); municipal public works',
+    localRoadAuthority:
+      'Parish police juries (police jury road departments); municipal public works',
     encroachmentPermitRequired: true,
     citation: 'R.S. 48:224 (utility accommodation); R.S. 32:380 (vehicle weight)',
-    notes: 'Louisiana has significant infrastructure challenges due to swamp and soft ground conditions. Roadway pavement quality varies widely; overweight vehicles cause significant pavement damage.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Louisiana has significant infrastructure challenges due to swamp and soft ground conditions. Roadway pavement quality varies widely; overweight vehicles cause significant pavement damage.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Maine',
@@ -403,21 +459,25 @@ export default [
     roadAuthority: 'Maine Department of Transportation (MaineDOT)',
     roadUrl: 'https://www.maine.gov/mdot',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Utility Accommodation Policy; permit required for utility work in state right-of-way',
+    utilityPermitNote:
+      'Utility Accommodation Policy; permit required for utility work in state right-of-way',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
     overweightUrl: 'https://www.maine.gov/mdot/heavyvehicles',
     roadBondRequired: false,
     restorationBondRequired: true,
-    restorationBondNote: 'Pavement restoration required per MaineDOT specifications; spring load posting seasons restrict heavy vehicles',
+    restorationBondNote:
+      'Pavement restoration required per MaineDOT specifications; spring load posting seasons restrict heavy vehicles',
     pavingSpecification: 'MaineDOT Standard Specifications',
     haulRoutePermitRequired: true,
-    haulRouteNote: 'Oversize/overweight permits required; spring posting restricts heavy vehicles significantly',
+    haulRouteNote:
+      'Oversize/overweight permits required; spring posting restricts heavy vehicles significantly',
     localRoadAuthority: 'County commissioners; municipal public works departments',
     encroachmentPermitRequired: true,
     citation: '23 M.R.S.A. § 704-A (utility accommodation)',
-    notes: 'Maine has extensive spring weight restrictions (spring posting) on state and local roads, typically March-May. These severely restrict heavy construction vehicle movements.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Maine has extensive spring weight restrictions (spring posting) on state and local roads, typically March-May. These severely restrict heavy construction vehicle movements.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Maryland',
@@ -432,15 +492,20 @@ export default [
     roadBondRequired: true,
     roadBondNote: 'Performance bond required for major work in right-of-way',
     restorationBondRequired: true,
-    restorationBondNote: 'Pavement restoration per SHA specifications; 5-year resurfacing moratorium applies on SHA roads',
-    pavingSpecification: 'Maryland State Highway Administration Standard Specifications for Construction and Materials',
+    restorationBondNote:
+      'Pavement restoration per SHA specifications; 5-year resurfacing moratorium applies on SHA roads',
+    pavingSpecification:
+      'Maryland State Highway Administration Standard Specifications for Construction and Materials',
     haulRoutePermitRequired: true,
-    haulRouteNote: 'Oversize/overweight permits required from SHA and MPA (MD Port Administration for port access)',
+    haulRouteNote:
+      'Oversize/overweight permits required from SHA and MPA (MD Port Administration for port access)',
     localRoadAuthority: 'County highway departments; municipal public works departments',
     encroachmentPermitRequired: true,
-    citation: 'Md. Code Ann., Transp. § 8-621 et seq. (utility accommodation); § 24-109 (vehicle weight)',
-    notes: 'Maryland SHA has a 5-year moratorium on cutting recently paved roads. Chesapeake Bay area has additional environmental restrictions on road construction and paving.',
-    lastVerified: '2026-01-01'
+    citation:
+      'Md. Code Ann., Transp. § 8-621 et seq. (utility accommodation); § 24-109 (vehicle weight)',
+    notes:
+      'Maryland SHA has a 5-year moratorium on cutting recently paved roads. Chesapeake Bay area has additional environmental restrictions on road construction and paving.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Massachusetts',
@@ -448,22 +513,27 @@ export default [
     roadAuthority: 'Massachusetts Department of Transportation (MassDOT) - Highway Division',
     roadUrl: 'https://www.mass.gov/massdot-highway',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Highway Opening Permit (HOP) required for any work in state highway right-of-way',
+    utilityPermitNote:
+      'Highway Opening Permit (HOP) required for any work in state highway right-of-way',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
     overweightUrl: 'https://www.mass.gov/oversize-overweight-vehicle-permits',
     roadBondRequired: true,
-    roadBondNote: 'Performance and payment bonds required for work in state ROW above certain thresholds',
+    roadBondNote:
+      'Performance and payment bonds required for work in state ROW above certain thresholds',
     restorationBondRequired: true,
-    restorationBondNote: 'Pavement restoration required per MassDOT specifications; 5-year moratorium period on cutting new pavement',
+    restorationBondNote:
+      'Pavement restoration required per MassDOT specifications; 5-year moratorium period on cutting new pavement',
     pavingSpecification: 'MassDOT Standard Specifications for Highways and Bridges',
     haulRoutePermitRequired: true,
-    haulRouteNote: 'Oversize/overweight permits required; corridor access permits for trucks on some routes',
+    haulRouteNote:
+      'Oversize/overweight permits required; corridor access permits for trucks on some routes',
     localRoadAuthority: 'City and town DPW departments',
     encroachmentPermitRequired: true,
     citation: 'M.G.L. c. 85, § 8 (street openings); c. 40, § 22 (local road opening)',
-    notes: 'Massachusetts has a 5-year pavement moratorium on state roads. Many cities/towns also have moratoriums on local roads. MassDOT HOPs are required for state roads; municipalities issue local permits.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Massachusetts has a 5-year pavement moratorium on state roads. Many cities/towns also have moratoriums on local roads. MassDOT HOPs are required for state roads; municipalities issue local permits.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Michigan',
@@ -477,15 +547,19 @@ export default [
     overweightUrl: 'https://www.michigan.gov/mdot/programs/permits',
     roadBondRequired: false,
     restorationBondRequired: true,
-    restorationBondNote: 'Pavement restoration required per MDOT specifications; guarantee period required',
-    pavingSpecification: 'Michigan Department of Transportation Standard Specifications for Construction',
+    restorationBondNote:
+      'Pavement restoration required per MDOT specifications; guarantee period required',
+    pavingSpecification:
+      'Michigan Department of Transportation Standard Specifications for Construction',
     haulRoutePermitRequired: true,
-    haulRouteNote: 'Oversize/overweight permits required; Michigan has strict spring weight restrictions (frost laws)',
+    haulRouteNote:
+      'Oversize/overweight permits required; Michigan has strict spring weight restrictions (frost laws)',
     localRoadAuthority: 'County Road Commissions; city and village DPW departments',
     encroachmentPermitRequired: true,
     citation: 'MCL § 247.321 et seq. (utility accommodation); § 257.722 (vehicle weight)',
-    notes: 'Michigan has annual spring weight restrictions (frost laws) that restrict heavy vehicles on most roads, typically January 15 through April 30. County Road Commissions maintain most county roads.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Michigan has annual spring weight restrictions (frost laws) that restrict heavy vehicles on most roads, typically January 15 through April 30. County Road Commissions maintain most county roads.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Minnesota',
@@ -493,21 +567,25 @@ export default [
     roadAuthority: 'Minnesota Department of Transportation (MnDOT)',
     roadUrl: 'https://www.dot.state.mn.us',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Utility Accommodation Policy; permit required for utility work in state right-of-way',
+    utilityPermitNote:
+      'Utility Accommodation Policy; permit required for utility work in state right-of-way',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
     overweightUrl: 'https://www.dot.state.mn.us/cvo/osow.html',
     roadBondRequired: false,
     restorationBondRequired: true,
-    restorationBondNote: 'Pavement restoration required per MnDOT specifications; spring weight restrictions significantly impact timing',
+    restorationBondNote:
+      'Pavement restoration required per MnDOT specifications; spring weight restrictions significantly impact timing',
     pavingSpecification: 'MnDOT Standard Specifications for Construction',
     haulRoutePermitRequired: true,
-    haulRouteNote: 'Oversize/overweight permits required; Minnesota has strict spring weight restrictions (typically March-May)',
+    haulRouteNote:
+      'Oversize/overweight permits required; Minnesota has strict spring weight restrictions (typically March-May)',
     localRoadAuthority: 'County highway departments; municipal public works departments',
     encroachmentPermitRequired: true,
     citation: 'Minn. Stat. § 161.45 (utility accommodation); § 169.824 (vehicle weight)',
-    notes: 'Minnesota has significant spring weight restrictions on state, county, and local roads. These restrictions can halt construction projects. Spring load restrictions typically run March 1 to May 31 but vary by year and conditions.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Minnesota has significant spring weight restrictions on state, county, and local roads. These restrictions can halt construction projects. Spring load restrictions typically run March 1 to May 31 but vary by year and conditions.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Mississippi',
@@ -515,7 +593,8 @@ export default [
     roadAuthority: 'Mississippi Department of Transportation (MDOT)',
     roadUrl: 'https://mdot.ms.gov',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Utility Accommodation Policy; permit required for utility work in state highway right-of-way',
+    utilityPermitNote:
+      'Utility Accommodation Policy; permit required for utility work in state highway right-of-way',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
     overweightUrl: 'https://mdot.ms.gov/portal/permits',
@@ -529,7 +608,7 @@ export default [
     encroachmentPermitRequired: true,
     citation: 'Miss. Code Ann. § 65-1-49 (utility accommodation); § 63-5-31 (vehicle weight)',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Missouri',
@@ -537,7 +616,8 @@ export default [
     roadAuthority: 'Missouri Department of Transportation (MoDOT)',
     roadUrl: 'https://www.modot.org',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Utility Accommodation Policy; permit required for utility work in state right-of-way',
+    utilityPermitNote:
+      'Utility Accommodation Policy; permit required for utility work in state right-of-way',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
     overweightUrl: 'https://www.modot.org/overweight-oversize-permits',
@@ -551,7 +631,7 @@ export default [
     encroachmentPermitRequired: true,
     citation: 'Mo. Rev. Stat. § 227.240 (utility accommodation); § 304.170 (vehicle weight)',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Montana',
@@ -559,21 +639,25 @@ export default [
     roadAuthority: 'Montana Department of Transportation (MDT)',
     roadUrl: 'https://www.mdt.mt.gov',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Utility Accommodation Policy; permit required for utility work in state right-of-way',
+    utilityPermitNote:
+      'Utility Accommodation Policy; permit required for utility work in state right-of-way',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
     overweightUrl: 'https://www.mdt.mt.gov/business/permitting',
     roadBondRequired: false,
     restorationBondRequired: true,
     restorationBondNote: 'Pavement restoration required; spring weight restrictions significant',
-    pavingSpecification: 'Montana Department of Transportation Standard Specifications for Road and Bridge Construction',
+    pavingSpecification:
+      'Montana Department of Transportation Standard Specifications for Road and Bridge Construction',
     haulRoutePermitRequired: true,
-    haulRouteNote: 'Oversize/overweight permits required; Montana has spring weight restrictions and severe winter conditions affecting road access',
+    haulRouteNote:
+      'Oversize/overweight permits required; Montana has spring weight restrictions and severe winter conditions affecting road access',
     localRoadAuthority: 'County road departments; municipal public works departments',
     encroachmentPermitRequired: true,
     citation: 'MCA § 60-4-201 et seq. (utility accommodation)',
-    notes: 'Montana has significant spring weight restrictions on state and county roads. Remote road access challenges are common throughout the state.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Montana has significant spring weight restrictions on state and county roads. Remote road access challenges are common throughout the state.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Nebraska',
@@ -581,21 +665,26 @@ export default [
     roadAuthority: 'Nebraska Department of Transportation (NDOT)',
     roadUrl: 'https://dot.nebraska.gov',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Utility Accommodation Policy; permit required for utility work in state right-of-way',
+    utilityPermitNote:
+      'Utility Accommodation Policy; permit required for utility work in state right-of-way',
     overweightPermitRequired: true,
     overweightThresholdLbs: 95000,
     overweightUrl: 'https://dot.nebraska.gov/travel/permits',
     roadBondRequired: false,
     restorationBondRequired: true,
     restorationBondNote: 'Pavement restoration required per NDOT specifications',
-    pavingSpecification: 'Nebraska Department of Transportation Standard Specifications for Highway Construction',
+    pavingSpecification:
+      'Nebraska Department of Transportation Standard Specifications for Highway Construction',
     haulRoutePermitRequired: true,
-    haulRouteNote: 'Oversize/overweight permits required; Nebraska allows higher weight limits on some routes (95,000 lbs on 5-axle)',
+    haulRouteNote:
+      'Oversize/overweight permits required; Nebraska allows higher weight limits on some routes (95,000 lbs on 5-axle)',
     localRoadAuthority: 'County highway departments; municipal public works departments',
     encroachmentPermitRequired: true,
-    citation: 'Neb. Rev. Stat. § 39-1301 et seq. (utility accommodation); § 60-6,294 (vehicle weight)',
-    notes: 'Nebraska has higher weight limits than the federal standard on state highways (95,000 lbs for 5-axle vehicles). Spring weight restrictions apply on county roads.',
-    lastVerified: '2026-01-01'
+    citation:
+      'Neb. Rev. Stat. § 39-1301 et seq. (utility accommodation); § 60-6,294 (vehicle weight)',
+    notes:
+      'Nebraska has higher weight limits than the federal standard on state highways (95,000 lbs for 5-axle vehicles). Spring weight restrictions apply on county roads.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Nevada',
@@ -603,21 +692,25 @@ export default [
     roadAuthority: 'Nevada Department of Transportation (NDOT)',
     roadUrl: 'https://www.nevadadot.com',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Encroachment Permit required for utility installations in state right-of-way',
+    utilityPermitNote:
+      'Encroachment Permit required for utility installations in state right-of-way',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
     overweightUrl: 'https://www.nevadadot.com/doing-business/permits',
     roadBondRequired: false,
     restorationBondRequired: true,
     restorationBondNote: 'Pavement restoration required per NDOT specifications',
-    pavingSpecification: 'Nevada Department of Transportation Standard Specifications for Road and Bridge Construction',
+    pavingSpecification:
+      'Nevada Department of Transportation Standard Specifications for Road and Bridge Construction',
     haulRoutePermitRequired: true,
-    haulRouteNote: 'Oversize/overweight permits required; Nevada has open pit mine haul roads with separate requirements',
+    haulRouteNote:
+      'Oversize/overweight permits required; Nevada has open pit mine haul roads with separate requirements',
     localRoadAuthority: 'County road departments; municipal public works departments',
     encroachmentPermitRequired: true,
     citation: 'NRS § 408.423 (utility accommodation); § 484D.565 (vehicle weight)',
-    notes: 'Nevada has significant mining operations that require heavy haul routes. Clark County (Las Vegas) and Washoe County (Reno) have high-volume permit programs.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Nevada has significant mining operations that require heavy haul routes. Clark County (Las Vegas) and Washoe County (Reno) have high-volume permit programs.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New Hampshire',
@@ -625,21 +718,26 @@ export default [
     roadAuthority: 'New Hampshire Department of Transportation (NHDOT)',
     roadUrl: 'https://www.dot.nh.gov',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Utility Accommodation Policy; permit required for utility work in state right-of-way',
+    utilityPermitNote:
+      'Utility Accommodation Policy; permit required for utility work in state right-of-way',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
     overweightUrl: 'https://www.dot.nh.gov/permits',
     roadBondRequired: false,
     restorationBondRequired: true,
-    restorationBondNote: 'Pavement restoration required; spring weight restrictions significant in NH',
-    pavingSpecification: 'NH Department of Transportation Standard Specifications for Road and Bridge Construction',
+    restorationBondNote:
+      'Pavement restoration required; spring weight restrictions significant in NH',
+    pavingSpecification:
+      'NH Department of Transportation Standard Specifications for Road and Bridge Construction',
     haulRoutePermitRequired: true,
-    haulRouteNote: 'Oversize/overweight permits required; spring weight restrictions restrict heavy haul March-May',
+    haulRouteNote:
+      'Oversize/overweight permits required; spring weight restrictions restrict heavy haul March-May',
     localRoadAuthority: 'Municipal public works departments; county roads (minimal)',
     encroachmentPermitRequired: true,
     citation: 'RSA 236:14-a (utility accommodation); RSA 266:18-a (vehicle weight)',
-    notes: 'New Hampshire has significant spring weight restrictions due to freeze-thaw. Town roads are maintained by municipal DPW departments.',
-    lastVerified: '2026-01-01'
+    notes:
+      'New Hampshire has significant spring weight restrictions due to freeze-thaw. Town roads are maintained by municipal DPW departments.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New Jersey',
@@ -647,22 +745,27 @@ export default [
     roadAuthority: 'New Jersey Department of Transportation (NJDOT)',
     roadUrl: 'https://www.nj.gov/transportation',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Roadway Opening Permit required for utility work in state highway right-of-way',
+    utilityPermitNote:
+      'Roadway Opening Permit required for utility work in state highway right-of-way',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
     overweightUrl: 'https://www.nj.gov/transportation/business/stateaid/permits.shtm',
     roadBondRequired: true,
     roadBondNote: 'Performance bond required for highway work and road openings',
     restorationBondRequired: true,
-    restorationBondNote: 'Pavement restoration required per NJDOT specifications; moratorium periods on fresh pavement',
+    restorationBondNote:
+      'Pavement restoration required per NJDOT specifications; moratorium periods on fresh pavement',
     pavingSpecification: 'NJDOT Standard Specifications for Road and Bridge Construction',
     haulRoutePermitRequired: true,
-    haulRouteNote: 'Oversize/overweight permits required; NJ Turnpike/Garden State Parkway have separate permitting',
+    haulRouteNote:
+      'Oversize/overweight permits required; NJ Turnpike/Garden State Parkway have separate permitting',
     localRoadAuthority: 'County road departments; municipal DPW departments',
     encroachmentPermitRequired: true,
-    citation: 'N.J.S.A. 27:7-44.1 et seq. (utility accommodation); N.J.S.A. 39:3-84 (vehicle weight)',
-    notes: 'New Jersey has pavement moratoriums and detailed pavement restoration requirements. NJDOT manages state highways; counties manage county roads; municipalities manage local roads.',
-    lastVerified: '2026-01-01'
+    citation:
+      'N.J.S.A. 27:7-44.1 et seq. (utility accommodation); N.J.S.A. 39:3-84 (vehicle weight)',
+    notes:
+      'New Jersey has pavement moratoriums and detailed pavement restoration requirements. NJDOT manages state highways; counties manage county roads; municipalities manage local roads.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New Mexico',
@@ -670,21 +773,25 @@ export default [
     roadAuthority: 'New Mexico Department of Transportation (NMDOT)',
     roadUrl: 'https://www.dot.nm.gov',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Utility Accommodation Policy; permit required for utility work in state right-of-way',
+    utilityPermitNote:
+      'Utility Accommodation Policy; permit required for utility work in state right-of-way',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
     overweightUrl: 'https://www.dot.nm.gov/content/nmdot/en/permits.html',
     roadBondRequired: false,
     restorationBondRequired: true,
     restorationBondNote: 'Pavement restoration required per NMDOT specifications',
-    pavingSpecification: 'New Mexico Department of Transportation Standard Specifications for Highway and Bridge Construction',
+    pavingSpecification:
+      'New Mexico Department of Transportation Standard Specifications for Highway and Bridge Construction',
     haulRoutePermitRequired: true,
-    haulRouteNote: 'Oversize/overweight permits required; New Mexico oil and gas industry requires heavy haul routes in southeastern NM',
+    haulRouteNote:
+      'Oversize/overweight permits required; New Mexico oil and gas industry requires heavy haul routes in southeastern NM',
     localRoadAuthority: 'County road departments; municipal public works departments',
     encroachmentPermitRequired: true,
     citation: 'NMSA § 67-3-12 (utility accommodation)',
-    notes: 'New Mexico oil and gas industry (Permian Basin) generates significant heavy haul traffic in southeastern New Mexico. NMDOT manages permitting for state highways.',
-    lastVerified: '2026-01-01'
+    notes:
+      'New Mexico oil and gas industry (Permian Basin) generates significant heavy haul traffic in southeastern New Mexico. NMDOT manages permitting for state highways.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New York',
@@ -692,22 +799,28 @@ export default [
     roadAuthority: 'New York State Department of Transportation (NYSDOT)',
     roadUrl: 'https://www.dot.ny.gov',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Highway Work Permit (HWP) required for any work in NYSDOT right-of-way; includes utility work and street openings',
+    utilityPermitNote:
+      'Highway Work Permit (HWP) required for any work in NYSDOT right-of-way; includes utility work and street openings',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
     overweightUrl: 'https://www.dot.ny.gov/permits',
     roadBondRequired: true,
-    roadBondNote: 'Performance bond required for HWPs above certain thresholds; insurance required for all HWPs',
+    roadBondNote:
+      'Performance bond required for HWPs above certain thresholds; insurance required for all HWPs',
     restorationBondRequired: true,
-    restorationBondNote: 'Pavement restoration required per NYSDOT specifications; 5-year warranty on full-depth restoration',
+    restorationBondNote:
+      'Pavement restoration required per NYSDOT specifications; 5-year warranty on full-depth restoration',
     pavingSpecification: 'NYSDOT Standard Specifications for Construction and Materials',
     haulRoutePermitRequired: true,
-    haulRouteNote: 'Oversize/overweight permits required; NYC has separate permitting system through NYCDOT',
+    haulRouteNote:
+      'Oversize/overweight permits required; NYC has separate permitting system through NYCDOT',
     localRoadAuthority: 'County DPW departments; city/town DPW departments; NYC DOT (separate)',
     encroachmentPermitRequired: true,
-    citation: 'Highway Law § 52 (utility accommodation); Vehicle and Traffic Law § 385 (vehicle weight)',
-    notes: 'New York City has its own permitting system through NYCDOT (NYC Streets Design Manual, DEP permits). NYSDOT HWPs required for state highway work. NYC requires Builders Pavement Plan (BPP) for large projects.',
-    lastVerified: '2026-01-01'
+    citation:
+      'Highway Law § 52 (utility accommodation); Vehicle and Traffic Law § 385 (vehicle weight)',
+    notes:
+      'New York City has its own permitting system through NYCDOT (NYC Streets Design Manual, DEP permits). NYSDOT HWPs required for state highway work. NYC requires Builders Pavement Plan (BPP) for large projects.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'North Carolina',
@@ -715,7 +828,8 @@ export default [
     roadAuthority: 'North Carolina Department of Transportation (NCDOT)',
     roadUrl: 'https://www.ncdot.gov',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Encroachment Agreement required for utility work in NCDOT right-of-way; includes road crossing permits',
+    utilityPermitNote:
+      'Encroachment Agreement required for utility work in NCDOT right-of-way; includes road crossing permits',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
     overweightUrl: 'https://www.ncdot.gov/divisions/motor-carrier/pages/permits.aspx',
@@ -726,11 +840,13 @@ export default [
     pavingSpecification: 'NCDOT Standard Specifications for Roads and Structures',
     haulRoutePermitRequired: true,
     haulRouteNote: 'Oversize/overweight permits required',
-    localRoadAuthority: 'NCDOT also maintains most secondary roads (not municipalities); municipal public works for city streets',
+    localRoadAuthority:
+      'NCDOT also maintains most secondary roads (not municipalities); municipal public works for city streets',
     encroachmentPermitRequired: true,
     citation: 'G.S. § 136-19 (utility accommodation); § 20-118 (vehicle weight)',
-    notes: 'North Carolina is unique in that NCDOT maintains most roads in the state including secondary roads, unlike most states. Municipal streets are maintained by municipalities.',
-    lastVerified: '2026-01-01'
+    notes:
+      'North Carolina is unique in that NCDOT maintains most roads in the state including secondary roads, unlike most states. Municipal streets are maintained by municipalities.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'North Dakota',
@@ -738,7 +854,8 @@ export default [
     roadAuthority: 'North Dakota Department of Transportation (NDDOT)',
     roadUrl: 'https://www.dot.nd.gov',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Utility Accommodation Policy; permit required for utility work in state right-of-way',
+    utilityPermitNote:
+      'Utility Accommodation Policy; permit required for utility work in state right-of-way',
     overweightPermitRequired: true,
     overweightThresholdLbs: 105500,
     overweightUrl: 'https://www.dot.nd.gov/divisions/maintenance/permits.htm',
@@ -747,12 +864,14 @@ export default [
     restorationBondNote: 'Pavement restoration required; spring weight restrictions significant',
     pavingSpecification: 'NDDOT Standard Specifications for Road and Bridge Construction',
     haulRoutePermitRequired: true,
-    haulRouteNote: 'Oversize/overweight permits required; ND oil industry requires heavy haul routes in western ND; 105,500 lb limit on some designated routes',
+    haulRouteNote:
+      'Oversize/overweight permits required; ND oil industry requires heavy haul routes in western ND; 105,500 lb limit on some designated routes',
     localRoadAuthority: 'County road departments; municipal public works departments',
     encroachmentPermitRequired: true,
     citation: 'NDCC § 24-01-37 (utility accommodation); § 39-12-02 (vehicle weight)',
-    notes: 'North Dakota has one of the highest weight limits in the nation for trucks on designated routes (105,500 lbs) to accommodate oil and agricultural industry. Spring weight restrictions on county roads.',
-    lastVerified: '2026-01-01'
+    notes:
+      'North Dakota has one of the highest weight limits in the nation for trucks on designated routes (105,500 lbs) to accommodate oil and agricultural industry. Spring weight restrictions on county roads.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Ohio',
@@ -760,21 +879,25 @@ export default [
     roadAuthority: 'Ohio Department of Transportation (ODOT)',
     roadUrl: 'https://www.transportation.ohio.gov',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Utility Accommodation Policy; permit required for utility work in state right-of-way',
+    utilityPermitNote:
+      'Utility Accommodation Policy; permit required for utility work in state right-of-way',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
     overweightUrl: 'https://www.transportation.ohio.gov/working/engineering/load-rating-permits',
     roadBondRequired: false,
     restorationBondRequired: true,
-    restorationBondNote: 'Pavement restoration required per ODOT specifications; performance bond may be required',
+    restorationBondNote:
+      'Pavement restoration required per ODOT specifications; performance bond may be required',
     pavingSpecification: 'ODOT Construction and Material Specifications',
     haulRoutePermitRequired: true,
-    haulRouteNote: 'Oversize/overweight permits required; Ohio has spring weight restrictions and special heavy haul routes',
+    haulRouteNote:
+      'Oversize/overweight permits required; Ohio has spring weight restrictions and special heavy haul routes',
     localRoadAuthority: 'County engineer offices; municipal public works departments',
     encroachmentPermitRequired: true,
     citation: 'ORC § 5515.01 (utility accommodation); § 5577.01 (vehicle weight)',
-    notes: 'Ohio County Engineers maintain county roads. Ohio has detailed construction specification requirements and quality assurance programs.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Ohio County Engineers maintain county roads. Ohio has detailed construction specification requirements and quality assurance programs.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Oklahoma',
@@ -782,7 +905,8 @@ export default [
     roadAuthority: 'Oklahoma Department of Transportation (ODOT)',
     roadUrl: 'https://www.odot.org',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Utility Accommodation Policy; permit required for utility work in state right-of-way',
+    utilityPermitNote:
+      'Utility Accommodation Policy; permit required for utility work in state right-of-way',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
     overweightUrl: 'https://www.odot.org/permits',
@@ -791,12 +915,14 @@ export default [
     restorationBondNote: 'Pavement restoration required per ODOT specifications',
     pavingSpecification: 'Oklahoma Standard Specifications for Highway Construction',
     haulRoutePermitRequired: true,
-    haulRouteNote: 'Oversize/overweight permits required; Oklahoma oil industry requires heavy haul routes',
+    haulRouteNote:
+      'Oversize/overweight permits required; Oklahoma oil industry requires heavy haul routes',
     localRoadAuthority: 'County commissioners; municipal public works departments',
     encroachmentPermitRequired: true,
     citation: '69 O.S. § 1401 (utility accommodation); 47 O.S. § 14-109 (vehicle weight)',
-    notes: 'Oklahoma has significant heavy haul requirements due to oil and gas industry. Roads in oil production areas experience accelerated deterioration.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Oklahoma has significant heavy haul requirements due to oil and gas industry. Roads in oil production areas experience accelerated deterioration.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Oregon',
@@ -804,21 +930,25 @@ export default [
     roadAuthority: 'Oregon Department of Transportation (ODOT)',
     roadUrl: 'https://www.oregon.gov/ODOT',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Utility Notification/Permit required for utility work in state right-of-way under OAR 734-055',
+    utilityPermitNote:
+      'Utility Notification/Permit required for utility work in state right-of-way under OAR 734-055',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
     overweightUrl: 'https://www.oregon.gov/odot/permits/Pages/heavy-vehicles.aspx',
     roadBondRequired: false,
     restorationBondRequired: true,
-    restorationBondNote: 'Pavement restoration required per ODOT Standard Specifications; spring weight restrictions apply',
+    restorationBondNote:
+      'Pavement restoration required per ODOT Standard Specifications; spring weight restrictions apply',
     pavingSpecification: 'Oregon Standard Specifications for Construction',
     haulRoutePermitRequired: true,
-    haulRouteNote: 'Oversize/overweight permits required; Oregon has spring weight restrictions on state and local roads',
+    haulRouteNote:
+      'Oversize/overweight permits required; Oregon has spring weight restrictions on state and local roads',
     localRoadAuthority: 'County road departments; municipal public works departments',
     encroachmentPermitRequired: true,
     citation: 'ORS § 757.280 et seq. (utility accommodation); § 818.020 (vehicle weight)',
-    notes: 'Oregon has significant spring weight restrictions on state highways and local roads, typically February 15 through May 15. ODOT manages utility accommodation through OAR 734-055.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Oregon has significant spring weight restrictions on state highways and local roads, typically February 15 through May 15. ODOT manages utility accommodation through OAR 734-055.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Pennsylvania',
@@ -826,22 +956,26 @@ export default [
     roadAuthority: 'Pennsylvania Department of Transportation (PennDOT)',
     roadUrl: 'https://www.penndot.pa.gov',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Highway Occupancy Permit (HOP) required for utility work in state right-of-way',
+    utilityPermitNote:
+      'Highway Occupancy Permit (HOP) required for utility work in state right-of-way',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
     overweightUrl: 'https://www.penndot.pa.gov/TravelInPA/Bridges/Pages/Permits.aspx',
     roadBondRequired: true,
     roadBondNote: 'Performance bond required for Highway Occupancy Permits for major work',
     restorationBondRequired: true,
-    restorationBondNote: 'Pavement restoration required per PennDOT specifications; 5-year pavement warranty required for cut pavement',
+    restorationBondNote:
+      'Pavement restoration required per PennDOT specifications; 5-year pavement warranty required for cut pavement',
     pavingSpecification: 'PennDOT Publication 408 (Specifications) and Publication 72M (Standards)',
     haulRoutePermitRequired: true,
-    haulRouteNote: 'Oversize/overweight permits required; Pennsylvania has complex permitting for heavy vehicles on state and local roads',
+    haulRouteNote:
+      'Oversize/overweight permits required; Pennsylvania has complex permitting for heavy vehicles on state and local roads',
     localRoadAuthority: 'County road departments; municipal public works departments',
     encroachmentPermitRequired: true,
     citation: '36 P.S. § 670-420 (utility accommodation); 75 Pa.C.S. § 4941 (vehicle weight)',
-    notes: 'Pennsylvania HOPs are one of the most complex utility permit systems in the nation. PennDOT requires detailed traffic control plans (TCPs) and has strict inspection requirements.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Pennsylvania HOPs are one of the most complex utility permit systems in the nation. PennDOT requires detailed traffic control plans (TCPs) and has strict inspection requirements.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Rhode Island',
@@ -864,7 +998,7 @@ export default [
     encroachmentPermitRequired: true,
     citation: 'R.I. Gen. Laws § 24-8-44 (utility accommodation); § 31-25-13 (vehicle weight)',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'South Carolina',
@@ -886,7 +1020,7 @@ export default [
     encroachmentPermitRequired: true,
     citation: 'S.C. Code Ann. § 57-7-10 (utility accommodation); § 56-5-4160 (vehicle weight)',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'South Dakota',
@@ -894,21 +1028,25 @@ export default [
     roadAuthority: 'South Dakota Department of Transportation (SDDOT)',
     roadUrl: 'https://dot.sd.gov',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Utility Accommodation Policy; permit required for utility work in state right-of-way',
+    utilityPermitNote:
+      'Utility Accommodation Policy; permit required for utility work in state right-of-way',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
     overweightUrl: 'https://dot.sd.gov/business/permits',
     roadBondRequired: false,
     restorationBondRequired: true,
     restorationBondNote: 'Pavement restoration required; spring weight restrictions significant',
-    pavingSpecification: 'South Dakota Department of Transportation Standard Specifications for Roads and Bridges',
+    pavingSpecification:
+      'South Dakota Department of Transportation Standard Specifications for Roads and Bridges',
     haulRoutePermitRequired: true,
-    haulRouteNote: 'Oversize/overweight permits required; South Dakota allows higher weight limits on some routes for agriculture',
+    haulRouteNote:
+      'Oversize/overweight permits required; South Dakota allows higher weight limits on some routes for agriculture',
     localRoadAuthority: 'County highway departments; municipal public works departments',
     encroachmentPermitRequired: true,
     citation: 'SDCL § 31-28-1 et seq. (utility accommodation); § 32-22-1 (vehicle weight)',
-    notes: 'South Dakota has spring weight restrictions on county and township roads. Agricultural heavy vehicles have higher weight allowances on some designated routes.',
-    lastVerified: '2026-01-01'
+    notes:
+      'South Dakota has spring weight restrictions on county and township roads. Agricultural heavy vehicles have higher weight allowances on some designated routes.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Tennessee',
@@ -919,18 +1057,21 @@ export default [
     utilityPermitNote: 'Encroachment Permit required for utility work in TDOT right-of-way',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
-    overweightUrl: 'https://www.tn.gov/tdot/operations-division/tdot-operations/freight-oversize-overweight-permits.html',
+    overweightUrl:
+      'https://www.tn.gov/tdot/operations-division/tdot-operations/freight-oversize-overweight-permits.html',
     roadBondRequired: false,
     restorationBondRequired: true,
     restorationBondNote: 'Pavement restoration required per TDOT specifications',
-    pavingSpecification: 'Tennessee Department of Transportation Standard Specifications for Road and Bridge Construction',
+    pavingSpecification:
+      'Tennessee Department of Transportation Standard Specifications for Road and Bridge Construction',
     haulRoutePermitRequired: true,
-    haulRouteNote: 'Oversize/overweight permits required; Tennessee has restrictions on some mountain grades',
+    haulRouteNote:
+      'Oversize/overweight permits required; Tennessee has restrictions on some mountain grades',
     localRoadAuthority: 'County highway departments; municipal public works departments',
     encroachmentPermitRequired: true,
     citation: 'TCA § 54-4-103 (utility accommodation); § 55-7-203 (vehicle weight)',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Texas',
@@ -938,21 +1079,28 @@ export default [
     roadAuthority: 'Texas Department of Transportation (TxDOT)',
     roadUrl: 'https://www.txdot.gov',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Utility Accommodation Rules (UAR); Utility Permit required for utility work in TxDOT right-of-way',
+    utilityPermitNote:
+      'Utility Accommodation Rules (UAR); Utility Permit required for utility work in TxDOT right-of-way',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
     overweightUrl: 'https://www.txdot.gov/government/permits.html',
     roadBondRequired: false,
     restorationBondRequired: true,
-    restorationBondNote: 'Pavement restoration required per TxDOT specifications; bond may be required for significant work',
-    pavingSpecification: 'TxDOT Standard Specifications for Construction and Maintenance of Highways, Streets, and Bridges',
+    restorationBondNote:
+      'Pavement restoration required per TxDOT specifications; bond may be required for significant work',
+    pavingSpecification:
+      'TxDOT Standard Specifications for Construction and Maintenance of Highways, Streets, and Bridges',
     haulRoutePermitRequired: true,
-    haulRouteNote: 'Oversize/overweight permits required from TxDOT (heavy haul division); Texas has very high permit volumes due to oil industry',
-    localRoadAuthority: 'County commissioners courts; municipal public works departments; Texas has no county authority for permitting in unincorporated areas for roads (county road maintenance only)',
+    haulRouteNote:
+      'Oversize/overweight permits required from TxDOT (heavy haul division); Texas has very high permit volumes due to oil industry',
+    localRoadAuthority:
+      'County commissioners courts; municipal public works departments; Texas has no county authority for permitting in unincorporated areas for roads (county road maintenance only)',
     encroachmentPermitRequired: true,
-    citation: 'Tex. Transp. Code § 181.001 et seq. (utility accommodation); § 621.101 (vehicle weight)',
-    notes: 'Texas has among the highest oversize/overweight permit volumes in the nation due to oil and gas industry. TxDOT UAR governs utility accommodation in state ROW. County-maintained roads managed by County Commissioners Court.',
-    lastVerified: '2026-01-01'
+    citation:
+      'Tex. Transp. Code § 181.001 et seq. (utility accommodation); § 621.101 (vehicle weight)',
+    notes:
+      'Texas has among the highest oversize/overweight permit volumes in the nation due to oil and gas industry. TxDOT UAR governs utility accommodation in state ROW. County-maintained roads managed by County Commissioners Court.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Utah',
@@ -960,21 +1108,23 @@ export default [
     roadAuthority: 'Utah Department of Transportation (UDOT)',
     roadUrl: 'https://www.udot.utah.gov',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Utility Accommodation Rule; permit required for utility work in UDOT right-of-way',
+    utilityPermitNote:
+      'Utility Accommodation Rule; permit required for utility work in UDOT right-of-way',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
     overweightUrl: 'https://www.udot.utah.gov/permitportal',
     roadBondRequired: false,
     restorationBondRequired: true,
     restorationBondNote: 'Pavement restoration required per UDOT specifications',
-    pavingSpecification: 'Utah Department of Transportation Standard Specifications for Road and Bridge Construction',
+    pavingSpecification:
+      'Utah Department of Transportation Standard Specifications for Road and Bridge Construction',
     haulRoutePermitRequired: true,
     haulRouteNote: 'Oversize/overweight permits required; Utah has restrictions in Wasatch canyons',
     localRoadAuthority: 'County road departments; municipal public works departments',
     encroachmentPermitRequired: true,
     citation: 'Utah Code § 72-3-108 (utility accommodation); § 72-9-204 (vehicle weight)',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Vermont',
@@ -982,21 +1132,26 @@ export default [
     roadAuthority: 'Vermont Agency of Transportation (VTrans)',
     roadUrl: 'https://vtrans.vermont.gov',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Utility Accommodation Policy; permit required for utility work in state right-of-way',
+    utilityPermitNote:
+      'Utility Accommodation Policy; permit required for utility work in state right-of-way',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
     overweightUrl: 'https://vtrans.vermont.gov/highway/permits/size-weight',
     roadBondRequired: false,
     restorationBondRequired: true,
-    restorationBondNote: 'Pavement restoration required; significant spring weight restrictions in Vermont',
-    pavingSpecification: 'Vermont Agency of Transportation Standard Specifications for Construction',
+    restorationBondNote:
+      'Pavement restoration required; significant spring weight restrictions in Vermont',
+    pavingSpecification:
+      'Vermont Agency of Transportation Standard Specifications for Construction',
     haulRoutePermitRequired: true,
-    haulRouteNote: 'Oversize/overweight permits required; Vermont has severe spring weight restrictions (typically February 15 to May 15)',
+    haulRouteNote:
+      'Oversize/overweight permits required; Vermont has severe spring weight restrictions (typically February 15 to May 15)',
     localRoadAuthority: 'Municipal highway departments; town road commissioners',
     encroachmentPermitRequired: true,
     citation: '23 V.S.A. § 1110 (utility accommodation); § 1392 (vehicle weight)',
-    notes: 'Vermont has very significant spring weight restrictions (frost laws) due to freeze-thaw cycles. These restrictions can halt heavy construction operations for 3+ months. Town road commissioners maintain town highways.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Vermont has very significant spring weight restrictions (frost laws) due to freeze-thaw cycles. These restrictions can halt heavy construction operations for 3+ months. Town road commissioners maintain town highways.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Virginia',
@@ -1004,10 +1159,12 @@ export default [
     roadAuthority: 'Virginia Department of Transportation (VDOT)',
     roadUrl: 'https://www.vdot.virginia.gov',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Land Use Permit (LUP) required for utility work in VDOT right-of-way; Utility Manual governs accommodation',
+    utilityPermitNote:
+      'Land Use Permit (LUP) required for utility work in VDOT right-of-way; Utility Manual governs accommodation',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
-    overweightUrl: 'https://www.vdot.virginia.gov/business/it-services/oversize-overweight-permits.asp',
+    overweightUrl:
+      'https://www.vdot.virginia.gov/business/it-services/oversize-overweight-permits.asp',
     roadBondRequired: true,
     roadBondNote: 'Performance bond required for Land Use Permits for major encroachment work',
     restorationBondRequired: true,
@@ -1015,11 +1172,14 @@ export default [
     pavingSpecification: 'VDOT Road and Bridge Specifications',
     haulRoutePermitRequired: true,
     haulRouteNote: 'Oversize/overweight permits required; Virginia has strict enforcement',
-    localRoadAuthority: 'VDOT also maintains most secondary roads in Virginia (similar to NC); cities/towns maintain urban streets',
+    localRoadAuthority:
+      'VDOT also maintains most secondary roads in Virginia (similar to NC); cities/towns maintain urban streets',
     encroachmentPermitRequired: true,
-    citation: 'Code of Va. § 33.2-1101 et seq. (utility accommodation); § 46.2-1122 (vehicle weight)',
-    notes: 'Virginia is one of few states where the state DOT maintains most secondary roads. VDOT Land Use Permits (LUPs) required for work in VDOT ROW. Utility Manual is a comprehensive guide for utility accommodation.',
-    lastVerified: '2026-01-01'
+    citation:
+      'Code of Va. § 33.2-1101 et seq. (utility accommodation); § 46.2-1122 (vehicle weight)',
+    notes:
+      'Virginia is one of few states where the state DOT maintains most secondary roads. VDOT Land Use Permits (LUPs) required for work in VDOT ROW. Utility Manual is a comprehensive guide for utility accommodation.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Washington',
@@ -1027,22 +1187,27 @@ export default [
     roadAuthority: 'Washington State Department of Transportation (WSDOT)',
     roadUrl: 'https://www.wsdot.wa.gov',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Utility Permit required for utility work in state right-of-way under RCW 47.44',
+    utilityPermitNote:
+      'Utility Permit required for utility work in state right-of-way under RCW 47.44',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
     overweightUrl: 'https://www.wsdot.wa.gov/business/permits/oversize-overweight-permits.htm',
     roadBondRequired: true,
     roadBondNote: 'Performance bond may be required for utility permits and encroachments',
     restorationBondRequired: true,
-    restorationBondNote: 'Pavement restoration required per WSDOT Standard Specifications; spring weight restrictions on some routes',
-    pavingSpecification: 'WSDOT Standard Specifications for Road, Bridge, and Municipal Construction (GSP)',
+    restorationBondNote:
+      'Pavement restoration required per WSDOT Standard Specifications; spring weight restrictions on some routes',
+    pavingSpecification:
+      'WSDOT Standard Specifications for Road, Bridge, and Municipal Construction (GSP)',
     haulRoutePermitRequired: true,
-    haulRouteNote: 'Oversize/overweight permits required; Washington has restrictions on mountain passes',
+    haulRouteNote:
+      'Oversize/overweight permits required; Washington has restrictions on mountain passes',
     localRoadAuthority: 'County road departments; city public works departments',
     encroachmentPermitRequired: true,
     citation: 'RCW § 47.44 (utility accommodation); § 46.44.041 (vehicle weight)',
-    notes: 'Washington DOT manages state highways. County roads managed by county road departments. WSDOT has detailed requirements for roadway work zone traffic control.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Washington DOT manages state highways. County roads managed by county road departments. WSDOT has detailed requirements for roadway work zone traffic control.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'West Virginia',
@@ -1050,21 +1215,25 @@ export default [
     roadAuthority: 'West Virginia Department of Transportation - Division of Highways (WVDOH)',
     roadUrl: 'https://transportation.wv.gov',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Utility Accommodation Policy; permit required for utility work in state right-of-way',
+    utilityPermitNote:
+      'Utility Accommodation Policy; permit required for utility work in state right-of-way',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
     overweightUrl: 'https://transportation.wv.gov/highways/permits',
     roadBondRequired: false,
     restorationBondRequired: true,
     restorationBondNote: 'Pavement restoration required per WVDOH specifications',
-    pavingSpecification: 'West Virginia Division of Highways Standard Specifications Roads and Bridges',
+    pavingSpecification:
+      'West Virginia Division of Highways Standard Specifications Roads and Bridges',
     haulRoutePermitRequired: true,
-    haulRouteNote: 'Oversize/overweight permits required; coal mining areas have significant heavy haul requirements',
+    haulRouteNote:
+      'Oversize/overweight permits required; coal mining areas have significant heavy haul requirements',
     localRoadAuthority: 'County commissions; municipal public works departments',
     encroachmentPermitRequired: true,
     citation: 'W. Va. Code § 17-4-8a (utility accommodation); § 17C-17-3 (vehicle weight)',
-    notes: 'West Virginia coal mining operations generate significant heavy haul traffic. Many local roads in coal country experience accelerated deterioration.',
-    lastVerified: '2026-01-01'
+    notes:
+      'West Virginia coal mining operations generate significant heavy haul traffic. Many local roads in coal country experience accelerated deterioration.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Wisconsin',
@@ -1072,21 +1241,26 @@ export default [
     roadAuthority: 'Wisconsin Department of Transportation (WisDOT)',
     roadUrl: 'https://wisconsindot.gov',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Utility Accommodation Policy; permit required for utility work in state right-of-way',
+    utilityPermitNote:
+      'Utility Accommodation Policy; permit required for utility work in state right-of-way',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
     overweightUrl: 'https://wisconsindot.gov/Pages/doing-bus/trucking/siz-wt/permits.aspx',
     roadBondRequired: false,
     restorationBondRequired: true,
-    restorationBondNote: 'Pavement restoration required per WisDOT specifications; spring weight restrictions significant',
+    restorationBondNote:
+      'Pavement restoration required per WisDOT specifications; spring weight restrictions significant',
     pavingSpecification: 'WisDOT Standard Specifications for Highway and Structure Construction',
     haulRoutePermitRequired: true,
-    haulRouteNote: 'Oversize/overweight permits required; Wisconsin has spring weight restrictions on state and local roads',
-    localRoadAuthority: 'County highway departments; municipal public works departments; town road committees',
+    haulRouteNote:
+      'Oversize/overweight permits required; Wisconsin has spring weight restrictions on state and local roads',
+    localRoadAuthority:
+      'County highway departments; municipal public works departments; town road committees',
     encroachmentPermitRequired: true,
     citation: 'Wis. Stat. § 84.065 (utility accommodation); § 348.15 (vehicle weight)',
-    notes: 'Wisconsin has significant spring weight restrictions on state, county, and town roads due to freeze-thaw cycles. Spring restrictions typically run March-May but vary annually.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Wisconsin has significant spring weight restrictions on state, county, and town roads due to freeze-thaw cycles. Spring restrictions typically run March-May but vary annually.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Wyoming',
@@ -1094,7 +1268,8 @@ export default [
     roadAuthority: 'Wyoming Department of Transportation (WYDOT)',
     roadUrl: 'https://www.dot.state.wy.us',
     utilityPermitRequired: true,
-    utilityPermitNote: 'Utility Accommodation Policy; permit required for utility work in state right-of-way',
+    utilityPermitNote:
+      'Utility Accommodation Policy; permit required for utility work in state right-of-way',
     overweightPermitRequired: true,
     overweightThresholdLbs: 80000,
     overweightUrl: 'https://www.dot.state.wy.us/home/trucking_safety_&_regulations/permits.html',
@@ -1103,11 +1278,13 @@ export default [
     restorationBondNote: 'Pavement restoration required per WYDOT specifications',
     pavingSpecification: 'Wyoming Standard Specifications for Road and Bridge Construction',
     haulRoutePermitRequired: true,
-    haulRouteNote: 'Oversize/overweight permits required; Wyoming oil/gas and mining industries require heavy haul routes',
+    haulRouteNote:
+      'Oversize/overweight permits required; Wyoming oil/gas and mining industries require heavy haul routes',
     localRoadAuthority: 'County road departments; municipal public works departments',
     encroachmentPermitRequired: true,
     citation: 'Wyo. Stat. § 37-1-101 et seq. (utility accommodation); § 31-18-101 (vehicle weight)',
-    notes: 'Wyoming energy industry (oil, gas, coal, wind) generates significant heavy haul requirements. Remote road access and severe winter conditions affect construction timing.',
-    lastVerified: '2026-01-01'
-  }
+    notes:
+      'Wyoming energy industry (oil, gas, coal, wind) generates significant heavy haul requirements. Remote road access and severe winter conditions affect construction timing.',
+    lastVerified: '2026-01-01',
+  },
 ]

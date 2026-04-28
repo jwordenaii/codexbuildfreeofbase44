@@ -13,7 +13,9 @@ vi.mock('../../../api/client', () => ({
 }))
 
 function renderWithQuery(ui) {
-  const qc = new QueryClient({ defaultOptions: { queries: { retry: false }, mutations: { retry: false } } })
+  const qc = new QueryClient({
+    defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
+  })
   return render(<QueryClientProvider client={qc}>{ui}</QueryClientProvider>)
 }
 
@@ -29,7 +31,17 @@ test('shows API error and retry action', async () => {
 
 test('loads leads and allows stage update', async () => {
   api.getCRMLeads.mockResolvedValue({
-    leads: [{ id: 1, name: 'Test Lead', email: 'x@y.com', phone: '555', service_type: 'paving', score_label: 'HOT', pipeline_stage: 'new' }],
+    leads: [
+      {
+        id: 1,
+        name: 'Test Lead',
+        email: 'x@y.com',
+        phone: '555',
+        service_type: 'paving',
+        score_label: 'HOT',
+        pipeline_stage: 'new',
+      },
+    ],
   })
   api.getCRMFunnel.mockResolvedValue({ total: 1, funnel: [{ stage: 'new', count: 1 }] })
   api.updateLeadStage.mockResolvedValue({ status: 'updated' })

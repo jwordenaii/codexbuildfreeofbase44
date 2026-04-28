@@ -44,7 +44,9 @@ export default function FloatingCTA() {
             window.gtag('event', 'cta_click', { location: 'floating_button' })
         }}
       >
-        <span className="text-lg" aria-hidden="true">🏗</span>
+        <span className="text-lg" aria-hidden="true">
+          🏗
+        </span>
         Free Quote
       </Link>
     </div>

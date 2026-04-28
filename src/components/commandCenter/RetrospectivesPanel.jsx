@@ -6,9 +6,16 @@ import { useState, useEffect, useCallback } from 'react'
 import { api } from '../../api/client'
 
 const BLANK = {
-  project_name: '', project_type: '', region: '', closed_date: '',
-  schedule_variance_days: '', cost_variance_pct: '',
-  supply_chain_issues: '', soil_conditions: '', design_conflicts: '', lessons_learned: '',
+  project_name: '',
+  project_type: '',
+  region: '',
+  closed_date: '',
+  schedule_variance_days: '',
+  cost_variance_pct: '',
+  supply_chain_issues: '',
+  soil_conditions: '',
+  design_conflicts: '',
+  lessons_learned: '',
 }
 
 function TagBadge({ tag }) {
@@ -25,12 +32,20 @@ function RetroCard({ retro, onTag, onDelete }) {
 
   const handleTag = async () => {
     setTagging(true)
-    try { await onTag(retro.id) } finally { setTagging(false) }
+    try {
+      await onTag(retro.id)
+    } finally {
+      setTagging(false)
+    }
   }
   const handleDelete = async () => {
     if (!window.confirm('Delete this retrospective?')) return
     setDeleting(true)
-    try { await onDelete(retro.id) } finally { setDeleting(false) }
+    try {
+      await onDelete(retro.id)
+    } finally {
+      setDeleting(false)
+    }
   }
 
   const variance = retro.schedule_variance_days
@@ -40,18 +55,30 @@ function RetroCard({ retro, onTag, onDelete }) {
     <div className="card p-5 space-y-3">
       <div className="flex items-start justify-between gap-3 flex-wrap">
         <div>
-          <div className="font-display font-bold text-brand-navy text-base">{retro.project_name}</div>
+          <div className="font-display font-bold text-brand-navy text-base">
+            {retro.project_name}
+          </div>
           <div className="text-xs text-brand-navy/50 mt-0.5">
             {retro.project_type && <span className="mr-3">🏗 {retro.project_type}</span>}
             {retro.region && <span className="mr-3">📍 {retro.region}</span>}
-            {retro.closed_date && <span>✅ Closed {new Date(retro.closed_date).toLocaleDateString()}</span>}
+            {retro.closed_date && (
+              <span>✅ Closed {new Date(retro.closed_date).toLocaleDateString()}</span>
+            )}
           </div>
         </div>
         <div className="flex gap-2 shrink-0">
-          <button onClick={handleTag} disabled={tagging} className="text-xs px-3 py-1 bg-blue-100 text-blue-700 rounded-full font-semibold hover:bg-blue-200 disabled:opacity-50">
+          <button
+            onClick={handleTag}
+            disabled={tagging}
+            className="text-xs px-3 py-1 bg-blue-100 text-blue-700 rounded-full font-semibold hover:bg-blue-200 disabled:opacity-50"
+          >
             {tagging ? '…' : '🏷 AI Tag'}
           </button>
-          <button onClick={handleDelete} disabled={deleting} className="text-xs px-3 py-1 bg-red-100 text-red-700 rounded-full font-semibold hover:bg-red-200 disabled:opacity-50">
+          <button
+            onClick={handleDelete}
+            disabled={deleting}
+            className="text-xs px-3 py-1 bg-red-100 text-red-700 rounded-full font-semibold hover:bg-red-200 disabled:opacity-50"
+          >
             {deleting ? '…' : '✕'}
           </button>
         </div>
@@ -76,23 +103,32 @@ function RetroCard({ retro, onTag, onDelete }) {
       {/* Narrative fields */}
       {retro.lessons_learned && (
         <div className="bg-amber-50 rounded-lg px-3 py-2 text-xs text-brand-navy/80">
-          <span className="font-bold text-brand-navy">💡 Lessons: </span>{retro.lessons_learned}
+          <span className="font-bold text-brand-navy">💡 Lessons: </span>
+          {retro.lessons_learned}
         </div>
       )}
       {retro.supply_chain_issues && (
-        <div className="text-xs text-brand-navy/60"><span className="font-semibold">Supply Chain:</span> {retro.supply_chain_issues}</div>
+        <div className="text-xs text-brand-navy/60">
+          <span className="font-semibold">Supply Chain:</span> {retro.supply_chain_issues}
+        </div>
       )}
       {retro.soil_conditions && (
-        <div className="text-xs text-brand-navy/60"><span className="font-semibold">Soil:</span> {retro.soil_conditions}</div>
+        <div className="text-xs text-brand-navy/60">
+          <span className="font-semibold">Soil:</span> {retro.soil_conditions}
+        </div>
       )}
       {retro.design_conflicts && (
-        <div className="text-xs text-brand-navy/60"><span className="font-semibold">Design:</span> {retro.design_conflicts}</div>
+        <div className="text-xs text-brand-navy/60">
+          <span className="font-semibold">Design:</span> {retro.design_conflicts}
+        </div>
       )}
 
       {/* AI tags */}
       {retro.ai_tags?.length > 0 && (
         <div className="flex flex-wrap">
-          {retro.ai_tags.map((t) => <TagBadge key={t} tag={t} />)}
+          {retro.ai_tags.map((t) => (
+            <TagBadge key={t} tag={t} />
+          ))}
         </div>
       )}
     </div>
@@ -123,7 +159,9 @@ export default function RetrospectivesPanel() {
     }
   }, [])
 
-  useEffect(() => { load() }, [load])
+  useEffect(() => {
+    load()
+  }, [load])
 
   const handleSave = async (e) => {
     e.preventDefault()
@@ -131,7 +169,8 @@ export default function RetrospectivesPanel() {
     try {
       await api.createRetrospective({
         ...form,
-        schedule_variance_days: form.schedule_variance_days !== '' ? Number(form.schedule_variance_days) : null,
+        schedule_variance_days:
+          form.schedule_variance_days !== '' ? Number(form.schedule_variance_days) : null,
         cost_variance_pct: form.cost_variance_pct !== '' ? Number(form.cost_variance_pct) : null,
       })
       setForm(BLANK)
@@ -167,11 +206,13 @@ export default function RetrospectivesPanel() {
     }
   }
 
-  const filtered = retros.filter((r) =>
-    !search || r.project_name.toLowerCase().includes(search.toLowerCase()) ||
-    r.project_type?.toLowerCase().includes(search.toLowerCase()) ||
-    r.region?.toLowerCase().includes(search.toLowerCase()) ||
-    r.ai_tags?.some((t) => t.toLowerCase().includes(search.toLowerCase()))
+  const filtered = retros.filter(
+    (r) =>
+      !search ||
+      r.project_name.toLowerCase().includes(search.toLowerCase()) ||
+      r.project_type?.toLowerCase().includes(search.toLowerCase()) ||
+      r.region?.toLowerCase().includes(search.toLowerCase()) ||
+      r.ai_tags?.some((t) => t.toLowerCase().includes(search.toLowerCase()))
   )
 
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }))
@@ -188,11 +229,18 @@ export default function RetrospectivesPanel() {
             placeholder="Search by name, type, region, or tag…"
             className="input text-sm flex-1 min-w-0"
           />
-          <button onClick={handleSurface} disabled={surfacing} className="btn-outline text-sm !py-2 whitespace-nowrap">
+          <button
+            onClick={handleSurface}
+            disabled={surfacing}
+            className="btn-outline text-sm !py-2 whitespace-nowrap"
+          >
             {surfacing ? '…' : '🔍 Surface Lessons'}
           </button>
         </div>
-        <button onClick={() => setShowAdd(!showAdd)} className="btn-primary text-sm !py-2 whitespace-nowrap">
+        <button
+          onClick={() => setShowAdd(!showAdd)}
+          className="btn-primary text-sm !py-2 whitespace-nowrap"
+        >
           + Add Retrospective
         </button>
       </div>
@@ -200,7 +248,9 @@ export default function RetrospectivesPanel() {
       {/* Surfaced lessons */}
       {surfaceResults && (
         <div className="card p-5 bg-amber-50 border-amber-200">
-          <div className="font-bold text-brand-navy mb-3">🔦 Relevant Past Lessons ({surfaceResults.count})</div>
+          <div className="font-bold text-brand-navy mb-3">
+            🔦 Relevant Past Lessons ({surfaceResults.count})
+          </div>
           {surfaceResults.lessons.length === 0 ? (
             <p className="text-sm text-brand-navy/50">No matching lessons yet.</p>
           ) : (
@@ -209,12 +259,19 @@ export default function RetrospectivesPanel() {
                 <div key={r.id} className="bg-white rounded-lg px-3 py-2 text-xs">
                   <span className="font-semibold text-brand-navy">{r.project_name}</span>
                   {r.region && <span className="text-brand-navy/40 ml-2">📍{r.region}</span>}
-                  {r.lessons_learned && <p className="text-brand-navy/70 mt-1">{r.lessons_learned}</p>}
+                  {r.lessons_learned && (
+                    <p className="text-brand-navy/70 mt-1">{r.lessons_learned}</p>
+                  )}
                 </div>
               ))}
             </div>
           )}
-          <button onClick={() => setSurfaceResults(null)} className="text-xs text-brand-navy/40 mt-2 underline">Dismiss</button>
+          <button
+            onClick={() => setSurfaceResults(null)}
+            className="text-xs text-brand-navy/40 mt-2 underline"
+          >
+            Dismiss
+          </button>
         </div>
       )}
 
@@ -233,7 +290,9 @@ export default function RetrospectivesPanel() {
                 ['cost_variance_pct', 'Cost Variance % (+ = over budget)', 'number', false],
               ].map(([key, label, type, req]) => (
                 <div key={key}>
-                  <label className="block text-xs font-semibold text-brand-navy/60 mb-1">{label}</label>
+                  <label className="block text-xs font-semibold text-brand-navy/60 mb-1">
+                    {label}
+                  </label>
                   <input
                     type={type}
                     value={form[key]}
@@ -252,7 +311,9 @@ export default function RetrospectivesPanel() {
               ['lessons_learned', '💡 Key Lessons Learned'],
             ].map(([key, label]) => (
               <div key={key}>
-                <label className="block text-xs font-semibold text-brand-navy/60 mb-1">{label}</label>
+                <label className="block text-xs font-semibold text-brand-navy/60 mb-1">
+                  {label}
+                </label>
                 <textarea
                   value={form[key]}
                   onChange={(e) => set(key, e.target.value)}
@@ -262,10 +323,18 @@ export default function RetrospectivesPanel() {
               </div>
             ))}
             <div className="flex gap-3">
-              <button type="submit" disabled={saving} className="btn-primary text-sm !py-2 disabled:opacity-50">
+              <button
+                type="submit"
+                disabled={saving}
+                className="btn-primary text-sm !py-2 disabled:opacity-50"
+              >
                 {saving ? 'Saving…' : 'Save Closeout'}
               </button>
-              <button type="button" onClick={() => setShowAdd(false)} className="btn-outline text-sm !py-2">
+              <button
+                type="button"
+                onClick={() => setShowAdd(false)}
+                className="btn-outline text-sm !py-2"
+              >
                 Cancel
               </button>
             </div>
@@ -275,7 +344,10 @@ export default function RetrospectivesPanel() {
 
       {error && (
         <div className="card p-4 bg-red-50 border-red-200 text-red-700 text-sm">
-          {error} <button type="button" onClick={load} className="ml-2 underline text-xs">Retry</button>
+          {error}{' '}
+          <button type="button" onClick={load} className="ml-2 underline text-xs">
+            Retry
+          </button>
         </div>
       )}
 
@@ -286,7 +358,9 @@ export default function RetrospectivesPanel() {
         </div>
       ) : filtered.length === 0 ? (
         <div className="text-center py-16 text-brand-navy/30 text-sm">
-          {retros.length === 0 ? 'No retrospectives yet. Add your first project closeout.' : 'No matches for your search.'}
+          {retros.length === 0
+            ? 'No retrospectives yet. Add your first project closeout.'
+            : 'No matches for your search.'}
         </div>
       ) : (
         <div className="space-y-4">

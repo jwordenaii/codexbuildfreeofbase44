@@ -94,8 +94,10 @@ def get_reviews():
 # ── AI Review Response ────────────────────────────────────────────────────────
 
 class ReviewResponseRequest(BaseModel):
-    review_text:   str  = Field(..., min_length=1, max_length=2000, strip_whitespace=True)
-    reviewer_name: Optional[str] = Field(default=None, max_length=120, strip_whitespace=True)
+    model_config = {"str_strip_whitespace": True}
+
+    review_text:   str  = Field(..., min_length=1, max_length=2000)
+    reviewer_name: Optional[str] = Field(default=None, max_length=120)
     rating:        int  = Field(default=5, ge=1, le=5)
     tone:          str  = Field(
         default="grateful",

@@ -23,7 +23,13 @@ const PROJECTS = [
     headline: 'Fresh asphalt access, clean edges, and commercial-site coordination.',
     description:
       'A documented commercial asphalt access road and gated facility approach showing the kind of practical site work buyers want to see before requesting an estimate: clean transitions, usable access, edge detail, and work completed around active commercial operations.',
-    scope: ['Commercial access paving', 'Industrial site access', 'Edge detail', 'Traffic access coordination', 'Photo-documented work'],
+    scope: [
+      'Commercial access paving',
+      'Industrial site access',
+      'Edge detail',
+      'Traffic access coordination',
+      'Photo-documented work',
+    ],
     highlight: 'Owner-provided project image added to the portfolio.',
     emoji: '🛣',
     imageUrl: 'https://github.com/user-attachments/assets/52e9f487-8090-43d6-a3f8-ab9d18933545',
@@ -41,8 +47,13 @@ const PROJECTS = [
     location: 'Motels, VA to Virginia Beach, VA',
     headline: 'Where the Reputation Was Built.',
     description:
-      'The foundation of the company. Mr. Worden\'s grandfather built J. Worden & Sons into a highly respected regional name from Motels, Virginia all the way to Virginia Beach — commercial lots, driveways, and local business paving across the coastal corridor. All word of mouth. No shortcuts.',
-    scope: ['Commercial lot paving', 'Residential driveways', 'Sub-base construction', 'Drainage grading'],
+      "The foundation of the company. Mr. Worden's grandfather built J. Worden & Sons into a highly respected regional name from Motels, Virginia all the way to Virginia Beach — commercial lots, driveways, and local business paving across the coastal corridor. All word of mouth. No shortcuts.",
+    scope: [
+      'Commercial lot paving',
+      'Residential driveways',
+      'Sub-base construction',
+      'Drainage grading',
+    ],
     highlight: 'Built entirely on reputation — zero advertising.',
     emoji: '🌊',
   },
@@ -57,8 +68,14 @@ const PROJECTS = [
     location: 'Virginia',
     headline: 'First KFC Contract. The Door Opens.',
     description:
-      'The company\'s first KFC franchise paving contract in Virginia. National franchise operators hold contractors to a different standard — tighter tolerances, brand-compliant documentation, ADA compliance, zero rework tolerance. Worden & Sons delivered, and the KFC network took notice.',
-    scope: ['Parking lot mill & overlay', 'Drive-thru lane paving', 'ADA-compliant stalls', 'Thermoplastic striping', 'Documentation package'],
+      "The company's first KFC franchise paving contract in Virginia. National franchise operators hold contractors to a different standard — tighter tolerances, brand-compliant documentation, ADA compliance, zero rework tolerance. Worden & Sons delivered, and the KFC network took notice.",
+    scope: [
+      'Parking lot mill & overlay',
+      'Drive-thru lane paving',
+      'ADA-compliant stalls',
+      'Thermoplastic striping',
+      'Documentation package',
+    ],
     highlight: 'First franchise contract — led to multi-state expansion.',
     emoji: '🍗',
   },
@@ -74,7 +91,12 @@ const PROJECTS = [
     headline: 'Crossing State Lines.',
     description:
       'KFC operators in North Carolina bring Worden & Sons into the state based on the Virginia track record. Parking lot maintenance, resurfacing, and franchise-standard documentation. The same system that worked in Virginia translates directly.',
-    scope: ['Lot resurfacing', 'Crack fill & sealcoat', 'Drive-thru lane work', 'Striping & ADA compliance'],
+    scope: [
+      'Lot resurfacing',
+      'Crack fill & sealcoat',
+      'Drive-thru lane work',
+      'Striping & ADA compliance',
+    ],
     highlight: 'Direct referral from Virginia franchise network.',
     emoji: '🐾',
   },
@@ -90,7 +112,12 @@ const PROJECTS = [
     headline: 'Southeast Expansion.',
     description:
       'Franchise work expands into Georgia and Florida. Multiple locations across both states — parking lot maintenance, resurfacing, and franchise-standard closeout documentation. Coordinating crews across state lines at franchise scale requires logistics precision that Worden & Sons had built into their process.',
-    scope: ['Multi-location lot paving', 'Franchise compliance documentation', 'ADA upgrades', 'Striping & sealcoating'],
+    scope: [
+      'Multi-location lot paving',
+      'Franchise compliance documentation',
+      'ADA upgrades',
+      'Striping & sealcoating',
+    ],
     highlight: 'Multi-state multi-location coordination.',
     emoji: '☀️',
   },
@@ -106,7 +133,12 @@ const PROJECTS = [
     headline: 'Midwest Entry.',
     description:
       'The franchise network expands into the Midwest. KFC operators in Michigan select Worden & Sons based on Southeast and Mid-Atlantic performance. Lot paving, maintenance, and full franchise documentation across multiple Michigan locations.',
-    scope: ['Full lot resurfacing', 'Drive-thru lane rebuild', 'Concrete curb & gutter', 'Thermoplastic striping'],
+    scope: [
+      'Full lot resurfacing',
+      'Drive-thru lane rebuild',
+      'Concrete curb & gutter',
+      'Thermoplastic striping',
+    ],
     highlight: 'National QSR presence now coast to Midwest.',
     emoji: '🌲',
   },
@@ -121,8 +153,15 @@ const PROJECTS = [
     location: 'Multi-state',
     headline: 'Selected for Ground-Up New Store Construction.',
     description:
-      'KFC selects Worden & Sons to assist with new store construction under their national new build program. This is not maintenance or resurfacing — it\'s building new QSR sites from the ground up, civil through finish. The program runs through the end of 2023. Every project backed by verified photo documentation.',
-    scope: ['Ground-up site construction', 'Civil & earthwork', 'Full-depth paving', 'Drive-thru geometry', 'Utility coordination', 'ADA site compliance'],
+      "KFC selects Worden & Sons to assist with new store construction under their national new build program. This is not maintenance or resurfacing — it's building new QSR sites from the ground up, civil through finish. The program runs through the end of 2023. Every project backed by verified photo documentation.",
+    scope: [
+      'Ground-up site construction',
+      'Civil & earthwork',
+      'Full-depth paving',
+      'Drive-thru geometry',
+      'Utility coordination',
+      'ADA site compliance',
+    ],
     highlight: 'National new-build program. Civil through finish.',
     emoji: '🏗',
   },
@@ -138,7 +177,14 @@ const PROJECTS = [
     headline: 'New Build. New State. Same Standard.',
     description:
       'A ground-up KFC new store build in Texas — one of several Texas projects completed post-pandemic. Full site work from civil through paving finish. Part of the national new build program, executed with the same documentation and standards that built the franchise relationship over two decades.',
-    scope: ['Full site civil work', 'Sub-base & drainage', 'Full-depth HMA', 'Drive-thru lane construction', 'Concrete flatwork coordination', 'Closeout documentation'],
+    scope: [
+      'Full site civil work',
+      'Sub-base & drainage',
+      'Full-depth HMA',
+      'Drive-thru lane construction',
+      'Concrete flatwork coordination',
+      'Closeout documentation',
+    ],
     highlight: 'Verified. Photos and records on file.',
     emoji: '🤠',
   },
@@ -153,8 +199,14 @@ const PROJECTS = [
     location: 'Texas',
     headline: 'Multi-Location Texas Program.',
     description:
-      'Multiple KFC store remodels across Texas post-pandemic. Parking lot renovation, drive-thru modifications, ADA upgrades, and franchise-standard documentation at each location. Texas becomes one of the company\'s most active post-pandemic states.',
-    scope: ['Lot mill & overlay', 'Drive-thru modifications', 'ADA compliance upgrades', 'Thermoplastic striping', 'Franchise closeout docs'],
+      "Multiple KFC store remodels across Texas post-pandemic. Parking lot renovation, drive-thru modifications, ADA upgrades, and franchise-standard documentation at each location. Texas becomes one of the company's most active post-pandemic states.",
+    scope: [
+      'Lot mill & overlay',
+      'Drive-thru modifications',
+      'ADA compliance upgrades',
+      'Thermoplastic striping',
+      'Franchise closeout docs',
+    ],
     highlight: 'Multiple Texas locations. All documented.',
     emoji: '🌵',
   },
@@ -170,7 +222,12 @@ const PROJECTS = [
     headline: 'Heartland Program.',
     description:
       'Store remodels across Kansas and Kansas City. Parking lot renovation and franchise remodel scope at multiple locations. Coordinated across both the Kansas and Missouri sides of the metro.',
-    scope: ['Parking lot renovation', 'Concrete repair', 'Striping & ADA compliance', 'Franchise documentation'],
+    scope: [
+      'Parking lot renovation',
+      'Concrete repair',
+      'Striping & ADA compliance',
+      'Franchise documentation',
+    ],
     highlight: 'Cross-state metro coordination.',
     emoji: '🌾',
   },
@@ -202,7 +259,12 @@ const PROJECTS = [
     headline: 'Return to Michigan.',
     description:
       'A return to Michigan with post-pandemic remodel scope — lot resurfacing, drive-thru reconstruction, and franchise-standard closeouts. The relationship with Michigan franchise operators predates the pandemic and continues through the current cycle.',
-    scope: ['Lot resurfacing', 'Drive-thru reconstruction', 'ADA compliance', 'Full franchise closeout'],
+    scope: [
+      'Lot resurfacing',
+      'Drive-thru reconstruction',
+      'ADA compliance',
+      'Full franchise closeout',
+    ],
     highlight: 'Long-term franchise relationship continues.',
     emoji: '🏔',
   },
@@ -217,8 +279,13 @@ const PROJECTS = [
     location: 'Minnesota',
     headline: 'Northern Expansion.',
     description:
-      'QSR paving work in Minnesota — part of the company\'s continued national expansion post-pandemic. Lot resurfacing and franchise remodel scope completed to national brand standards.',
-    scope: ['Lot resurfacing', 'Drive-thru lane work', 'Cold-weather paving protocols', 'Franchise documentation'],
+      "QSR paving work in Minnesota — part of the company's continued national expansion post-pandemic. Lot resurfacing and franchise remodel scope completed to national brand standards.",
+    scope: [
+      'Lot resurfacing',
+      'Drive-thru lane work',
+      'Cold-weather paving protocols',
+      'Franchise documentation',
+    ],
     highlight: 'National footprint now reaches Minnesota.',
     emoji: '❄️',
   },
@@ -234,7 +301,13 @@ const PROJECTS = [
     headline: 'Northeast Program.',
     description:
       'Store remodels in New York and New Jersey — the northeastern expansion of the KFC remodel program. Urban-market franchise locations have additional logistical complexity; the Worden team navigated access, scheduling, and documentation requirements at each site.',
-    scope: ['Lot renovation', 'Concrete repair & replacement', 'ADA compliance', 'Urban scheduling coordination', 'Franchise closeout documentation'],
+    scope: [
+      'Lot renovation',
+      'Concrete repair & replacement',
+      'ADA compliance',
+      'Urban scheduling coordination',
+      'Franchise closeout documentation',
+    ],
     highlight: 'Urban-market franchise execution.',
     emoji: '🗽',
   },
@@ -250,7 +323,13 @@ const PROJECTS = [
     headline: 'Returning to the Southeast.',
     description:
       'A return to North Carolina and Georgia for post-pandemic KFC remodel scope. States where the company built its early national reputation — now operating with even more documentation discipline, verified photos, and proven multi-state logistics.',
-    scope: ['Full lot renovation', 'Drive-thru modifications', 'ADA upgrades', 'Thermoplastic striping', 'Franchise documentation'],
+    scope: [
+      'Full lot renovation',
+      'Drive-thru modifications',
+      'ADA upgrades',
+      'Thermoplastic striping',
+      'Franchise documentation',
+    ],
     highlight: 'Where it started. Still going.',
     emoji: '🌿',
   },
@@ -266,7 +345,13 @@ const PROJECTS = [
     headline: 'Private Work. Same Standard.',
     description:
       'Alongside QSR work, the company actively takes on private commercial paving — parking lots, site work, and maintenance programs. The same documentation discipline, franchise-level precision, and Worden standard applied to every private job.',
-    scope: ['Parking lot construction & renovation', 'Commercial site paving', 'Maintenance programs', 'Drainage engineering', 'Striping & ADA compliance'],
+    scope: [
+      'Parking lot construction & renovation',
+      'Commercial site paving',
+      'Maintenance programs',
+      'Drainage engineering',
+      'Striping & ADA compliance',
+    ],
     highlight: 'Franchise-level quality on every job.',
     emoji: '🏢',
   },
@@ -275,10 +360,10 @@ const PROJECTS = [
 const TYPES = ['All', 'QSR / New Build', 'QSR / Remodel', 'QSR / Franchise', 'Commercial']
 
 const TYPE_COLORS = {
-  'QSR / New Build':  'bg-amber-100 text-amber-700',
-  'QSR / Remodel':    'bg-orange-100 text-orange-700',
-  'QSR / Franchise':  'bg-red-100 text-red-700',
-  Commercial:         'bg-blue-100 text-blue-700',
+  'QSR / New Build': 'bg-amber-100 text-amber-700',
+  'QSR / Remodel': 'bg-orange-100 text-orange-700',
+  'QSR / Franchise': 'bg-red-100 text-red-700',
+  Commercial: 'bg-blue-100 text-blue-700',
 }
 
 const STATES_SERVED = ['VA', 'NC', 'GA', 'FL', 'MI', 'TX', 'KS', 'MO', 'IA', 'MN', 'NY', 'NJ']
@@ -286,9 +371,7 @@ const STATES_SERVED = ['VA', 'NC', 'GA', 'FL', 'MI', 'TX', 'KS', 'MO', 'IA', 'MN
 export default function Projects() {
   const [activeType, setActiveType] = useState('All')
 
-  const filtered = activeType === 'All'
-    ? PROJECTS
-    : PROJECTS.filter((p) => p.type === activeType)
+  const filtered = activeType === 'All' ? PROJECTS : PROJECTS.filter((p) => p.type === activeType)
 
   const sorted = [...filtered].sort((a, b) => b.year - a.year)
 
@@ -333,10 +416,10 @@ export default function Projects() {
         <div className="max-w-6xl mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             {[
-              { stat: '1984',             label: 'Est.' },
+              { stat: '1984', label: 'Est.' },
               { stat: `${STATES_SERVED.length}+`, label: 'States Worked In' },
-              { stat: 'Top 75',           label: 'Pavement Magazine (4 categories)' },
-              { stat: '2026',             label: 'Top Contractor Nominee' },
+              { stat: 'Top 75', label: 'Pavement Magazine (4 categories)' },
+              { stat: '2026', label: 'Top Contractor Nominee' },
             ].map(({ stat, label }) => (
               <div key={label}>
                 <div className="font-display font-black text-brand-navy text-3xl">{stat}</div>
@@ -478,9 +561,9 @@ export default function Projects() {
             Every Major Project Is <span className="text-brand-amber">Documented</span>
           </h2>
           <p className="text-white/60 text-lg max-w-2xl mx-auto">
-            Mr. Worden maintains a full Dropbox and Google Photos archive of verified photos
-            and records for every major project. This is not common in the industry.
-            When you hire us, you get a contractor who can prove the work.
+            Mr. Worden maintains a full Dropbox and Google Photos archive of verified photos and
+            records for every major project. This is not common in the industry. When you hire us,
+            you get a contractor who can prove the work.
           </p>
         </div>
       </section>

@@ -2,25 +2,19 @@ import { Link } from 'react-router-dom'
 import SocialLinks from './SocialLinks'
 
 const LINKS = [
-  { to: '/',               label: 'Home' },
-  { to: '/services',       label: 'Services' },
-  { to: '/projects',       label: 'Projects' },
-  { to: '/service-areas',  label: 'Service Areas' },
-  { to: '/blog',           label: 'Blog & Resources' },
-  { to: '/about',          label: 'About' },
-  { to: '/reviews',        label: 'Reviews' },
-  { to: '/advisory',       label: 'Advisory Board' },
-  { to: '/quote',          label: 'Free Quote' },
-  { to: '/contact',        label: 'Contact' },
+  { to: '/', label: 'Home' },
+  { to: '/services', label: 'Services' },
+  { to: '/projects', label: 'Projects' },
+  { to: '/service-areas', label: 'Service Areas' },
+  { to: '/blog', label: 'Blog & Resources' },
+  { to: '/about', label: 'About' },
+  { to: '/reviews', label: 'Reviews' },
+  { to: '/advisory', label: 'Advisory Board' },
+  { to: '/quote', label: 'Free Quote' },
+  { to: '/contact', label: 'Contact' },
 ]
 
-const SERVICES = [
-  'Asphalt Paving',
-  'Sealcoating',
-  'Crack Filling',
-  'Parking Lots',
-  'Driveways',
-]
+const SERVICES = ['Asphalt Paving', 'Sealcoating', 'Crack Filling', 'Parking Lots', 'Driveways']
 
 const SOCIAL_LINKS = [
   {
@@ -54,8 +48,19 @@ const SOCIAL_LINKS = [
     label: 'Alignable',
     href: 'https://www.alignable.com/chester-va/j-worden-sons-paving',
     icon: (
-      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+      <svg
+        className="w-4 h-4"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+        />
       </svg>
     ),
   },
@@ -74,15 +79,12 @@ export default function Footer() {
   const year = new Date().getFullYear()
   return (
     <footer className="bg-brand-navy text-white/80">
-
       {/* ── Social bar ─────────────────────────────────────────────────── */}
       <div className="border-b border-white/10 bg-white/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div>
-              <p className="font-display font-black text-white text-lg mb-1">
-                Follow Our Work
-              </p>
+              <p className="font-display font-black text-white text-lg mb-1">Follow Our Work</p>
               <p className="text-white/50 text-sm">
                 Before &amp; afters, crew in the field, and local paving tips.
               </p>
@@ -110,8 +112,8 @@ export default function Footer() {
               </span>
             </div>
             <p className="text-sm leading-relaxed text-white/60">
-              Fourth-generation asphalt paving since 1984. Trusted by KFC, Arby&apos;s,
-              Taco Bell, and hundreds of homeowners across the region.
+              Fourth-generation asphalt paving since 1984. Trusted by KFC, Arby&apos;s, Taco Bell,
+              and hundreds of homeowners across the region.
             </p>
             <div className="mt-4 flex gap-2 text-xs text-white/40">
               <span>⭐ 4.9/5</span>
@@ -167,9 +169,7 @@ export default function Footer() {
                 </li>
               ))}
             </ul>
-            <h3 className="font-bold text-white mb-2 text-sm uppercase tracking-widest">
-              Contact
-            </h3>
+            <h3 className="font-bold text-white mb-2 text-sm uppercase tracking-widest">Contact</h3>
             <a
               href="tel:+18044461296"
               className="text-brand-amber font-bold text-sm hover:underline"
@@ -182,7 +182,9 @@ export default function Footer() {
             </a>
             <p className="text-xs text-white/40 mt-1">Mon–Fri 7am–5pm</p>
             <p className="text-xs text-white/40 mt-2 leading-relaxed">
-              1601 Ware Bottom Springs Rd<br />Suite 214, Chester VA 23836
+              1601 Ware Bottom Springs Rd
+              <br />
+              Suite 214, Chester VA 23836
             </p>
           </div>
         </div>

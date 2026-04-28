@@ -4,349 +4,349 @@ export default [
     abbr: 'AL',
     capital: 'Montgomery',
     region: 'Southeast',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Alaska',
     abbr: 'AK',
     capital: 'Juneau',
     region: 'West',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Arizona',
     abbr: 'AZ',
     capital: 'Phoenix',
     region: 'Southwest',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Arkansas',
     abbr: 'AR',
     capital: 'Little Rock',
     region: 'Southeast',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'California',
     abbr: 'CA',
     capital: 'Sacramento',
     region: 'West',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Colorado',
     abbr: 'CO',
     capital: 'Denver',
     region: 'West',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Connecticut',
     abbr: 'CT',
     capital: 'Hartford',
     region: 'Northeast',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Delaware',
     abbr: 'DE',
     capital: 'Dover',
     region: 'Northeast',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Florida',
     abbr: 'FL',
     capital: 'Tallahassee',
     region: 'Southeast',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Georgia',
     abbr: 'GA',
     capital: 'Atlanta',
     region: 'Southeast',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Hawaii',
     abbr: 'HI',
     capital: 'Honolulu',
     region: 'West',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Idaho',
     abbr: 'ID',
     capital: 'Boise',
     region: 'West',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Illinois',
     abbr: 'IL',
     capital: 'Springfield',
     region: 'Midwest',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Indiana',
     abbr: 'IN',
     capital: 'Indianapolis',
     region: 'Midwest',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Iowa',
     abbr: 'IA',
     capital: 'Des Moines',
     region: 'Midwest',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Kansas',
     abbr: 'KS',
     capital: 'Topeka',
     region: 'Midwest',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Kentucky',
     abbr: 'KY',
     capital: 'Frankfort',
     region: 'Southeast',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Louisiana',
     abbr: 'LA',
     capital: 'Baton Rouge',
     region: 'Southeast',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Maine',
     abbr: 'ME',
     capital: 'Augusta',
     region: 'Northeast',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Maryland',
     abbr: 'MD',
     capital: 'Annapolis',
     region: 'Northeast',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Massachusetts',
     abbr: 'MA',
     capital: 'Boston',
     region: 'Northeast',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Michigan',
     abbr: 'MI',
     capital: 'Lansing',
     region: 'Midwest',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Minnesota',
     abbr: 'MN',
     capital: 'St. Paul',
     region: 'Midwest',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Mississippi',
     abbr: 'MS',
     capital: 'Jackson',
     region: 'Southeast',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Missouri',
     abbr: 'MO',
     capital: 'Jefferson City',
     region: 'Midwest',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Montana',
     abbr: 'MT',
     capital: 'Helena',
     region: 'West',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Nebraska',
     abbr: 'NE',
     capital: 'Lincoln',
     region: 'Midwest',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Nevada',
     abbr: 'NV',
     capital: 'Carson City',
     region: 'West',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New Hampshire',
     abbr: 'NH',
     capital: 'Concord',
     region: 'Northeast',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New Jersey',
     abbr: 'NJ',
     capital: 'Trenton',
     region: 'Northeast',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New Mexico',
     abbr: 'NM',
     capital: 'Santa Fe',
     region: 'Southwest',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New York',
     abbr: 'NY',
     capital: 'Albany',
     region: 'Northeast',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'North Carolina',
     abbr: 'NC',
     capital: 'Raleigh',
     region: 'Southeast',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'North Dakota',
     abbr: 'ND',
     capital: 'Bismarck',
     region: 'Midwest',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Ohio',
     abbr: 'OH',
     capital: 'Columbus',
     region: 'Midwest',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Oklahoma',
     abbr: 'OK',
     capital: 'Oklahoma City',
     region: 'Southwest',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Oregon',
     abbr: 'OR',
     capital: 'Salem',
     region: 'West',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Pennsylvania',
     abbr: 'PA',
     capital: 'Harrisburg',
     region: 'Northeast',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Rhode Island',
     abbr: 'RI',
     capital: 'Providence',
     region: 'Northeast',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'South Carolina',
     abbr: 'SC',
     capital: 'Columbia',
     region: 'Southeast',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'South Dakota',
     abbr: 'SD',
     capital: 'Pierre',
     region: 'Midwest',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Tennessee',
     abbr: 'TN',
     capital: 'Nashville',
     region: 'Southeast',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Texas',
     abbr: 'TX',
     capital: 'Austin',
     region: 'Southwest',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Utah',
     abbr: 'UT',
     capital: 'Salt Lake City',
     region: 'West',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Vermont',
     abbr: 'VT',
     capital: 'Montpelier',
     region: 'Northeast',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Virginia',
     abbr: 'VA',
     capital: 'Richmond',
     region: 'Southeast',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Washington',
     abbr: 'WA',
     capital: 'Olympia',
     region: 'West',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'West Virginia',
     abbr: 'WV',
     capital: 'Charleston',
     region: 'Southeast',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Wisconsin',
     abbr: 'WI',
     capital: 'Madison',
     region: 'Midwest',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Wyoming',
     abbr: 'WY',
     capital: 'Cheyenne',
     region: 'West',
-    lastVerified: '2026-01-01'
-  }
+    lastVerified: '2026-01-01',
+  },
 ]

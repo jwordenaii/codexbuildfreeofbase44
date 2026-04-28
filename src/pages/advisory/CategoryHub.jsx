@@ -27,17 +27,17 @@ import CitationBadge from '../../components/advisory/CitationBadge'
 
 const bool = (v) => (v === null || v === undefined ? '—' : v ? '✅ Yes' : '❌ No')
 const cite = (v) => <CitationBadge citation={v} />
-const arr  = (v) => (Array.isArray(v) ? (v.length ? v.join(', ') : '—') : (v ?? '—'))
-const yrs  = (v) => (v ? `${v} yr${v !== 1 ? 's' : ''}` : '—')
+const arr = (v) => (Array.isArray(v) ? (v.length ? v.join(', ') : '—') : (v ?? '—'))
+const yrs = (v) => (v ? `${v} yr${v !== 1 ? 's' : ''}` : '—')
 const days = (v) => (v ? `${v} days` : '—')
-const ft   = (v) => (v ? `${v} ft` : '—')
-const usd  = (v) => (v ? `$${Number(v).toLocaleString()}` : '—')
+const ft = (v) => (v ? `${v} ft` : '—')
+const usd = (v) => (v ? `$${Number(v).toLocaleString()}` : '—')
 const acres = (v) => (v ? `${v} acre${v !== 1 ? 's' : ''}` : '—')
 
 // ── Category configuration ────────────────────────────────────────────────────
 
 const CATEGORIES = {
-  'licensing': {
+  licensing: {
     emoji: '📋',
     title: 'Contractor Licensing',
     desc: 'License classes, bonding requirements, reciprocity agreements, and CE hours for all 50 states.',
@@ -47,17 +47,21 @@ const CATEGORIES = {
         loader: () => import('../../data/legal/constructionLicensing'),
         searchKeys: ['state', 'authority', 'examProvider'],
         columns: [
-          { key: 'state',               label: 'State',            sortable: true },
-          { key: 'stateLicenseRequired', label: 'License Req.',     sortable: true,  render: bool },
-          { key: 'licenseClasses',       label: 'Classes',          sortable: false, render: arr  },
-          { key: 'authority',            label: 'Authority',        sortable: true },
-          { key: 'bondMinResidential',   label: 'Bond (Res.)',      sortable: true,  render: usd  },
-          { key: 'bondMinCommercial',    label: 'Bond (Com.)',      sortable: true,  render: usd  },
-          { key: 'workersCompRequired',  label: 'Workers Comp',     sortable: true,  render: bool },
-          { key: 'licenseRenewalYears',  label: 'Renewal',          sortable: true,  render: yrs  },
-          { key: 'ceHoursRequired',      label: 'CE Hours',         sortable: true,
-            render: (v) => (v ? `${v} hrs` : '—') },
-          { key: 'reciprocityStates',    label: 'Reciprocity',      sortable: false, render: arr  },
+          { key: 'state', label: 'State', sortable: true },
+          { key: 'stateLicenseRequired', label: 'License Req.', sortable: true, render: bool },
+          { key: 'licenseClasses', label: 'Classes', sortable: false, render: arr },
+          { key: 'authority', label: 'Authority', sortable: true },
+          { key: 'bondMinResidential', label: 'Bond (Res.)', sortable: true, render: usd },
+          { key: 'bondMinCommercial', label: 'Bond (Com.)', sortable: true, render: usd },
+          { key: 'workersCompRequired', label: 'Workers Comp', sortable: true, render: bool },
+          { key: 'licenseRenewalYears', label: 'Renewal', sortable: true, render: yrs },
+          {
+            key: 'ceHoursRequired',
+            label: 'CE Hours',
+            sortable: true,
+            render: (v) => (v ? `${v} hrs` : '—'),
+          },
+          { key: 'reciprocityStates', label: 'Reciprocity', sortable: false, render: arr },
         ],
       },
     ],
@@ -73,14 +77,29 @@ const CATEGORIES = {
         loader: () => import('../../data/legal/mechanicsLienLaws'),
         searchKeys: ['state', 'citation'],
         columns: [
-          { key: 'state',                          label: 'State',              sortable: true },
-          { key: 'preliminaryNoticeRequired',       label: 'Prelim. Notice',    sortable: true,  render: bool },
-          { key: 'lienFilingDeadlineDays',          label: 'File Deadline',     sortable: true,  render: days },
-          { key: 'lienForeClosureDeadlineDays',     label: 'Foreclose Deadline',sortable: true,  render: days },
-          { key: 'noticeOfIntentRequired',          label: 'NOI Required',      sortable: true,  render: bool },
-          { key: 'residentialOwnerOccupiedExceptions', label: 'Res. Exceptions', sortable: true, render: bool },
-          { key: 'claimantTypes',                  label: 'Claimants',         sortable: false, render: arr  },
-          { key: 'citation',                        label: 'Citation',          sortable: false, render: cite },
+          { key: 'state', label: 'State', sortable: true },
+          {
+            key: 'preliminaryNoticeRequired',
+            label: 'Prelim. Notice',
+            sortable: true,
+            render: bool,
+          },
+          { key: 'lienFilingDeadlineDays', label: 'File Deadline', sortable: true, render: days },
+          {
+            key: 'lienForeClosureDeadlineDays',
+            label: 'Foreclose Deadline',
+            sortable: true,
+            render: days,
+          },
+          { key: 'noticeOfIntentRequired', label: 'NOI Required', sortable: true, render: bool },
+          {
+            key: 'residentialOwnerOccupiedExceptions',
+            label: 'Res. Exceptions',
+            sortable: true,
+            render: bool,
+          },
+          { key: 'claimantTypes', label: 'Claimants', sortable: false, render: arr },
+          { key: 'citation', label: 'Citation', sortable: false, render: cite },
         ],
       },
       {
@@ -88,21 +107,30 @@ const CATEGORIES = {
         loader: () => import('../../data/legal/promptPaymentLaws'),
         searchKeys: ['state', 'citation'],
         columns: [
-          { key: 'state',                  label: 'State',            sortable: true },
-          { key: 'ownerToGcDays',          label: 'Owner → GC',       sortable: true,  render: days },
-          { key: 'gcToSubDays',            label: 'GC → Sub',         sortable: true,  render: days },
-          { key: 'retainageMaxPercent',    label: 'Retainage Max',    sortable: true,
-            render: (v) => (v ? `${v}%` : '—') },
-          { key: 'payIfPaidEnforceable',   label: 'Pay-if-Paid',      sortable: true,  render: bool },
-          { key: 'publicProjectsCovered',  label: 'Public Projects',  sortable: true,  render: bool },
-          { key: 'privateProjectsCovered', label: 'Private Projects', sortable: true,  render: bool },
-          { key: 'citation',               label: 'Citation',         sortable: false, render: cite },
+          { key: 'state', label: 'State', sortable: true },
+          { key: 'ownerToGcDays', label: 'Owner → GC', sortable: true, render: days },
+          { key: 'gcToSubDays', label: 'GC → Sub', sortable: true, render: days },
+          {
+            key: 'retainageMaxPercent',
+            label: 'Retainage Max',
+            sortable: true,
+            render: (v) => (v ? `${v}%` : '—'),
+          },
+          { key: 'payIfPaidEnforceable', label: 'Pay-if-Paid', sortable: true, render: bool },
+          { key: 'publicProjectsCovered', label: 'Public Projects', sortable: true, render: bool },
+          {
+            key: 'privateProjectsCovered',
+            label: 'Private Projects',
+            sortable: true,
+            render: bool,
+          },
+          { key: 'citation', label: 'Citation', sortable: false, render: cite },
         ],
       },
     ],
   },
 
-  'safety': {
+  safety: {
     emoji: '🦺',
     title: 'Safety & OSHA',
     desc: 'State OSHA plans, fall protection thresholds, excavation rules, and workers comp requirements for all 50 states.',
@@ -112,19 +140,19 @@ const CATEGORIES = {
         loader: () => import('../../data/legal/workersSafety'),
         searchKeys: ['state', 'oshAuthority', 'citation'],
         columns: [
-          { key: 'state',                    label: 'State',              sortable: true },
-          { key: 'statePlanState',           label: 'State OSHA Plan',   sortable: true,  render: bool },
-          { key: 'publicSectorOnly',         label: 'Public Only',        sortable: true,  render: bool },
-          { key: 'oshAuthority',             label: 'Authority',          sortable: true },
-          { key: 'fallProtectionThresholdFt',label: 'Fall Protect.',      sortable: true,  render: ft   },
-          { key: 'workerCompProgramRequired',label: 'Workers Comp',       sortable: true,  render: bool },
-          { key: 'citation',                 label: 'Citation',           sortable: false, render: cite },
+          { key: 'state', label: 'State', sortable: true },
+          { key: 'statePlanState', label: 'State OSHA Plan', sortable: true, render: bool },
+          { key: 'publicSectorOnly', label: 'Public Only', sortable: true, render: bool },
+          { key: 'oshAuthority', label: 'Authority', sortable: true },
+          { key: 'fallProtectionThresholdFt', label: 'Fall Protect.', sortable: true, render: ft },
+          { key: 'workerCompProgramRequired', label: 'Workers Comp', sortable: true, render: bool },
+          { key: 'citation', label: 'Citation', sortable: false, render: cite },
         ],
       },
     ],
   },
 
-  'contracts': {
+  contracts: {
     emoji: '📝',
     title: 'Contract Law',
     desc: 'Statutes of limitations, statutes of repose, anti-indemnity laws, pay-if-paid enforceability, and liquidated damages rules for all 50 states.',
@@ -134,15 +162,30 @@ const CATEGORIES = {
         loader: () => import('../../data/legal/contractLaw'),
         searchKeys: ['state', 'citation'],
         columns: [
-          { key: 'state',                            label: 'State',           sortable: true },
-          { key: 'statuteOfLimitationsWrittenYears', label: 'SOL (Written)',   sortable: true,  render: yrs  },
-          { key: 'statuteOfLimitationsOralYears',    label: 'SOL (Oral)',      sortable: true,  render: yrs  },
-          { key: 'statuteOfReposeYears',             label: 'Statute of Repose', sortable: true, render: yrs },
-          { key: 'antiIndemnityLaw',                 label: 'Anti-Indemnity', sortable: true,  render: bool },
-          { key: 'payIfPaidEnforceable',             label: 'Pay-if-Paid',    sortable: true,  render: bool },
-          { key: 'liquidatedDamagesEnforceable',     label: 'Liq. Damages',   sortable: true,  render: bool },
-          { key: 'rightToRepairLaw',                 label: 'Right to Repair',sortable: true,  render: bool },
-          { key: 'citation',                         label: 'Citation',       sortable: false, render: cite },
+          { key: 'state', label: 'State', sortable: true },
+          {
+            key: 'statuteOfLimitationsWrittenYears',
+            label: 'SOL (Written)',
+            sortable: true,
+            render: yrs,
+          },
+          {
+            key: 'statuteOfLimitationsOralYears',
+            label: 'SOL (Oral)',
+            sortable: true,
+            render: yrs,
+          },
+          { key: 'statuteOfReposeYears', label: 'Statute of Repose', sortable: true, render: yrs },
+          { key: 'antiIndemnityLaw', label: 'Anti-Indemnity', sortable: true, render: bool },
+          { key: 'payIfPaidEnforceable', label: 'Pay-if-Paid', sortable: true, render: bool },
+          {
+            key: 'liquidatedDamagesEnforceable',
+            label: 'Liq. Damages',
+            sortable: true,
+            render: bool,
+          },
+          { key: 'rightToRepairLaw', label: 'Right to Repair', sortable: true, render: bool },
+          { key: 'citation', label: 'Citation', sortable: false, render: cite },
         ],
       },
     ],
@@ -158,20 +201,24 @@ const CATEGORIES = {
         loader: () => import('../../data/legal/prevailingWage'),
         searchKeys: ['state', 'administeredBy', 'citation'],
         columns: [
-          { key: 'state',                  label: 'State',             sortable: true },
-          { key: 'prevailingWageLaw',      label: 'State PW Law',      sortable: true,  render: bool },
-          { key: 'lawScope',               label: 'Scope',             sortable: false },
-          { key: 'administeredBy',         label: 'Administered By',   sortable: true },
-          { key: 'thresholdForPublicWorks',label: 'Coverage Threshold',sortable: false,
-            render: (v) => v ?? '—' },
-          { key: 'davisBaconApplies',      label: 'Davis-Bacon',       sortable: true,  render: bool },
-          { key: 'citation',               label: 'Citation',          sortable: false, render: cite },
+          { key: 'state', label: 'State', sortable: true },
+          { key: 'prevailingWageLaw', label: 'State PW Law', sortable: true, render: bool },
+          { key: 'lawScope', label: 'Scope', sortable: false },
+          { key: 'administeredBy', label: 'Administered By', sortable: true },
+          {
+            key: 'thresholdForPublicWorks',
+            label: 'Coverage Threshold',
+            sortable: false,
+            render: (v) => v ?? '—',
+          },
+          { key: 'davisBaconApplies', label: 'Davis-Bacon', sortable: true, render: bool },
+          { key: 'citation', label: 'Citation', sortable: false, render: cite },
         ],
       },
     ],
   },
 
-  'environmental': {
+  environmental: {
     emoji: '🌱',
     title: 'Environmental Permits',
     desc: 'NPDES stormwater permits, SWPPP requirements, land disturbance thresholds, and wetland rules for all 50 states.',
@@ -181,13 +228,23 @@ const CATEGORIES = {
         loader: () => import('../../data/legal/environmentalPermits'),
         searchKeys: ['state', 'npdesAuthority', 'stateEnvAgency', 'citation'],
         columns: [
-          { key: 'state',                        label: 'State',               sortable: true },
-          { key: 'npdesAuthority',               label: 'NPDES Authority',     sortable: true },
-          { key: 'landDisturbanceThresholdAcres',label: 'Disturb. Threshold',  sortable: true,  render: acres },
-          { key: 'swpppRequired',                label: 'SWPPP Required',      sortable: true,  render: bool },
-          { key: 'stateWetlandProgram',          label: 'State Wetland Prog.', sortable: true,  render: bool },
-          { key: 'stateEnvAgency',               label: 'State Agency',        sortable: true },
-          { key: 'citation',                     label: 'Citation',            sortable: false, render: cite },
+          { key: 'state', label: 'State', sortable: true },
+          { key: 'npdesAuthority', label: 'NPDES Authority', sortable: true },
+          {
+            key: 'landDisturbanceThresholdAcres',
+            label: 'Disturb. Threshold',
+            sortable: true,
+            render: acres,
+          },
+          { key: 'swpppRequired', label: 'SWPPP Required', sortable: true, render: bool },
+          {
+            key: 'stateWetlandProgram',
+            label: 'State Wetland Prog.',
+            sortable: true,
+            render: bool,
+          },
+          { key: 'stateEnvAgency', label: 'State Agency', sortable: true },
+          { key: 'citation', label: 'Citation', sortable: false, render: cite },
         ],
       },
     ],
@@ -203,12 +260,12 @@ const CATEGORIES = {
         loader: () => import('../../data/legal/buildingPermits'),
         searchKeys: ['state', 'stateBuildingOffice', 'citation'],
         columns: [
-          { key: 'state',                label: 'State',             sortable: true },
-          { key: 'statewideBuildingCode',label: 'Statewide Code',    sortable: false },
-          { key: 'adoptedCodes',         label: 'Adopted Codes',     sortable: false, render: arr  },
-          { key: 'stateBuildingOffice',  label: 'State Office',      sortable: true },
-          { key: 'permitFeeStructure',   label: 'Fee Structure',     sortable: false },
-          { key: 'citation',             label: 'Citation',          sortable: false, render: cite },
+          { key: 'state', label: 'State', sortable: true },
+          { key: 'statewideBuildingCode', label: 'Statewide Code', sortable: false },
+          { key: 'adoptedCodes', label: 'Adopted Codes', sortable: false, render: arr },
+          { key: 'stateBuildingOffice', label: 'State Office', sortable: true },
+          { key: 'permitFeeStructure', label: 'Fee Structure', sortable: false },
+          { key: 'citation', label: 'Citation', sortable: false, render: cite },
         ],
       },
     ],
@@ -224,15 +281,34 @@ const CATEGORIES = {
         loader: () => import('../../data/legal/roadsAndPavingRegulations'),
         searchKeys: ['state', 'roadAuthority', 'citation'],
         columns: [
-          { key: 'state',                   label: 'State',             sortable: true },
-          { key: 'roadAuthority',           label: 'DOT Authority',     sortable: true },
-          { key: 'utilityPermitRequired',   label: 'Utility Permit',    sortable: true,  render: bool },
-          { key: 'overweightPermitRequired',label: 'Overweight Permit', sortable: true,  render: bool },
-          { key: 'overweightThresholdLbs',  label: 'OW Threshold',      sortable: true,
-            render: (v) => (v ? `${Number(v).toLocaleString()} lbs` : '—') },
-          { key: 'encroachmentPermitRequired', label: 'Encroachment Permit', sortable: true, render: bool },
-          { key: 'restorationBondRequired', label: 'Restoration Bond',  sortable: true,  render: bool },
-          { key: 'citation',                label: 'Citation',          sortable: false, render: cite },
+          { key: 'state', label: 'State', sortable: true },
+          { key: 'roadAuthority', label: 'DOT Authority', sortable: true },
+          { key: 'utilityPermitRequired', label: 'Utility Permit', sortable: true, render: bool },
+          {
+            key: 'overweightPermitRequired',
+            label: 'Overweight Permit',
+            sortable: true,
+            render: bool,
+          },
+          {
+            key: 'overweightThresholdLbs',
+            label: 'OW Threshold',
+            sortable: true,
+            render: (v) => (v ? `${Number(v).toLocaleString()} lbs` : '—'),
+          },
+          {
+            key: 'encroachmentPermitRequired',
+            label: 'Encroachment Permit',
+            sortable: true,
+            render: bool,
+          },
+          {
+            key: 'restorationBondRequired',
+            label: 'Restoration Bond',
+            sortable: true,
+            render: bool,
+          },
+          { key: 'citation', label: 'Citation', sortable: false, render: cite },
         ],
       },
     ],
@@ -261,9 +337,7 @@ function CategorySection({ section }) {
   return (
     <section>
       <PrintableReport title={section.heading}>
-        <h2 className="font-display font-bold text-brand-navy text-xl mb-4">
-          {section.heading}
-        </h2>
+        <h2 className="font-display font-bold text-brand-navy text-xl mb-4">{section.heading}</h2>
         {data ? (
           <LegalTable
             columns={section.columns}
@@ -296,9 +370,9 @@ export default function CategoryHub() {
         description={config.desc}
         canonical={`/advisory/${category}`}
         breadcrumb={[
-          { name: 'Home',           path: '/' },
+          { name: 'Home', path: '/' },
           { name: 'Advisory Board', path: '/advisory' },
-          { name: config.title,     path: `/advisory/${category}` },
+          { name: config.title, path: `/advisory/${category}` },
         ]}
       />
 
@@ -308,8 +382,7 @@ export default function CategoryHub() {
             ← Advisory Board
           </Link>
           <h1 className="font-display font-black text-5xl mt-3 mb-3">
-            {config.emoji}{' '}
-            <span className="text-brand-amber">{config.title}</span>
+            {config.emoji} <span className="text-brand-amber">{config.title}</span>
           </h1>
           <p className="text-white/70 text-lg max-w-3xl mx-auto">{config.desc}</p>
         </div>
@@ -325,9 +398,7 @@ export default function CategoryHub() {
         {/* Bottom nav */}
         <div className="card p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
-            <p className="font-semibold text-brand-navy text-sm">
-              Looking for a specific state?
-            </p>
+            <p className="font-semibold text-brand-navy text-sm">Looking for a specific state?</p>
             <p className="text-brand-navy/50 text-xs mt-0.5">
               View a full profile for any state across all 9 categories.
             </p>

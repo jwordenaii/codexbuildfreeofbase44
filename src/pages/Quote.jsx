@@ -15,23 +15,23 @@ const STEPS = [
 ]
 
 const SERVICES = [
-  { value: 'paving',              label: '🛣 Asphalt Paving' },
-  { value: 'sealcoating',         label: '🖤 Sealcoating' },
-  { value: 'crackfill',           label: '🔧 Crack Filling' },
-  { value: 'parking_lot',         label: '🏢 Parking Lot' },
-  { value: 'driveway',            label: '🏠 Driveway' },
-  { value: 'maintenance',         label: '🔄 Maintenance Plan' },
+  { value: 'paving', label: '🛣 Asphalt Paving' },
+  { value: 'sealcoating', label: '🖤 Sealcoating' },
+  { value: 'crackfill', label: '🔧 Crack Filling' },
+  { value: 'parking_lot', label: '🏢 Parking Lot' },
+  { value: 'driveway', label: '🏠 Driveway' },
+  { value: 'maintenance', label: '🔄 Maintenance Plan' },
   { value: 'general_contracting', label: '🏗 General Contracting' },
-  { value: 'interior_design',     label: '🎨 Interior Design & Decorating' },
-  { value: 'cobblestone_pavers',  label: '🪨 Cobblestone / Brick Paver Patio' },
-  { value: 'stone_masonry',       label: '🧱 Stone Masonry' },
+  { value: 'interior_design', label: '🎨 Interior Design & Decorating' },
+  { value: 'cobblestone_pavers', label: '🪨 Cobblestone / Brick Paver Patio' },
+  { value: 'stone_masonry', label: '🧱 Stone Masonry' },
 ]
 
 const URGENCIES = [
-  { value: 'asap',          label: 'ASAP' },
+  { value: 'asap', label: 'ASAP' },
   { value: 'within_1_week', label: 'Within 1 week' },
-  { value: 'within_1_month',label: 'Within 1 month' },
-  { value: 'flexible',      label: 'Flexible / Planning ahead' },
+  { value: 'within_1_month', label: 'Within 1 month' },
+  { value: 'flexible', label: 'Flexible / Planning ahead' },
 ]
 
 const INITIAL_FORM = {
@@ -59,8 +59,8 @@ function StepIndicator({ current }) {
               step.id < current
                 ? 'bg-green-500 text-white'
                 : step.id === current
-                ? 'bg-brand-amber text-brand-navy'
-                : 'bg-gray-200 text-gray-400'
+                  ? 'bg-brand-amber text-brand-navy'
+                  : 'bg-gray-200 text-gray-400'
             }`}
           >
             {step.id < current ? '✓' : step.id}
@@ -74,9 +74,7 @@ function StepIndicator({ current }) {
           </span>
           {i < STEPS.length - 1 && (
             <div
-              className={`w-8 sm:w-12 h-px ${
-                step.id < current ? 'bg-green-400' : 'bg-gray-200'
-              }`}
+              className={`w-8 sm:w-12 h-px ${step.id < current ? 'bg-green-400' : 'bg-gray-200'}`}
             />
           )}
         </div>
@@ -107,13 +105,13 @@ export default function Quote() {
   const [errorMsg, setErrorMsg] = useState('')
 
   // Proposal pipeline state (shown after successful quote submission)
-  const [proposalStatus, setProposalStatus] = useState('idle')  // idle | generating | done | error
-  const [proposal, setProposal]             = useState(null)
-  const [proposalError, setProposalError]   = useState('')
-  const [sendStatus, setSendStatus]         = useState('idle')
-  const [sendMsg, setSendMsg]               = useState('')
-  const [paymentStatus, setPaymentStatus]   = useState('idle')
-  const [paymentMsg, setPaymentMsg]         = useState('')
+  const [proposalStatus, setProposalStatus] = useState('idle') // idle | generating | done | error
+  const [proposal, setProposal] = useState(null)
+  const [proposalError, setProposalError] = useState('')
+  const [sendStatus, setSendStatus] = useState('idle')
+  const [sendMsg, setSendMsg] = useState('')
+  const [paymentStatus, setPaymentStatus] = useState('idle')
+  const [paymentMsg, setPaymentMsg] = useState('')
 
   const set = (key, val) => setForm((f) => ({ ...f, [key]: val }))
   const handleChange = (e) => set(e.target.name, e.target.value)
@@ -126,9 +124,7 @@ export default function Quote() {
     try {
       const payload = {
         ...form,
-        project_size_sqft: form.project_size_sqft
-          ? parseFloat(form.project_size_sqft)
-          : null,
+        project_size_sqft: form.project_size_sqft ? parseFloat(form.project_size_sqft) : null,
       }
       const data = await api.submitQuote(payload)
       setResult(data)
@@ -165,7 +161,6 @@ export default function Quote() {
     if (!proposal?.pdf_b64) return
     downloadPdf(proposal.pdf_b64, `proposal-lead-${result.lead_id}.pdf`)
   }
-
 
   const handleStartDepositCheckout = async () => {
     if (!result?.lead_id) return
@@ -236,8 +231,8 @@ export default function Quote() {
                     result.lead_score === 'HOT'
                       ? 'bg-red-100 text-red-700'
                       : result.lead_score === 'WARM'
-                      ? 'bg-orange-100 text-orange-700'
-                      : 'bg-blue-100 text-blue-700'
+                        ? 'bg-orange-100 text-orange-700'
+                        : 'bg-blue-100 text-blue-700'
                   }`}
                 >
                   {result.follow_up_sla}
@@ -259,9 +254,7 @@ export default function Quote() {
                   Back to Home
                 </a>
               </div>
-              {paymentMsg && (
-                <p className="text-sm text-red-600 mt-3">{paymentMsg}</p>
-              )}
+              {paymentMsg && <p className="text-sm text-red-600 mt-3">{paymentMsg}</p>}
             </div>
 
             {/* Proposal pipeline card — only shown when a lead_id was returned */}
@@ -276,11 +269,7 @@ export default function Quote() {
                 </p>
 
                 {proposalStatus === 'idle' && (
-                  <button
-                    type="button"
-                    onClick={handleGenerateProposal}
-                    className="btn-primary"
-                  >
+                  <button type="button" onClick={handleGenerateProposal} className="btn-primary">
                     ✨ Generate Proposal
                   </button>
                 )}
@@ -323,9 +312,13 @@ export default function Quote() {
                       </button>
                     </div>
                     {sendMsg && (
-                      <div className={`text-sm rounded-lg px-4 py-2 ${
-                        sendMsg.startsWith('Error') ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700'
-                      }`}>
+                      <div
+                        className={`text-sm rounded-lg px-4 py-2 ${
+                          sendMsg.startsWith('Error')
+                            ? 'bg-red-50 text-red-700'
+                            : 'bg-green-50 text-green-700'
+                        }`}
+                      >
                         {sendMsg}
                       </div>
                     )}
@@ -414,7 +407,7 @@ export default function Quote() {
                   <div className="flex gap-3">
                     {[
                       { value: 'residential', label: '🏠 Residential' },
-                      { value: 'commercial',  label: '🏢 Commercial' },
+                      { value: 'commercial', label: '🏢 Commercial' },
                     ].map(({ value, label }) => (
                       <button
                         key={value}
@@ -452,7 +445,7 @@ export default function Quote() {
                       form.service_type,
                       form.property_type,
                       form.project_size_sqft,
-                      form.state_code || null,
+                      form.state_code || null
                     )
                     if (!est) return null
                     return (
@@ -484,31 +477,35 @@ export default function Quote() {
                   >
                     <option value="">Select a state…</option>
                     {STATE_OPTIONS.map(({ value, label }) => (
-                      <option key={value} value={value}>{label}</option>
+                      <option key={value} value={value}>
+                        {label}
+                      </option>
                     ))}
                   </select>
                   {/* State compliance note */}
-                  {form.state_code && (() => {
-                    const s = getStateSummary(form.state_code)
-                    if (!s || !s.complianceNotes.length) return null
-                    return (
-                      <div className="mt-2 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2">
-                        <p className="text-xs font-bold text-blue-700 mb-1">
-                          {s.name} — Key Requirements
-                        </p>
-                        <ul className="text-xs text-blue-600 space-y-0.5">
-                          {s.complianceNotes.map(n => (
-                            <li key={n}>• {n}</li>
-                          ))}
-                        </ul>
-                        <p className="text-xs text-blue-500 mt-1">{s.seasonNote}</p>
-                      </div>
-                    )
-                  })()}
+                  {form.state_code &&
+                    (() => {
+                      const s = getStateSummary(form.state_code)
+                      if (!s || !s.complianceNotes.length) return null
+                      return (
+                        <div className="mt-2 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2">
+                          <p className="text-xs font-bold text-blue-700 mb-1">
+                            {s.name} — Key Requirements
+                          </p>
+                          <ul className="text-xs text-blue-600 space-y-0.5">
+                            {s.complianceNotes.map((n) => (
+                              <li key={n}>• {n}</li>
+                            ))}
+                          </ul>
+                          <p className="text-xs text-blue-500 mt-1">{s.seasonNote}</p>
+                        </div>
+                      )
+                    })()}
                 </div>
 
                 <div>
-                  <FieldLabel required>How soon do you need this done?</FieldLabel>                  <select
+                  <FieldLabel required>How soon do you need this done?</FieldLabel>{' '}
+                  <select
                     name="urgency"
                     value={form.urgency}
                     onChange={handleChange}
@@ -553,9 +550,27 @@ export default function Quote() {
                 </h2>
 
                 {[
-                  { name: 'name',  label: 'Full Name',     type: 'text',  required: true,  placeholder: 'John Smith' },
-                  { name: 'email', label: 'Email Address', type: 'email', required: true,  placeholder: 'john@example.com' },
-                  { name: 'phone', label: 'Phone Number',  type: 'tel',   required: true,  placeholder: '(555) 555-5555' },
+                  {
+                    name: 'name',
+                    label: 'Full Name',
+                    type: 'text',
+                    required: true,
+                    placeholder: 'John Smith',
+                  },
+                  {
+                    name: 'email',
+                    label: 'Email Address',
+                    type: 'email',
+                    required: true,
+                    placeholder: 'john@example.com',
+                  },
+                  {
+                    name: 'phone',
+                    label: 'Phone Number',
+                    type: 'tel',
+                    required: true,
+                    placeholder: '(555) 555-5555',
+                  },
                 ].map(({ name, label, type, required, placeholder }) => (
                   <div key={name}>
                     <FieldLabel required={required}>{label}</FieldLabel>
@@ -608,15 +623,27 @@ export default function Quote() {
 
                 <div className="bg-gray-50 rounded-xl p-5 space-y-3 text-sm mb-8">
                   {[
-                    ['Service',       SERVICES.find((s) => s.value === form.service_type)?.label || form.service_type],
-                     ['Property Type', form.property_type],
-                     ['Size',          form.project_size_sqft ? `${form.project_size_sqft} sq ft` : 'Not specified'],
-                     ['State',         form.state_code ? STATE_OPTIONS.find(o => o.value === form.state_code)?.label : 'Not specified'],
-                     ['Urgency',       URGENCIES.find((u) => u.value === form.urgency)?.label],
-                     ['Address',       form.address || 'Not specified'],
-                     ['Name',          form.name],
-                     ['Email',         form.email],
-                     ['Phone',         form.phone],
+                    [
+                      'Service',
+                      SERVICES.find((s) => s.value === form.service_type)?.label ||
+                        form.service_type,
+                    ],
+                    ['Property Type', form.property_type],
+                    [
+                      'Size',
+                      form.project_size_sqft ? `${form.project_size_sqft} sq ft` : 'Not specified',
+                    ],
+                    [
+                      'State',
+                      form.state_code
+                        ? STATE_OPTIONS.find((o) => o.value === form.state_code)?.label
+                        : 'Not specified',
+                    ],
+                    ['Urgency', URGENCIES.find((u) => u.value === form.urgency)?.label],
+                    ['Address', form.address || 'Not specified'],
+                    ['Name', form.name],
+                    ['Email', form.email],
+                    ['Phone', form.phone],
                   ].map(([key, val]) => (
                     <div key={key} className="flex gap-3">
                       <span className="font-semibold text-brand-navy/50 w-28 flex-shrink-0">
@@ -637,23 +664,24 @@ export default function Quote() {
                 <div className="flex items-center justify-center gap-2 py-3 mb-2 text-sm text-brand-navy/60 border-t border-gray-100">
                   <span className="text-brand-amber text-base">⭐⭐⭐⭐⭐</span>
                   <span>
-                    Trusted by <strong className="text-brand-navy">87+ happy customers</strong> · 4.9 Google rating
+                    Trusted by <strong className="text-brand-navy">87+ happy customers</strong> ·
+                    4.9 Google rating
                   </span>
                 </div>
 
                 <div className="flex justify-between">
-                   <button type="button" onClick={back} className="btn-outline">
-                     ← Edit
-                   </button>
-                   <button
-                     type="button"
-                     onClick={handleSubmit}
-                     disabled={status === 'submitting'}
-                     className="btn-primary disabled:opacity-60 disabled:cursor-not-allowed"
-                   >
-                     {status === 'submitting' ? 'Submitting…' : 'Submit Request ✓'}
-                   </button>
-                 </div>
+                  <button type="button" onClick={back} className="btn-outline">
+                    ← Edit
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleSubmit}
+                    disabled={status === 'submitting'}
+                    className="btn-primary disabled:opacity-60 disabled:cursor-not-allowed"
+                  >
+                    {status === 'submitting' ? 'Submitting…' : 'Submit Request ✓'}
+                  </button>
+                </div>
               </div>
             )}
           </div>

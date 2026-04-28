@@ -15,7 +15,7 @@ const TIMELINE = [
     year: 'The Foundation',
     headline: 'A Lifetime in the Trades.',
     event:
-      'Our founder — Mr. Worden\'s grandfather — spent more than 30 years running a roofing company before making the move to asphalt paving. By the time he picked up a paver, he already knew what it meant to work in the heat, meet a deadline, and stand behind a job. That foundation never left the company.',
+      "Our founder — Mr. Worden's grandfather — spent more than 30 years running a roofing company before making the move to asphalt paving. By the time he picked up a paver, he already knew what it meant to work in the heat, meet a deadline, and stand behind a job. That foundation never left the company.",
   },
   {
     year: 'Est. 1984',
@@ -27,7 +27,7 @@ const TIMELINE = [
     year: 'Virginia Coast Roots',
     headline: 'Motels, VA to Virginia Beach.',
     event:
-      'The company became a highly respected name across the coastal Virginia corridor. Residential driveways, commercial lots, local businesses — the founder\'s reputation for doing the job right the first time spread entirely by word of mouth across the region.',
+      "The company became a highly respected name across the coastal Virginia corridor. Residential driveways, commercial lots, local businesses — the founder's reputation for doing the job right the first time spread entirely by word of mouth across the region.",
   },
   {
     year: 'Age 14',
@@ -45,19 +45,19 @@ const TIMELINE = [
     year: 'National Expansion',
     headline: 'KFC: Virginia → NC → GA → FL → MI.',
     event:
-      'Word spreads through the KFC franchise network. Contracts follow in North Carolina, Georgia, Florida, and Michigan. The Worden name becomes a known quantity in national QSR paving — a contractor that shows up, meets spec, and doesn\'t create problems for the operator.',
+      "Word spreads through the KFC franchise network. Contracts follow in North Carolina, Georgia, Florida, and Michigan. The Worden name becomes a known quantity in national QSR paving — a contractor that shows up, meets spec, and doesn't create problems for the operator.",
   },
   {
     year: 'New Build Program',
     headline: 'Selected for KFC New QSR Build Program.',
     event:
-      'KFC selects Worden & Sons to assist with ground-up new store construction under a national new build program. This is not maintenance or resurfacing — it\'s building new fast-food sites from the ground up, civil through finish. The program runs through the end of 2023.',
+      "KFC selects Worden & Sons to assist with ground-up new store construction under a national new build program. This is not maintenance or resurfacing — it's building new fast-food sites from the ground up, civil through finish. The program runs through the end of 2023.",
   },
   {
     year: '2015',
     headline: 'The Founder Passes.',
     event:
-      'Mr. Worden\'s grandfather passes away in 2015. He built the company from nothing — from a roofing career into an asphalt legacy that reached from Virginia Beach to Michigan. The business he started, and the standard he held, live on in every job the company takes.',
+      "Mr. Worden's grandfather passes away in 2015. He built the company from nothing — from a roofing career into an asphalt legacy that reached from Virginia Beach to Michigan. The business he started, and the standard he held, live on in every job the company takes.",
   },
   {
     year: '2016',
@@ -75,13 +75,13 @@ const TIMELINE = [
     year: 'Recognized Nationally',
     headline: 'Pavement Magazine Top 75. Best of Houzz. 2026 Nominee.',
     event:
-      'The work has been recognized nationally. Pavement Magazine Top 75 Contractors — in four separate categories. Best of Houzz, multiple years. And a nomination for the 2026 Pavement Magazine Top Contractor Award. These aren\'t self-reported — they\'re industry-verified recognitions of a track record built over decades.',
+      "The work has been recognized nationally. Pavement Magazine Top 75 Contractors — in four separate categories. Best of Houzz, multiple years. And a nomination for the 2026 Pavement Magazine Top Contractor Award. These aren't self-reported — they're industry-verified recognitions of a track record built over decades.",
   },
   {
     year: 'Today',
     headline: 'Private Work. Next QSR Chapter.',
     event:
-      'The company is active in private commercial paving and actively pursuing the next phase of QSR fast food builds and civil work. The documentation exists — photos, contracts, completed projects across more than ten states. The legacy is not marketing. It\'s the record.',
+      "The company is active in private commercial paving and actively pursuing the next phase of QSR fast food builds and civil work. The documentation exists — photos, contracts, completed projects across more than ten states. The legacy is not marketing. It's the record.",
   },
 ]
 
@@ -93,7 +93,7 @@ const NOTABLE_PROJECTS = [
     scope: 'Motels, VA to Virginia Beach',
     headline: 'Where the Reputation Was Built.',
     story:
-      'The company\'s early years were defined by the coastal Virginia corridor — from Motels, VA to Virginia Beach. Commercial lots, residential driveways, local businesses. No advertising. The reputation spread by word of mouth from job sites where the work spoke for itself.',
+      "The company's early years were defined by the coastal Virginia corridor — from Motels, VA to Virginia Beach. Commercial lots, residential driveways, local businesses. No advertising. The reputation spread by word of mouth from job sites where the work spoke for itself.",
     emoji: '🌊',
   },
   {
@@ -123,7 +123,7 @@ const NOTABLE_PROJECTS = [
     scope: 'Texas',
     headline: 'New Build. New State. Same Standard.',
     story:
-      'A ground-up KFC new store construction in Texas — one of several projects the company completed in the state post-pandemic. Site work, paving, and civil scope handled start to finish. Part of the company\'s expanded national QSR footprint that now includes Texas and extends across the South and Midwest.',
+      "A ground-up KFC new store construction in Texas — one of several projects the company completed in the state post-pandemic. Site work, paving, and civil scope handled start to finish. Part of the company's expanded national QSR footprint that now includes Texas and extends across the South and Midwest.",
     emoji: '🤠',
   },
   {
@@ -142,17 +142,20 @@ const AWARDS = [
   {
     icon: '🏆',
     title: 'Pavement Magazine Top 75',
-    detail: 'Recognized in four separate contractor categories — one of the highest distinctions in the national paving industry.',
+    detail:
+      'Recognized in four separate contractor categories — one of the highest distinctions in the national paving industry.',
   },
   {
     icon: '⭐',
     title: 'Best of Houzz',
-    detail: 'Multiple years. Awarded by the Houzz community based on client reviews, service quality, and project documentation.',
+    detail:
+      'Multiple years. Awarded by the Houzz community based on client reviews, service quality, and project documentation.',
   },
   {
     icon: '🎖',
     title: '2026 Top Contractor Nominee',
-    detail: 'Nominated for the 2026 Pavement Magazine Top Contractor Award — an industry-wide recognition of sustained excellence.',
+    detail:
+      'Nominated for the 2026 Pavement Magazine Top Contractor Award — an industry-wide recognition of sustained excellence.',
   },
 ]
 
@@ -160,25 +163,24 @@ const VALUES = [
   {
     icon: '📞',
     title: 'Show Up',
-    desc: 'We answer the phone. We\'re on site when we say. Showing up — on time, prepared, and ready — is the baseline. We set it higher.',
+    desc: "We answer the phone. We're on site when we say. Showing up — on time, prepared, and ready — is the baseline. We set it higher.",
   },
   {
     icon: '⚙️',
     title: 'Build It Right',
-    desc: 'Commercial-grade specs on every job. We don\'t cut base depth because no one will see it. The sub-grade is where the job is really won or lost.',
+    desc: "Commercial-grade specs on every job. We don't cut base depth because no one will see it. The sub-grade is where the job is really won or lost.",
   },
   {
     icon: '🤝',
     title: 'Stand Behind It',
-    desc: 'If something isn\'t right, we fix it. No debate, no charge. Our name is on the work — and we protect it.',
+    desc: "If something isn't right, we fix it. No debate, no charge. Our name is on the work — and we protect it.",
   },
   {
     icon: '📋',
     title: 'Document Everything',
-    desc: 'Every major project is backed by photos and records. We have a Dropbox and a Google Photos archive that proves the work. That\'s not common in this industry. It should be.',
+    desc: "Every major project is backed by photos and records. We have a Dropbox and a Google Photos archive that proves the work. That's not common in this industry. It should be.",
   },
 ]
-
 
 export default function About() {
   return (
@@ -204,8 +206,8 @@ export default function About() {
             Our <span className="text-brand-amber">Story</span>
           </h1>
           <p className="text-white/70 text-xl max-w-2xl mx-auto">
-            Started by a man who spent 30 years in roofing before picking up a paver.
-            Built into a national QSR contractor by his grandson. No shortcuts in either generation.
+            Started by a man who spent 30 years in roofing before picking up a paver. Built into a
+            national QSR contractor by his grandson. No shortcuts in either generation.
           </p>
           <div className="mt-8 flex justify-center">
             <SocialShare
@@ -222,10 +224,10 @@ export default function About() {
         <div className="max-w-5xl mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             {[
-              { stat: '1984',  label: 'Founded' },
-              { stat: '10+',   label: 'States Worked In' },
-              { stat: '30+',   label: 'Years KFC / QSR Work' },
-              { stat: '4',     label: 'Pavement Mag Top 75 Categories' },
+              { stat: '1984', label: 'Founded' },
+              { stat: '10+', label: 'States Worked In' },
+              { stat: '30+', label: 'Years KFC / QSR Work' },
+              { stat: '4', label: 'Pavement Mag Top 75 Categories' },
             ].map(({ stat, label }) => (
               <div key={label}>
                 <div className="font-display font-black text-brand-navy text-3xl">{stat}</div>
@@ -241,8 +243,8 @@ export default function About() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-2xl md:text-3xl font-display font-bold text-brand-navy leading-tight">
             &ldquo;My grandfather built this company after 30 years in roofing. I started working
-            beside him at 14. Everything I know about this trade, I learned from him —
-            and I run this company the same way he did.&rdquo;
+            beside him at 14. Everything I know about this trade, I learned from him — and I run
+            this company the same way he did.&rdquo;
           </p>
           <p className="mt-6 text-brand-navy/50 font-medium">— Mr. Worden, Owner</p>
         </div>
@@ -263,7 +265,9 @@ export default function About() {
                 transition={{ duration: 0.4, delay: i * 0.1 }}
               >
                 <div className="text-4xl mb-3">{award.icon}</div>
-                <h3 className="font-display font-bold text-brand-navy text-lg mb-2">{award.title}</h3>
+                <h3 className="font-display font-bold text-brand-navy text-lg mb-2">
+                  {award.title}
+                </h3>
                 <p className="text-brand-navy/60 text-sm leading-relaxed">{award.detail}</p>
               </motion.div>
             ))}
@@ -299,9 +303,7 @@ export default function About() {
                       <div className="font-display font-black text-brand-amber text-lg mb-0.5">
                         {item.year}
                       </div>
-                      <div className="font-bold text-brand-navy text-sm mb-2">
-                        {item.headline}
-                      </div>
+                      <div className="font-bold text-brand-navy text-sm mb-2">{item.headline}</div>
                       <p className="text-brand-navy/70 text-sm leading-relaxed">{item.event}</p>
                     </div>
                   </div>
@@ -318,8 +320,8 @@ export default function About() {
           <div className="text-center mb-14">
             <h2 className="section-heading mb-4">Projects That Tell the Story</h2>
             <p className="text-brand-navy/60 max-w-xl mx-auto">
-              Verified work. Real projects. The documentation exists — photos, records, completed jobs
-              across more than ten states.
+              Verified work. Real projects. The documentation exists — photos, records, completed
+              jobs across more than ten states.
             </p>
           </div>
           <div className="grid md:grid-cols-2 gap-8">
@@ -404,9 +406,9 @@ export default function About() {
               <p className="text-white/50 text-sm mt-1">Owner · Since 2016</p>
               <p className="text-white/70 text-sm mt-4 leading-relaxed">
                 Started working alongside his grandfather at age 14. Took over the company in 2016.
-                Has led KFC franchise paving programs across Virginia, NC, GA, FL, MI, TX, and
-                more — including ground-up new store builds and multi-state remodel programs.
-                Pavement Magazine Top 75 recognized. Still on job sites.
+                Has led KFC franchise paving programs across Virginia, NC, GA, FL, MI, TX, and more
+                — including ground-up new store builds and multi-state remodel programs. Pavement
+                Magazine Top 75 recognized. Still on job sites.
               </p>
             </motion.div>
           </div>
@@ -416,9 +418,7 @@ export default function About() {
       {/* Values */}
       <section className="py-20 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="section-heading text-center mb-12">
-            How We Work
-          </h2>
+          <h2 className="section-heading text-center mb-12">How We Work</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {VALUES.map((v, i) => (
               <motion.div
@@ -464,9 +464,7 @@ export default function About() {
       {/* Social follow */}
       <section className="py-14 bg-gray-50">
         <div className="max-w-3xl mx-auto px-4 text-center">
-          <h2 className="font-display font-black text-brand-navy text-2xl mb-3">
-            Follow the Work
-          </h2>
+          <h2 className="font-display font-black text-brand-navy text-2xl mb-3">Follow the Work</h2>
           <p className="text-brand-navy/60 mb-6">
             Before &amp; afters, job site updates, and real paving content across every platform.
           </p>

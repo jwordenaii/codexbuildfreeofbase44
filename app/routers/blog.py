@@ -93,7 +93,9 @@ class BlogPostCreate(BaseModel):
 
 
 class BlogDraftRequest(BaseModel):
-    topic:        str           = Field(..., min_length=5, max_length=300, strip_whitespace=True,
+    model_config = {"str_strip_whitespace": True}
+
+    topic:        str           = Field(..., min_length=5, max_length=300,
                                        description="Topic or title idea for the blog post")
     category:     Optional[str] = Field(default=None, max_length=60)
     focus_keyword:Optional[str] = Field(default=None, max_length=120)

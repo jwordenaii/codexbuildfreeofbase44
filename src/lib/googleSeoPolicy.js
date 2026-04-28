@@ -43,8 +43,7 @@ export const GOOGLE_SEO_POLICY_TRACKER = {
       area: 'Structured data',
       currentRule:
         'Use accurate LocalBusiness, Service, FAQ, Breadcrumb, and areaServed schema without fake ratings, fake offices, or unsupported claims.',
-      implementation:
-        'Schema helpers are data-driven from canonical state/service modules.',
+      implementation: 'Schema helpers are data-driven from canonical state/service modules.',
     },
     {
       area: 'Future Google updates',

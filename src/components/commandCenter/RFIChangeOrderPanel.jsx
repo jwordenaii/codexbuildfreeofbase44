@@ -13,20 +13,20 @@
 import { useState } from 'react'
 
 const RFI_STATUSES = ['Open', 'Pending Response', 'Answered', 'Closed']
-const CO_STATUSES  = ['Pending Owner', 'Approved', 'Rejected', 'Void']
+const CO_STATUSES = ['Pending Owner', 'Approved', 'Rejected', 'Void']
 
 const RFI_STATUS_STYLE = {
-  'Open':             'bg-blue-100 text-blue-700 border-blue-200',
+  Open: 'bg-blue-100 text-blue-700 border-blue-200',
   'Pending Response': 'bg-yellow-100 text-yellow-800 border-yellow-200',
-  'Answered':         'bg-green-100 text-green-700 border-green-200',
-  'Closed':           'bg-gray-100 text-gray-500 border-gray-200',
+  Answered: 'bg-green-100 text-green-700 border-green-200',
+  Closed: 'bg-gray-100 text-gray-500 border-gray-200',
 }
 
 const CO_STATUS_STYLE = {
   'Pending Owner': 'bg-yellow-100 text-yellow-800 border-yellow-200',
-  'Approved':      'bg-green-100 text-green-700 border-green-200',
-  'Rejected':      'bg-red-100 text-red-700 border-red-200',
-  'Void':          'bg-gray-100 text-gray-400 border-gray-200',
+  Approved: 'bg-green-100 text-green-700 border-green-200',
+  Rejected: 'bg-red-100 text-red-700 border-red-200',
+  Void: 'bg-gray-100 text-gray-400 border-gray-200',
 }
 
 function fmt(n) {
@@ -39,13 +39,24 @@ function fmt(n) {
 }
 
 const BLANK_RFI = {
-  num: '', subject: '', originator: '', submitted: '',
-  dueDate: '', ballInCourt: 'Owner/Architect', status: 'Open', response: '',
+  num: '',
+  subject: '',
+  originator: '',
+  submitted: '',
+  dueDate: '',
+  ballInCourt: 'Owner/Architect',
+  status: 'Open',
+  response: '',
 }
 
 const BLANK_CO = {
-  num: '', description: '', costImpact: '', scheduleDays: '',
-  status: 'Pending Owner', linkedRFI: '', submittedDate: '',
+  num: '',
+  description: '',
+  costImpact: '',
+  scheduleDays: '',
+  status: 'Pending Owner',
+  linkedRFI: '',
+  submittedDate: '',
 }
 
 const DEMO_RFIS = [
@@ -58,7 +69,8 @@ const DEMO_RFIS = [
     dueDate: '2026-04-17',
     ballInCourt: 'Owner/Architect',
     status: 'Answered',
-    response: 'Per spec section 02700-3.1, 95% of modified Proctor maximum dry density is required for all subbase layers.',
+    response:
+      'Per spec section 02700-3.1, 95% of modified Proctor maximum dry density is required for all subbase layers.',
   },
   {
     id: 2,
@@ -87,15 +99,15 @@ const DEMO_COS = [
 ]
 
 let _rfiCounter = DEMO_RFIS.length
-let _coCounter  = DEMO_COS.length
+let _coCounter = DEMO_COS.length
 
 export default function RFIChangeOrderPanel() {
-  const [tab, setTab]         = useState('rfi')
-  const [rfis, setRfis]       = useState(DEMO_RFIS)
-  const [cos, setCos]         = useState(DEMO_COS)
+  const [tab, setTab] = useState('rfi')
+  const [rfis, setRfis] = useState(DEMO_RFIS)
+  const [cos, setCos] = useState(DEMO_COS)
   const [showAdd, setShowAdd] = useState(false)
   const [rfiForm, setRfiForm] = useState({ ...BLANK_RFI })
-  const [coForm, setCoForm]   = useState({ ...BLANK_CO })
+  const [coForm, setCoForm] = useState({ ...BLANK_CO })
   const [expandId, setExpandId] = useState(null)
 
   const addRFI = (e) => {
@@ -148,12 +160,15 @@ export default function RFIChangeOrderPanel() {
         <div className="flex gap-2">
           {[
             { id: 'rfi', label: `📋 RFI Log (${rfis.length})` },
-            { id: 'co',  label: `💵 Change Orders (${cos.length})` },
+            { id: 'co', label: `💵 Change Orders (${cos.length})` },
           ].map((t) => (
             <button
               key={t.id}
               type="button"
-              onClick={() => { setTab(t.id); setShowAdd(false) }}
+              onClick={() => {
+                setTab(t.id)
+                setShowAdd(false)
+              }}
               className={`px-4 py-1.5 rounded-full text-xs font-semibold border transition-colors ${
                 tab === t.id
                   ? 'bg-brand-navy text-white border-brand-navy'
@@ -186,7 +201,9 @@ export default function RFIChangeOrderPanel() {
           </div>
           <div className="card p-4 text-center sm:col-span-1 col-span-2">
             <div className="text-xs text-brand-navy/50 mb-1">Open RFIs</div>
-            <div className={`text-lg font-black ${openRFIs > 0 ? 'text-blue-600' : 'text-green-600'}`}>
+            <div
+              className={`text-lg font-black ${openRFIs > 0 ? 'text-blue-600' : 'text-green-600'}`}
+            >
               {openRFIs}
             </div>
           </div>
@@ -210,7 +227,9 @@ export default function RFIChangeOrderPanel() {
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-brand-navy/60 mb-1">Originator</label>
+              <label className="block text-xs font-semibold text-brand-navy/60 mb-1">
+                Originator
+              </label>
               <input
                 type="text"
                 value={rfiForm.originator}
@@ -230,7 +249,9 @@ export default function RFIChangeOrderPanel() {
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-brand-navy/60 mb-1">Submitted Date</label>
+              <label className="block text-xs font-semibold text-brand-navy/60 mb-1">
+                Submitted Date
+              </label>
               <input
                 type="date"
                 value={rfiForm.submitted}
@@ -239,7 +260,9 @@ export default function RFIChangeOrderPanel() {
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-brand-navy/60 mb-1">Due Date</label>
+              <label className="block text-xs font-semibold text-brand-navy/60 mb-1">
+                Due Date
+              </label>
               <input
                 type="date"
                 value={rfiForm.dueDate}
@@ -248,7 +271,9 @@ export default function RFIChangeOrderPanel() {
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-brand-navy/60 mb-1">Ball in Court</label>
+              <label className="block text-xs font-semibold text-brand-navy/60 mb-1">
+                Ball in Court
+              </label>
               <input
                 type="text"
                 value={rfiForm.ballInCourt}
@@ -264,11 +289,15 @@ export default function RFIChangeOrderPanel() {
                 onChange={(e) => setR('status', e.target.value)}
                 className="input text-sm w-full"
               >
-                {RFI_STATUSES.map((s) => <option key={s}>{s}</option>)}
+                {RFI_STATUSES.map((s) => (
+                  <option key={s}>{s}</option>
+                ))}
               </select>
             </div>
             <div className="sm:col-span-2">
-              <label className="block text-xs font-semibold text-brand-navy/60 mb-1">Response</label>
+              <label className="block text-xs font-semibold text-brand-navy/60 mb-1">
+                Response
+              </label>
               <textarea
                 value={rfiForm.response}
                 onChange={(e) => setR('response', e.target.value)}
@@ -278,8 +307,14 @@ export default function RFIChangeOrderPanel() {
               />
             </div>
             <div className="sm:col-span-2 flex gap-3">
-              <button type="submit" className="btn-primary text-sm !py-2">Submit RFI</button>
-              <button type="button" onClick={() => setShowAdd(false)} className="btn-outline text-sm !py-2">
+              <button type="submit" className="btn-primary text-sm !py-2">
+                Submit RFI
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowAdd(false)}
+                className="btn-outline text-sm !py-2"
+              >
                 Cancel
               </button>
             </div>
@@ -304,7 +339,9 @@ export default function RFIChangeOrderPanel() {
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-brand-navy/60 mb-1">Submitted Date</label>
+              <label className="block text-xs font-semibold text-brand-navy/60 mb-1">
+                Submitted Date
+              </label>
               <input
                 type="date"
                 value={coForm.submittedDate}
@@ -313,7 +350,9 @@ export default function RFIChangeOrderPanel() {
               />
             </div>
             <div className="sm:col-span-2">
-              <label className="block text-xs font-semibold text-brand-navy/60 mb-1">Description</label>
+              <label className="block text-xs font-semibold text-brand-navy/60 mb-1">
+                Description
+              </label>
               <textarea
                 required
                 rows={2}
@@ -324,7 +363,9 @@ export default function RFIChangeOrderPanel() {
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-brand-navy/60 mb-1">Cost Impact ($)</label>
+              <label className="block text-xs font-semibold text-brand-navy/60 mb-1">
+                Cost Impact ($)
+              </label>
               <input
                 type="number"
                 value={coForm.costImpact}
@@ -334,7 +375,9 @@ export default function RFIChangeOrderPanel() {
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-brand-navy/60 mb-1">Schedule Impact (days)</label>
+              <label className="block text-xs font-semibold text-brand-navy/60 mb-1">
+                Schedule Impact (days)
+              </label>
               <input
                 type="number"
                 value={coForm.scheduleDays}
@@ -344,7 +387,9 @@ export default function RFIChangeOrderPanel() {
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-brand-navy/60 mb-1">Linked RFI</label>
+              <label className="block text-xs font-semibold text-brand-navy/60 mb-1">
+                Linked RFI
+              </label>
               <select
                 value={coForm.linkedRFI}
                 onChange={(e) => setC('linkedRFI', e.target.value)}
@@ -365,12 +410,20 @@ export default function RFIChangeOrderPanel() {
                 onChange={(e) => setC('status', e.target.value)}
                 className="input text-sm w-full"
               >
-                {CO_STATUSES.map((s) => <option key={s}>{s}</option>)}
+                {CO_STATUSES.map((s) => (
+                  <option key={s}>{s}</option>
+                ))}
               </select>
             </div>
             <div className="sm:col-span-2 flex gap-3">
-              <button type="submit" className="btn-primary text-sm !py-2">Submit Change Order</button>
-              <button type="button" onClick={() => setShowAdd(false)} className="btn-outline text-sm !py-2">
+              <button type="submit" className="btn-primary text-sm !py-2">
+                Submit Change Order
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowAdd(false)}
+                className="btn-outline text-sm !py-2"
+              >
                 Cancel
               </button>
             </div>
@@ -407,22 +460,31 @@ export default function RFIChangeOrderPanel() {
                     <div className="flex flex-wrap items-start justify-between gap-3">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap mb-1">
-                          <span className="font-mono text-xs text-brand-navy/40 font-semibold">{rfi.num}</span>
-                          <span className={`px-2 py-0.5 rounded-full text-xs font-bold border ${RFI_STATUS_STYLE[rfi.status]}`}>
+                          <span className="font-mono text-xs text-brand-navy/40 font-semibold">
+                            {rfi.num}
+                          </span>
+                          <span
+                            className={`px-2 py-0.5 rounded-full text-xs font-bold border ${RFI_STATUS_STYLE[rfi.status]}`}
+                          >
                             {rfi.status}
                           </span>
                           {isOverdue && (
                             <span className="text-xs text-red-600 font-bold">⚠️ OVERDUE</span>
                           )}
-                          {daysLeft !== null && !isOverdue && daysLeft <= 3 && rfi.status === 'Open' && (
-                            <span className="text-xs text-orange-600 font-semibold">⏰ Due soon</span>
-                          )}
+                          {daysLeft !== null &&
+                            !isOverdue &&
+                            daysLeft <= 3 &&
+                            rfi.status === 'Open' && (
+                              <span className="text-xs text-orange-600 font-semibold">
+                                ⏰ Due soon
+                              </span>
+                            )}
                         </div>
                         <div className="font-semibold text-brand-navy text-sm">{rfi.subject}</div>
                         <div className="text-xs text-brand-navy/40 mt-0.5 flex flex-wrap gap-x-3">
                           {rfi.originator && <span>By: {rfi.originator}</span>}
-                          {rfi.submitted  && <span>Submitted: {rfi.submitted}</span>}
-                          {rfi.dueDate    && <span>Due: {rfi.dueDate}</span>}
+                          {rfi.submitted && <span>Submitted: {rfi.submitted}</span>}
+                          {rfi.dueDate && <span>Due: {rfi.dueDate}</span>}
                           {rfi.ballInCourt && <span>Ball in court: {rfi.ballInCourt}</span>}
                         </div>
                       </div>
@@ -432,7 +494,9 @@ export default function RFIChangeOrderPanel() {
                           onChange={(e) => updateRFIStatus(rfi.id, e.target.value)}
                           className={`text-xs font-semibold border rounded-full px-2 py-0.5 appearance-none cursor-pointer ${RFI_STATUS_STYLE[rfi.status]}`}
                         >
-                          {RFI_STATUSES.map((s) => <option key={s}>{s}</option>)}
+                          {RFI_STATUSES.map((s) => (
+                            <option key={s}>{s}</option>
+                          ))}
                         </select>
                         {rfi.response && (
                           <button
@@ -449,8 +513,12 @@ export default function RFIChangeOrderPanel() {
 
                     {expandId === rfi.id && rfi.response && (
                       <div className="mt-3 pt-3 border-t border-brand-navy/10">
-                        <div className="text-xs font-semibold text-brand-navy/50 mb-1">Official Response:</div>
-                        <div className="text-sm text-brand-navy/80 leading-relaxed">{rfi.response}</div>
+                        <div className="text-xs font-semibold text-brand-navy/50 mb-1">
+                          Official Response:
+                        </div>
+                        <div className="text-sm text-brand-navy/80 leading-relaxed">
+                          {rfi.response}
+                        </div>
                       </div>
                     )}
                   </div>
@@ -466,7 +534,8 @@ export default function RFIChangeOrderPanel() {
         <div className="card p-6">
           {cos.length === 0 ? (
             <div className="text-center text-brand-navy/40 py-10 text-sm">
-              No change orders logged yet. Click &quot;+ New Change Order&quot; to create the first one.
+              No change orders logged yet. Click &quot;+ New Change Order&quot; to create the first
+              one.
             </div>
           ) : (
             <div className="overflow-x-auto">
@@ -483,26 +552,41 @@ export default function RFIChangeOrderPanel() {
                 </thead>
                 <tbody>
                   {cos.map((co) => (
-                    <tr key={co.id} className="border-b border-brand-navy/5 hover:bg-brand-navy/[0.02]">
+                    <tr
+                      key={co.id}
+                      className="border-b border-brand-navy/5 hover:bg-brand-navy/[0.02]"
+                    >
                       <td className="py-2.5 pr-3">
-                        <span className="font-mono text-xs font-semibold text-brand-navy">{co.num}</span>
+                        <span className="font-mono text-xs font-semibold text-brand-navy">
+                          {co.num}
+                        </span>
                         {co.submittedDate && (
                           <div className="text-brand-navy/30 text-xs">{co.submittedDate}</div>
                         )}
                       </td>
                       <td className="py-2.5 pr-3 max-w-xs">
-                        <span className="text-brand-navy text-xs leading-relaxed">{co.description}</span>
+                        <span className="text-brand-navy text-xs leading-relaxed">
+                          {co.description}
+                        </span>
                       </td>
                       <td className="py-2.5 pr-3 text-right">
-                        <span className={`text-xs font-bold ${
-                          co.costImpact > 0 ? 'text-orange-600' :
-                          co.costImpact < 0 ? 'text-green-600' : 'text-brand-navy/30'
-                        }`}>
-                          {co.costImpact > 0 ? '+' : ''}{fmt(co.costImpact)}
+                        <span
+                          className={`text-xs font-bold ${
+                            co.costImpact > 0
+                              ? 'text-orange-600'
+                              : co.costImpact < 0
+                                ? 'text-green-600'
+                                : 'text-brand-navy/30'
+                          }`}
+                        >
+                          {co.costImpact > 0 ? '+' : ''}
+                          {fmt(co.costImpact)}
                         </span>
                       </td>
                       <td className="py-2.5 pr-3 text-center hidden sm:table-cell">
-                        <span className={`text-xs font-bold ${co.scheduleDays > 0 ? 'text-orange-600' : 'text-brand-navy/30'}`}>
+                        <span
+                          className={`text-xs font-bold ${co.scheduleDays > 0 ? 'text-orange-600' : 'text-brand-navy/30'}`}
+                        >
                           {co.scheduleDays > 0 ? `+${co.scheduleDays}d` : '—'}
                         </span>
                       </td>
@@ -515,7 +599,9 @@ export default function RFIChangeOrderPanel() {
                           onChange={(e) => updateCOStatus(co.id, e.target.value)}
                           className={`text-xs font-semibold border rounded-full px-2 py-0.5 appearance-none cursor-pointer ${CO_STATUS_STYLE[co.status]}`}
                         >
-                          {CO_STATUSES.map((s) => <option key={s}>{s}</option>)}
+                          {CO_STATUSES.map((s) => (
+                            <option key={s}>{s}</option>
+                          ))}
                         </select>
                       </td>
                     </tr>
@@ -523,7 +609,9 @@ export default function RFIChangeOrderPanel() {
                 </tbody>
                 <tfoot>
                   <tr className="border-t-2 border-brand-navy/20">
-                    <td colSpan={2} className="pt-3 text-xs font-bold text-brand-navy">TOTALS</td>
+                    <td colSpan={2} className="pt-3 text-xs font-bold text-brand-navy">
+                      TOTALS
+                    </td>
                     <td className="pt-3 text-right">
                       <div className="text-xs font-bold text-green-600">
                         Approved: {fmt(totalApproved)}

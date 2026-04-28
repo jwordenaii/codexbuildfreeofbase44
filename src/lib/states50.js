@@ -79,27 +79,41 @@ const STATES = [
 // ── Lookup helpers ─────────────────────────────────────────────────────────────
 
 /** O(1) lookup by abbreviation */
-export const STATE_MAP = Object.fromEntries(STATES.map(s => [s.abbr, s]))
+export const STATE_MAP = Object.fromEntries(STATES.map((s) => [s.abbr, s]))
 
 /** Sorted option list for <select> elements */
-export const STATE_OPTIONS = STATES.map(s => ({ value: s.abbr, label: `${s.name} (${s.abbr})` }))
+export const STATE_OPTIONS = STATES.map((s) => ({ value: s.abbr, label: `${s.name} (${s.abbr})` }))
 
 export function stateSlug(state) {
-  return state.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+  return state.name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
 }
 
-export const STATE_PAGE_ROUTES = STATES.map(s => ({
+export const STATE_PAGE_ROUTES = STATES.map((s) => ({
   abbr: s.abbr,
   name: s.name,
   slug: stateSlug(s),
   path: `/states/${stateSlug(s)}`,
 }))
 
-export const STATE_SLUG_MAP = Object.fromEntries(STATES.map(s => [stateSlug(s), s]))
+export const STATE_SLUG_MAP = Object.fromEntries(STATES.map((s) => [stateSlug(s), s]))
 
 /** States where J. Worden & Sons has verified completed work */
 export const WORDEN_ACTIVE_STATES = [
-  'VA','NC','GA','FL','MI','TX','KS','MO','IA','MN','NY','NJ',
+  'VA',
+  'NC',
+  'GA',
+  'FL',
+  'MI',
+  'TX',
+  'KS',
+  'MO',
+  'IA',
+  'MN',
+  'NY',
+  'NJ',
 ]
 
 /**
@@ -110,7 +124,7 @@ export const WORDEN_ACTIVE_STATES = [
 export function getPriceMultiplier(abbr) {
   const s = STATE_MAP[abbr]
   if (!s) return 1.0
-  return (s.laborIndex * 0.65) + (s.materialPremium * 0.35)
+  return s.laborIndex * 0.65 + s.materialPremium * 0.35
 }
 
 /**
@@ -121,24 +135,26 @@ export function getStateSummary(abbr) {
   const s = STATE_MAP[abbr]
   if (!s) return null
   const notes = []
-  if (s.hasStateLicensing)    notes.push('State contractor license required')
-  if (s.hasPrevailingWage)    notes.push('Prevailing wage law applies to public work')
-  if (s.hasStateOsha)         notes.push('State OSHA plan (may exceed federal)')
-  if (s.swpppAcres < 1.0)     notes.push(`SWPPP required for disturbances ≥ ${s.swpppAcres} acre`)
+  if (s.hasStateLicensing) notes.push('State contractor license required')
+  if (s.hasPrevailingWage) notes.push('Prevailing wage law applies to public work')
+  if (s.hasStateOsha) notes.push('State OSHA plan (may exceed federal)')
+  if (s.swpppAcres < 1.0) notes.push(`SWPPP required for disturbances ≥ ${s.swpppAcres} acre`)
   return {
     ...s,
     priceMultiplier: getPriceMultiplier(abbr),
     complianceNotes: notes,
-    pricingNote: getPriceMultiplier(abbr) > 1.05
-      ? `Labor and material costs in ${s.name} run above the national average.`
-      : getPriceMultiplier(abbr) < 0.90
-      ? `${s.name} has below-average labor costs — favorable for project budgets.`
-      : `${s.name} is near the national average for paving costs.`,
-    seasonNote: s.asphaltMonths >= 10
-      ? 'Year-round paving favorable.'
-      : s.asphaltMonths <= 5
-      ? `Limited paving season (~${s.asphaltMonths} months). Schedule early.`
-      : `Paving season approx. ${s.asphaltMonths} months.`,
+    pricingNote:
+      getPriceMultiplier(abbr) > 1.05
+        ? `Labor and material costs in ${s.name} run above the national average.`
+        : getPriceMultiplier(abbr) < 0.9
+          ? `${s.name} has below-average labor costs — favorable for project budgets.`
+          : `${s.name} is near the national average for paving costs.`,
+    seasonNote:
+      s.asphaltMonths >= 10
+        ? 'Year-round paving favorable.'
+        : s.asphaltMonths <= 5
+          ? `Limited paving season (~${s.asphaltMonths} months). Schedule early.`
+          : `Paving season approx. ${s.asphaltMonths} months.`,
   }
 }
 
@@ -147,14 +163,16 @@ export function getStateBySlug(slug) {
 }
 
 export function getStatePavingPageModel(slugOrAbbr) {
-  const state = STATE_MAP[String(slugOrAbbr).toUpperCase()] || getStateBySlug(String(slugOrAbbr).toLowerCase())
+  const state =
+    STATE_MAP[String(slugOrAbbr).toUpperCase()] || getStateBySlug(String(slugOrAbbr).toLowerCase())
   if (!state) return null
   const multiplier = getPriceMultiplier(state.abbr)
-  const climateNote = state.asphaltMonths >= 10
-    ? `${state.name} supports a long paving season, but heat, rain, stormwater, and curing windows still affect scheduling.`
-    : state.asphaltMonths <= 5
-    ? `${state.name} has a short paving season, so commercial owners should plan repairs, overlays, and sealcoating early.`
-    : `${state.name} has a seasonal asphalt window, making spring-through-fall planning important for durable paving.`
+  const climateNote =
+    state.asphaltMonths >= 10
+      ? `${state.name} supports a long paving season, but heat, rain, stormwater, and curing windows still affect scheduling.`
+      : state.asphaltMonths <= 5
+        ? `${state.name} has a short paving season, so commercial owners should plan repairs, overlays, and sealcoating early.`
+        : `${state.name} has a seasonal asphalt window, making spring-through-fall planning important for durable paving.`
   return {
     ...state,
     slug: stateSlug(state),
@@ -162,11 +180,12 @@ export function getStatePavingPageModel(slugOrAbbr) {
     title: `Asphalt Paving Contractor in ${state.name}`,
     metaDescription: `Future-ready ${state.name} asphalt paving page model for parking lots, driveways, sealcoating, crack filling, pavement preservation, 811 planning, pricing, climate, and compliance guidance.`,
     h1: `${state.name} Asphalt Paving, Preservation, Parking Lots & Driveways`,
-    pricingSignal: multiplier > 1.05
-      ? `${state.name} tends to run above national average paving costs because labor or material indexes are higher.`
-      : multiplier < 0.9
-      ? `${state.name} tends to be more cost-favorable than high-index markets, subject to job size and base conditions.`
-      : `${state.name} is near the national paving cost average, with final pricing driven by base, drainage, access, and tonnage.`,
+    pricingSignal:
+      multiplier > 1.05
+        ? `${state.name} tends to run above national average paving costs because labor or material indexes are higher.`
+        : multiplier < 0.9
+          ? `${state.name} tends to be more cost-favorable than high-index markets, subject to job size and base conditions.`
+          : `${state.name} is near the national paving cost average, with final pricing driven by base, drainage, access, and tonnage.`,
     climateNote,
     complianceSignals: getStateSummary(state.abbr)?.complianceNotes || [],
     targetServices: [

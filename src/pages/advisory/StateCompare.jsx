@@ -15,85 +15,225 @@ import StateSelector from '../../components/advisory/StateSelector'
 import states from '../../data/legal/states'
 
 const CATEGORY_OPTIONS = [
-  { id: 'licensing',  label: '📋 Licensing',        loader: () => import('../../data/legal/constructionLicensing') },
-  { id: 'liens',      label: '⚖️ Mechanics Liens',   loader: () => import('../../data/legal/mechanicsLienLaws') },
-  { id: 'payment',    label: '💳 Prompt Payment',    loader: () => import('../../data/legal/promptPaymentLaws') },
-  { id: 'utilities',  label: '🔌 Utilities / 811',   loader: () => import('../../data/legal/utilitiesOneCall') },
-  { id: 'permits',    label: '🏗️ Building Permits',  loader: () => import('../../data/legal/buildingPermits') },
-  { id: 'safety',     label: '🦺 OSHA Safety',       loader: () => import('../../data/legal/workersSafety') },
-  { id: 'prevwage',   label: '💰 Prevailing Wage',   loader: () => import('../../data/legal/prevailingWage') },
-  { id: 'roads',      label: '🛣️ Roads & Paving',    loader: () => import('../../data/legal/roadsAndPavingRegulations') },
-  { id: 'env',        label: '🌱 Environmental',     loader: () => import('../../data/legal/environmentalPermits') },
+  {
+    id: 'licensing',
+    label: '📋 Licensing',
+    loader: () => import('../../data/legal/constructionLicensing'),
+  },
+  {
+    id: 'liens',
+    label: '⚖️ Mechanics Liens',
+    loader: () => import('../../data/legal/mechanicsLienLaws'),
+  },
+  {
+    id: 'payment',
+    label: '💳 Prompt Payment',
+    loader: () => import('../../data/legal/promptPaymentLaws'),
+  },
+  {
+    id: 'utilities',
+    label: '🔌 Utilities / 811',
+    loader: () => import('../../data/legal/utilitiesOneCall'),
+  },
+  {
+    id: 'permits',
+    label: '🏗️ Building Permits',
+    loader: () => import('../../data/legal/buildingPermits'),
+  },
+  { id: 'safety', label: '🦺 OSHA Safety', loader: () => import('../../data/legal/workersSafety') },
+  {
+    id: 'prevwage',
+    label: '💰 Prevailing Wage',
+    loader: () => import('../../data/legal/prevailingWage'),
+  },
+  {
+    id: 'roads',
+    label: '🛣️ Roads & Paving',
+    loader: () => import('../../data/legal/roadsAndPavingRegulations'),
+  },
+  {
+    id: 'env',
+    label: '🌱 Environmental',
+    loader: () => import('../../data/legal/environmentalPermits'),
+  },
 ]
 
 // Field definitions per category
 const FIELDS = {
   licensing: [
-    { label: 'License Required',    key: 'stateLicenseRequired', render: (v) => v == null ? '—' : v ? 'Yes' : 'No' },
-    { label: 'License Classes',     key: 'licenseClasses',       render: (v) => Array.isArray(v) ? v.join(', ') : v || '—' },
-    { label: 'Bond (Residential)',  key: 'bondMinResidential',   render: (v) => v ? `$${v.toLocaleString()}` : '—' },
-    { label: 'Bond (Commercial)',   key: 'bondMinCommercial',    render: (v) => v ? `$${v.toLocaleString()}` : '—' },
-    { label: 'GL Insurance Min',    key: 'glInsuranceMin',       render: (v) => v ? `$${v.toLocaleString()}` : '—' },
-    { label: 'Workers Comp Req.',   key: 'workersCompRequired',  render: (v) => v == null ? '—' : v ? 'Yes' : 'No' },
-    { label: 'License Renewal',     key: 'licenseRenewalYears',  render: (v) => v ? `Every ${v} yr(s)` : '—' },
-    { label: 'CE Hours',            key: 'ceHoursRequired',      render: (v) => v ?? '—' },
-    { label: 'Reciprocity States',  key: 'reciprocityStates',    render: (v) => Array.isArray(v) ? v.join(', ') || 'None' : v || '—' },
+    {
+      label: 'License Required',
+      key: 'stateLicenseRequired',
+      render: (v) => (v == null ? '—' : v ? 'Yes' : 'No'),
+    },
+    {
+      label: 'License Classes',
+      key: 'licenseClasses',
+      render: (v) => (Array.isArray(v) ? v.join(', ') : v || '—'),
+    },
+    {
+      label: 'Bond (Residential)',
+      key: 'bondMinResidential',
+      render: (v) => (v ? `$${v.toLocaleString()}` : '—'),
+    },
+    {
+      label: 'Bond (Commercial)',
+      key: 'bondMinCommercial',
+      render: (v) => (v ? `$${v.toLocaleString()}` : '—'),
+    },
+    {
+      label: 'GL Insurance Min',
+      key: 'glInsuranceMin',
+      render: (v) => (v ? `$${v.toLocaleString()}` : '—'),
+    },
+    {
+      label: 'Workers Comp Req.',
+      key: 'workersCompRequired',
+      render: (v) => (v == null ? '—' : v ? 'Yes' : 'No'),
+    },
+    {
+      label: 'License Renewal',
+      key: 'licenseRenewalYears',
+      render: (v) => (v ? `Every ${v} yr(s)` : '—'),
+    },
+    { label: 'CE Hours', key: 'ceHoursRequired', render: (v) => v ?? '—' },
+    {
+      label: 'Reciprocity States',
+      key: 'reciprocityStates',
+      render: (v) => (Array.isArray(v) ? v.join(', ') || 'None' : v || '—'),
+    },
   ],
   liens: [
-    { label: 'Prelim. Notice Req.', key: 'preliminaryNoticeRequired',  render: (v) => v == null ? '—' : v ? 'Yes' : 'No' },
-    { label: 'Prelim. Deadline',    key: 'preliminaryNoticeDeadline',  render: (v) => v || '—' },
-    { label: 'Lien Filing (days)',  key: 'lienFilingDeadlineDays',     render: (v) => v ? `${v} days` : '—' },
-    { label: 'Foreclosure (days)',  key: 'lienForeClosureDeadlineDays',render: (v) => v ? `${v} days` : '—' },
-    { label: 'Notice of Intent',    key: 'noticeOfIntentRequired',     render: (v) => v == null ? '—' : v ? 'Yes' : 'No' },
+    {
+      label: 'Prelim. Notice Req.',
+      key: 'preliminaryNoticeRequired',
+      render: (v) => (v == null ? '—' : v ? 'Yes' : 'No'),
+    },
+    { label: 'Prelim. Deadline', key: 'preliminaryNoticeDeadline', render: (v) => v || '—' },
+    {
+      label: 'Lien Filing (days)',
+      key: 'lienFilingDeadlineDays',
+      render: (v) => (v ? `${v} days` : '—'),
+    },
+    {
+      label: 'Foreclosure (days)',
+      key: 'lienForeClosureDeadlineDays',
+      render: (v) => (v ? `${v} days` : '—'),
+    },
+    {
+      label: 'Notice of Intent',
+      key: 'noticeOfIntentRequired',
+      render: (v) => (v == null ? '—' : v ? 'Yes' : 'No'),
+    },
   ],
   payment: [
-    { label: 'Owner → GC (days)',   key: 'ownerToGcDays',         render: (v) => v ? `${v} days` : '—' },
-    { label: 'GC → Sub (days)',     key: 'gcToSubDays',           render: (v) => v ? `${v} days` : '—' },
-    { label: 'Retainage Max',       key: 'retainageMaxPercent',   render: (v) => v ? `${v}%` : '—' },
-    { label: 'Pay-if-Paid',         key: 'payIfPaidEnforceable',  render: (v) => v || '—' },
-    { label: 'Public Covered',      key: 'publicProjectsCovered', render: (v) => v == null ? '—' : v ? 'Yes' : 'No' },
+    { label: 'Owner → GC (days)', key: 'ownerToGcDays', render: (v) => (v ? `${v} days` : '—') },
+    { label: 'GC → Sub (days)', key: 'gcToSubDays', render: (v) => (v ? `${v} days` : '—') },
+    { label: 'Retainage Max', key: 'retainageMaxPercent', render: (v) => (v ? `${v}%` : '—') },
+    { label: 'Pay-if-Paid', key: 'payIfPaidEnforceable', render: (v) => v || '—' },
+    {
+      label: 'Public Covered',
+      key: 'publicProjectsCovered',
+      render: (v) => (v == null ? '—' : v ? 'Yes' : 'No'),
+    },
   ],
   utilities: [
-    { label: '811 Center',          key: 'oneCallCenterName',      render: (v) => v || '—' },
-    { label: 'Notice Period',       key: 'noticePeriodNote',       render: (v) => v || '—' },
-    { label: 'Tolerance Zone',      key: 'toleranceZoneInches',    render: (v) => v ? `±${v}"` : '—' },
-    { label: 'White-Line Req.',     key: 'whiteLiningRequired',    render: (v) => v == null ? '—' : v ? 'Yes' : 'No' },
-    { label: 'Civil Penalty',       key: 'penaltyCivil',           render: (v) => v || '—' },
+    { label: '811 Center', key: 'oneCallCenterName', render: (v) => v || '—' },
+    { label: 'Notice Period', key: 'noticePeriodNote', render: (v) => v || '—' },
+    { label: 'Tolerance Zone', key: 'toleranceZoneInches', render: (v) => (v ? `±${v}"` : '—') },
+    {
+      label: 'White-Line Req.',
+      key: 'whiteLiningRequired',
+      render: (v) => (v == null ? '—' : v ? 'Yes' : 'No'),
+    },
+    { label: 'Civil Penalty', key: 'penaltyCivil', render: (v) => v || '—' },
   ],
   permits: [
-    { label: 'IBC Edition',         key: 'ibcEditionAdopted',      render: (v) => v || '—' },
-    { label: 'NEC Edition',         key: 'necEditionAdopted',      render: (v) => v || '—' },
-    { label: 'Statewide Code',      key: 'statewideBuildingCode',  render: (v) => v == null ? '—' : v ? 'Yes' : 'No' },
-    { label: 'Local Amendments',    key: 'localAmendmentsAllowed', render: (v) => v == null ? '—' : v ? 'Yes' : 'No' },
-    { label: '3rd-Party Inspection',key: 'thirdPartyInspectionAllowed', render: (v) => v == null ? '—' : v ? 'Yes' : 'No' },
+    { label: 'IBC Edition', key: 'ibcEditionAdopted', render: (v) => v || '—' },
+    { label: 'NEC Edition', key: 'necEditionAdopted', render: (v) => v || '—' },
+    {
+      label: 'Statewide Code',
+      key: 'statewideBuildingCode',
+      render: (v) => (v == null ? '—' : v ? 'Yes' : 'No'),
+    },
+    {
+      label: 'Local Amendments',
+      key: 'localAmendmentsAllowed',
+      render: (v) => (v == null ? '—' : v ? 'Yes' : 'No'),
+    },
+    {
+      label: '3rd-Party Inspection',
+      key: 'thirdPartyInspectionAllowed',
+      render: (v) => (v == null ? '—' : v ? 'Yes' : 'No'),
+    },
   ],
   safety: [
-    { label: 'State OSHA Plan',         key: 'statePlanState',            render: (v) => v == null ? '—' : v ? 'Yes' : 'No' },
-    { label: 'Plan Agency',             key: 'oshAuthority',              render: (v) => v || '—' },
-    { label: 'Fall Protection Thresh.', key: 'fallProtectionThresholdFt', render: (v) => v ? `${v} ft` : '—' },
-    { label: 'Workers Comp Req.',       key: 'workerCompProgramRequired', render: (v) => v == null ? '—' : v ? 'Yes' : 'No' },
-    { label: 'Public Sector Only',      key: 'publicSectorOnly',          render: (v) => v == null ? '—' : v ? 'Yes' : 'No' },
+    {
+      label: 'State OSHA Plan',
+      key: 'statePlanState',
+      render: (v) => (v == null ? '—' : v ? 'Yes' : 'No'),
+    },
+    { label: 'Plan Agency', key: 'oshAuthority', render: (v) => v || '—' },
+    {
+      label: 'Fall Protection Thresh.',
+      key: 'fallProtectionThresholdFt',
+      render: (v) => (v ? `${v} ft` : '—'),
+    },
+    {
+      label: 'Workers Comp Req.',
+      key: 'workerCompProgramRequired',
+      render: (v) => (v == null ? '—' : v ? 'Yes' : 'No'),
+    },
+    {
+      label: 'Public Sector Only',
+      key: 'publicSectorOnly',
+      render: (v) => (v == null ? '—' : v ? 'Yes' : 'No'),
+    },
   ],
   prevwage: [
-    { label: 'State PW Law',        key: 'prevailingWageLaw',       render: (v) => v == null ? '—' : v ? 'Yes' : 'No' },
-    { label: 'Law Scope',           key: 'lawScope',                render: (v) => v || '—' },
-    { label: 'Coverage Threshold',  key: 'thresholdForPublicWorks', render: (v) => v || '—' },
-    { label: 'Administered By',     key: 'administeredBy',          render: (v) => v || '—' },
-    { label: 'Davis-Bacon Applies', key: 'davisBaconApplies',       render: (v) => v == null ? '—' : v ? 'Yes' : 'No' },
+    {
+      label: 'State PW Law',
+      key: 'prevailingWageLaw',
+      render: (v) => (v == null ? '—' : v ? 'Yes' : 'No'),
+    },
+    { label: 'Law Scope', key: 'lawScope', render: (v) => v || '—' },
+    { label: 'Coverage Threshold', key: 'thresholdForPublicWorks', render: (v) => v || '—' },
+    { label: 'Administered By', key: 'administeredBy', render: (v) => v || '—' },
+    {
+      label: 'Davis-Bacon Applies',
+      key: 'davisBaconApplies',
+      render: (v) => (v == null ? '—' : v ? 'Yes' : 'No'),
+    },
   ],
   roads: [
-    { label: 'DOT Specs Pub.',      key: 'dotSpecsPublication',     render: (v) => v || '—' },
-    { label: 'Mix Design Standard', key: 'mixDesignStandard',       render: (v) => v || '—' },
-    { label: 'Compaction Density',  key: 'compactionDensityPercent',render: (v) => v ? `${v}%` : '—' },
-    { label: 'HMA Min Temp (°F)',   key: 'hmaMinLaydownTempF',      render: (v) => v ? `${v}°F` : '—' },
-    { label: 'PROWAG Adopted',      key: 'prowagAdopted',           render: (v) => v == null ? '—' : v ? 'Yes' : 'No' },
+    { label: 'DOT Specs Pub.', key: 'dotSpecsPublication', render: (v) => v || '—' },
+    { label: 'Mix Design Standard', key: 'mixDesignStandard', render: (v) => v || '—' },
+    {
+      label: 'Compaction Density',
+      key: 'compactionDensityPercent',
+      render: (v) => (v ? `${v}%` : '—'),
+    },
+    { label: 'HMA Min Temp (°F)', key: 'hmaMinLaydownTempF', render: (v) => (v ? `${v}°F` : '—') },
+    {
+      label: 'PROWAG Adopted',
+      key: 'prowagAdopted',
+      render: (v) => (v == null ? '—' : v ? 'Yes' : 'No'),
+    },
   ],
   env: [
-    { label: 'NPDES Authority',     key: 'npdesAuthority',          render: (v) => v || '—' },
-    { label: 'Land Disturbance',    key: 'landDisturbanceThresholdAcres', render: (v) => v ? `${v} acre(s)` : '—' },
-    { label: 'SWPPP Required',      key: 'swpppRequired',           render: (v) => v == null ? '—' : v ? 'Yes' : 'No' },
-    { label: 'Wetland Setback',     key: 'wetlandSetbackFt',        render: (v) => v ? `${v} ft` : '—' },
-    { label: 'State Env Agency',    key: 'stateEnvAgency',          render: (v) => v || '—' },
+    { label: 'NPDES Authority', key: 'npdesAuthority', render: (v) => v || '—' },
+    {
+      label: 'Land Disturbance',
+      key: 'landDisturbanceThresholdAcres',
+      render: (v) => (v ? `${v} acre(s)` : '—'),
+    },
+    {
+      label: 'SWPPP Required',
+      key: 'swpppRequired',
+      render: (v) => (v == null ? '—' : v ? 'Yes' : 'No'),
+    },
+    { label: 'Wetland Setback', key: 'wetlandSetbackFt', render: (v) => (v ? `${v} ft` : '—') },
+    { label: 'State Env Agency', key: 'stateEnvAgency', render: (v) => v || '—' },
   ],
 }
 
@@ -117,7 +257,7 @@ export default function StateCompare() {
 
   const handleCompare = async () => {
     if (selectedAbbrs.length < 2) return
-    const cat = CATEGORY_OPTIONS.find(c => c.id === category)
+    const cat = CATEGORY_OPTIONS.find((c) => c.id === category)
     if (!cat) return
 
     setLoading(true)
@@ -131,8 +271,8 @@ export default function StateCompare() {
         dataCache.current[category] = dataset
       }
       const stateRows = selectedAbbrs.map((abbr) => {
-        const stateInfo = states.find(s => s.abbr === abbr) || {}
-        const legalRow = dataset.find(r => r.abbr === abbr) || {}
+        const stateInfo = states.find((s) => s.abbr === abbr) || {}
+        const legalRow = dataset.find((r) => r.abbr === abbr) || {}
         return { ...stateInfo, ...legalRow }
       })
       setResult({ rows: stateRows, catId: category })
@@ -156,7 +296,9 @@ export default function StateCompare() {
 
       <div className="bg-brand-navy pt-32 pb-16 text-white text-center">
         <div className="max-w-4xl mx-auto px-4">
-          <Link to="/advisory" className="text-brand-amber text-sm hover:underline">← Advisory Board</Link>
+          <Link to="/advisory" className="text-brand-amber text-sm hover:underline">
+            ← Advisory Board
+          </Link>
           <h1 className="font-display font-black text-5xl mt-3 mb-3">
             ⚖️ Compare <span className="text-brand-amber">States</span>
           </h1>
@@ -178,12 +320,10 @@ export default function StateCompare() {
             {picks.map((val, i) => (
               <div key={i}>
                 <label className="block text-xs font-semibold text-brand-navy/60 uppercase tracking-wide mb-1.5">
-                  State {i + 1}{i === 0 || i === 1 ? ' *' : ' (optional)'}
+                  State {i + 1}
+                  {i === 0 || i === 1 ? ' *' : ' (optional)'}
                 </label>
-                <StateSelector
-                  value={val}
-                  onChange={(abbr) => setPick(i, abbr)}
-                />
+                <StateSelector value={val} onChange={(abbr) => setPick(i, abbr)} />
               </div>
             ))}
           </div>
@@ -198,7 +338,10 @@ export default function StateCompare() {
                 <button
                   key={cat.id}
                   type="button"
-                  onClick={() => { setCategory(cat.id); setResult(null) }}
+                  onClick={() => {
+                    setCategory(cat.id)
+                    setResult(null)
+                  }}
                   className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                     category === cat.id
                       ? 'bg-brand-amber text-brand-navy'
@@ -227,12 +370,12 @@ export default function StateCompare() {
         {result && result.catId === category && (
           <div className="space-y-4">
             <h2 className="font-display font-bold text-brand-navy text-xl">
-              {CATEGORY_OPTIONS.find(c => c.id === category)?.label} — Comparison
+              {CATEGORY_OPTIONS.find((c) => c.id === category)?.label} — Comparison
             </h2>
             <StateComparison
               states={result.rows}
               fields={FIELDS[category] || []}
-              title={`${CATEGORY_OPTIONS.find(c => c.id === category)?.label} — ${result.rows.map(r => r.abbr).join(' vs ')}`}
+              title={`${CATEGORY_OPTIONS.find((c) => c.id === category)?.label} — ${result.rows.map((r) => r.abbr).join(' vs ')}`}
             />
             <div className="flex flex-wrap gap-3 pt-2">
               {result.rows.map((r) => (

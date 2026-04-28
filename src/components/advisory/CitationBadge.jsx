@@ -26,7 +26,9 @@ export default function CitationBadge({ citation }) {
       title="Copy citation"
       className="inline-flex items-center gap-1.5 bg-brand-navy/5 hover:bg-brand-navy/10 border border-brand-navy/20 text-brand-navy/70 text-xs font-mono rounded-md px-2 py-1 transition-colors"
     >
-      <span className="text-brand-amber" aria-hidden="true">§</span>
+      <span className="text-brand-amber" aria-hidden="true">
+        §
+      </span>
       <span>{citation}</span>
       <span className="text-brand-navy/40" aria-hidden="true">
         {copied ? '✓' : '⧉'}

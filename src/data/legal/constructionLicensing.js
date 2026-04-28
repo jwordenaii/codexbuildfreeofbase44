@@ -16,7 +16,7 @@ export default [
     stateLicenseRequired: true,
     thresholdAmount: 10000,
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Alaska',
@@ -34,13 +34,19 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: false,
     thresholdAmount: 0,
-    notes: 'No statewide contractor license; licensing handled by municipalities. Anchorage and Fairbanks require local contractor licenses. Specialty trades (electricians, plumbers) are licensed by the state.',
-    lastVerified: '2026-01-01'
+    notes:
+      'No statewide contractor license; licensing handled by municipalities. Anchorage and Fairbanks require local contractor licenses. Specialty trades (electricians, plumbers) are licensed by the state.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Arizona',
     abbr: 'AZ',
-    licenseClasses: ['Class A - General Engineering', 'Class B - General Building', 'Class C - Specialty (over 50 categories)', 'Class CR - Residential'],
+    licenseClasses: [
+      'Class A - General Engineering',
+      'Class B - General Building',
+      'Class C - Specialty (over 50 categories)',
+      'Class CR - Residential',
+    ],
     authority: 'Arizona Registrar of Contractors (ROC)',
     authorityUrl: 'https://roc.az.gov',
     examProvider: 'PSI',
@@ -53,8 +59,9 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: true,
     thresholdAmount: 1000,
-    notes: 'Bond amounts vary by license class and dollar volume; minimum listed. Residential contractors require separate CR license.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Bond amounts vary by license class and dollar volume; minimum listed. Residential contractors require separate CR license.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Arkansas',
@@ -72,13 +79,18 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: true,
     thresholdAmount: 20000,
-    notes: 'Residential license required for projects >$2,000; commercial license required for projects >$20,000.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Residential license required for projects >$2,000; commercial license required for projects >$20,000.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'California',
     abbr: 'CA',
-    licenseClasses: ['Class A - General Engineering', 'Class B - General Building', 'Class C - Specialty (over 40 categories)'],
+    licenseClasses: [
+      'Class A - General Engineering',
+      'Class B - General Building',
+      'Class C - Specialty (over 40 categories)',
+    ],
     authority: 'California Contractors State License Board (CSLB)',
     authorityUrl: 'https://www.cslb.ca.gov',
     examProvider: 'PSI',
@@ -91,8 +103,9 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: true,
     thresholdAmount: 500,
-    notes: '$500 threshold for single contract; CSLB bond is $15,000 (contractor\'s bond). Workers\' comp certificate required unless sole owner with no employees. License required for all work $500 or more combined labor and materials.',
-    lastVerified: '2026-01-01'
+    notes:
+      "$500 threshold for single contract; CSLB bond is $15,000 (contractor's bond). Workers' comp certificate required unless sole owner with no employees. License required for all work $500 or more combined labor and materials.",
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Colorado',
@@ -110,13 +123,18 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: false,
     thresholdAmount: 0,
-    notes: 'No statewide general contractor license; licensing handled by local jurisdictions (Denver, Boulder, etc.). State licenses electricians, plumbers, and HVAC contractors through DORA. Always verify local requirements.',
-    lastVerified: '2026-01-01'
+    notes:
+      'No statewide general contractor license; licensing handled by local jurisdictions (Denver, Boulder, etc.). State licenses electricians, plumbers, and HVAC contractors through DORA. Always verify local requirements.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Connecticut',
     abbr: 'CT',
-    licenseClasses: ['Home Improvement Contractor (HIC)', 'New Home Construction Contractor', 'Tradesperson licenses (Electrical, Plumbing, HVAC)'],
+    licenseClasses: [
+      'Home Improvement Contractor (HIC)',
+      'New Home Construction Contractor',
+      'Tradesperson licenses (Electrical, Plumbing, HVAC)',
+    ],
     authority: 'Connecticut Department of Consumer Protection',
     authorityUrl: 'https://portal.ct.gov/DCP',
     examProvider: 'PSI',
@@ -129,8 +147,9 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: true,
     thresholdAmount: 200,
-    notes: 'HIC registration required for home improvement contracts >$200. New home construction requires separate contractor registration. No statewide commercial GC license beyond local requirements.',
-    lastVerified: '2026-01-01'
+    notes:
+      'HIC registration required for home improvement contracts >$200. New home construction requires separate contractor registration. No statewide commercial GC license beyond local requirements.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Delaware',
@@ -148,13 +167,19 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: true,
     thresholdAmount: 0,
-    notes: 'Home improvement contractors must be licensed with the state. Wilmington and New Castle County have additional local requirements for commercial contractors.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Home improvement contractors must be licensed with the state. Wilmington and New Castle County have additional local requirements for commercial contractors.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Florida',
     abbr: 'FL',
-    licenseClasses: ['Certified General Contractor', 'Certified Building Contractor', 'Certified Residential Contractor', 'Registered Contractor (local jurisdiction)'],
+    licenseClasses: [
+      'Certified General Contractor',
+      'Certified Building Contractor',
+      'Certified Residential Contractor',
+      'Registered Contractor (local jurisdiction)',
+    ],
     authority: 'Florida Construction Industry Licensing Board (CILB)',
     authorityUrl: 'https://www.myfloridalicense.com/DBPR/construction-industry-licensing',
     examProvider: 'Prometric',
@@ -167,8 +192,9 @@ export default [
     ceHoursRequired: 14,
     stateLicenseRequired: true,
     thresholdAmount: 1,
-    notes: '14 hours of CE required every 2 years for renewal. Certified contractors may work statewide; registered contractors limited to jurisdiction that issued registration. Workers\' comp exemptions available for sole proprietors.',
-    lastVerified: '2026-01-01'
+    notes:
+      "14 hours of CE required every 2 years for renewal. Certified contractors may work statewide; registered contractors limited to jurisdiction that issued registration. Workers' comp exemptions available for sole proprietors.",
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Georgia',
@@ -186,14 +212,21 @@ export default [
     ceHoursRequired: 6,
     stateLicenseRequired: true,
     thresholdAmount: 2500,
-    notes: 'Residential-Basic license for projects up to $500,000; Residential-Light Commercial for projects up to $1,000,000. Net worth requirements apply for higher classes.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Residential-Basic license for projects up to $500,000; Residential-Light Commercial for projects up to $1,000,000. Net worth requirements apply for higher classes.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Hawaii',
     abbr: 'HI',
-    licenseClasses: ['A - General Engineering', 'B - General Building', 'C - Specialty (over 25 categories)', 'D - Specialty'],
-    authority: 'Hawaii Department of Commerce and Consumer Affairs (DCCA) - Professional and Vocational Licensing',
+    licenseClasses: [
+      'A - General Engineering',
+      'B - General Building',
+      'C - Specialty (over 25 categories)',
+      'D - Specialty',
+    ],
+    authority:
+      'Hawaii Department of Commerce and Consumer Affairs (DCCA) - Professional and Vocational Licensing',
     authorityUrl: 'https://cca.hawaii.gov/pvl',
     examProvider: 'State exam',
     bondMinResidential: 2500,
@@ -205,13 +238,17 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: true,
     thresholdAmount: 1000,
-    notes: 'All work over $1,000 requires a license. Bond amounts vary by annual volume. Separate contractor license required for each island county.',
-    lastVerified: '2026-01-01'
+    notes:
+      'All work over $1,000 requires a license. Bond amounts vary by annual volume. Separate contractor license required for each island county.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Idaho',
     abbr: 'ID',
-    licenseClasses: ['Public Works Contractor', 'Electrical, Plumbing, HVAC (specialty trades only)'],
+    licenseClasses: [
+      'Public Works Contractor',
+      'Electrical, Plumbing, HVAC (specialty trades only)',
+    ],
     authority: 'Idaho Department of Labor (Public Works) / Division of Building Safety (trades)',
     authorityUrl: 'https://dbs.idaho.gov',
     examProvider: 'None',
@@ -224,13 +261,17 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: false,
     thresholdAmount: 0,
-    notes: 'No statewide GC license for private construction. Public works contractors must register with the Department of Labor for projects over $10,000. Electricians, plumbers, and HVAC contractors are licensed by the Division of Building Safety.',
-    lastVerified: '2026-01-01'
+    notes:
+      'No statewide GC license for private construction. Public works contractors must register with the Department of Labor for projects over $10,000. Electricians, plumbers, and HVAC contractors are licensed by the Division of Building Safety.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Illinois',
     abbr: 'IL',
-    licenseClasses: ['Roofing Contractor (only statewide construction license)', 'Trade licenses: Electrical, Plumbing'],
+    licenseClasses: [
+      'Roofing Contractor (only statewide construction license)',
+      'Trade licenses: Electrical, Plumbing',
+    ],
     authority: 'Illinois Department of Financial and Professional Regulation (IDFPR)',
     authorityUrl: 'https://idfpr.illinois.gov',
     examProvider: 'PSI',
@@ -243,14 +284,19 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: false,
     thresholdAmount: 0,
-    notes: 'No statewide general contractor license for commercial or residential GC work. Illinois licenses roofing contractors statewide. Chicago, Cook County, and many municipalities have local contractor licensing requirements.',
-    lastVerified: '2026-01-01'
+    notes:
+      'No statewide general contractor license for commercial or residential GC work. Illinois licenses roofing contractors statewide. Chicago, Cook County, and many municipalities have local contractor licensing requirements.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Indiana',
     abbr: 'IN',
-    licenseClasses: ['Residential Contractor (Home Improvement)', 'Trade licenses: Plumbing, Electrical (via certifications)'],
-    authority: 'Indiana Professional Licensing Agency (PLA) / Office of the Indiana Attorney General (HIC)',
+    licenseClasses: [
+      'Residential Contractor (Home Improvement)',
+      'Trade licenses: Plumbing, Electrical (via certifications)',
+    ],
+    authority:
+      'Indiana Professional Licensing Agency (PLA) / Office of the Indiana Attorney General (HIC)',
     authorityUrl: 'https://www.in.gov/pla',
     examProvider: 'PSI',
     bondMinResidential: 10000,
@@ -262,8 +308,9 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: true,
     thresholdAmount: 0,
-    notes: 'Home improvement contractors must register with the AG\'s office. No statewide commercial GC license. Plumbers and electricians licensed separately. Indianapolis and other municipalities may have additional local requirements.',
-    lastVerified: '2026-01-01'
+    notes:
+      "Home improvement contractors must register with the AG's office. No statewide commercial GC license. Plumbers and electricians licensed separately. Indianapolis and other municipalities may have additional local requirements.",
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Iowa',
@@ -281,8 +328,9 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: false,
     thresholdAmount: 0,
-    notes: 'No statewide general contractor license. Electricians and plumbers licensed by the state. Many municipalities including Des Moines and Cedar Rapids have local contractor licensing requirements.',
-    lastVerified: '2026-01-01'
+    notes:
+      'No statewide general contractor license. Electricians and plumbers licensed by the state. Many municipalities including Des Moines and Cedar Rapids have local contractor licensing requirements.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Kansas',
@@ -300,13 +348,18 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: false,
     thresholdAmount: 0,
-    notes: 'No statewide general contractor license. Wichita, Overland Park, and other municipalities have local contractor licensing requirements. Specialty trades (electrical, plumbing) licensed separately.',
-    lastVerified: '2026-01-01'
+    notes:
+      'No statewide general contractor license. Wichita, Overland Park, and other municipalities have local contractor licensing requirements. Specialty trades (electrical, plumbing) licensed separately.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Kentucky',
     abbr: 'KY',
-    licenseClasses: ['Class A - General (>$100,000)', 'Class B - Building ($10,000-$100,000)', 'Class C - Residential'],
+    licenseClasses: [
+      'Class A - General (>$100,000)',
+      'Class B - Building ($10,000-$100,000)',
+      'Class C - Residential',
+    ],
     authority: 'Kentucky Department of Housing, Buildings and Construction',
     authorityUrl: 'https://dhbc.ky.gov',
     examProvider: 'PSI',
@@ -319,13 +372,19 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: true,
     thresholdAmount: 10000,
-    notes: 'Contractors performing construction work over $10,000 must be licensed. Bond and insurance amounts vary by class.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Contractors performing construction work over $10,000 must be licensed. Bond and insurance amounts vary by class.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Louisiana',
     abbr: 'LA',
-    licenseClasses: ['Class A - General Commercial (>$50,000)', 'Class B - Commercial ($10,000-$50,000)', 'Class C - Residential', 'Specialty Subcontractor'],
+    licenseClasses: [
+      'Class A - General Commercial (>$50,000)',
+      'Class B - Commercial ($10,000-$50,000)',
+      'Class C - Residential',
+      'Specialty Subcontractor',
+    ],
     authority: 'Louisiana State Licensing Board for Contractors',
     authorityUrl: 'https://www.lslbc.louisiana.gov',
     examProvider: 'NASCLA',
@@ -338,14 +397,16 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: true,
     thresholdAmount: 50000,
-    notes: 'Residential contractors separate from commercial. Board administers its own trade-specific exams. NASCLA Accredited exam accepted for commercial reciprocity.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Residential contractors separate from commercial. Board administers its own trade-specific exams. NASCLA Accredited exam accepted for commercial reciprocity.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Maine',
     abbr: 'ME',
     licenseClasses: ['Residential Contractor (Home Improvement)', 'Lead Renovation Contractor'],
-    authority: 'Maine Department of Professional and Financial Regulation - Contractors\' Registration Program',
+    authority:
+      "Maine Department of Professional and Financial Regulation - Contractors' Registration Program",
     authorityUrl: 'https://www.maine.gov/pfr/professionallicensing',
     examProvider: 'PSI',
     bondMinResidential: 25000,
@@ -357,14 +418,16 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: true,
     thresholdAmount: 3000,
-    notes: 'Residential contractors and home improvement contractors must register with the state. Commercial contractors not licensed at the state level beyond local requirements.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Residential contractors and home improvement contractors must register with the state. Commercial contractors not licensed at the state level beyond local requirements.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Maryland',
     abbr: 'MD',
     licenseClasses: ['Home Improvement Contractor (MHIC)', 'Home Builder (MHBR)'],
-    authority: 'Maryland Home Improvement Commission (MHIC) / Maryland Home Builder Registration Unit',
+    authority:
+      'Maryland Home Improvement Commission (MHIC) / Maryland Home Builder Registration Unit',
     authorityUrl: 'https://www.mhic.state.md.us',
     examProvider: 'PSI',
     bondMinResidential: 20000,
@@ -376,8 +439,9 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: true,
     thresholdAmount: 100,
-    notes: 'All home improvement work over $100 requires MHIC license. Home builders require separate MHBR registration. Commercial contractors governed by local jurisdictions.',
-    lastVerified: '2026-01-01'
+    notes:
+      'All home improvement work over $100 requires MHIC license. Home builders require separate MHBR registration. Commercial contractors governed by local jurisdictions.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Massachusetts',
@@ -395,14 +459,20 @@ export default [
     ceHoursRequired: 12,
     stateLicenseRequired: true,
     thresholdAmount: 1000,
-    notes: 'CSL required for structural work on 1-2 family residences. HIC registration required for home improvement projects. 12 CE hours required per 2-year renewal cycle for CSL.',
-    lastVerified: '2026-01-01'
+    notes:
+      'CSL required for structural work on 1-2 family residences. HIC registration required for home improvement projects. 12 CE hours required per 2-year renewal cycle for CSL.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Michigan',
     abbr: 'MI',
-    licenseClasses: ['Residential Builder', 'Residential Maintenance and Alteration Contractor', 'Electrical, Plumbing, Mechanical (specialty)'],
-    authority: 'Michigan Department of Licensing and Regulatory Affairs (LARA) - Bureau of Construction Codes',
+    licenseClasses: [
+      'Residential Builder',
+      'Residential Maintenance and Alteration Contractor',
+      'Electrical, Plumbing, Mechanical (specialty)',
+    ],
+    authority:
+      'Michigan Department of Licensing and Regulatory Affairs (LARA) - Bureau of Construction Codes',
     authorityUrl: 'https://www.michigan.gov/lara/bureau-list/bcc',
     examProvider: 'PSI',
     bondMinResidential: 10000,
@@ -414,13 +484,18 @@ export default [
     ceHoursRequired: 3,
     stateLicenseRequired: true,
     thresholdAmount: 600,
-    notes: 'Residential builder license required for construction/alteration of 1-2 family homes. No statewide commercial GC license; commercial governed by local jurisdictions. 3 CE hours per 3-year renewal.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Residential builder license required for construction/alteration of 1-2 family homes. No statewide commercial GC license; commercial governed by local jurisdictions. 3 CE hours per 3-year renewal.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Minnesota',
     abbr: 'MN',
-    licenseClasses: ['Residential Building Contractor', 'Residential Remodeler', 'Manufactured Home Installer'],
+    licenseClasses: [
+      'Residential Building Contractor',
+      'Residential Remodeler',
+      'Manufactured Home Installer',
+    ],
     authority: 'Minnesota Department of Labor and Industry - Construction Codes and Licensing',
     authorityUrl: 'https://www.dli.mn.gov/business/residential-contractors',
     examProvider: 'PSI',
@@ -433,13 +508,19 @@ export default [
     ceHoursRequired: 14,
     stateLicenseRequired: true,
     thresholdAmount: 15000,
-    notes: 'Residential contractor license required for new construction or remodeling over $15,000. No statewide commercial GC license. 14 CE hours per 2-year renewal. Minneapolis-St. Paul metropolitan area has additional requirements.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Residential contractor license required for new construction or remodeling over $15,000. No statewide commercial GC license. 14 CE hours per 2-year renewal. Minneapolis-St. Paul metropolitan area has additional requirements.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Mississippi',
     abbr: 'MS',
-    licenseClasses: ['Class A - General Building', 'Class B - Building up to $1,500,000', 'Class C - Specialty', 'Class R - Residential'],
+    licenseClasses: [
+      'Class A - General Building',
+      'Class B - Building up to $1,500,000',
+      'Class C - Specialty',
+      'Class R - Residential',
+    ],
     authority: 'Mississippi State Board of Contractors',
     authorityUrl: 'https://www.msboc.us',
     examProvider: 'PSI',
@@ -452,8 +533,9 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: true,
     thresholdAmount: 50000,
-    notes: 'License required for commercial projects over $50,000 and residential projects over $10,000. Separate residential contractor license.',
-    lastVerified: '2026-01-01'
+    notes:
+      'License required for commercial projects over $50,000 and residential projects over $10,000. Separate residential contractor license.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Missouri',
@@ -471,8 +553,9 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: false,
     thresholdAmount: 0,
-    notes: 'No statewide general contractor license. Kansas City, St. Louis, and most municipalities have local contractor licensing requirements. Electricians and plumbers licensed by state Division of Professional Registration.',
-    lastVerified: '2026-01-01'
+    notes:
+      'No statewide general contractor license. Kansas City, St. Louis, and most municipalities have local contractor licensing requirements. Electricians and plumbers licensed by state Division of Professional Registration.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Montana',
@@ -490,14 +573,16 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: true,
     thresholdAmount: 1,
-    notes: 'All contractors must register with the state. No comprehensive GC license exam; registration-based system. Electricians, plumbers, and HVAC contractors hold separate licenses.',
-    lastVerified: '2026-01-01'
+    notes:
+      'All contractors must register with the state. No comprehensive GC license exam; registration-based system. Electricians, plumbers, and HVAC contractors hold separate licenses.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Nebraska',
     abbr: 'NE',
     licenseClasses: ['Electrical, Plumbing, HVAC (specialty only)'],
-    authority: 'Local Jurisdictions / Nebraska Electrical Division and Plumbing Division (specialty)',
+    authority:
+      'Local Jurisdictions / Nebraska Electrical Division and Plumbing Division (specialty)',
     authorityUrl: 'https://energy.nebraska.gov',
     examProvider: 'None',
     bondMinResidential: 0,
@@ -509,13 +594,18 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: false,
     thresholdAmount: 0,
-    notes: 'No statewide general contractor license. Omaha, Lincoln, and most municipalities have local contractor licensing. Electricians licensed by the Nebraska Electrical Division; plumbers licensed by the State Plumbing Board.',
-    lastVerified: '2026-01-01'
+    notes:
+      'No statewide general contractor license. Omaha, Lincoln, and most municipalities have local contractor licensing. Electricians licensed by the Nebraska Electrical Division; plumbers licensed by the State Plumbing Board.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Nevada',
     abbr: 'NV',
-    licenseClasses: ['Class A - General Engineering', 'Class B - General Building', 'Class C - Specialty (over 40 categories)'],
+    licenseClasses: [
+      'Class A - General Engineering',
+      'Class B - General Building',
+      'Class C - Specialty (over 40 categories)',
+    ],
     authority: 'Nevada State Contractors Board',
     authorityUrl: 'https://www.nvcontractorsboard.com',
     examProvider: 'PSI',
@@ -528,14 +618,19 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: true,
     thresholdAmount: 1000,
-    notes: 'Bond amounts vary significantly by license classification and annual volume. Residential work requires workers\' comp or affidavit for sole operators. Active license list public on NSCB website.',
-    lastVerified: '2026-01-01'
+    notes:
+      "Bond amounts vary significantly by license classification and annual volume. Residential work requires workers' comp or affidavit for sole operators. Active license list public on NSCB website.",
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New Hampshire',
     abbr: 'NH',
-    licenseClasses: ['Home Improvement Contractor Registration', 'Electrical, Plumbing (specialty)'],
-    authority: 'NH Office of Professional Licensure and Certification / NH Insurance Dept (HIC bond)',
+    licenseClasses: [
+      'Home Improvement Contractor Registration',
+      'Electrical, Plumbing (specialty)',
+    ],
+    authority:
+      'NH Office of Professional Licensure and Certification / NH Insurance Dept (HIC bond)',
     authorityUrl: 'https://www.oplc.nh.gov',
     examProvider: 'None',
     bondMinResidential: 10000,
@@ -547,14 +642,19 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: false,
     thresholdAmount: 0,
-    notes: 'No comprehensive statewide GC license. Home improvement contractors must register. Electricians and plumbers licensed by the OPLC. Local municipalities may have additional requirements.',
-    lastVerified: '2026-01-01'
+    notes:
+      'No comprehensive statewide GC license. Home improvement contractors must register. Electricians and plumbers licensed by the OPLC. Local municipalities may have additional requirements.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New Jersey',
     abbr: 'NJ',
-    licenseClasses: ['Home Improvement Contractor (HIC)', 'New Home Builder Registration', 'Electrical, Plumbing (specialty)'],
-    authority: 'New Jersey Division of Consumer Affairs - Contractor\'s Registration Act',
+    licenseClasses: [
+      'Home Improvement Contractor (HIC)',
+      'New Home Builder Registration',
+      'Electrical, Plumbing (specialty)',
+    ],
+    authority: "New Jersey Division of Consumer Affairs - Contractor's Registration Act",
     authorityUrl: 'https://www.njconsumeraffairs.gov/hic',
     examProvider: 'PSI',
     bondMinResidential: 500000,
@@ -566,13 +666,18 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: true,
     thresholdAmount: 500,
-    notes: 'Home improvement contractors must register with NJ DCA. $500,000 liability insurance required; bond alternatives acceptable. New home builders registered with DCA separately. No statewide commercial GC license.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Home improvement contractors must register with NJ DCA. $500,000 liability insurance required; bond alternatives acceptable. New home builders registered with DCA separately. No statewide commercial GC license.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New Mexico',
     abbr: 'NM',
-    licenseClasses: ['General Contractor (GB-98)', 'Residential (RB-98)', 'Trade Specialty licenses'],
+    licenseClasses: [
+      'General Contractor (GB-98)',
+      'Residential (RB-98)',
+      'Trade Specialty licenses',
+    ],
     authority: 'New Mexico Construction Industries Division (CID)',
     authorityUrl: 'https://www.rld.nm.gov/construction-industries-and-manufactured-housing',
     examProvider: 'PSI',
@@ -585,13 +690,17 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: true,
     thresholdAmount: 10000,
-    notes: 'License required for construction work over $10,000. CID also handles building permit and inspection services. RB-98 license for residential; GB-98 for commercial. Separate specialty trade licenses.',
-    lastVerified: '2026-01-01'
+    notes:
+      'License required for construction work over $10,000. CID also handles building permit and inspection services. RB-98 license for residential; GB-98 for commercial. Separate specialty trade licenses.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New York',
     abbr: 'NY',
-    licenseClasses: ['Home Improvement Contractor (NYC/Westchester/Nassau/Suffolk)', 'Local licenses only'],
+    licenseClasses: [
+      'Home Improvement Contractor (NYC/Westchester/Nassau/Suffolk)',
+      'Local licenses only',
+    ],
     authority: 'Local Jurisdictions (NYC DCA, Westchester, Nassau, Suffolk counties)',
     authorityUrl: 'https://www.nyc.gov/site/dca/businesses/license-overview.page',
     examProvider: 'None',
@@ -604,13 +713,18 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: false,
     thresholdAmount: 0,
-    notes: 'No statewide general contractor license. New York City requires a Home Improvement Contractor license from the DCA. Nassau, Suffolk, and Westchester counties and NYC boroughs have local licensing. Electricians and plumbers licensed locally.',
-    lastVerified: '2026-01-01'
+    notes:
+      'No statewide general contractor license. New York City requires a Home Improvement Contractor license from the DCA. Nassau, Suffolk, and Westchester counties and NYC boroughs have local licensing. Electricians and plumbers licensed locally.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'North Carolina',
     abbr: 'NC',
-    licenseClasses: ['Limited (under $500,000)', 'Intermediate ($500,000-$1,000,000)', 'Unlimited (over $1,000,000)'],
+    licenseClasses: [
+      'Limited (under $500,000)',
+      'Intermediate ($500,000-$1,000,000)',
+      'Unlimited (over $1,000,000)',
+    ],
     authority: 'North Carolina Licensing Board for General Contractors',
     authorityUrl: 'https://www.nclbgc.org',
     examProvider: 'PSI',
@@ -623,8 +737,9 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: true,
     thresholdAmount: 30000,
-    notes: 'License required for projects over $30,000. Net worth requirements replace bond for higher license classes. Unlimited license requires minimum $17,000 net worth; no cap.',
-    lastVerified: '2026-01-01'
+    notes:
+      'License required for projects over $30,000. Net worth requirements replace bond for higher license classes. Unlimited license requires minimum $17,000 net worth; no cap.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'North Dakota',
@@ -642,15 +757,23 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: true,
     thresholdAmount: 2000,
-    notes: 'Contractor registration required for projects over $2,000. Registration-based system, not exam-based. Specialty trades (electricians, plumbers) licensed by separate state boards.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Contractor registration required for projects over $2,000. Registration-based system, not exam-based. Specialty trades (electricians, plumbers) licensed by separate state boards.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Ohio',
     abbr: 'OH',
-    licenseClasses: ['Electrical (statewide)', 'Plumbing (statewide)', 'HVAC (statewide)', 'Hydronics', 'Refrigeration'],
+    licenseClasses: [
+      'Electrical (statewide)',
+      'Plumbing (statewide)',
+      'HVAC (statewide)',
+      'Hydronics',
+      'Refrigeration',
+    ],
     authority: 'Ohio Construction Industry Licensing Board (OCILB) / Local jurisdictions for GC',
-    authorityUrl: 'https://com.ohio.gov/divisions-and-programs/industrial-compliance/board-and-councils/ohio-construction-industry-licensing-board',
+    authorityUrl:
+      'https://com.ohio.gov/divisions-and-programs/industrial-compliance/board-and-councils/ohio-construction-industry-licensing-board',
     examProvider: 'PSI',
     bondMinResidential: 25000,
     bondMinCommercial: 50000,
@@ -661,8 +784,9 @@ export default [
     ceHoursRequired: 24,
     stateLicenseRequired: false,
     thresholdAmount: 0,
-    notes: 'No statewide general contractor license; general building contractors governed by local jurisdictions. OCILB licenses electrical, plumbing, HVAC, hydronics, and refrigeration contractors statewide. 24 CE hours per 3-year renewal for trade licenses.',
-    lastVerified: '2026-01-01'
+    notes:
+      'No statewide general contractor license; general building contractors governed by local jurisdictions. OCILB licenses electrical, plumbing, HVAC, hydronics, and refrigeration contractors statewide. 24 CE hours per 3-year renewal for trade licenses.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Oklahoma',
@@ -680,13 +804,20 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: true,
     thresholdAmount: 2500,
-    notes: 'License required for projects over $2,500. Separate residential specialty contractor license. Oklahoma City and Tulsa may have additional local requirements.',
-    lastVerified: '2026-01-01'
+    notes:
+      'License required for projects over $2,500. Separate residential specialty contractor license. Oklahoma City and Tulsa may have additional local requirements.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Oregon',
     abbr: 'OR',
-    licenseClasses: ['Residential General Contractor', 'Residential Specialty Contractor', 'Commercial General Contractor', 'Commercial Specialty Contractor', 'Landscape Contractor'],
+    licenseClasses: [
+      'Residential General Contractor',
+      'Residential Specialty Contractor',
+      'Commercial General Contractor',
+      'Commercial Specialty Contractor',
+      'Landscape Contractor',
+    ],
     authority: 'Oregon Construction Contractors Board (CCB)',
     authorityUrl: 'https://www.oregon.gov/ccb',
     examProvider: 'State exam (CCB)',
@@ -699,8 +830,9 @@ export default [
     ceHoursRequired: 16,
     stateLicenseRequired: true,
     thresholdAmount: 1,
-    notes: 'All construction work requires CCB license. 16 CE hours required per renewal for residential contractors. Lead Renovation certification required for pre-1978 homes. Bond amounts depend on contractor type and annual revenue.',
-    lastVerified: '2026-01-01'
+    notes:
+      'All construction work requires CCB license. 16 CE hours required per renewal for residential contractors. Lead Renovation certification required for pre-1978 homes. Bond amounts depend on contractor type and annual revenue.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Pennsylvania',
@@ -718,14 +850,16 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: false,
     thresholdAmount: 5000,
-    notes: 'No statewide general contractor license exam required. Home Improvement Contractors must register under HICPA for residential work >$500. $50,000 financial protection required (surety bond or bank account escrow). Philadelphia and Pittsburgh have local contractor licensing requirements.',
-    lastVerified: '2026-01-01'
+    notes:
+      'No statewide general contractor license exam required. Home Improvement Contractors must register under HICPA for residential work >$500. $50,000 financial protection required (surety bond or bank account escrow). Philadelphia and Pittsburgh have local contractor licensing requirements.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Rhode Island',
     abbr: 'RI',
     licenseClasses: ['Class A - General Building', 'Class B - Specialty', 'Class C - Residential'],
-    authority: 'Rhode Island Department of Business Regulation - Contractors\' Registration and Licensing Board',
+    authority:
+      "Rhode Island Department of Business Regulation - Contractors' Registration and Licensing Board",
     authorityUrl: 'https://dbr.ri.gov/contractors-registration-and-licensing-board',
     examProvider: 'PSI',
     bondMinResidential: 10000,
@@ -737,14 +871,21 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: true,
     thresholdAmount: 1000,
-    notes: 'All contractors performing work in excess of $1,000 must be registered or licensed. Residential contractors require Class C license. Reciprocity agreements with CT and MA for some license categories.',
-    lastVerified: '2026-01-01'
+    notes:
+      'All contractors performing work in excess of $1,000 must be registered or licensed. Residential contractors require Class C license. Reciprocity agreements with CT and MA for some license categories.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'South Carolina',
     abbr: 'SC',
-    licenseClasses: ['Class I - Unlimited', 'Class II - up to $5,000,000', 'Class III - up to $1,500,000', 'Class IV - up to $500,000', 'Class V - Residential'],
-    authority: 'South Carolina Contractors\' Licensing Board (CLB)',
+    licenseClasses: [
+      'Class I - Unlimited',
+      'Class II - up to $5,000,000',
+      'Class III - up to $1,500,000',
+      'Class IV - up to $500,000',
+      'Class V - Residential',
+    ],
+    authority: "South Carolina Contractors' Licensing Board (CLB)",
     authorityUrl: 'https://llr.sc.gov/clb',
     examProvider: 'PSI',
     bondMinResidential: 10000,
@@ -756,8 +897,9 @@ export default [
     ceHoursRequired: 8,
     stateLicenseRequired: true,
     thresholdAmount: 5000,
-    notes: '8 CE hours required every 2 years. License required for projects over $5,000 in value. Residential specialty contractors have separate licensing.',
-    lastVerified: '2026-01-01'
+    notes:
+      '8 CE hours required every 2 years. License required for projects over $5,000 in value. Residential specialty contractors have separate licensing.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'South Dakota',
@@ -775,13 +917,19 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: false,
     thresholdAmount: 0,
-    notes: 'No statewide general contractor license. Sioux Falls, Rapid City, and many municipalities have local licensing requirements. Electricians and plumbers licensed by state.',
-    lastVerified: '2026-01-01'
+    notes:
+      'No statewide general contractor license. Sioux Falls, Rapid City, and many municipalities have local licensing requirements. Electricians and plumbers licensed by state.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Tennessee',
     abbr: 'TN',
-    licenseClasses: ['BC-A General Contractor', 'BC-B Building Contractor', 'BC-C Residential Contractor', 'BC-D Masonry Contractor'],
+    licenseClasses: [
+      'BC-A General Contractor',
+      'BC-B Building Contractor',
+      'BC-C Residential Contractor',
+      'BC-D Masonry Contractor',
+    ],
     authority: 'Tennessee Board for Licensing Contractors',
     authorityUrl: 'https://www.tn.gov/commerce/regboards/contractors.html',
     examProvider: 'PSI',
@@ -794,13 +942,20 @@ export default [
     ceHoursRequired: 8,
     stateLicenseRequired: true,
     thresholdAmount: 25000,
-    notes: 'License required for commercial projects >$25,000 and residential projects >$3,000. Separate electrical, plumbing, and HVAC licensing. NASCLA commercial exam accepted.',
-    lastVerified: '2026-01-01'
+    notes:
+      'License required for commercial projects >$25,000 and residential projects >$3,000. Separate electrical, plumbing, and HVAC licensing. NASCLA commercial exam accepted.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Texas',
     abbr: 'TX',
-    licenseClasses: ['HVAC Contractor', 'Plumbing Contractor', 'Electrical Contractor', 'Residential Appliance Installer', 'Other specialty trades via TDLR'],
+    licenseClasses: [
+      'HVAC Contractor',
+      'Plumbing Contractor',
+      'Electrical Contractor',
+      'Residential Appliance Installer',
+      'Other specialty trades via TDLR',
+    ],
     authority: 'Texas Department of Licensing and Regulation (TDLR) - specific trades only',
     authorityUrl: 'https://www.tdlr.texas.gov',
     examProvider: 'PSI',
@@ -813,13 +968,20 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: false,
     thresholdAmount: 0,
-    notes: 'No statewide general contractor license. TDLR licenses HVAC, plumbing, electrical, and other specialty trades. Workers\' comp not required by state law but recommended. Dallas, Houston, San Antonio, Austin, and most Texas cities have local contractor registration or licensing requirements.',
-    lastVerified: '2026-01-01'
+    notes:
+      "No statewide general contractor license. TDLR licenses HVAC, plumbing, electrical, and other specialty trades. Workers' comp not required by state law but recommended. Dallas, Houston, San Antonio, Austin, and most Texas cities have local contractor registration or licensing requirements.",
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Utah',
     abbr: 'UT',
-    licenseClasses: ['Class A100 - General Engineering', 'Class B100 - General Building', 'Class C - Specialty (over 50 categories)', 'Class E - Elevator', 'Class R100 - Residential'],
+    licenseClasses: [
+      'Class A100 - General Engineering',
+      'Class B100 - General Building',
+      'Class C - Specialty (over 50 categories)',
+      'Class E - Elevator',
+      'Class R100 - Residential',
+    ],
     authority: 'Utah Division of Occupational and Professional Licensing (DOPL)',
     authorityUrl: 'https://dopl.utah.gov',
     examProvider: 'PSI',
@@ -832,8 +994,9 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: true,
     thresholdAmount: 3000,
-    notes: 'License required for construction exceeding $3,000. Bond amounts vary by classification. No CE requirements for general contractors but specialty trades may differ.',
-    lastVerified: '2026-01-01'
+    notes:
+      'License required for construction exceeding $3,000. Bond amounts vary by classification. No CE requirements for general contractors but specialty trades may differ.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Vermont',
@@ -851,13 +1014,18 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: false,
     thresholdAmount: 0,
-    notes: 'No statewide general contractor license. Electricians, plumbers, and fire suppression contractors are licensed by the Office of Professional Regulation. Local jurisdictions may have contractor requirements.',
-    lastVerified: '2026-01-01'
+    notes:
+      'No statewide general contractor license. Electricians, plumbers, and fire suppression contractors are licensed by the Office of Professional Regulation. Local jurisdictions may have contractor requirements.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Virginia',
     abbr: 'VA',
-    licenseClasses: ['Class A - $120,000+ annually', 'Class B - $10,000-$120,000 annually', 'Class C - $1,000-$10,000 annually'],
+    licenseClasses: [
+      'Class A - $120,000+ annually',
+      'Class B - $10,000-$120,000 annually',
+      'Class C - $1,000-$10,000 annually',
+    ],
     authority: 'Virginia Department of Professional and Occupational Regulation (DPOR)',
     authorityUrl: 'https://www.dpor.virginia.gov',
     examProvider: 'PSI',
@@ -870,8 +1038,9 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: true,
     thresholdAmount: 1000,
-    notes: 'License required for any construction work totaling $1,000 or more. Class determined by annual revenue. Trades (electricians, plumbers) licensed separately by DPOR. Home Improvement Salesperson license also required.',
-    lastVerified: '2026-01-01'
+    notes:
+      'License required for any construction work totaling $1,000 or more. Class determined by annual revenue. Trades (electricians, plumbers) licensed separately by DPOR. Home Improvement Salesperson license also required.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Washington',
@@ -889,13 +1058,19 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: true,
     thresholdAmount: 1,
-    notes: 'All contractors must register with L&I. $12,000 bond and $200,000 liability insurance required for general contractors ($6,000 bond and $200,000 insurance for specialty). Electrical contractors licensed separately by L&I Electrical Program.',
-    lastVerified: '2026-01-01'
+    notes:
+      'All contractors must register with L&I. $12,000 bond and $200,000 liability insurance required for general contractors ($6,000 bond and $200,000 insurance for specialty). Electrical contractors licensed separately by L&I Electrical Program.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'West Virginia',
     abbr: 'WV',
-    licenseClasses: ['Class A - Unlimited', 'Class B - up to $2,500,000', 'Class C - up to $500,000', 'Class D - up to $100,000'],
+    licenseClasses: [
+      'Class A - Unlimited',
+      'Class B - up to $2,500,000',
+      'Class C - up to $500,000',
+      'Class D - up to $100,000',
+    ],
     authority: 'West Virginia Contractors Licensing Board',
     authorityUrl: 'https://wvclb.wv.gov',
     examProvider: 'PSI',
@@ -908,13 +1083,18 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: true,
     thresholdAmount: 2500,
-    notes: 'License required for all contracting work over $2,500. Bond amounts vary by license class. Home improvement contractors require separate registration.',
-    lastVerified: '2026-01-01'
+    notes:
+      'License required for all contracting work over $2,500. Bond amounts vary by license class. Home improvement contractors require separate registration.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Wisconsin',
     abbr: 'WI',
-    licenseClasses: ['Dwelling Contractor Qualifier (DCQ)', 'Dwelling Contractor Certification', 'Trade licenses: Electrical, Plumbing, HVAC'],
+    licenseClasses: [
+      'Dwelling Contractor Qualifier (DCQ)',
+      'Dwelling Contractor Certification',
+      'Trade licenses: Electrical, Plumbing, HVAC',
+    ],
     authority: 'Wisconsin Department of Safety and Professional Services (DSPS)',
     authorityUrl: 'https://dsps.wi.gov',
     examProvider: 'PSI',
@@ -927,14 +1107,16 @@ export default [
     ceHoursRequired: 12,
     stateLicenseRequired: true,
     thresholdAmount: 1,
-    notes: 'Dwelling Contractor Qualifier required for all new one- and two-family home construction. 12 CE hours per renewal for residential. No statewide commercial GC license; commercial governed by local jurisdictions. Milwaukee and Madison have local requirements.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Dwelling Contractor Qualifier required for all new one- and two-family home construction. 12 CE hours per renewal for residential. No statewide commercial GC license; commercial governed by local jurisdictions. Milwaukee and Madison have local requirements.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Wyoming',
     abbr: 'WY',
     licenseClasses: ['Electrical, Plumbing (specialty only at state level)'],
-    authority: 'Local Jurisdictions / Wyoming Department of Fire Prevention and Electrical Safety (specialty)',
+    authority:
+      'Local Jurisdictions / Wyoming Department of Fire Prevention and Electrical Safety (specialty)',
     authorityUrl: 'https://wsfm.wyo.gov',
     examProvider: 'None',
     bondMinResidential: 0,
@@ -946,7 +1128,8 @@ export default [
     ceHoursRequired: 0,
     stateLicenseRequired: false,
     thresholdAmount: 0,
-    notes: 'No statewide general contractor license. Cheyenne, Casper, and many municipalities have local contractor licensing requirements. Electricians licensed by the Department of Fire Prevention and Electrical Safety.',
-    lastVerified: '2026-01-01'
-  }
+    notes:
+      'No statewide general contractor license. Cheyenne, Casper, and many municipalities have local contractor licensing requirements. Electricians licensed by the Department of Fire Prevention and Electrical Safety.',
+    lastVerified: '2026-01-01',
+  },
 ]

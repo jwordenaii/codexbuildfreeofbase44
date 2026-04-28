@@ -79,36 +79,31 @@ const ASPHALT_RANKING_CLUSTERS = [
   {
     title: 'Commercial Parking Lot Paving',
     keywords: 'parking lot paving, mill & overlay, ADA stalls, line striping',
-    copy:
-      'For property managers, restaurants, retail centers, churches, schools, warehouses, and franchise operators that need durable traffic flow and clean curb appeal.',
+    copy: 'For property managers, restaurants, retail centers, churches, schools, warehouses, and franchise operators that need durable traffic flow and clean curb appeal.',
     href: '/services#parking',
   },
   {
     title: 'Residential Driveway Paving',
     keywords: 'driveway paving, resurfacing, replacement, grading',
-    copy:
-      'For Virginia homeowners comparing new asphalt, resurfacing, base repair, drainage correction, and long-term sealcoating schedules.',
+    copy: 'For Virginia homeowners comparing new asphalt, resurfacing, base repair, drainage correction, and long-term sealcoating schedules.',
     href: '/services#driveways',
   },
   {
     title: 'Asphalt Repair & Preventive Maintenance',
     keywords: 'asphalt repair, crack filling, sealcoating, pothole repair, preservation',
-    copy:
-      'For owners who want preservation-first planning: stop water intrusion early, protect pavement from oxidation, and avoid full-depth replacement too soon.',
+    copy: 'For owners who want preservation-first planning: stop water intrusion early, protect pavement from oxidation, and avoid full-depth replacement too soon.',
     href: '/services#maintenance',
   },
   {
     title: 'Pavement Preservation & Lifecycle Planning',
     keywords: 'pavement preservation, resurfacing, recycling, reconstruction',
-    copy:
-      'For DOT-style, HOA, municipal, industrial, and commercial buyers who need the right fix at the right time: preserve, repair, overlay, recycle, or rebuild.',
+    copy: 'For DOT-style, HOA, municipal, industrial, and commercial buyers who need the right fix at the right time: preserve, repair, overlay, recycle, or rebuild.',
     href: '/services#maintenance',
   },
   {
     title: 'Pavement Intelligence & Utility-Safe Production',
     keywords: '811, GPR, utility locating, pavement decay, thermal asphalt checks',
-    copy:
-      'For commercial buyers who want premium planning: 811 response checks, GPR/EM locating, pavement age-decay review, drainage risk, and asphalt temperature logic.',
+    copy: 'For commercial buyers who want premium planning: 811 response checks, GPR/EM locating, pavement age-decay review, drainage risk, and asphalt temperature logic.',
     href: '/command-center',
   },
 ]
@@ -122,14 +117,14 @@ const LOCAL_SEO_SIGNALS = [
 ]
 
 const TRUST_BADGES = [
-  { label: 'KFC',              desc: 'National QSR vendor'       },
-  { label: 'Pavement Mag',     desc: 'Top 75 · 4 categories'     },
-  { label: 'Best of Houzz',    desc: 'Interior design award'     },
-  { label: '2026 Nominee',     desc: 'Top Contractor Award'      },
-  { label: '12+ States',       desc: 'Verified QSR work'         },
-  { label: 'Est. 1984',        desc: 'Family owned'              },
-  { label: 'VA Class A GC',    desc: 'Licensed & Insured'        },
-  { label: 'Stone Masonry',    desc: 'Patio · Wall · Fireplace'  },
+  { label: 'KFC', desc: 'National QSR vendor' },
+  { label: 'Pavement Mag', desc: 'Top 75 · 4 categories' },
+  { label: 'Best of Houzz', desc: 'Interior design award' },
+  { label: '2026 Nominee', desc: 'Top Contractor Award' },
+  { label: '12+ States', desc: 'Verified QSR work' },
+  { label: 'Est. 1984', desc: 'Family owned' },
+  { label: 'VA Class A GC', desc: 'Licensed & Insured' },
+  { label: 'Stone Masonry', desc: 'Patio · Wall · Fireplace' },
 ]
 
 const HOME_FAQS = [
@@ -206,11 +201,7 @@ export default function Home() {
           }}
         />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={fadeUp}
-          >
+          <motion.div initial="hidden" animate="visible" variants={fadeUp}>
             <span className="inline-block bg-brand-amber/20 text-brand-amber text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-6">
               Est. 1984 · 4th Generation · Family Owned
             </span>
@@ -235,11 +226,10 @@ export default function Home() {
             custom={2}
             variants={fadeUp}
           >
-            J. Worden &amp; Sons has been building and beautifying properties for four
-            generations. Trusted by KFC, Arby&apos;s, Taco Bell, and hundreds of
-            homeowners — asphalt paving, stone masonry, cobblestone patios, interior
-            design, and full GC services. We show up, we do it right, and we stand
-            behind every job.
+            J. Worden &amp; Sons has been building and beautifying properties for four generations.
+            Trusted by KFC, Arby&apos;s, Taco Bell, and hundreds of homeowners — asphalt paving,
+            stone masonry, cobblestone patios, interior design, and full GC services. We show up, we
+            do it right, and we stand behind every job.
           </motion.p>
 
           <motion.div
@@ -298,9 +288,9 @@ export default function Home() {
             </span>
             <h2 className="section-heading mb-4 mt-2">Virginia Asphalt Paving Services</h2>
             <p className="text-brand-navy/60 max-w-xl mx-auto">
-              The highest-ranking paving sites win by answering every buying intent clearly.
-              We make asphalt paving, parking lots, driveways, sealcoating, crack filling,
-              repair, maintenance, and utility-safe planning easy to compare in one place.
+              The highest-ranking paving sites win by answering every buying intent clearly. We make
+              asphalt paving, parking lots, driveways, sealcoating, crack filling, repair,
+              maintenance, and utility-safe planning easy to compare in one place.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -338,14 +328,12 @@ export default function Home() {
               <span className="text-brand-amber text-xs font-bold uppercase tracking-widest">
                 Built for how customers search
               </span>
-              <h2 className="section-heading mt-2 mb-4">
-                More Than “Paving Near Me”
-              </h2>
+              <h2 className="section-heading mt-2 mb-4">More Than “Paving Near Me”</h2>
               <p className="text-brand-navy/70 leading-relaxed mb-6">
-                Property owners compare contractors by service clarity, local proof,
-                pricing guidance, reviews, photos, and confidence that the crew can
-                handle drainage, base failure, traffic, 811 utility issues, and long-term
-                maintenance. These are the signals we now surface across the site.
+                Property owners compare contractors by service clarity, local proof, pricing
+                guidance, reviews, photos, and confidence that the crew can handle drainage, base
+                failure, traffic, 811 utility issues, and long-term maintenance. These are the
+                signals we now surface across the site.
               </p>
               <Link to="/service-areas" className="btn-primary">
                 Compare Our Virginia Service Areas
@@ -379,8 +367,8 @@ export default function Home() {
             </span>
             <h2 className="section-heading mt-2 mb-4">Browse by Style &amp; Service</h2>
             <p className="text-brand-navy/60 max-w-xl mx-auto">
-              From Houzz-award–winning interior spaces to hand-laid cobblestone courtyards
-              and natural stone masonry — explore the range of work we deliver.
+              From Houzz-award–winning interior spaces to hand-laid cobblestone courtyards and
+              natural stone masonry — explore the range of work we deliver.
             </p>
           </div>
           <InspirationGallery maxItems={8} />
@@ -399,9 +387,9 @@ export default function Home() {
             </h2>
             <p className="text-brand-navy/60 max-w-3xl mx-auto">
               Rose Paving shows national commercial authority. Sunland shows sector-specific
-              positioning. Asphalt Paving Systems shows preservation-first technical depth.
-              We use those as strategy signals, then rewrite the logic around our own
-              service proof, Virginia roots, QSR experience, and pavement intelligence.
+              positioning. Asphalt Paving Systems shows preservation-first technical depth. We use
+              those as strategy signals, then rewrite the logic around our own service proof,
+              Virginia roots, QSR experience, and pavement intelligence.
             </p>
           </div>
           <div className="grid lg:grid-cols-[0.8fr_1.2fr] gap-8">
@@ -459,10 +447,10 @@ export default function Home() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               {[
-                { end: 40,  prefix: '',  suffix: '+',  decimals: 0, label: 'Years in business' },
-                { end: 500, prefix: '',  suffix: '+',  decimals: 0, label: 'Projects completed' },
-                { end: 4.9, prefix: '',  suffix: '★',  decimals: 1, label: 'Google rating' },
-                { end: 100, prefix: '',  suffix: '%',  decimals: 0, label: 'Licensed & insured' },
+                { end: 40, prefix: '', suffix: '+', decimals: 0, label: 'Years in business' },
+                { end: 500, prefix: '', suffix: '+', decimals: 0, label: 'Projects completed' },
+                { end: 4.9, prefix: '', suffix: '★', decimals: 1, label: 'Google rating' },
+                { end: 100, prefix: '', suffix: '%', decimals: 0, label: 'Licensed & insured' },
               ].map(({ end, prefix, suffix, decimals, label }) => (
                 <div
                   key={label}
@@ -492,19 +480,21 @@ export default function Home() {
                 <span className="text-brand-amber block">Project Cost?</span>
               </h2>
               <p className="text-brand-navy/60 leading-relaxed mb-6">
-                Use our quick calculator to get a ballpark estimate in seconds — 50-state
-                pricing data, adjusted for your region. Then submit the quote form for a
-                precise, no-obligation number from our team.
+                Use our quick calculator to get a ballpark estimate in seconds — 50-state pricing
+                data, adjusted for your region. Then submit the quote form for a precise,
+                no-obligation number from our team.
               </p>
               <ul className="space-y-3 text-sm text-brand-navy/70">
                 {[
                   'Residential &amp; commercial pricing',
-                  'Adjusted for your state\'s labor &amp; material costs',
+                  "Adjusted for your state's labor &amp; material costs",
                   'All major services covered',
                   'Free on-site estimate always included',
                 ].map((item) => (
                   <li key={item} className="flex items-center gap-3">
-                    <span className="w-5 h-5 rounded-full bg-brand-amber/20 flex items-center justify-center text-brand-amber font-bold text-xs">✓</span>
+                    <span className="w-5 h-5 rounded-full bg-brand-amber/20 flex items-center justify-center text-brand-amber font-bold text-xs">
+                      ✓
+                    </span>
                     <span>{item}</span>
                   </li>
                 ))}
@@ -520,7 +510,9 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-10">
             <div>
-              <span className="text-brand-amber text-xs font-bold uppercase tracking-widest">Where We Work</span>
+              <span className="text-brand-amber text-xs font-bold uppercase tracking-widest">
+                Where We Work
+              </span>
               <h2 className="font-display font-black text-2xl mt-1">Serving 20+ Virginia Cities</h2>
             </div>
             <Link to="/service-areas" className="btn-outline text-sm flex-shrink-0">
@@ -528,9 +520,23 @@ export default function Home() {
             </Link>
           </div>
           <div className="flex flex-wrap gap-3">
-            {['Chester', 'Richmond', 'Chesterfield', 'Henrico', 'Colonial Heights',
-              'Petersburg', 'Hopewell', 'Midlothian', 'Mechanicsville', 'Glen Allen',
-              'Ashland', 'Powhatan', 'Virginia Beach', 'Norfolk', 'Fredericksburg'].map((city) => (
+            {[
+              'Chester',
+              'Richmond',
+              'Chesterfield',
+              'Henrico',
+              'Colonial Heights',
+              'Petersburg',
+              'Hopewell',
+              'Midlothian',
+              'Mechanicsville',
+              'Glen Allen',
+              'Ashland',
+              'Powhatan',
+              'Virginia Beach',
+              'Norfolk',
+              'Fredericksburg',
+            ].map((city) => (
               <Link
                 key={city}
                 to={`/service-areas/${city.toLowerCase().replace(/\s+/g, '-')}-va`}
@@ -556,11 +562,11 @@ export default function Home() {
                 Local Proof, Service Depth, and Premium Job Logic
               </h2>
               <p className="text-brand-navy/70 leading-relaxed">
-                Search engines reward paving contractors that prove where they work,
-                explain what they do, and answer the questions buyers ask before calling.
-                Our content now connects local service areas, asphalt-specific services,
-                commercial trust, pricing guidance, FAQs, and the Command Center&rsquo;s
-                advanced scan logic into one stronger authority system.
+                Search engines reward paving contractors that prove where they work, explain what
+                they do, and answer the questions buyers ask before calling. Our content now
+                connects local service areas, asphalt-specific services, commercial trust, pricing
+                guidance, FAQs, and the Command Center&rsquo;s advanced scan logic into one stronger
+                authority system.
               </p>
             </div>
             <div className="space-y-3">
@@ -585,12 +591,12 @@ export default function Home() {
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 text-center">
             {[
-              { emoji: '🍗', name: 'KFC',             sub: '12+ states' },
-              { emoji: '🥩', name: "Arby's",           sub: 'Regional ops' },
-              { emoji: '🌮', name: 'Taco Bell',        sub: 'QSR program' },
-              { emoji: '🏆', name: 'Pavement Mag',     sub: 'Top 75 · 4 cats' },
-              { emoji: '🏠', name: 'Best of Houzz',    sub: 'Multi-year' },
-              { emoji: '⭐', name: '2026 Nominee',      sub: 'Top Contractor' },
+              { emoji: '🍗', name: 'KFC', sub: '12+ states' },
+              { emoji: '🥩', name: "Arby's", sub: 'Regional ops' },
+              { emoji: '🌮', name: 'Taco Bell', sub: 'QSR program' },
+              { emoji: '🏆', name: 'Pavement Mag', sub: 'Top 75 · 4 cats' },
+              { emoji: '🏠', name: 'Best of Houzz', sub: 'Multi-year' },
+              { emoji: '⭐', name: '2026 Nominee', sub: 'Top Contractor' },
             ].map(({ emoji, name, sub }) => (
               <div key={name} className="flex flex-col items-center gap-1">
                 <span className="text-3xl">{emoji}</span>
@@ -606,7 +612,9 @@ export default function Home() {
       <section className="py-20 bg-gray-50">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <span className="text-brand-amber text-xs font-bold uppercase tracking-widest">Got Questions?</span>
+            <span className="text-brand-amber text-xs font-bold uppercase tracking-widest">
+              Got Questions?
+            </span>
             <h2 className="section-heading mt-2">Common Questions</h2>
           </div>
           <FAQAccordion items={HOME_FAQS} />
@@ -628,18 +636,14 @@ export default function Home() {
             See the Work Before You Call
           </h2>
           <p className="text-white/60 mb-8 max-w-xl mx-auto">
-            Before &amp; afters, crew in the field, and paving tips for homeowners and
-            property managers — across every platform.
+            Before &amp; afters, crew in the field, and paving tips for homeowners and property
+            managers — across every platform.
           </p>
-          <SocialLinks
-            size="lg"
-            variant="badge"
-            className="justify-center flex-wrap"
-          />
+          <SocialLinks size="lg" variant="badge" className="justify-center flex-wrap" />
           <div className="mt-10 pt-8 border-t border-white/10 grid grid-cols-3 gap-6 max-w-sm mx-auto">
             {[
               { icon: '⭐', stat: '4.9', label: 'Google Rating' },
-              { icon: '💬', stat: '87',  label: 'Reviews' },
+              { icon: '💬', stat: '87', label: 'Reviews' },
               { icon: '📍', stat: '40+', label: 'Years Local' },
             ].map(({ icon, stat, label }) => (
               <div key={label} className="text-center">

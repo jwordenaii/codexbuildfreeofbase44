@@ -36,7 +36,9 @@ function LeadRow({ lead, onStageChange, updating }) {
       </td>
       <td className="py-2.5 pr-3">
         {lead.score_label && (
-          <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-bold ${SCORE_STYLE[lead.score_label] || 'bg-gray-100 text-gray-600'}`}>
+          <span
+            className={`inline-block px-2 py-0.5 rounded-full text-xs font-bold ${SCORE_STYLE[lead.score_label] || 'bg-gray-100 text-gray-600'}`}
+          >
             {lead.score_label}
           </span>
         )}
@@ -49,7 +51,9 @@ function LeadRow({ lead, onStageChange, updating }) {
           className={`text-xs font-semibold border rounded-full px-2 py-1 appearance-none cursor-pointer disabled:opacity-50 ${STAGE_STYLE[lead.pipeline_stage] || 'bg-gray-100'}`}
         >
           {STAGES.map((s) => (
-            <option key={s} value={s}>{s.replace('_', ' ')}</option>
+            <option key={s} value={s}>
+              {s.replace('_', ' ')}
+            </option>
           ))}
         </select>
       </td>
@@ -94,7 +98,9 @@ export default function CRMPanel() {
             type="button"
             onClick={() => setStageFilter('')}
             className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-colors ${
-              stageFilter === '' ? 'bg-brand-navy text-white border-brand-navy' : 'border-gray-200 text-brand-navy/60 hover:border-brand-navy/40'
+              stageFilter === ''
+                ? 'bg-brand-navy text-white border-brand-navy'
+                : 'border-gray-200 text-brand-navy/60 hover:border-brand-navy/40'
             }`}
           >
             All ({funnel.total})

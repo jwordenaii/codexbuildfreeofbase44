@@ -16,7 +16,7 @@ export default [
     citation: 'Ala. Code § 37-15-1 et seq.',
     whiteLiningRequired: false,
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Alaska',
@@ -35,7 +35,7 @@ export default [
     citation: 'AS § 42.30.010 et seq.',
     whiteLiningRequired: true,
     notes: 'White lining (white paint marking) required to show planned excavation area.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Arizona',
@@ -54,7 +54,7 @@ export default [
     citation: 'A.R.S. § 40-360.01 et seq.',
     whiteLiningRequired: true,
     notes: 'White lining required for projects 5 acres or more.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Arkansas',
@@ -73,7 +73,7 @@ export default [
     citation: 'Ark. Code Ann. § 14-271-101 et seq.',
     whiteLiningRequired: false,
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'California',
@@ -82,17 +82,19 @@ export default [
     oneCallPhone: '811',
     oneCallUrl: 'https://www.digalert.com',
     noticePeriodHours: 48,
-    noticePeriodNote: '2 working days (not including day of notification); ticket valid 28 calendar days',
+    noticePeriodNote:
+      '2 working days (not including day of notification); ticket valid 28 calendar days',
     markingColorStandard: 'APWA',
     toleranceZoneInches: 24,
     emergencyLocateAvailable: true,
     emergencyLocateNote: 'Emergency response within 1 hour for most areas; 2 hours in remote areas',
     penaltyCivil: 'Up to $50,000 per violation; enhanced for repeat violators',
     penaltyCriminal: 'Misdemeanor or felony depending on damage amount and intent',
-    citation: 'Gov\'t Code § 4216 et seq.',
+    citation: "Gov't Code § 4216 et seq.",
     whiteLiningRequired: true,
-    notes: 'White lining (white paint) required before calling 811 to outline excavation area. Two separate one-call centers: DigAlert (Southern) and USA North 811 (Northern, Central).',
-    lastVerified: '2026-01-01'
+    notes:
+      'White lining (white paint) required before calling 811 to outline excavation area. Two separate one-call centers: DigAlert (Southern) and USA North 811 (Northern, Central).',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Colorado',
@@ -101,7 +103,8 @@ export default [
     oneCallPhone: '811',
     oneCallUrl: 'https://www.colorado811.org',
     noticePeriodHours: 72,
-    noticePeriodNote: '3 business days minimum (not including day of notification); ticket valid 10 business days',
+    noticePeriodNote:
+      '3 business days minimum (not including day of notification); ticket valid 10 business days',
     markingColorStandard: 'APWA',
     toleranceZoneInches: 18,
     emergencyLocateAvailable: true,
@@ -111,7 +114,7 @@ export default [
     citation: 'Colo. Rev. Stat. § 9-1.5-101 et seq.',
     whiteLiningRequired: false,
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Connecticut',
@@ -130,7 +133,7 @@ export default [
     citation: 'Conn. Gen. Stat. § 16-345 et seq.',
     whiteLiningRequired: false,
     notes: 'Connecticut is served by the Dig Safe one-call center for New England.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Delaware',
@@ -149,7 +152,7 @@ export default [
     citation: 'Del. Code Ann. tit. 26, § 801 et seq.',
     whiteLiningRequired: false,
     notes: 'Delaware served by Miss Utility, covering Mid-Atlantic region.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Florida',
@@ -158,7 +161,8 @@ export default [
     oneCallPhone: '811',
     oneCallUrl: 'https://www.sunshine811.com',
     noticePeriodHours: 48,
-    noticePeriodNote: '2 full business days (not including day of notification and day of excavation); ticket valid 30 days',
+    noticePeriodNote:
+      '2 full business days (not including day of notification and day of excavation); ticket valid 30 days',
     markingColorStandard: 'APWA',
     toleranceZoneInches: 18,
     emergencyLocateAvailable: true,
@@ -167,8 +171,9 @@ export default [
     penaltyCriminal: 'First degree misdemeanor for willful damage',
     citation: 'Fla. Stat. § 556.101 et seq.',
     whiteLiningRequired: true,
-    notes: 'White lining required for large or complex projects. Sunshine State One Call of Florida.',
-    lastVerified: '2026-01-01'
+    notes:
+      'White lining required for large or complex projects. Sunshine State One Call of Florida.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Georgia',
@@ -187,7 +192,7 @@ export default [
     citation: 'O.C.G.A. § 25-9-1 et seq.',
     whiteLiningRequired: false,
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Hawaii',
@@ -206,7 +211,7 @@ export default [
     citation: 'Haw. Rev. Stat. § 269-71 et seq.',
     whiteLiningRequired: false,
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Idaho',
@@ -225,7 +230,7 @@ export default [
     citation: 'Idaho Code § 55-2201 et seq.',
     whiteLiningRequired: false,
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Illinois',
@@ -234,17 +239,19 @@ export default [
     oneCallPhone: '811',
     oneCallUrl: 'https://www.illinois1call.com',
     noticePeriodHours: 48,
-    noticePeriodNote: '2 business days minimum (not including day of notification); ticket valid 10 business days',
+    noticePeriodNote:
+      '2 business days minimum (not including day of notification); ticket valid 10 business days',
     markingColorStandard: 'APWA',
     toleranceZoneInches: 18,
     emergencyLocateAvailable: true,
     emergencyLocateNote: 'Emergency response required within 2 hours',
     penaltyCivil: 'Up to $50,000 per violation; up to $100,000 for willful or knowing violations',
     penaltyCriminal: 'Class A misdemeanor; felony for willful damage causing death or injury',
-    citation: '220 ILCS 50/1 et seq. (Illinois Underground Utility Facilities Damage Prevention Act)',
+    citation:
+      '220 ILCS 50/1 et seq. (Illinois Underground Utility Facilities Damage Prevention Act)',
     whiteLiningRequired: true,
     notes: 'White lining required. JULIE serves entire state of Illinois.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Indiana',
@@ -263,7 +270,7 @@ export default [
     citation: 'Ind. Code § 8-1-26-1 et seq.',
     whiteLiningRequired: false,
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Iowa',
@@ -272,7 +279,8 @@ export default [
     oneCallPhone: '811',
     oneCallUrl: 'https://www.iowaonecall.com',
     noticePeriodHours: 48,
-    noticePeriodNote: '2 business days minimum (not including day of notification); ticket valid 20 calendar days',
+    noticePeriodNote:
+      '2 business days minimum (not including day of notification); ticket valid 20 calendar days',
     markingColorStandard: 'APWA',
     toleranceZoneInches: 18,
     emergencyLocateAvailable: true,
@@ -282,7 +290,7 @@ export default [
     citation: 'Iowa Code § 480.1 et seq.',
     whiteLiningRequired: false,
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Kansas',
@@ -301,7 +309,7 @@ export default [
     citation: 'Kan. Stat. Ann. § 66-1801 et seq.',
     whiteLiningRequired: false,
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Kentucky',
@@ -310,7 +318,8 @@ export default [
     oneCallPhone: '811',
     oneCallUrl: 'https://www.kentucky811.org',
     noticePeriodHours: 72,
-    noticePeriodNote: '3 business days minimum (not including day of notification); ticket valid 15 calendar days',
+    noticePeriodNote:
+      '3 business days minimum (not including day of notification); ticket valid 15 calendar days',
     markingColorStandard: 'APWA',
     toleranceZoneInches: 18,
     emergencyLocateAvailable: true,
@@ -320,7 +329,7 @@ export default [
     citation: 'KRS § 367.4901 et seq.',
     whiteLiningRequired: false,
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Louisiana',
@@ -339,7 +348,7 @@ export default [
     citation: 'La. Rev. Stat. § 40:1749.11 et seq.',
     whiteLiningRequired: true,
     notes: 'White lining required for large or complex excavation areas.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Maine',
@@ -358,7 +367,7 @@ export default [
     citation: 'Me. Rev. Stat. tit. 23, § 3360-A et seq.',
     whiteLiningRequired: false,
     notes: 'Maine is served by Dig Safe, covering all New England states.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Maryland',
@@ -377,7 +386,7 @@ export default [
     citation: 'Md. Code Ann., Pub. Util. § 12-101 et seq.',
     whiteLiningRequired: true,
     notes: 'White lining required to indicate dig area extent.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Massachusetts',
@@ -396,7 +405,7 @@ export default [
     citation: 'M.G.L. c. 82, § 40 et seq.',
     whiteLiningRequired: false,
     notes: 'Massachusetts Dig Safe law is among the strongest in New England.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Michigan',
@@ -405,7 +414,8 @@ export default [
     oneCallPhone: '811',
     oneCallUrl: 'https://www.missdig811.org',
     noticePeriodHours: 72,
-    noticePeriodNote: '3 business days minimum (not including day of notification); ticket valid 21 calendar days',
+    noticePeriodNote:
+      '3 business days minimum (not including day of notification); ticket valid 21 calendar days',
     markingColorStandard: 'APWA',
     toleranceZoneInches: 18,
     emergencyLocateAvailable: true,
@@ -415,7 +425,7 @@ export default [
     citation: 'MCL § 460.721 et seq.',
     whiteLiningRequired: false,
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Minnesota',
@@ -424,7 +434,8 @@ export default [
     oneCallPhone: '811',
     oneCallUrl: 'https://www.gopherstateonecall.org',
     noticePeriodHours: 48,
-    noticePeriodNote: '2 business days minimum (not including day of notification); ticket valid 15 calendar days',
+    noticePeriodNote:
+      '2 business days minimum (not including day of notification); ticket valid 15 calendar days',
     markingColorStandard: 'APWA',
     toleranceZoneInches: 18,
     emergencyLocateAvailable: true,
@@ -434,7 +445,7 @@ export default [
     citation: 'Minn. Stat. § 216D.01 et seq.',
     whiteLiningRequired: false,
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Mississippi',
@@ -453,7 +464,7 @@ export default [
     citation: 'Miss. Code Ann. § 77-13-1 et seq.',
     whiteLiningRequired: false,
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Missouri',
@@ -472,7 +483,7 @@ export default [
     citation: 'Mo. Rev. Stat. § 319.010 et seq.',
     whiteLiningRequired: false,
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Montana',
@@ -491,7 +502,7 @@ export default [
     citation: 'Mont. Code Ann. § 69-4-501 et seq.',
     whiteLiningRequired: false,
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Nebraska',
@@ -510,7 +521,7 @@ export default [
     citation: 'Neb. Rev. Stat. § 76-2301 et seq.',
     whiteLiningRequired: false,
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Nevada',
@@ -519,7 +530,8 @@ export default [
     oneCallPhone: '811',
     oneCallUrl: 'https://www.nevada811.com',
     noticePeriodHours: 48,
-    noticePeriodNote: '2 business days minimum (not including day of notification); ticket valid 10 business days',
+    noticePeriodNote:
+      '2 business days minimum (not including day of notification); ticket valid 10 business days',
     markingColorStandard: 'APWA',
     toleranceZoneInches: 24,
     emergencyLocateAvailable: true,
@@ -528,8 +540,9 @@ export default [
     penaltyCriminal: 'Category D felony for damage causing death or serious injury',
     citation: 'NRS § 455.091 et seq.',
     whiteLiningRequired: true,
-    notes: 'White lining required for projects outside of a specific address or exceeding normal dig areas.',
-    lastVerified: '2026-01-01'
+    notes:
+      'White lining required for projects outside of a specific address or exceeding normal dig areas.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New Hampshire',
@@ -548,7 +561,7 @@ export default [
     citation: 'RSA 374:55 et seq.',
     whiteLiningRequired: false,
     notes: 'New Hampshire served by Dig Safe.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New Jersey',
@@ -557,7 +570,8 @@ export default [
     oneCallPhone: '811',
     oneCallUrl: 'https://nj.occinc.com',
     noticePeriodHours: 72,
-    noticePeriodNote: '3 business days minimum (not including day of notification); ticket valid 10 business days',
+    noticePeriodNote:
+      '3 business days minimum (not including day of notification); ticket valid 10 business days',
     markingColorStandard: 'APWA',
     toleranceZoneInches: 18,
     emergencyLocateAvailable: true,
@@ -567,7 +581,7 @@ export default [
     citation: 'N.J. Stat. Ann. § 48:2-73 et seq.',
     whiteLiningRequired: false,
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New Mexico',
@@ -586,7 +600,7 @@ export default [
     citation: 'N.M. Stat. Ann. § 62-14-1 et seq.',
     whiteLiningRequired: false,
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New York',
@@ -595,7 +609,8 @@ export default [
     oneCallPhone: '811',
     oneCallUrl: 'https://www.digsafelynewyork.com',
     noticePeriodHours: 72,
-    noticePeriodNote: '3 business days minimum (not including day of notification); ticket valid 10 business days',
+    noticePeriodNote:
+      '3 business days minimum (not including day of notification); ticket valid 10 business days',
     markingColorStandard: 'APWA',
     toleranceZoneInches: 18,
     emergencyLocateAvailable: true,
@@ -605,7 +620,7 @@ export default [
     citation: 'N.Y. Gen. Bus. Law § 750 et seq. (Industrial Code Rule 53)',
     whiteLiningRequired: false,
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'North Carolina',
@@ -614,7 +629,8 @@ export default [
     oneCallPhone: '811',
     oneCallUrl: 'https://www.nc811.org',
     noticePeriodHours: 72,
-    noticePeriodNote: '3 business days minimum (not including day of notification); ticket valid 10 business days',
+    noticePeriodNote:
+      '3 business days minimum (not including day of notification); ticket valid 10 business days',
     markingColorStandard: 'APWA',
     toleranceZoneInches: 18,
     emergencyLocateAvailable: true,
@@ -624,7 +640,7 @@ export default [
     citation: 'N.C. Gen. Stat. § 87-100 et seq.',
     whiteLiningRequired: false,
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'North Dakota',
@@ -643,7 +659,7 @@ export default [
     citation: 'N.D. Cent. Code § 49-23-01 et seq.',
     whiteLiningRequired: false,
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Ohio',
@@ -652,7 +668,8 @@ export default [
     oneCallPhone: '811',
     oneCallUrl: 'https://www.oups.org',
     noticePeriodHours: 48,
-    noticePeriodNote: '2 full business days minimum (not including day of notification); ticket valid 10 business days',
+    noticePeriodNote:
+      '2 full business days minimum (not including day of notification); ticket valid 10 business days',
     markingColorStandard: 'APWA',
     toleranceZoneInches: 18,
     emergencyLocateAvailable: true,
@@ -662,7 +679,7 @@ export default [
     citation: 'Ohio Rev. Code § 3781.25 et seq.',
     whiteLiningRequired: false,
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Oklahoma',
@@ -671,7 +688,8 @@ export default [
     oneCallPhone: '811',
     oneCallUrl: 'https://www.okie811.org',
     noticePeriodHours: 48,
-    noticePeriodNote: '2 business days minimum (not including day of notification); ticket valid 10 business days',
+    noticePeriodNote:
+      '2 business days minimum (not including day of notification); ticket valid 10 business days',
     markingColorStandard: 'APWA',
     toleranceZoneInches: 18,
     emergencyLocateAvailable: true,
@@ -681,7 +699,7 @@ export default [
     citation: 'Okla. Stat. Ann. tit. 63, § 142.1 et seq.',
     whiteLiningRequired: false,
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Oregon',
@@ -690,7 +708,8 @@ export default [
     oneCallPhone: '811',
     oneCallUrl: 'https://www.digoreg.org',
     noticePeriodHours: 48,
-    noticePeriodNote: '2 business days minimum (not including day of notification); ticket valid 25 calendar days',
+    noticePeriodNote:
+      '2 business days minimum (not including day of notification); ticket valid 25 calendar days',
     markingColorStandard: 'APWA',
     toleranceZoneInches: 24,
     emergencyLocateAvailable: true,
@@ -699,8 +718,9 @@ export default [
     penaltyCriminal: 'Class A violation to misdemeanor depending on severity',
     citation: 'ORS § 757.541 et seq.',
     whiteLiningRequired: true,
-    notes: 'White lining required for large projects. Oregon has a 24-inch tolerance zone, wider than most states.',
-    lastVerified: '2026-01-01'
+    notes:
+      'White lining required for large projects. Oregon has a 24-inch tolerance zone, wider than most states.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Pennsylvania',
@@ -709,7 +729,8 @@ export default [
     oneCallPhone: '811',
     oneCallUrl: 'https://www.pa1call.org',
     noticePeriodHours: 72,
-    noticePeriodNote: '3 business days minimum (not including day of notification); ticket valid 30 calendar days',
+    noticePeriodNote:
+      '3 business days minimum (not including day of notification); ticket valid 30 calendar days',
     markingColorStandard: 'APWA',
     toleranceZoneInches: 18,
     emergencyLocateAvailable: true,
@@ -719,7 +740,7 @@ export default [
     citation: '73 Pa. Stat. § 176 et seq. (PA One Call System Act)',
     whiteLiningRequired: false,
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Rhode Island',
@@ -738,7 +759,7 @@ export default [
     citation: 'R.I. Gen. Laws § 39-1.2-1 et seq.',
     whiteLiningRequired: false,
     notes: 'Rhode Island served by Dig Safe.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'South Carolina',
@@ -747,7 +768,8 @@ export default [
     oneCallPhone: '811',
     oneCallUrl: 'https://www.sc811.com',
     noticePeriodHours: 72,
-    noticePeriodNote: '3 business days minimum (not including day of notification); ticket valid 10 business days',
+    noticePeriodNote:
+      '3 business days minimum (not including day of notification); ticket valid 10 business days',
     markingColorStandard: 'APWA',
     toleranceZoneInches: 18,
     emergencyLocateAvailable: true,
@@ -757,7 +779,7 @@ export default [
     citation: 'S.C. Code Ann. § 58-35-10 et seq.',
     whiteLiningRequired: false,
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'South Dakota',
@@ -776,7 +798,7 @@ export default [
     citation: 'S.D. Codified Laws § 49-7A-1 et seq.',
     whiteLiningRequired: false,
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Tennessee',
@@ -785,7 +807,8 @@ export default [
     oneCallPhone: '811',
     oneCallUrl: 'https://www.tennessee811.com',
     noticePeriodHours: 72,
-    noticePeriodNote: '3 business days minimum (not including day of notification); ticket valid 10 business days',
+    noticePeriodNote:
+      '3 business days minimum (not including day of notification); ticket valid 10 business days',
     markingColorStandard: 'APWA',
     toleranceZoneInches: 18,
     emergencyLocateAvailable: true,
@@ -795,7 +818,7 @@ export default [
     citation: 'Tenn. Code Ann. § 65-31-101 et seq.',
     whiteLiningRequired: false,
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Texas',
@@ -804,17 +827,19 @@ export default [
     oneCallPhone: '811',
     oneCallUrl: 'https://www.texas811.org',
     noticePeriodHours: 48,
-    noticePeriodNote: '2 full business days minimum (not including day of notification); ticket valid 14 calendar days',
+    noticePeriodNote:
+      '2 full business days minimum (not including day of notification); ticket valid 14 calendar days',
     markingColorStandard: 'APWA',
     toleranceZoneInches: 24,
     emergencyLocateAvailable: true,
     emergencyLocateNote: 'Emergency response within 2 hours',
     penaltyCivil: 'Up to $10,000 per violation; up to $25,000 per incident for multiple violations',
-    penaltyCriminal: 'Class B misdemeanor; Class A misdemeanor for damage to underground facilities',
+    penaltyCriminal:
+      'Class B misdemeanor; Class A misdemeanor for damage to underground facilities',
     citation: 'Tex. Util. Code § 251.001 et seq.',
     whiteLiningRequired: true,
     notes: 'White lining required for projects that span large or complex areas.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Utah',
@@ -829,11 +854,12 @@ export default [
     emergencyLocateAvailable: true,
     emergencyLocateNote: 'Emergency response 24/7',
     penaltyCivil: 'Up to $10,000 per violation',
-    penaltyCriminal: 'Class B misdemeanor for willful violations; Class A for damage to critical infrastructure',
+    penaltyCriminal:
+      'Class B misdemeanor for willful violations; Class A for damage to critical infrastructure',
     citation: 'Utah Code Ann. § 54-8a-1 et seq.',
     whiteLiningRequired: false,
     notes: 'Utah has a 24-inch tolerance zone.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Vermont',
@@ -852,7 +878,7 @@ export default [
     citation: '30 V.S.A. § 7001 et seq.',
     whiteLiningRequired: false,
     notes: 'Vermont served by Dig Safe.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Virginia',
@@ -861,17 +887,19 @@ export default [
     oneCallPhone: '811',
     oneCallUrl: 'https://www.missutility.net',
     noticePeriodHours: 72,
-    noticePeriodNote: '3 business days minimum (not including day of notification); ticket valid 15 working days',
+    noticePeriodNote:
+      '3 business days minimum (not including day of notification); ticket valid 15 working days',
     markingColorStandard: 'APWA',
     toleranceZoneInches: 18,
     emergencyLocateAvailable: true,
     emergencyLocateNote: 'Emergency response within 2 hours',
     penaltyCivil: 'Up to $25,000 per violation; enhanced penalties for repeat violators',
-    penaltyCriminal: 'Class 1 misdemeanor for willful violations; felony for damage causing injury or death',
+    penaltyCriminal:
+      'Class 1 misdemeanor for willful violations; felony for damage causing injury or death',
     citation: 'Va. Code Ann. § 56-265.14 et seq.',
     whiteLiningRequired: true,
     notes: 'White lining required to delineate complex or large excavation areas.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Washington',
@@ -880,7 +908,8 @@ export default [
     oneCallPhone: '811',
     oneCallUrl: 'https://www.washington811.com',
     noticePeriodHours: 48,
-    noticePeriodNote: '2 business days minimum (not including day of notification); ticket valid 10 business days',
+    noticePeriodNote:
+      '2 business days minimum (not including day of notification); ticket valid 10 business days',
     markingColorStandard: 'APWA',
     toleranceZoneInches: 24,
     emergencyLocateAvailable: true,
@@ -889,8 +918,9 @@ export default [
     penaltyCriminal: 'Gross misdemeanor; Class C felony for damage causing serious injury',
     citation: 'RCW § 19.122.010 et seq.',
     whiteLiningRequired: true,
-    notes: 'White lining required. Washington has a 24-inch tolerance zone and among the strongest damage prevention laws.',
-    lastVerified: '2026-01-01'
+    notes:
+      'White lining required. Washington has a 24-inch tolerance zone and among the strongest damage prevention laws.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'West Virginia',
@@ -899,7 +929,8 @@ export default [
     oneCallPhone: '811',
     oneCallUrl: 'https://www.missutility.net',
     noticePeriodHours: 72,
-    noticePeriodNote: '3 business days minimum (not including day of notification); ticket valid 15 calendar days',
+    noticePeriodNote:
+      '3 business days minimum (not including day of notification); ticket valid 15 calendar days',
     markingColorStandard: 'APWA',
     toleranceZoneInches: 18,
     emergencyLocateAvailable: true,
@@ -909,7 +940,7 @@ export default [
     citation: 'W. Va. Code § 24-4-6 et seq.',
     whiteLiningRequired: false,
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Wisconsin',
@@ -918,7 +949,8 @@ export default [
     oneCallPhone: '811',
     oneCallUrl: 'https://www.diggershotline.com',
     noticePeriodHours: 72,
-    noticePeriodNote: '3 business days minimum (not including day of notification); ticket valid 10 business days',
+    noticePeriodNote:
+      '3 business days minimum (not including day of notification); ticket valid 10 business days',
     markingColorStandard: 'APWA',
     toleranceZoneInches: 18,
     emergencyLocateAvailable: true,
@@ -928,7 +960,7 @@ export default [
     citation: 'Wis. Stat. § 182.0175 et seq.',
     whiteLiningRequired: false,
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Wyoming',
@@ -947,6 +979,6 @@ export default [
     citation: 'Wyo. Stat. Ann. § 37-12-301 et seq.',
     whiteLiningRequired: false,
     notes: '',
-    lastVerified: '2026-01-01'
-  }
+    lastVerified: '2026-01-01',
+  },
 ]

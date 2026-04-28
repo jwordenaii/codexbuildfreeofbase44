@@ -1,9 +1,16 @@
+/* eslint-disable react-refresh/only-export-components */
 import { Helmet, HelmetData } from 'react-helmet-async'
 import { SITE_URL } from '../lib/schemas'
 
 // Re-export schema helpers so existing page imports still work via this path.
-// eslint-disable-next-line react-refresh/only-export-components
-export { LOCAL_BUSINESS_SCHEMA, serviceSchema, faqSchema, reviewsSchema, howToSchema, videoObjectSchema } from '../lib/schemas'
+export {
+  LOCAL_BUSINESS_SCHEMA,
+  serviceSchema,
+  faqSchema,
+  reviewsSchema,
+  howToSchema,
+  videoObjectSchema,
+} from '../lib/schemas'
 
 const standaloneHelmetData = new HelmetData({})
 
@@ -59,19 +66,19 @@ export default function SchemaMarkup({
       <link rel="canonical" href={canonicalUrl} />
 
       {/* Open Graph */}
-      <meta property="og:type"        content="website" />
-      <meta property="og:title"       content={fullTitle} />
+      <meta property="og:type" content="website" />
+      <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={description} />
-      <meta property="og:url"         content={canonicalUrl} />
-      <meta property="og:image"       content={image} />
-      <meta property="og:site_name"   content="J. Worden & Sons Asphalt Paving" />
+      <meta property="og:url" content={canonicalUrl} />
+      <meta property="og:image" content={image} />
+      <meta property="og:site_name" content="J. Worden & Sons Asphalt Paving" />
 
       {/* Twitter Card */}
-      <meta name="twitter:card"        content="summary_large_image" />
-      <meta name="twitter:site"        content="@JWordenSons" />
-      <meta name="twitter:title"       content={fullTitle} />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:site" content="@JWordenSons" />
+      <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
-      <meta name="twitter:image"       content={image} />
+      <meta name="twitter:image" content={image} />
 
       {/* JSON-LD blocks */}
       {schemas.map((s, i) => (

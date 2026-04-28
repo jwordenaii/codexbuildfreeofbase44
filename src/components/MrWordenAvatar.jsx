@@ -33,7 +33,9 @@ function JWordenSVG({ talking = false }) {
       <rect x="15" y="29" width="50" height="4.5" rx="2" fill="#f5a623" />
       {/* Hat badge */}
       <rect x="36" y="22" width="8" height="5" rx="1.5" fill="#d4880a" opacity="0.8" />
-      <text x="40" y="26.5" fontSize="4" fill="white" textAnchor="middle" fontWeight="bold">JW</text>
+      <text x="40" y="26.5" fontSize="4" fill="white" textAnchor="middle" fontWeight="bold">
+        JW
+      </text>
 
       {/* ── Ears ─────────────────────────────────────────────────────── */}
       <ellipse cx="21.5" cy="47" rx="3.5" ry="4.5" fill="#F0B98F" />
@@ -43,8 +45,24 @@ function JWordenSVG({ talking = false }) {
       <ellipse cx="40" cy="46" rx="18" ry="20" fill="#F4C3A1" />
 
       {/* ── Glasses ──────────────────────────────────────────────────── */}
-      <circle cx="32" cy="44" r="6.5" stroke="#4a4a4a" strokeWidth="1.8" fill="white" fillOpacity="0.6" />
-      <circle cx="48" cy="44" r="6.5" stroke="#4a4a4a" strokeWidth="1.8" fill="white" fillOpacity="0.6" />
+      <circle
+        cx="32"
+        cy="44"
+        r="6.5"
+        stroke="#4a4a4a"
+        strokeWidth="1.8"
+        fill="white"
+        fillOpacity="0.6"
+      />
+      <circle
+        cx="48"
+        cy="44"
+        r="6.5"
+        stroke="#4a4a4a"
+        strokeWidth="1.8"
+        fill="white"
+        fillOpacity="0.6"
+      />
       {/* Bridge */}
       <path d="M38.5 44 H41.5" stroke="#4a4a4a" strokeWidth="1.6" />
       {/* Temples */}
@@ -59,10 +77,22 @@ function JWordenSVG({ talking = false }) {
       <circle cx="49" cy="43" r="0.9" fill="white" />
 
       {/* ── Nose ─────────────────────────────────────────────────────── */}
-      <path d="M37.5 48 Q40 52.5 42.5 48" stroke="#c8966c" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      <path
+        d="M37.5 48 Q40 52.5 42.5 48"
+        stroke="#c8966c"
+        strokeWidth="1.5"
+        fill="none"
+        strokeLinecap="round"
+      />
 
       {/* ── Mustache ─────────────────────────────────────────────────── */}
-      <path d="M31 54 Q36 57 40 55 Q44 57 49 54" stroke="#7a4a25" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      <path
+        d="M31 54 Q36 57 40 55 Q44 57 49 54"
+        stroke="#7a4a25"
+        strokeWidth="2.5"
+        fill="none"
+        strokeLinecap="round"
+      />
 
       {/* ── Mouth (animated open when talking) ──────────────────────── */}
       {talking ? (
@@ -88,10 +118,7 @@ function JWordenSVG({ talking = false }) {
       <rect x="35" y="64" width="10" height="7" rx="2" fill="#F0B98F" />
 
       {/* ── Jacket / body ────────────────────────────────────────────── */}
-      <path
-        d="M19 73 Q18 88 40 88 Q62 88 61 73 Q52 66 40 66 Q28 66 19 73 Z"
-        fill="#1a1a2e"
-      />
+      <path d="M19 73 Q18 88 40 88 Q62 88 61 73 Q52 66 40 66 Q28 66 19 73 Z" fill="#1a1a2e" />
       {/* Lapels */}
       <path d="M37 67 L28 72 L33 75 L40 70 Z" fill="#16213e" />
       <path d="M43 67 L52 72 L47 75 L40 70 Z" fill="#16213e" />
@@ -101,7 +128,14 @@ function JWordenSVG({ talking = false }) {
       <path d="M38.5 70 L40 78 L41.5 70 Z" fill="#f5a623" />
 
       {/* ── Shirt collar ─────────────────────────────────────────────── */}
-      <path d="M36 65 L38 70 L40 67 L42 70 L44 65" stroke="white" strokeWidth="1.2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M36 65 L38 70 L40 67 L42 70 L44 65"
+        stroke="white"
+        strokeWidth="1.2"
+        fill="none"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   )
 }
@@ -138,8 +172,7 @@ export default function MrWordenAvatar({
         ? { repeat: Infinity, duration: 0.65, ease: 'easeInOut' }
         : { repeat: Infinity, duration: 2.2, ease: 'easeInOut' }
 
-  const glowColor =
-    state === 'talking' ? 'rgba(245,166,35,0.5)' : 'rgba(245,166,35,0.25)'
+  const glowColor = state === 'talking' ? 'rgba(245,166,35,0.5)' : 'rgba(245,166,35,0.25)'
   const glowScale = state === 'talking' ? [1, 1.4, 1] : [1, 1.25, 1]
   const glowDuration = state === 'talking' ? 0.65 : 2.8
 

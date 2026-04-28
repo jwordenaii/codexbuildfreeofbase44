@@ -79,7 +79,8 @@ const SERVICES = [
     icon: '🏠',
     title: 'Residential Driveways',
     tagline: 'Curb appeal that lasts a generation',
-    priceRange: 'Most residential driveways run $2,500–$8,000 depending on size and base conditions',
+    priceRange:
+      'Most residential driveways run $2,500–$8,000 depending on size and base conditions',
     description:
       'We remove your old driveway, prep the sub-base, and install a full-depth asphalt section sized for your soil conditions and vehicle load. Most residential driveways are completed in a single day.',
     features: [
@@ -107,7 +108,8 @@ const SERVICES = [
       'Documentation for property records',
       'Repair vs overlay vs reconstruction guidance',
     ],
-    ideal: 'Property managers, commercial landlords, HOAs, municipalities, schools, industrial owners',
+    ideal:
+      'Property managers, commercial landlords, HOAs, municipalities, schools, industrial owners',
   },
   {
     id: 'general-contracting',
@@ -125,9 +127,10 @@ const SERVICES = [
       'Owner-rep communication & weekly reports',
       'Final walk-through & warranty documentation',
       'Commercial & residential new construction',
-      'Ground-up QSR/franchise build experience (KFC, Arby\'s, Taco Bell)',
+      "Ground-up QSR/franchise build experience (KFC, Arby's, Taco Bell)",
     ],
-    ideal: 'New commercial builds, QSR franchise construction, large residential additions, full renovations',
+    ideal:
+      'New commercial builds, QSR franchise construction, large residential additions, full renovations',
   },
   {
     id: 'interior-design',
@@ -147,7 +150,8 @@ const SERVICES = [
       'Outdoor living room & covered patio design',
       'Full project management from concept to completion',
     ],
-    ideal: 'Full home renovations, new construction interiors, commercial office & hospitality spaces, outdoor living areas',
+    ideal:
+      'Full home renovations, new construction interiors, commercial office & hospitality spaces, outdoor living areas',
   },
   {
     id: 'cobblestone-pavers',
@@ -167,7 +171,8 @@ const SERVICES = [
       'Sealing for stain protection & color enhancement',
       'Steps, retaining walls & fire pit surrounds to match',
     ],
-    ideal: 'Residential patios, pool decks, garden walkways, driveways, commercial courtyard plazas',
+    ideal:
+      'Residential patios, pool decks, garden walkways, driveways, commercial courtyard plazas',
   },
   {
     id: 'stone-masonry',
@@ -187,44 +192,75 @@ const SERVICES = [
       'Waterfall & water feature stone work',
       'Historic restoration & stone repair',
     ],
-    ideal: 'Retaining walls, outdoor fireplaces, foundation veneers, estate-level landscape features, historic properties',
+    ideal:
+      'Retaining walls, outdoor fireplaces, foundation veneers, estate-level landscape features, historic properties',
   },
 ]
 
 const PAVING_INTENT_CLUSTERS = [
   {
     audience: 'Commercial property managers',
-    searches: ['commercial asphalt paving', 'parking lot paving', 'parking lot repair', 'sealcoating contractor'],
+    searches: [
+      'commercial asphalt paving',
+      'parking lot paving',
+      'parking lot repair',
+      'sealcoating contractor',
+    ],
     proof:
       'Parking lot construction, mill-and-overlay planning, ADA stalls, striping, drainage review, night/weekend phasing, and maintenance calendars.',
   },
   {
     audience: 'Homeowners',
-    searches: ['driveway paving near me', 'asphalt driveway cost', 'driveway replacement', 'driveway resurfacing'],
+    searches: [
+      'driveway paving near me',
+      'asphalt driveway cost',
+      'driveway replacement',
+      'driveway resurfacing',
+    ],
     proof:
       'Driveway removal, stone base prep, grading, apron tie-ins, drainage corrections, curing guidance, and sealcoating recommendations.',
   },
   {
     audience: 'Franchise and QSR operators',
-    searches: ['restaurant parking lot paving', 'QSR asphalt contractor', 'drive lane paving', 'commercial asphalt maintenance'],
+    searches: [
+      'restaurant parking lot paving',
+      'QSR asphalt contractor',
+      'drive lane paving',
+      'commercial asphalt maintenance',
+    ],
     proof:
       'National QSR experience, traffic control, production phasing, asphalt temperature awareness, safety documentation, and multi-state coordination.',
   },
   {
     audience: 'Risk-aware project owners',
-    searches: ['811 before paving', 'utility locating before excavation', 'GPR utility scan', 'pavement condition assessment'],
+    searches: [
+      '811 before paving',
+      'utility locating before excavation',
+      'GPR utility scan',
+      'pavement condition assessment',
+    ],
     proof:
       '811 response checks, GPR/EM locate logic, LiDAR/drone overlays, potholing recommendations, pavement age-decay scoring, and go/no-go production decisions.',
   },
   {
     audience: 'Municipal, HOA, and institutional buyers',
-    searches: ['pavement preservation', 'asphalt resurfacing', 'asphalt recycling', 'road maintenance contractor'],
+    searches: [
+      'pavement preservation',
+      'asphalt resurfacing',
+      'asphalt recycling',
+      'road maintenance contractor',
+    ],
     proof:
       'Lifecycle-first recommendations that compare sealcoating, crack sealing, patching, overlay, reconstruction, drainage repair, and documentation for board or public-facility decisions.',
   },
   {
     audience: 'Evidence-driven owners',
-    searches: ['asphalt testing', 'pavement condition assessment', 'asphalt lifecycle planning', 'pavement preservation contractor'],
+    searches: [
+      'asphalt testing',
+      'pavement condition assessment',
+      'asphalt lifecycle planning',
+      'pavement preservation contractor',
+    ],
     proof:
       'Plain-English condition scoring, photos, measurements, traffic/drainage review, material-temperature awareness, and preservation vs replacement reasoning.',
   },
@@ -347,8 +383,8 @@ export default function Services() {
             Our <span className="text-brand-amber">Services</span>
           </h1>
           <p className="text-white/70 text-xl max-w-2xl mx-auto">
-            Asphalt paving, parking lots, driveways, sealcoating, crack filling,
-            repair, maintenance, utility-safe planning, and full GC support.
+            Asphalt paving, parking lots, driveways, sealcoating, crack filling, repair,
+            maintenance, utility-safe planning, and full GC support.
           </p>
         </div>
       </div>
@@ -415,18 +451,24 @@ export default function Services() {
               The Questions Buyers Ask Before They Call
             </h2>
             <p className="text-white/60 max-w-2xl mx-auto">
-              High-performing paving pages do more than list services. They match each
-              buyer type with the exact problems, keywords, proof, and next step needed
-              to make a confident estimate request.
+              High-performing paving pages do more than list services. They match each buyer type
+              with the exact problems, keywords, proof, and next step needed to make a confident
+              estimate request.
             </p>
           </div>
           <div className="grid md:grid-cols-2 gap-5">
             {PAVING_INTENT_CLUSTERS.map((cluster) => (
-              <div key={cluster.audience} className="rounded-2xl bg-white/5 border border-white/10 p-6">
+              <div
+                key={cluster.audience}
+                className="rounded-2xl bg-white/5 border border-white/10 p-6"
+              >
                 <h3 className="font-display font-bold text-xl text-white">{cluster.audience}</h3>
                 <div className="flex flex-wrap gap-2 my-4">
                   {cluster.searches.map((search) => (
-                    <span key={search} className="text-xs bg-brand-amber/15 text-brand-amber px-2 py-1 rounded-full">
+                    <span
+                      key={search}
+                      className="text-xs bg-brand-amber/15 text-brand-amber px-2 py-1 rounded-full"
+                    >
                       {search}
                     </span>
                   ))}
@@ -449,9 +491,9 @@ export default function Services() {
               How Competitor Research Becomes Better Worden Content
             </h2>
             <p className="text-brand-navy/60 max-w-2xl mx-auto">
-              We do not copy competitor pages. We convert their strongest ranking
-              patterns into original service logic, clearer buyer guidance, better
-              proof, stronger internal links, and more useful calls to action.
+              We do not copy competitor pages. We convert their strongest ranking patterns into
+              original service logic, clearer buyer guidance, better proof, stronger internal links,
+              and more useful calls to action.
             </p>
           </div>
           <div className="grid md:grid-cols-2 gap-4">
@@ -482,12 +524,10 @@ export default function Services() {
             <span className="text-brand-amber text-xs font-bold uppercase tracking-widest">
               Project Inspiration
             </span>
-            <h2 className="section-heading mt-2 mb-4">
-              Browse Our Work by Style &amp; Category
-            </h2>
+            <h2 className="section-heading mt-2 mb-4">Browse Our Work by Style &amp; Category</h2>
             <p className="text-brand-navy/60 max-w-xl mx-auto">
-              Filter by interior design, outdoor living, stone masonry, or construction
-              projects to find inspiration for your next build.
+              Filter by interior design, outdoor living, stone masonry, or construction projects to
+              find inspiration for your next build.
             </p>
           </div>
           <InspirationGallery />
@@ -501,9 +541,14 @@ export default function Services() {
             Not sure which service you need?
           </h2>
           <p className="text-brand-navy/70 mb-6">
-            Tell us about your project and we will recommend the right approach — whether that&rsquo;s paving, masonry, a full GC engagement, or an interior design consultation. No pressure.
+            Tell us about your project and we will recommend the right approach — whether
+            that&rsquo;s paving, masonry, a full GC engagement, or an interior design consultation.
+            No pressure.
           </p>
-          <Link to="/quote" className="bg-brand-navy text-white font-bold px-8 py-4 rounded-lg hover:bg-brand-navy/90 transition-colors">
+          <Link
+            to="/quote"
+            className="bg-brand-navy text-white font-bold px-8 py-4 rounded-lg hover:bg-brand-navy/90 transition-colors"
+          >
             Start Your Free Quote
           </Link>
         </div>

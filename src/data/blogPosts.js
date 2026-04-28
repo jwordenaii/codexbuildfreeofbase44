@@ -5,22 +5,23 @@
  */
 
 export const BLOG_CATEGORIES = [
-  { value: "all",        label: "All Posts" },
-  { value: "tips",       label: "Paving Tips" },
-  { value: "how-to",     label: "How-To Guides" },
-  { value: "industry",   label: "Industry News" },
-  { value: "local",      label: "Local Virginia" },
-  { value: "commercial", label: "Commercial" },
+  { value: 'all', label: 'All Posts' },
+  { value: 'tips', label: 'Paving Tips' },
+  { value: 'how-to', label: 'How-To Guides' },
+  { value: 'industry', label: 'Industry News' },
+  { value: 'local', label: 'Local Virginia' },
+  { value: 'commercial', label: 'Commercial' },
 ]
 
 export const BLOG_POSTS = [
   {
-    slug: "how-long-does-asphalt-paving-last",
-    category: "tips",
-    title: "How Long Does Asphalt Paving Last? (And How to Double It)",
-    excerpt: "The honest answer: a properly installed asphalt surface lasts 20 to 30 years. Here is what actually drives lifespan — and the one maintenance step that doubles it.",
-    date: "2025-10-15",
-    readTime: "5 min",
+    slug: 'how-long-does-asphalt-paving-last',
+    category: 'tips',
+    title: 'How Long Does Asphalt Paving Last? (And How to Double It)',
+    excerpt:
+      'The honest answer: a properly installed asphalt surface lasts 20 to 30 years. Here is what actually drives lifespan — and the one maintenance step that doubles it.',
+    date: '2025-10-15',
+    readTime: '5 min',
     featured: true,
     body: `## The Short Answer
 
@@ -85,12 +86,13 @@ If you are in Virginia or the mid-Atlantic and want a free estimate on a new dri
 `,
   },
   {
-    slug: "when-to-sealcoat-virginia-guide",
-    category: "tips",
-    title: "When to Sealcoat Your Driveway in Virginia (Best Season and Timing)",
-    excerpt: "Sealcoating only works when applied in the right conditions. Virginia's climate has a specific window — get it wrong and you have wasted money on a coat that will not cure properly.",
-    date: "2025-09-22",
-    readTime: "4 min",
+    slug: 'when-to-sealcoat-virginia-guide',
+    category: 'tips',
+    title: 'When to Sealcoat Your Driveway in Virginia (Best Season and Timing)',
+    excerpt:
+      "Sealcoating only works when applied in the right conditions. Virginia's climate has a specific window — get it wrong and you have wasted money on a coat that will not cure properly.",
+    date: '2025-09-22',
+    readTime: '4 min',
     featured: false,
     body: `## Virginia's Sealcoating Window
 
@@ -151,12 +153,13 @@ If you are seeing these signs, the oxidation process has already begun. Sealcoat
 `,
   },
   {
-    slug: "commercial-parking-lot-maintenance-guide",
-    category: "commercial",
-    title: "The Commercial Parking Lot Maintenance Guide: What Property Managers Need to Know",
-    excerpt: "A well-maintained parking lot says something about your business before a customer ever walks through your door. Here is the complete maintenance framework we use for commercial properties.",
-    date: "2025-08-30",
-    readTime: "7 min",
+    slug: 'commercial-parking-lot-maintenance-guide',
+    category: 'commercial',
+    title: 'The Commercial Parking Lot Maintenance Guide: What Property Managers Need to Know',
+    excerpt:
+      'A well-maintained parking lot says something about your business before a customer ever walks through your door. Here is the complete maintenance framework we use for commercial properties.',
+    date: '2025-08-30',
+    readTime: '7 min',
     featured: false,
     body: `## Why Parking Lot Maintenance Is a Business Decision
 
@@ -221,12 +224,13 @@ For commercial properties over 10,000 sq ft, a multi-year maintenance agreement 
 `,
   },
   {
-    slug: "asphalt-crack-types-guide",
-    category: "how-to",
-    title: "Asphalt Crack Types: How to Identify What You Have (And What to Do About It)",
-    excerpt: "Not all asphalt cracks are equal. Some are surface-level and easily fixed. Others indicate base failure. Here is how to read your pavement before calling a contractor.",
-    date: "2025-07-18",
-    readTime: "6 min",
+    slug: 'asphalt-crack-types-guide',
+    category: 'how-to',
+    title: 'Asphalt Crack Types: How to Identify What You Have (And What to Do About It)',
+    excerpt:
+      'Not all asphalt cracks are equal. Some are surface-level and easily fixed. Others indicate base failure. Here is how to read your pavement before calling a contractor.',
+    date: '2025-07-18',
+    readTime: '6 min',
     featured: false,
     body: `## Why Crack Type Matters
 
@@ -297,12 +301,13 @@ Treating the wrong crack the wrong way wastes money. More importantly, sealing o
 `,
   },
   {
-    slug: "kfc-franchise-paving-standards",
-    category: "commercial",
-    title: "What KFC Franchise Paving Actually Requires (From a National QSR Vendor)",
-    excerpt: "We have paved KFC locations across 12+ states under the national franchise program. Here is what operators need to know about QSR paving standards and why most local contractors cannot meet them.",
-    date: "2025-06-12",
-    readTime: "8 min",
+    slug: 'kfc-franchise-paving-standards',
+    category: 'commercial',
+    title: 'What KFC Franchise Paving Actually Requires (From a National QSR Vendor)',
+    excerpt:
+      'We have paved KFC locations across 12+ states under the national franchise program. Here is what operators need to know about QSR paving standards and why most local contractors cannot meet them.',
+    date: '2025-06-12',
+    readTime: '8 min',
     featured: false,
     body: `## The QSR Standard Is Different
 
@@ -365,12 +370,13 @@ If you are a QSR or franchise operator evaluating paving contractors, here is th
 `,
   },
   {
-    slug: "best-time-pave-driveway-virginia",
-    category: "local",
-    title: "The Best Time of Year to Pave a Driveway in Virginia",
-    excerpt: "Virginia's four seasons all affect asphalt differently. Paving in the wrong conditions means a shorter-lasting result. Here is the seasonal guide for homeowners in Central Virginia and Hampton Roads.",
-    date: "2025-05-05",
-    readTime: "4 min",
+    slug: 'best-time-pave-driveway-virginia',
+    category: 'local',
+    title: 'The Best Time of Year to Pave a Driveway in Virginia',
+    excerpt:
+      "Virginia's four seasons all affect asphalt differently. Paving in the wrong conditions means a shorter-lasting result. Here is the seasonal guide for homeowners in Central Virginia and Hampton Roads.",
+    date: '2025-05-05',
+    readTime: '4 min',
     featured: false,
     body: `## Virginia Has a Wide Paving Window
 

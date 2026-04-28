@@ -8,19 +8,21 @@ export default [
     statSOLCitation: 'Ala. Code § 6-2-34',
     statSORCitation: 'Ala. Code § 6-5-218',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Alabama recognizes implied warranty of habitability for residential construction; Cochran v. Keeton, 252 So.2d 289 (Ala. 1971)',
+    impliedWarrantyNote:
+      'Alabama recognizes implied warranty of habitability for residential construction; Cochran v. Keeton, 252 So.2d 289 (Ala. 1971)',
     rightToRepairLaw: false,
     rightToRepairCitation: '',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'Ala. Code § 8-1-42 prohibits hold harmless clauses in construction contracts that indemnify for indemnitee\'s own negligence',
+    antiIndemnityNote:
+      "Ala. Code § 8-1-42 prohibits hold harmless clauses in construction contracts that indemnify for indemnitee's own negligence",
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'Ala. Code Title 6 (Civil Practice); § 8-1-42 (anti-indemnity)',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Alaska',
@@ -31,19 +33,21 @@ export default [
     statSOLCitation: 'AS § 09.10.053',
     statSORCitation: 'AS § 09.10.054',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Alaska recognizes implied warranty of workmanship for residential construction',
+    impliedWarrantyNote:
+      'Alaska recognizes implied warranty of workmanship for residential construction',
     rightToRepairLaw: false,
     rightToRepairCitation: '',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'AS § 45.45.900 prohibits indemnification provisions that require a party to indemnify for the other party\'s own negligence',
+    antiIndemnityNote:
+      "AS § 45.45.900 prohibits indemnification provisions that require a party to indemnify for the other party's own negligence",
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'AS Title 9 (Code of Civil Procedure); § 45.45.900 (anti-indemnity)',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Arizona',
@@ -54,19 +58,22 @@ export default [
     statSOLCitation: 'A.R.S. § 12-548',
     statSORCitation: 'A.R.S. § 12-552',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Arizona recognizes implied warranty of habitability and workmanship for new residential construction; Centricut, LLC v. J.D. Bassett, etc.',
+    impliedWarrantyNote:
+      'Arizona recognizes implied warranty of habitability and workmanship for new residential construction; Centricut, LLC v. J.D. Bassett, etc.',
     rightToRepairLaw: true,
     rightToRepairCitation: 'A.R.S. § 12-1361 et seq. (Arizona Purchaser Dwelling Act)',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'A.R.S. § 32-1159 prohibits provisions in construction contracts that require a party to indemnify another party from liability for that other party\'s own negligence',
+    antiIndemnityNote:
+      "A.R.S. § 32-1159 prohibits provisions in construction contracts that require a party to indemnify another party from liability for that other party's own negligence",
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'A.R.S. Title 12 (Courts); § 32-1159 (anti-indemnity)',
-    notes: 'Arizona Purchaser Dwelling Act (Right to Repair) requires pre-litigation notice and opportunity to cure for construction defects in new residential construction.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Arizona Purchaser Dwelling Act (Right to Repair) requires pre-litigation notice and opportunity to cure for construction defects in new residential construction.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Arkansas',
@@ -77,19 +84,21 @@ export default [
     statSOLCitation: 'Ark. Code Ann. § 16-56-111',
     statSORCitation: 'Ark. Code Ann. § 16-56-112',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Arkansas recognizes implied warranty of habitability for new home construction; Smith v. Old Warson Dev. Co.',
+    impliedWarrantyNote:
+      'Arkansas recognizes implied warranty of habitability for new home construction; Smith v. Old Warson Dev. Co.',
     rightToRepairLaw: false,
     rightToRepairCitation: '',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'Ark. Code Ann. § 22-9-214 limits indemnification provisions in construction contracts on public works; § 4-56-104 for private',
+    antiIndemnityNote:
+      'Ark. Code Ann. § 22-9-214 limits indemnification provisions in construction contracts on public works; § 4-56-104 for private',
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'Ark. Code Ann. § 16-56-111 et seq.; § 22-9-214',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'California',
@@ -100,19 +109,22 @@ export default [
     statSOLCitation: 'Cal. Code Civ. Proc. § 337',
     statSORCitation: 'Cal. Code Civ. Proc. § 337.15',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'California has detailed Right to Repair Act (SB 800) functionality standards for new residential construction; replaces traditional implied warranty for builder-sold homes in most cases',
+    impliedWarrantyNote:
+      'California has detailed Right to Repair Act (SB 800) functionality standards for new residential construction; replaces traditional implied warranty for builder-sold homes in most cases',
     rightToRepairLaw: true,
     rightToRepairCitation: 'Cal. Civ. Code § 895 et seq. (Right to Repair Act / SB 800)',
     payIfPaidEnforceable: false,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'Cal. Civ. Code § 2782 prohibits indemnification provisions in construction contracts for the indemnitee\'s own active negligence; § 2782.05 for residential',
+    antiIndemnityNote:
+      "Cal. Civ. Code § 2782 prohibits indemnification provisions in construction contracts for the indemnitee's own active negligence; § 2782.05 for residential",
     noLienWaiverUntilPaid: true,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'Cal. Code Civ. Proc. § 337 et seq.; Cal. Civ. Code § 895; § 2782',
-    notes: 'California Right to Repair Act (SB 800) provides specific functionality standards for newly constructed residences. Pay-if-paid clauses are not enforceable in California; pay-when-paid clauses create a reasonable time period. Lien waivers must follow specific statutory forms.',
-    lastVerified: '2026-01-01'
+    notes:
+      'California Right to Repair Act (SB 800) provides specific functionality standards for newly constructed residences. Pay-if-paid clauses are not enforceable in California; pay-when-paid clauses create a reasonable time period. Lien waivers must follow specific statutory forms.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Colorado',
@@ -123,19 +135,23 @@ export default [
     statSOLCitation: 'C.R.S. § 13-80-101',
     statSORCitation: 'C.R.S. § 13-80-104',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Colorado recognizes implied warranty of suitability for new home construction; Barnes v. Mac Brown & Co.',
+    impliedWarrantyNote:
+      'Colorado recognizes implied warranty of suitability for new home construction; Barnes v. Mac Brown & Co.',
     rightToRepairLaw: true,
-    rightToRepairCitation: 'C.R.S. § 13-20-803.5 (Construction Defect Reform Act - mandatory pre-litigation process)',
+    rightToRepairCitation:
+      'C.R.S. § 13-20-803.5 (Construction Defect Reform Act - mandatory pre-litigation process)',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'C.R.S. § 13-21-111.5 comparative fault limits indemnification; case law limits broad indemnification provisions',
+    antiIndemnityNote:
+      'C.R.S. § 13-21-111.5 comparative fault limits indemnification; case law limits broad indemnification provisions',
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'C.R.S. § 13-80-101; § 13-20-803.5 (CDARA)',
-    notes: 'Colorado Construction Defect Action Reform Act (CDARA) requires a pre-litigation notice and opportunity to cure process for construction defect claims. HOA construction defect lawsuits require unit owner vote.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Colorado Construction Defect Action Reform Act (CDARA) requires a pre-litigation notice and opportunity to cure process for construction defect claims. HOA construction defect lawsuits require unit owner vote.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Connecticut',
@@ -146,19 +162,22 @@ export default [
     statSOLCitation: 'CGS § 52-576',
     statSORCitation: 'CGS § 52-584a',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Connecticut recognizes implied warranty of workmanship and habitability for new residential construction',
+    impliedWarrantyNote:
+      'Connecticut recognizes implied warranty of workmanship and habitability for new residential construction',
     rightToRepairLaw: false,
     rightToRepairCitation: '',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'CGS § 52-572k limits indemnity clauses in construction contracts that would indemnify for the indemnitee\'s own negligence',
+    antiIndemnityNote:
+      "CGS § 52-572k limits indemnity clauses in construction contracts that would indemnify for the indemnitee's own negligence",
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'CGS § 52-576; § 52-572k',
-    notes: 'Connecticut New Home Construction Warranties Act provides warranties for new homes: 1 year for workmanship, 2 years for MEP systems, 3-year for structural components.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Connecticut New Home Construction Warranties Act provides warranties for new homes: 1 year for workmanship, 2 years for MEP systems, 3-year for structural components.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Delaware',
@@ -169,19 +188,21 @@ export default [
     statSOLCitation: '10 Del. Code § 8106',
     statSORCitation: '10 Del. Code § 8127',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Delaware recognizes implied warranty of fitness and habitability for new residential construction',
+    impliedWarrantyNote:
+      'Delaware recognizes implied warranty of fitness and habitability for new residential construction',
     rightToRepairLaw: false,
     rightToRepairCitation: '',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: false,
-    antiIndemnityNote: 'Delaware does not have a specific anti-indemnity statute; broad indemnification provisions may be enforceable',
+    antiIndemnityNote:
+      'Delaware does not have a specific anti-indemnity statute; broad indemnification provisions may be enforceable',
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: '10 Del. Code § 8106; § 8127',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Florida',
@@ -192,19 +213,22 @@ export default [
     statSOLCitation: 'Fla. Stat. § 95.11(2)(b)',
     statSORCitation: 'Fla. Stat. § 95.11(3)(c)',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Florida recognizes implied warranty of fitness and habitability; Florida Statute Chapter 553 sets construction standards',
+    impliedWarrantyNote:
+      'Florida recognizes implied warranty of fitness and habitability; Florida Statute Chapter 553 sets construction standards',
     rightToRepairLaw: true,
     rightToRepairCitation: 'Fla. Stat. § 558.001 et seq. (Construction Defects Chapter 558)',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'Fla. Stat. § 725.06 limits indemnification provisions in construction contracts; insurance requirements for indemnification',
+    antiIndemnityNote:
+      'Fla. Stat. § 725.06 limits indemnification provisions in construction contracts; insurance requirements for indemnification',
     noLienWaiverUntilPaid: true,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'Fla. Stat. § 95.11; § 558; § 725.06',
-    notes: 'Florida Chapter 558 requires pre-litigation notice and opportunity to cure for construction defect claims. Statutory lien waivers must follow prescribed forms. Contractor must provide disclosure of lien rights to residential owners.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Florida Chapter 558 requires pre-litigation notice and opportunity to cure for construction defect claims. Statutory lien waivers must follow prescribed forms. Contractor must provide disclosure of lien rights to residential owners.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Georgia',
@@ -215,19 +239,21 @@ export default [
     statSOLCitation: 'O.C.G.A. § 9-3-24',
     statSORCitation: 'O.C.G.A. § 9-3-51',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Georgia recognizes implied warranty of habitability for new residential construction; Regency Residential v. Benefiel',
+    impliedWarrantyNote:
+      'Georgia recognizes implied warranty of habitability for new residential construction; Regency Residential v. Benefiel',
     rightToRepairLaw: false,
     rightToRepairCitation: '',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'O.C.G.A. § 13-8-2(b) limits certain indemnification provisions in construction contracts that shift liability for one\'s own negligence',
+    antiIndemnityNote:
+      "O.C.G.A. § 13-8-2(b) limits certain indemnification provisions in construction contracts that shift liability for one's own negligence",
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'O.C.G.A. § 9-3-24; § 13-8-2',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Hawaii',
@@ -238,19 +264,21 @@ export default [
     statSOLCitation: 'HRS § 657-1',
     statSORCitation: 'HRS § 657-8',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Hawaii recognizes implied warranty of habitability for new residential construction',
+    impliedWarrantyNote:
+      'Hawaii recognizes implied warranty of habitability for new residential construction',
     rightToRepairLaw: false,
     rightToRepairCitation: '',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'HRS § 431:10-222 restricts indemnification provisions that would require a party to indemnify for another\'s sole negligence or willful misconduct',
+    antiIndemnityNote:
+      "HRS § 431:10-222 restricts indemnification provisions that would require a party to indemnify for another's sole negligence or willful misconduct",
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'HRS § 657-1; § 431:10-222',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Idaho',
@@ -261,19 +289,21 @@ export default [
     statSOLCitation: 'Idaho Code § 5-217',
     statSORCitation: 'Idaho Code § 6-2003',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Idaho recognizes implied warranty of habitability for new residential construction; Bethlahmy v. Bechtel',
+    impliedWarrantyNote:
+      'Idaho recognizes implied warranty of habitability for new residential construction; Bethlahmy v. Bechtel',
     rightToRepairLaw: false,
     rightToRepairCitation: '',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'Idaho Code § 29-114 prohibits indemnification provisions in construction contracts that indemnify for the indemnitee\'s own negligence or fault',
+    antiIndemnityNote:
+      "Idaho Code § 29-114 prohibits indemnification provisions in construction contracts that indemnify for the indemnitee's own negligence or fault",
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'Idaho Code § 5-217; § 29-114',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Illinois',
@@ -284,19 +314,22 @@ export default [
     statSOLCitation: '735 ILCS 5/13-206',
     statSORCitation: '735 ILCS 5/13-214',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Illinois recognizes implied warranty of habitability for new residential construction; Petersen v. Hubschman Construction Co.',
+    impliedWarrantyNote:
+      'Illinois recognizes implied warranty of habitability for new residential construction; Petersen v. Hubschman Construction Co.',
     rightToRepairLaw: false,
     rightToRepairCitation: '',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: '740 ILCS 35/1 (Construction Contract Indemnification for Negligence Act) prohibits indemnification provisions that require a party to indemnify for another\'s own negligence',
+    antiIndemnityNote:
+      "740 ILCS 35/1 (Construction Contract Indemnification for Negligence Act) prohibits indemnification provisions that require a party to indemnify for another's own negligence",
     noLienWaiverUntilPaid: true,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: '735 ILCS 5/13-206; 735 ILCS 5/13-214; 740 ILCS 35',
-    notes: 'Illinois has a 10-year statute of limitations for written contracts and a 10-year statute of repose for construction defects. Illinois Mechanics Lien Act requires lien waiver compliance.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Illinois has a 10-year statute of limitations for written contracts and a 10-year statute of repose for construction defects. Illinois Mechanics Lien Act requires lien waiver compliance.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Indiana',
@@ -307,19 +340,21 @@ export default [
     statSOLCitation: 'IC 34-11-2-11',
     statSORCitation: 'IC 32-30-1-5',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Indiana recognizes implied warranty of habitability for new residential construction; Theis v. Heuer',
+    impliedWarrantyNote:
+      'Indiana recognizes implied warranty of habitability for new residential construction; Theis v. Heuer',
     rightToRepairLaw: false,
     rightToRepairCitation: '',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'IC 26-2-5-1 prohibits indemnification provisions in construction contracts that would indemnify a party for its own negligence or willful misconduct',
+    antiIndemnityNote:
+      'IC 26-2-5-1 prohibits indemnification provisions in construction contracts that would indemnify a party for its own negligence or willful misconduct',
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'IC 34-11-2-11; IC 26-2-5-1',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Iowa',
@@ -330,19 +365,22 @@ export default [
     statSOLCitation: 'Iowa Code § 614.1(5)',
     statSORCitation: 'Iowa Code § 614.1(11)',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Iowa recognizes implied warranty of workmanship for new residential construction',
+    impliedWarrantyNote:
+      'Iowa recognizes implied warranty of workmanship for new residential construction',
     rightToRepairLaw: false,
     rightToRepairCitation: '',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'Iowa Code § 573.34 limits broad indemnification in construction contracts on public projects; case law limits private',
+    antiIndemnityNote:
+      'Iowa Code § 573.34 limits broad indemnification in construction contracts on public projects; case law limits private',
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'Iowa Code § 614.1; § 573.34',
-    notes: 'Iowa has a 15-year statute of repose for construction defects, one of the longest in the nation.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Iowa has a 15-year statute of repose for construction defects, one of the longest in the nation.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Kansas',
@@ -353,19 +391,21 @@ export default [
     statSOLCitation: 'K.S.A. 60-511',
     statSORCitation: 'K.S.A. 60-513(b)',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Kansas recognizes implied warranty of habitability for new residential construction',
+    impliedWarrantyNote:
+      'Kansas recognizes implied warranty of habitability for new residential construction',
     rightToRepairLaw: false,
     rightToRepairCitation: '',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'K.S.A. 16-121 prohibits indemnification provisions in construction contracts that indemnify for the indemnitee\'s own negligence',
+    antiIndemnityNote:
+      "K.S.A. 16-121 prohibits indemnification provisions in construction contracts that indemnify for the indemnitee's own negligence",
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'K.S.A. 60-511; K.S.A. 16-121',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Kentucky',
@@ -376,19 +416,21 @@ export default [
     statSOLCitation: 'KRS 413.090',
     statSORCitation: 'KRS 413.135',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Kentucky recognizes implied warranty of habitability for new residential construction; Crawley v. Terhune',
+    impliedWarrantyNote:
+      'Kentucky recognizes implied warranty of habitability for new residential construction; Crawley v. Terhune',
     rightToRepairLaw: false,
     rightToRepairCitation: '',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'KRS 371.400 prohibits indemnification provisions in construction contracts that would indemnify a party for its own negligence',
+    antiIndemnityNote:
+      'KRS 371.400 prohibits indemnification provisions in construction contracts that would indemnify a party for its own negligence',
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'KRS 413.090; KRS 371.400',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Louisiana',
@@ -399,19 +441,22 @@ export default [
     statSOLCitation: 'La. Civ. Code art. 3499',
     statSORCitation: 'La. Rev. Stat. § 9:2772',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Louisiana Civil Code Article 2762 provides warranty against redhibitory defects; contractors warrant construction for 10 years under redhibition',
+    impliedWarrantyNote:
+      'Louisiana Civil Code Article 2762 provides warranty against redhibitory defects; contractors warrant construction for 10 years under redhibition',
     rightToRepairLaw: false,
     rightToRepairCitation: '',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'La. Rev. Stat. § 9:2780 (OILFIELD ANTI-INDEMNITY) prohibits indemnification in oilfield contracts; § 9:2780.1 for construction contracts',
+    antiIndemnityNote:
+      'La. Rev. Stat. § 9:2780 (OILFIELD ANTI-INDEMNITY) prohibits indemnification in oilfield contracts; § 9:2780.1 for construction contracts',
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'La. Civ. Code art. 2762; La. Rev. Stat. § 9:2772; § 9:2780.1',
-    notes: 'Louisiana uses civil law (French/Spanish origins) which differs significantly from common law states. The warranty against redhibitory defects (La. Civ. Code arts. 2520-2548) and Contractor\'s 10-Year Warranty (art. 2762) are unique to Louisiana civil law.',
-    lastVerified: '2026-01-01'
+    notes:
+      "Louisiana uses civil law (French/Spanish origins) which differs significantly from common law states. The warranty against redhibitory defects (La. Civ. Code arts. 2520-2548) and Contractor's 10-Year Warranty (art. 2762) are unique to Louisiana civil law.",
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Maine',
@@ -422,19 +467,21 @@ export default [
     statSOLCitation: '14 M.R.S.A. § 752',
     statSORCitation: '14 M.R.S.A. § 752-A',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Maine recognizes implied warranty of habitability for new residential construction',
+    impliedWarrantyNote:
+      'Maine recognizes implied warranty of habitability for new residential construction',
     rightToRepairLaw: false,
     rightToRepairCitation: '',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: '14 M.R.S.A. § 8113 prohibits indemnification in construction contracts that would indemnify a party for its own negligence',
+    antiIndemnityNote:
+      '14 M.R.S.A. § 8113 prohibits indemnification in construction contracts that would indemnify a party for its own negligence',
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: '14 M.R.S.A. § 752; § 8113',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Maryland',
@@ -445,19 +492,22 @@ export default [
     statSOLCitation: 'Md. Code Ann., Cts. & Jud. Proc. § 5-101',
     statSORCitation: 'Md. Code Ann., Cts. & Jud. Proc. § 5-108',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Maryland recognizes implied warranty of fitness and habitability for new residential construction; Brewer v. Iota Engineering',
+    impliedWarrantyNote:
+      'Maryland recognizes implied warranty of fitness and habitability for new residential construction; Brewer v. Iota Engineering',
     rightToRepairLaw: false,
     rightToRepairCitation: '',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'Md. Code Ann., Real Prop. § 14-501 prohibits indemnification provisions in construction contracts that indemnify for one\'s own negligence; limited to public and private construction contracts',
+    antiIndemnityNote:
+      "Md. Code Ann., Real Prop. § 14-501 prohibits indemnification provisions in construction contracts that indemnify for one's own negligence; limited to public and private construction contracts",
     noLienWaiverUntilPaid: true,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'Md. Code Ann., Cts. & Jud. Proc. § 5-101; § 5-108; Real Prop. § 14-501',
-    notes: 'Maryland has a very long 20-year statute of repose for construction defects — among the longest in the nation. Maryland lien law requires specific lien waiver forms.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Maryland has a very long 20-year statute of repose for construction defects — among the longest in the nation. Maryland lien law requires specific lien waiver forms.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Massachusetts',
@@ -468,19 +518,22 @@ export default [
     statSOLCitation: 'M.G.L. c. 260, § 1',
     statSORCitation: 'M.G.L. c. 260, § 2B',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Massachusetts recognizes implied warranty of habitability for new residential construction; Albrecht v. Clifford',
+    impliedWarrantyNote:
+      'Massachusetts recognizes implied warranty of habitability for new residential construction; Albrecht v. Clifford',
     rightToRepairLaw: false,
     rightToRepairCitation: '',
     payIfPaidEnforceable: false,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'M.G.L. c. 149, § 29C prohibits indemnification provisions in construction contracts that indemnify for the indemnitee\'s own negligence',
+    antiIndemnityNote:
+      "M.G.L. c. 149, § 29C prohibits indemnification provisions in construction contracts that indemnify for the indemnitee's own negligence",
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'M.G.L. c. 260, § 1; M.G.L. c. 149, § 29C',
-    notes: 'Massachusetts does not enforce pay-if-paid clauses (pay-when-paid only creates a reasonable time for payment). Massachusetts anti-indemnity statute is strictly enforced.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Massachusetts does not enforce pay-if-paid clauses (pay-when-paid only creates a reasonable time for payment). Massachusetts anti-indemnity statute is strictly enforced.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Michigan',
@@ -491,19 +544,21 @@ export default [
     statSOLCitation: 'MCL § 600.5807',
     statSORCitation: 'MCL § 600.5839',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Michigan recognizes implied warranty of fitness for new residential construction; Weeks v. Slavick Builders, Inc.',
+    impliedWarrantyNote:
+      'Michigan recognizes implied warranty of fitness for new residential construction; Weeks v. Slavick Builders, Inc.',
     rightToRepairLaw: false,
     rightToRepairCitation: '',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'MCL § 691.991 prohibits indemnification provisions in construction contracts that would indemnify a party for its own negligence or willful misconduct',
+    antiIndemnityNote:
+      'MCL § 691.991 prohibits indemnification provisions in construction contracts that would indemnify a party for its own negligence or willful misconduct',
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'MCL § 600.5807; § 691.991',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Minnesota',
@@ -514,19 +569,23 @@ export default [
     statSOLCitation: 'Minn. Stat. § 541.05',
     statSORCitation: 'Minn. Stat. § 541.051',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Minnesota recognizes implied warranty of habitability for new residential construction; Keene v. Brigham',
+    impliedWarrantyNote:
+      'Minnesota recognizes implied warranty of habitability for new residential construction; Keene v. Brigham',
     rightToRepairLaw: true,
-    rightToRepairCitation: 'Minn. Stat. § 327A (New Home Warranty Act) - 1-year workmanship, 2-year systems, 10-year structural',
+    rightToRepairCitation:
+      'Minn. Stat. § 327A (New Home Warranty Act) - 1-year workmanship, 2-year systems, 10-year structural',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'Minn. Stat. § 337.02 prohibits indemnification provisions in construction contracts that would require a party to indemnify for the other party\'s own negligence',
+    antiIndemnityNote:
+      "Minn. Stat. § 337.02 prohibits indemnification provisions in construction contracts that would require a party to indemnify for the other party's own negligence",
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'Minn. Stat. § 541.05; § 541.051; § 337.02',
-    notes: 'Minnesota New Home Warranty Act provides mandatory implied warranties for new home construction. Anti-indemnity statute is broadly applied.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Minnesota New Home Warranty Act provides mandatory implied warranties for new home construction. Anti-indemnity statute is broadly applied.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Mississippi',
@@ -537,19 +596,21 @@ export default [
     statSOLCitation: 'Miss. Code Ann. § 15-1-49',
     statSORCitation: 'Miss. Code Ann. § 15-1-41',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Mississippi recognizes implied warranty of habitability for new residential construction; Keyes v. Guy Bailey Homes, Inc.',
+    impliedWarrantyNote:
+      'Mississippi recognizes implied warranty of habitability for new residential construction; Keyes v. Guy Bailey Homes, Inc.',
     rightToRepairLaw: true,
     rightToRepairCitation: 'Miss. Code Ann. § 83-58-1 et seq. (Residential Property Warranty Act)',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: false,
-    antiIndemnityNote: 'Mississippi does not have a specific construction anti-indemnity statute; general enforceability depends on case law',
+    antiIndemnityNote:
+      'Mississippi does not have a specific construction anti-indemnity statute; general enforceability depends on case law',
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'Miss. Code Ann. § 15-1-49; § 83-58-1',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Missouri',
@@ -560,19 +621,21 @@ export default [
     statSOLCitation: 'Mo. Rev. Stat. § 516.110',
     statSORCitation: 'Mo. Rev. Stat. § 516.097',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Missouri recognizes implied warranty of habitability for new residential construction; Smith v. Old Warson Dev. Co.',
+    impliedWarrantyNote:
+      'Missouri recognizes implied warranty of habitability for new residential construction; Smith v. Old Warson Dev. Co.',
     rightToRepairLaw: false,
     rightToRepairCitation: '',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'Mo. Rev. Stat. § 434.100 limits indemnification provisions in construction contracts to prohibit indemnification for the indemnitee\'s own negligence',
+    antiIndemnityNote:
+      "Mo. Rev. Stat. § 434.100 limits indemnification provisions in construction contracts to prohibit indemnification for the indemnitee's own negligence",
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'Mo. Rev. Stat. § 516.110; § 434.100',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Montana',
@@ -583,19 +646,21 @@ export default [
     statSOLCitation: 'Mont. Code Ann. § 27-2-202',
     statSORCitation: 'Mont. Code Ann. § 27-2-208',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Montana recognizes implied warranty of habitability for new residential construction',
+    impliedWarrantyNote:
+      'Montana recognizes implied warranty of habitability for new residential construction',
     rightToRepairLaw: false,
     rightToRepairCitation: '',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'Mont. Code Ann. § 28-2-2111 prohibits indemnification provisions in construction contracts that would require a party to indemnify for the other party\'s negligence',
+    antiIndemnityNote:
+      "Mont. Code Ann. § 28-2-2111 prohibits indemnification provisions in construction contracts that would require a party to indemnify for the other party's negligence",
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'Mont. Code Ann. § 27-2-202; § 28-2-2111',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Nebraska',
@@ -606,19 +671,21 @@ export default [
     statSOLCitation: 'Neb. Rev. Stat. § 25-205',
     statSORCitation: 'Neb. Rev. Stat. § 25-223',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Nebraska recognizes implied warranty of habitability for new residential construction; Karbas v. Fidelity National Title Ins. Co.',
+    impliedWarrantyNote:
+      'Nebraska recognizes implied warranty of habitability for new residential construction; Karbas v. Fidelity National Title Ins. Co.',
     rightToRepairLaw: false,
     rightToRepairCitation: '',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'Neb. Rev. Stat. § 25-21,187 prohibits indemnification provisions in construction contracts that would require a party to indemnify for the other party\'s negligence',
+    antiIndemnityNote:
+      "Neb. Rev. Stat. § 25-21,187 prohibits indemnification provisions in construction contracts that would require a party to indemnify for the other party's negligence",
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'Neb. Rev. Stat. § 25-205; § 25-21,187',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Nevada',
@@ -629,19 +696,22 @@ export default [
     statSOLCitation: 'NRS § 11.190',
     statSORCitation: 'NRS § 11.202',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Nevada recognizes implied warranty of habitability for new residential construction; Newmar Corporation v. Sherrill',
+    impliedWarrantyNote:
+      'Nevada recognizes implied warranty of habitability for new residential construction; Newmar Corporation v. Sherrill',
     rightToRepairLaw: true,
     rightToRepairCitation: 'NRS § 40.600 et seq. (Chapter 40 - Constructional Defect Law)',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'NRS § 108.2463 limits indemnification provisions in construction contracts to prohibit indemnification for sole negligence',
+    antiIndemnityNote:
+      'NRS § 108.2463 limits indemnification provisions in construction contracts to prohibit indemnification for sole negligence',
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'NRS § 11.190; § 40.600 et seq.; § 108.2463',
-    notes: 'Nevada Chapter 40 requires pre-litigation notice and opportunity to cure for construction defect claims in new residential construction. Very detailed process with specific timelines.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Nevada Chapter 40 requires pre-litigation notice and opportunity to cure for construction defect claims in new residential construction. Very detailed process with specific timelines.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New Hampshire',
@@ -652,19 +722,21 @@ export default [
     statSOLCitation: 'RSA 508:4',
     statSORCitation: 'RSA 508:4-b',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'New Hampshire recognizes implied warranty of workmanship for new residential construction; Lempke v. Dagenais',
+    impliedWarrantyNote:
+      'New Hampshire recognizes implied warranty of workmanship for new residential construction; Lempke v. Dagenais',
     rightToRepairLaw: false,
     rightToRepairCitation: '',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'RSA 338-A:1 prohibits indemnification provisions in construction contracts that would indemnify a party for its own negligence',
+    antiIndemnityNote:
+      'RSA 338-A:1 prohibits indemnification provisions in construction contracts that would indemnify a party for its own negligence',
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'RSA 508:4; RSA 338-A:1',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New Jersey',
@@ -675,19 +747,23 @@ export default [
     statSOLCitation: 'N.J.S.A. 2A:14-1',
     statSORCitation: 'N.J.S.A. 2A:14-1.1',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'New Jersey recognizes implied warranty of habitability for new residential construction; Schipper v. Levitt & Sons, Inc.',
+    impliedWarrantyNote:
+      'New Jersey recognizes implied warranty of habitability for new residential construction; Schipper v. Levitt & Sons, Inc.',
     rightToRepairLaw: true,
-    rightToRepairCitation: 'N.J.S.A. 46:3B-1 et seq. (New Home Warranty and Builders\' Registration Act)',
+    rightToRepairCitation:
+      "N.J.S.A. 46:3B-1 et seq. (New Home Warranty and Builders' Registration Act)",
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'N.J.S.A. 2A:40A-1 prohibits indemnification provisions in construction contracts that require a party to indemnify for another\'s negligence',
+    antiIndemnityNote:
+      "N.J.S.A. 2A:40A-1 prohibits indemnification provisions in construction contracts that require a party to indemnify for another's negligence",
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'N.J.S.A. 2A:14-1; N.J.S.A. 46:3B-1; N.J.S.A. 2A:40A-1',
-    notes: 'New Jersey New Home Warranty Act provides mandatory warranties for new homes: 1-year defects, 2-year MEP systems, 10-year structural defects. Builder registration required.',
-    lastVerified: '2026-01-01'
+    notes:
+      'New Jersey New Home Warranty Act provides mandatory warranties for new homes: 1-year defects, 2-year MEP systems, 10-year structural defects. Builder registration required.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New Mexico',
@@ -698,19 +774,22 @@ export default [
     statSOLCitation: 'NMSA § 37-1-3',
     statSORCitation: 'NMSA § 37-1-27',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'New Mexico recognizes implied warranty of habitability for new residential construction; Lohse v. Atlantic Richfield Co.',
+    impliedWarrantyNote:
+      'New Mexico recognizes implied warranty of habitability for new residential construction; Lohse v. Atlantic Richfield Co.',
     rightToRepairLaw: true,
     rightToRepairCitation: 'NMSA § 42-12-1 et seq. (Construction Defect Claims Act)',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'NMSA § 56-7-1 prohibits indemnification provisions in construction contracts that would indemnify for the indemnitee\'s own negligence',
+    antiIndemnityNote:
+      "NMSA § 56-7-1 prohibits indemnification provisions in construction contracts that would indemnify for the indemnitee's own negligence",
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'NMSA § 37-1-3; § 42-12-1; § 56-7-1',
-    notes: 'New Mexico Construction Defect Claims Act requires pre-litigation notice and opportunity to cure for construction defect claims. Anti-indemnity statute strictly applied.',
-    lastVerified: '2026-01-01'
+    notes:
+      'New Mexico Construction Defect Claims Act requires pre-litigation notice and opportunity to cure for construction defect claims. Anti-indemnity statute strictly applied.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New York',
@@ -721,19 +800,22 @@ export default [
     statSOLCitation: 'CPLR § 213',
     statSORCitation: 'CPLR § 214-d',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'New York recognizes implied warranty of habitability under Multiple Dwelling Law and Real Property Law for residential construction',
+    impliedWarrantyNote:
+      'New York recognizes implied warranty of habitability under Multiple Dwelling Law and Real Property Law for residential construction',
     rightToRepairLaw: false,
     rightToRepairCitation: '',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'General Obligations Law § 5-322.1 prohibits indemnification provisions in construction contracts that would indemnify for the indemnitee\'s own negligence; exception for additional insured status',
+    antiIndemnityNote:
+      "General Obligations Law § 5-322.1 prohibits indemnification provisions in construction contracts that would indemnify for the indemnitee's own negligence; exception for additional insured status",
     noLienWaiverUntilPaid: true,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'CPLR § 213; § 214-d; GOL § 5-322.1',
-    notes: 'New York has a short 3-year discovery rule for construction defect claims (statute of repose is limited). NYC construction contracts must comply with NYC Administrative Code requirements. Lien law requires payment within specific timeframes.',
-    lastVerified: '2026-01-01'
+    notes:
+      'New York has a short 3-year discovery rule for construction defect claims (statute of repose is limited). NYC construction contracts must comply with NYC Administrative Code requirements. Lien law requires payment within specific timeframes.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'North Carolina',
@@ -744,19 +826,22 @@ export default [
     statSOLCitation: 'N.C. Gen. Stat. § 1-52',
     statSORCitation: 'N.C. Gen. Stat. § 1-50(a)(5)',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'North Carolina recognizes implied warranty of habitability for new residential construction; Hartley v. Ballou',
+    impliedWarrantyNote:
+      'North Carolina recognizes implied warranty of habitability for new residential construction; Hartley v. Ballou',
     rightToRepairLaw: false,
     rightToRepairCitation: '',
     payIfPaidEnforceable: false,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'N.C. Gen. Stat. § 22B-1 prohibits indemnification provisions in construction contracts that would require a party to indemnify for the other party\'s negligence',
+    antiIndemnityNote:
+      "N.C. Gen. Stat. § 22B-1 prohibits indemnification provisions in construction contracts that would require a party to indemnify for the other party's negligence",
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'N.C. Gen. Stat. § 1-52; § 22B-1',
-    notes: 'North Carolina does not enforce pay-if-paid clauses. Anti-indemnity statute is strictly enforced. NC has a 3-year statute of limitations and 6-year statute of repose for construction defects.',
-    lastVerified: '2026-01-01'
+    notes:
+      'North Carolina does not enforce pay-if-paid clauses. Anti-indemnity statute is strictly enforced. NC has a 3-year statute of limitations and 6-year statute of repose for construction defects.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'North Dakota',
@@ -767,19 +852,21 @@ export default [
     statSOLCitation: 'N.D. Cent. Code § 28-01-16',
     statSORCitation: 'N.D. Cent. Code § 28-01-44',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'North Dakota recognizes implied warranty of habitability for new residential construction',
+    impliedWarrantyNote:
+      'North Dakota recognizes implied warranty of habitability for new residential construction',
     rightToRepairLaw: false,
     rightToRepairCitation: '',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'N.D. Cent. Code § 9-08-02.1 prohibits indemnification provisions in construction contracts that would indemnify for the indemnitee\'s own negligence',
+    antiIndemnityNote:
+      "N.D. Cent. Code § 9-08-02.1 prohibits indemnification provisions in construction contracts that would indemnify for the indemnitee's own negligence",
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'N.D. Cent. Code § 28-01-16; § 9-08-02.1',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Ohio',
@@ -790,19 +877,22 @@ export default [
     statSOLCitation: 'ORC § 2305.06',
     statSORCitation: 'ORC § 2305.131',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Ohio recognizes implied warranty of good workmanship and habitability for new residential construction; Jones v. Centex Homes',
+    impliedWarrantyNote:
+      'Ohio recognizes implied warranty of good workmanship and habitability for new residential construction; Jones v. Centex Homes',
     rightToRepairLaw: false,
     rightToRepairCitation: '',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'ORC § 4113.62(B) limits indemnification provisions in construction contracts that would indemnify a party for its own negligence or willful misconduct',
+    antiIndemnityNote:
+      'ORC § 4113.62(B) limits indemnification provisions in construction contracts that would indemnify a party for its own negligence or willful misconduct',
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'ORC § 2305.06; § 2305.131; § 4113.62',
-    notes: 'Ohio has a prompt payment act (ORC § 4113.61) that applies to private commercial and residential construction.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Ohio has a prompt payment act (ORC § 4113.61) that applies to private commercial and residential construction.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Oklahoma',
@@ -813,19 +903,21 @@ export default [
     statSOLCitation: '12 O.S. § 95(A)(1)',
     statSORCitation: '12 O.S. § 95(A)(3)',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Oklahoma recognizes implied warranty of habitability for new residential construction; Kirk v. Ridgway',
+    impliedWarrantyNote:
+      'Oklahoma recognizes implied warranty of habitability for new residential construction; Kirk v. Ridgway',
     rightToRepairLaw: true,
     rightToRepairCitation: '15 O.S. § 841 et seq. (Dwelling Unit Product Liability Act)',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: '15 O.S. § 221 prohibits indemnification provisions in construction contracts that would indemnify a party for its own negligence',
+    antiIndemnityNote:
+      '15 O.S. § 221 prohibits indemnification provisions in construction contracts that would indemnify a party for its own negligence',
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: '12 O.S. § 95; 15 O.S. § 221',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Oregon',
@@ -836,19 +928,22 @@ export default [
     statSOLCitation: 'ORS § 12.080',
     statSORCitation: 'ORS § 12.135',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Oregon recognizes implied warranty of good workmanship for new residential construction; Yepsen v. Burgess',
+    impliedWarrantyNote:
+      'Oregon recognizes implied warranty of good workmanship for new residential construction; Yepsen v. Burgess',
     rightToRepairLaw: true,
     rightToRepairCitation: 'ORS § 701.565 et seq. (Residential Construction Dispute Resolution)',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'ORS § 30.140 prohibits indemnification provisions in construction contracts that would indemnify for the indemnitee\'s own negligence',
+    antiIndemnityNote:
+      "ORS § 30.140 prohibits indemnification provisions in construction contracts that would indemnify for the indemnitee's own negligence",
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'ORS § 12.080; § 701.565; § 30.140',
-    notes: 'Oregon Construction Contractors Board (CCB) dispute resolution process for residential construction defects. Contractors must be licensed with CCB.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Oregon Construction Contractors Board (CCB) dispute resolution process for residential construction defects. Contractors must be licensed with CCB.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Pennsylvania',
@@ -859,19 +954,22 @@ export default [
     statSOLCitation: '42 Pa.C.S. § 5525',
     statSORCitation: '42 Pa.C.S. § 5536',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Pennsylvania recognizes implied warranty of habitability for new residential construction; Elderkin v. Gaster',
+    impliedWarrantyNote:
+      'Pennsylvania recognizes implied warranty of habitability for new residential construction; Elderkin v. Gaster',
     rightToRepairLaw: false,
     rightToRepairCitation: '',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: '73 P.S. § 511 (Fair Contracting for Services Act) limits indemnification in certain construction contracts; case law also limits broad indemnification',
+    antiIndemnityNote:
+      '73 P.S. § 511 (Fair Contracting for Services Act) limits indemnification in certain construction contracts; case law also limits broad indemnification',
     noLienWaiverUntilPaid: true,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: '42 Pa.C.S. § 5525; § 5536; 73 P.S. § 511',
-    notes: 'Pennsylvania has a 12-year statute of repose for construction defects (among the longer periods nationally). CASPA (Contractor and Subcontractor Payment Act) governs payment disputes in construction.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Pennsylvania has a 12-year statute of repose for construction defects (among the longer periods nationally). CASPA (Contractor and Subcontractor Payment Act) governs payment disputes in construction.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Rhode Island',
@@ -882,19 +980,21 @@ export default [
     statSOLCitation: 'R.I. Gen. Laws § 9-1-13',
     statSORCitation: 'R.I. Gen. Laws § 9-1-29',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Rhode Island recognizes implied warranty of habitability for new residential construction',
+    impliedWarrantyNote:
+      'Rhode Island recognizes implied warranty of habitability for new residential construction',
     rightToRepairLaw: false,
     rightToRepairCitation: '',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'R.I. Gen. Laws § 6-34-1 prohibits indemnification provisions in construction contracts that would require a party to indemnify for the other party\'s own negligence',
+    antiIndemnityNote:
+      "R.I. Gen. Laws § 6-34-1 prohibits indemnification provisions in construction contracts that would require a party to indemnify for the other party's own negligence",
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'R.I. Gen. Laws § 9-1-13; § 6-34-1',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'South Carolina',
@@ -905,19 +1005,22 @@ export default [
     statSOLCitation: 'S.C. Code Ann. § 15-3-530',
     statSORCitation: 'S.C. Code Ann. § 15-3-640',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'South Carolina recognizes implied warranty of workmanship for new residential construction; Lane v. Trenholm Building Co.',
+    impliedWarrantyNote:
+      'South Carolina recognizes implied warranty of workmanship for new residential construction; Lane v. Trenholm Building Co.',
     rightToRepairLaw: true,
-    rightToRepairCitation: 'S.C. Code Ann. § 40-59-810 et seq. (Residential Property Condition Disclosure Act and similar)',
+    rightToRepairCitation:
+      'S.C. Code Ann. § 40-59-810 et seq. (Residential Property Condition Disclosure Act and similar)',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'S.C. Code Ann. § 32-2-10 prohibits indemnification provisions in construction contracts that would indemnify for the indemnitee\'s sole negligence or intentional acts',
+    antiIndemnityNote:
+      "S.C. Code Ann. § 32-2-10 prohibits indemnification provisions in construction contracts that would indemnify for the indemnitee's sole negligence or intentional acts",
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'S.C. Code Ann. § 15-3-530; § 32-2-10',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'South Dakota',
@@ -928,19 +1031,21 @@ export default [
     statSOLCitation: 'SDCL § 15-2-13',
     statSORCitation: 'SDCL § 15-2A-3',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'South Dakota recognizes implied warranty of habitability for new residential construction',
+    impliedWarrantyNote:
+      'South Dakota recognizes implied warranty of habitability for new residential construction',
     rightToRepairLaw: false,
     rightToRepairCitation: '',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: false,
-    antiIndemnityNote: 'South Dakota does not have a specific construction anti-indemnity statute; general enforceability depends on case law and public policy',
+    antiIndemnityNote:
+      'South Dakota does not have a specific construction anti-indemnity statute; general enforceability depends on case law and public policy',
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'SDCL § 15-2-13; § 15-2A-3',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Tennessee',
@@ -951,19 +1056,22 @@ export default [
     statSOLCitation: 'TCA § 28-3-109',
     statSORCitation: 'TCA § 28-3-202',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Tennessee recognizes implied warranty of habitability and workmanship for new residential construction; Dixon v. Mountain City Construction Co.',
+    impliedWarrantyNote:
+      'Tennessee recognizes implied warranty of habitability and workmanship for new residential construction; Dixon v. Mountain City Construction Co.',
     rightToRepairLaw: true,
     rightToRepairCitation: 'TCA § 66-36-101 et seq. (Tennessee Right to Cure Construction Defects)',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'TCA § 62-6-123 prohibits indemnification provisions in construction contracts that would indemnify a party for its own negligence',
+    antiIndemnityNote:
+      'TCA § 62-6-123 prohibits indemnification provisions in construction contracts that would indemnify a party for its own negligence',
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'TCA § 28-3-109; § 66-36-101; § 62-6-123',
-    notes: 'Tennessee has a short 4-year statute of repose for construction defects. Tennessee Right to Cure Act requires pre-litigation notice and opportunity to cure.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Tennessee has a short 4-year statute of repose for construction defects. Tennessee Right to Cure Act requires pre-litigation notice and opportunity to cure.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Texas',
@@ -974,19 +1082,23 @@ export default [
     statSOLCitation: 'Tex. Civ. Prac. & Rem. Code § 16.004',
     statSORCitation: 'Tex. Civ. Prac. & Rem. Code § 16.009',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Texas recognizes implied warranty of good workmanship and habitability for residential construction; Melody Home Manufacturing Co. v. Barnes',
+    impliedWarrantyNote:
+      'Texas recognizes implied warranty of good workmanship and habitability for residential construction; Melody Home Manufacturing Co. v. Barnes',
     rightToRepairLaw: true,
-    rightToRepairCitation: 'Tex. Prop. Code § 27.001 et seq. (Residential Construction Liability Act / RCLA)',
+    rightToRepairCitation:
+      'Tex. Prop. Code § 27.001 et seq. (Residential Construction Liability Act / RCLA)',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'Tex. Ins. Code § 151.102 (COIA) and Tex. Civ. Prac. & Rem. Code § 130.002 prohibit certain indemnification and additional insured provisions in construction contracts',
+    antiIndemnityNote:
+      'Tex. Ins. Code § 151.102 (COIA) and Tex. Civ. Prac. & Rem. Code § 130.002 prohibit certain indemnification and additional insured provisions in construction contracts',
     noLienWaiverUntilPaid: true,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'Tex. Civ. Prac. & Rem. Code § 16.004; § 16.009; Tex. Prop. Code § 27.001',
-    notes: 'Texas RCLA requires 60-day notice and opportunity to inspect/repair before filing suit for residential construction defects. Texas Construction of Indemnity Act (COIA) strictly limits indemnification in construction contracts. Statutory lien waivers required.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Texas RCLA requires 60-day notice and opportunity to inspect/repair before filing suit for residential construction defects. Texas Construction of Indemnity Act (COIA) strictly limits indemnification in construction contracts. Statutory lien waivers required.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Utah',
@@ -997,19 +1109,23 @@ export default [
     statSOLCitation: 'Utah Code § 78B-2-309',
     statSORCitation: 'Utah Code § 78B-2-225',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Utah recognizes implied warranty of workmanship for new residential construction; Petersen v. Riverton City',
+    impliedWarrantyNote:
+      'Utah recognizes implied warranty of workmanship for new residential construction; Petersen v. Riverton City',
     rightToRepairLaw: true,
-    rightToRepairCitation: 'Utah Code § 78B-4-501 et seq. (Residence Lien Restriction and Lien Recovery Fund Act) and § 78B-6-1501 et seq. (Right to Repair Act)',
+    rightToRepairCitation:
+      'Utah Code § 78B-4-501 et seq. (Residence Lien Restriction and Lien Recovery Fund Act) and § 78B-6-1501 et seq. (Right to Repair Act)',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'Utah Code § 13-8-1 prohibits indemnification provisions in construction contracts that would require a party to indemnify for the other party\'s negligence',
+    antiIndemnityNote:
+      "Utah Code § 13-8-1 prohibits indemnification provisions in construction contracts that would require a party to indemnify for the other party's negligence",
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'Utah Code § 78B-2-309; § 78B-4-501; § 13-8-1',
-    notes: 'Utah has a Residence Lien Restriction and Lien Recovery Fund Act that limits lien exposure on residential construction and provides a state recovery fund for homeowners.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Utah has a Residence Lien Restriction and Lien Recovery Fund Act that limits lien exposure on residential construction and provides a state recovery fund for homeowners.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Vermont',
@@ -1020,19 +1136,21 @@ export default [
     statSOLCitation: '12 V.S.A. § 511',
     statSORCitation: '12 V.S.A. § 518',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Vermont recognizes implied warranty of habitability for new residential construction; Auclair v. Bolduc',
+    impliedWarrantyNote:
+      'Vermont recognizes implied warranty of habitability for new residential construction; Auclair v. Bolduc',
     rightToRepairLaw: false,
     rightToRepairCitation: '',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: '9 V.S.A. § 4601 prohibits indemnification provisions in construction contracts that require a party to indemnify for the other party\'s own negligence',
+    antiIndemnityNote:
+      "9 V.S.A. § 4601 prohibits indemnification provisions in construction contracts that require a party to indemnify for the other party's own negligence",
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: '12 V.S.A. § 511; § 518; 9 V.S.A. § 4601',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Virginia',
@@ -1043,19 +1161,23 @@ export default [
     statSOLCitation: 'Code of Va. § 8.01-246',
     statSORCitation: 'Code of Va. § 8.01-250',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Virginia recognizes implied warranty of habitability for new residential construction; Speight v. Moore',
+    impliedWarrantyNote:
+      'Virginia recognizes implied warranty of habitability for new residential construction; Speight v. Moore',
     rightToRepairLaw: true,
-    rightToRepairCitation: 'Code of Va. § 55.1-2900 et seq. (Virginia Property Owners\' Association Act) and construction defect pre-litigation procedures',
+    rightToRepairCitation:
+      "Code of Va. § 55.1-2900 et seq. (Virginia Property Owners' Association Act) and construction defect pre-litigation procedures",
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'Code of Va. § 11-4.1 prohibits indemnification provisions in construction contracts that would indemnify for the indemnitee\'s own negligence',
+    antiIndemnityNote:
+      "Code of Va. § 11-4.1 prohibits indemnification provisions in construction contracts that would indemnify for the indemnitee's own negligence",
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'Code of Va. § 8.01-246; § 8.01-250; § 11-4.1',
-    notes: 'Virginia has a short 5-year statute of repose for construction defects. Virginia Prompt Payment Act requires timely payment in construction contracts.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Virginia has a short 5-year statute of repose for construction defects. Virginia Prompt Payment Act requires timely payment in construction contracts.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Washington',
@@ -1066,19 +1188,23 @@ export default [
     statSOLCitation: 'RCW § 4.16.040',
     statSORCitation: 'RCW § 4.16.310',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Washington recognizes implied warranty of habitability and workmanship for new residential construction; Alejandre v. Bull',
+    impliedWarrantyNote:
+      'Washington recognizes implied warranty of habitability and workmanship for new residential construction; Alejandre v. Bull',
     rightToRepairLaw: true,
-    rightToRepairCitation: 'RCW § 64.50.001 et seq. (Construction Defect Claims Act - Notice and Opportunity to Repair)',
+    rightToRepairCitation:
+      'RCW § 64.50.001 et seq. (Construction Defect Claims Act - Notice and Opportunity to Repair)',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'RCW § 4.24.115 prohibits indemnification provisions in construction contracts that would indemnify for the indemnitee\'s own negligence',
+    antiIndemnityNote:
+      "RCW § 4.24.115 prohibits indemnification provisions in construction contracts that would indemnify for the indemnitee's own negligence",
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'RCW § 4.16.040; § 64.50.001; § 4.24.115',
-    notes: 'Washington Construction Defect Claims Act requires pre-litigation notice and opportunity to cure. Lien rights must be preserved with timely preliminary notice. Pay-if-paid clauses are generally enforceable if clear and conspicuous.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Washington Construction Defect Claims Act requires pre-litigation notice and opportunity to cure. Lien rights must be preserved with timely preliminary notice. Pay-if-paid clauses are generally enforceable if clear and conspicuous.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'West Virginia',
@@ -1089,19 +1215,21 @@ export default [
     statSOLCitation: 'W. Va. Code § 55-2-6',
     statSORCitation: 'W. Va. Code § 55-2-6a',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'West Virginia recognizes implied warranty of habitability for new residential construction; Sewell v. Gregory',
+    impliedWarrantyNote:
+      'West Virginia recognizes implied warranty of habitability for new residential construction; Sewell v. Gregory',
     rightToRepairLaw: false,
     rightToRepairCitation: '',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'W. Va. Code § 55-8-14 limits indemnification provisions in construction contracts that would indemnify for the indemnitee\'s own negligence',
+    antiIndemnityNote:
+      "W. Va. Code § 55-8-14 limits indemnification provisions in construction contracts that would indemnify for the indemnitee's own negligence",
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'W. Va. Code § 55-2-6; § 55-8-14',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Wisconsin',
@@ -1112,19 +1240,22 @@ export default [
     statSOLCitation: 'Wis. Stat. § 893.43',
     statSORCitation: 'Wis. Stat. § 893.89',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Wisconsin recognizes implied warranty of habitability for new residential construction; Onalaska Electric Heating, Inc. v. Schaller',
+    impliedWarrantyNote:
+      'Wisconsin recognizes implied warranty of habitability for new residential construction; Onalaska Electric Heating, Inc. v. Schaller',
     rightToRepairLaw: false,
     rightToRepairCitation: '',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'Wis. Stat. § 895.447 prohibits indemnification provisions in construction contracts that would require a party to indemnify for the other party\'s negligence',
+    antiIndemnityNote:
+      "Wis. Stat. § 895.447 prohibits indemnification provisions in construction contracts that would require a party to indemnify for the other party's negligence",
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'Wis. Stat. § 893.43; § 895.447',
-    notes: 'Wisconsin has a detailed lien law and prompt payment requirements under Wis. Stat. § 779.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Wisconsin has a detailed lien law and prompt payment requirements under Wis. Stat. § 779.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Wyoming',
@@ -1135,18 +1266,21 @@ export default [
     statSOLCitation: 'Wyo. Stat. § 1-3-105',
     statSORCitation: 'Wyo. Stat. § 1-3-111',
     impliedWarrantyConstruction: true,
-    impliedWarrantyNote: 'Wyoming recognizes implied warranty of habitability for new residential construction; Tavares v. Horseshoe Lake Homeowners Ass\'n',
+    impliedWarrantyNote:
+      "Wyoming recognizes implied warranty of habitability for new residential construction; Tavares v. Horseshoe Lake Homeowners Ass'n",
     rightToRepairLaw: false,
     rightToRepairCitation: '',
     payIfPaidEnforceable: true,
     antiIndemnityLaw: true,
-    antiIndemnityNote: 'Wyo. Stat. § 30-1-131 prohibits indemnification provisions in oil and gas and construction contracts that would indemnify for the indemnitee\'s own negligence',
+    antiIndemnityNote:
+      "Wyo. Stat. § 30-1-131 prohibits indemnification provisions in oil and gas and construction contracts that would indemnify for the indemnitee's own negligence",
     noLienWaiverUntilPaid: false,
     pooledBondingAllowed: false,
     liquidatedDamagesEnforceable: true,
     forceMajeureCodified: false,
     citation: 'Wyo. Stat. § 1-3-105; § 30-1-131',
-    notes: 'Wyoming anti-indemnity statute applies to both construction and oil and gas contracts. Wyoming has relatively few construction-specific statutes compared to other states.',
-    lastVerified: '2026-01-01'
-  }
+    notes:
+      'Wyoming anti-indemnity statute applies to both construction and oil and gas contracts. Wyoming has relatively few construction-specific statutes compared to other states.',
+    lastVerified: '2026-01-01',
+  },
 ]

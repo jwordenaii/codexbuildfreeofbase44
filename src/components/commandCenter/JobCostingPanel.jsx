@@ -65,16 +65,28 @@ const DEMO_PROJECT = {
   name: 'Industrial Park Paving – Phase 1',
   contractAmount: 485000,
   lines: [
-    { id: 1,  costCode: '01-000', budgetAmt: 12000,  actualAmt: 11500, notes: '' },
-    { id: 2,  costCode: '02-200', budgetAmt: 45000,  actualAmt: 52000, notes: 'Extra rock encountered — RFI-002 pending' },
-    { id: 3,  costCode: '02-700', budgetAmt: 38000,  actualAmt: 37500, notes: '' },
-    { id: 4,  costCode: '02-750', budgetAmt: 95000,  actualAmt: 91000, notes: '' },
-    { id: 5,  costCode: '02-760', budgetAmt: 110000, actualAmt: 0,     notes: 'Not yet performed' },
-    { id: 6,  costCode: '02-900', budgetAmt: 18000,  actualAmt: 0,     notes: '' },
-    { id: 7,  costCode: '05-000', budgetAmt: 14000,  actualAmt: 13200, notes: '' },
-    { id: 8,  costCode: '32-000', budgetAmt: 85000,  actualAmt: 79000, notes: '' },
-    { id: 9,  costCode: '33-000', budgetAmt: 55000,  actualAmt: 57000, notes: 'Sub overrun on drainage' },
-    { id: 10, costCode: '99-000', budgetAmt: 13000,  actualAmt: 4500,  notes: '' },
+    { id: 1, costCode: '01-000', budgetAmt: 12000, actualAmt: 11500, notes: '' },
+    {
+      id: 2,
+      costCode: '02-200',
+      budgetAmt: 45000,
+      actualAmt: 52000,
+      notes: 'Extra rock encountered — RFI-002 pending',
+    },
+    { id: 3, costCode: '02-700', budgetAmt: 38000, actualAmt: 37500, notes: '' },
+    { id: 4, costCode: '02-750', budgetAmt: 95000, actualAmt: 91000, notes: '' },
+    { id: 5, costCode: '02-760', budgetAmt: 110000, actualAmt: 0, notes: 'Not yet performed' },
+    { id: 6, costCode: '02-900', budgetAmt: 18000, actualAmt: 0, notes: '' },
+    { id: 7, costCode: '05-000', budgetAmt: 14000, actualAmt: 13200, notes: '' },
+    { id: 8, costCode: '32-000', budgetAmt: 85000, actualAmt: 79000, notes: '' },
+    {
+      id: 9,
+      costCode: '33-000',
+      budgetAmt: 55000,
+      actualAmt: 57000,
+      notes: 'Sub overrun on drainage',
+    },
+    { id: 10, costCode: '99-000', budgetAmt: 13000, actualAmt: 4500, notes: '' },
   ],
 }
 
@@ -82,31 +94,33 @@ let _projectCounter = 1
 let _lineCounter = 20
 
 export default function JobCostingPanel() {
-  const [projects, setProjects]               = useState([DEMO_PROJECT])
-  const [selectedId, setSelectedId]           = useState(1)
-  const [showNewProject, setShowNewProject]   = useState(false)
-  const [newProjForm, setNewProjForm]         = useState({ name: '', contractAmount: '' })
-  const [showAddLine, setShowAddLine]         = useState(false)
-  const [newLine, setNewLine]                 = useState({ ...BLANK_LINE })
-  const [editLineId, setEditLineId]           = useState(null)
+  const [projects, setProjects] = useState([DEMO_PROJECT])
+  const [selectedId, setSelectedId] = useState(1)
+  const [showNewProject, setShowNewProject] = useState(false)
+  const [newProjForm, setNewProjForm] = useState({ name: '', contractAmount: '' })
+  const [showAddLine, setShowAddLine] = useState(false)
+  const [newLine, setNewLine] = useState({ ...BLANK_LINE })
+  const [editLineId, setEditLineId] = useState(null)
 
   const project = projects.find((p) => p.id === selectedId)
 
   const totals = useMemo(() => {
     if (!project) return { budget: 0, actual: 0, variance: 0, pctConsumed: 0 }
-    const budget   = project.lines.reduce((s, l) => s + (Number(l.budgetAmt)  || 0), 0)
-    const actual   = project.lines.reduce((s, l) => s + (Number(l.actualAmt) || 0), 0)
+    const budget = project.lines.reduce((s, l) => s + (Number(l.budgetAmt) || 0), 0)
+    const actual = project.lines.reduce((s, l) => s + (Number(l.actualAmt) || 0), 0)
     const variance = actual - budget
     const pctConsumed = budget > 0 ? Math.min((actual / budget) * 100, 100) : 0
     return { budget, actual, variance, pctConsumed }
   }, [project])
 
-  const estMargin = project && project.contractAmount > 0
-    ? ((project.contractAmount - totals.budget) / project.contractAmount) * 100
-    : 0
-  const projMargin = project && project.contractAmount > 0
-    ? ((project.contractAmount - totals.actual) / project.contractAmount) * 100
-    : 0
+  const estMargin =
+    project && project.contractAmount > 0
+      ? ((project.contractAmount - totals.budget) / project.contractAmount) * 100
+      : 0
+  const projMargin =
+    project && project.contractAmount > 0
+      ? ((project.contractAmount - totals.actual) / project.contractAmount) * 100
+      : 0
 
   const createProject = (e) => {
     e.preventDefault()
@@ -134,7 +148,7 @@ export default function JobCostingPanel() {
       actualAmt: Number(newLine.actualAmt) || 0,
     }
     setProjects((prev) =>
-      prev.map((p) => p.id === selectedId ? { ...p, lines: [...p.lines, line] } : p),
+      prev.map((p) => (p.id === selectedId ? { ...p, lines: [...p.lines, line] } : p))
     )
     setNewLine({ ...BLANK_LINE })
     setShowAddLine(false)
@@ -144,17 +158,17 @@ export default function JobCostingPanel() {
     setProjects((prev) =>
       prev.map((p) =>
         p.id === selectedId
-          ? { ...p, lines: p.lines.map((l) => l.id === lineId ? { ...l, [field]: value } : l) }
-          : p,
-      ),
+          ? { ...p, lines: p.lines.map((l) => (l.id === lineId ? { ...l, [field]: value } : l)) }
+          : p
+      )
     )
   }
 
   const deleteLine = (lineId) => {
     setProjects((prev) =>
       prev.map((p) =>
-        p.id === selectedId ? { ...p, lines: p.lines.filter((l) => l.id !== lineId) } : p,
-      ),
+        p.id === selectedId ? { ...p, lines: p.lines.filter((l) => l.id !== lineId) } : p
+      )
     )
   }
 
@@ -205,8 +219,14 @@ export default function JobCostingPanel() {
               placeholder="Contract amount ($)"
               className="input text-sm w-44"
             />
-            <button type="submit" className="btn-primary text-sm !py-2">Create</button>
-            <button type="button" onClick={() => setShowNewProject(false)} className="btn-outline text-sm !py-2">
+            <button type="submit" className="btn-primary text-sm !py-2">
+              Create
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowNewProject(false)}
+              className="btn-outline text-sm !py-2"
+            >
               Cancel
             </button>
           </form>
@@ -218,8 +238,12 @@ export default function JobCostingPanel() {
           {/* ── Summary cards ── */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
-              { label: 'Contract Value', value: fmt(project.contractAmount), color: 'text-brand-navy' },
-              { label: 'Total Budget',   value: fmt(totals.budget),          color: 'text-blue-700' },
+              {
+                label: 'Contract Value',
+                value: fmt(project.contractAmount),
+                color: 'text-brand-navy',
+              },
+              { label: 'Total Budget', value: fmt(totals.budget), color: 'text-blue-700' },
               {
                 label: 'Actual Cost',
                 value: fmt(totals.actual),
@@ -291,19 +315,25 @@ export default function JobCostingPanel() {
                 className="grid grid-cols-1 sm:grid-cols-4 gap-3 mb-6 p-4 bg-gray-50 rounded-xl border border-gray-200"
               >
                 <div className="sm:col-span-2">
-                  <label className="block text-xs font-semibold text-brand-navy/60 mb-1">Cost Code</label>
+                  <label className="block text-xs font-semibold text-brand-navy/60 mb-1">
+                    Cost Code
+                  </label>
                   <select
                     value={newLine.costCode}
                     onChange={(e) => setNewLine((f) => ({ ...f, costCode: e.target.value }))}
                     className="input text-sm w-full"
                   >
                     {COST_CODES.map((c) => (
-                      <option key={c.code} value={c.code}>{c.code} – {c.name}</option>
+                      <option key={c.code} value={c.code}>
+                        {c.code} – {c.name}
+                      </option>
                     ))}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-brand-navy/60 mb-1">Budget ($)</label>
+                  <label className="block text-xs font-semibold text-brand-navy/60 mb-1">
+                    Budget ($)
+                  </label>
                   <input
                     type="number"
                     value={newLine.budgetAmt}
@@ -313,7 +343,9 @@ export default function JobCostingPanel() {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-brand-navy/60 mb-1">Actual ($)</label>
+                  <label className="block text-xs font-semibold text-brand-navy/60 mb-1">
+                    Actual ($)
+                  </label>
                   <input
                     type="number"
                     value={newLine.actualAmt}
@@ -323,7 +355,9 @@ export default function JobCostingPanel() {
                   />
                 </div>
                 <div className="sm:col-span-4">
-                  <label className="block text-xs font-semibold text-brand-navy/60 mb-1">Notes</label>
+                  <label className="block text-xs font-semibold text-brand-navy/60 mb-1">
+                    Notes
+                  </label>
                   <input
                     type="text"
                     value={newLine.notes}
@@ -333,8 +367,14 @@ export default function JobCostingPanel() {
                   />
                 </div>
                 <div className="sm:col-span-4 flex gap-3">
-                  <button type="submit" className="btn-primary text-sm !py-1.5">Add Line</button>
-                  <button type="button" onClick={() => setShowAddLine(false)} className="btn-outline text-sm !py-1.5">
+                  <button type="submit" className="btn-primary text-sm !py-1.5">
+                    Add Line
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowAddLine(false)}
+                    className="btn-outline text-sm !py-1.5"
+                  >
                     Cancel
                   </button>
                 </div>
@@ -361,18 +401,25 @@ export default function JobCostingPanel() {
                   </thead>
                   <tbody>
                     {project.lines.map((line) => {
-                      const cc      = COST_CODES.find((c) => c.code === line.costCode)
-                      const budget  = Number(line.budgetAmt) || 0
-                      const actual  = Number(line.actualAmt) || 0
+                      const cc = COST_CODES.find((c) => c.code === line.costCode)
+                      const budget = Number(line.budgetAmt) || 0
+                      const actual = Number(line.actualAmt) || 0
                       const editing = editLineId === line.id
 
                       return (
-                        <tr key={line.id} className="border-b border-brand-navy/5 hover:bg-brand-navy/[0.02]">
+                        <tr
+                          key={line.id}
+                          className="border-b border-brand-navy/5 hover:bg-brand-navy/[0.02]"
+                        >
                           <td className="py-2.5 pr-3">
-                            <span className="font-mono text-xs text-brand-navy/50">{line.costCode}</span>
+                            <span className="font-mono text-xs text-brand-navy/50">
+                              {line.costCode}
+                            </span>
                           </td>
                           <td className="py-2.5 pr-3 max-w-[200px]">
-                            <span className="text-brand-navy text-xs font-medium">{cc?.name || line.costCode}</span>
+                            <span className="text-brand-navy text-xs font-medium">
+                              {cc?.name || line.costCode}
+                            </span>
                           </td>
                           <td className="py-2.5 pr-3 text-right">
                             {editing ? (
@@ -395,7 +442,9 @@ export default function JobCostingPanel() {
                                 className="input text-xs text-right w-24 !py-1"
                               />
                             ) : (
-                              <span className={`text-xs font-semibold ${actual === 0 ? 'text-brand-navy/25' : actual > budget ? 'text-red-600' : 'text-brand-navy'}`}>
+                              <span
+                                className={`text-xs font-semibold ${actual === 0 ? 'text-brand-navy/25' : actual > budget ? 'text-red-600' : 'text-brand-navy'}`}
+                              >
                                 {actual === 0 ? '—' : fmt(actual)}
                               </span>
                             )}
@@ -439,11 +488,19 @@ export default function JobCostingPanel() {
                   </tbody>
                   <tfoot>
                     <tr className="border-t-2 border-brand-navy/20 font-bold">
-                      <td colSpan={2} className="pt-3 pr-3 text-xs text-brand-navy">TOTAL</td>
-                      <td className="pt-3 pr-3 text-right text-xs text-brand-navy">{fmt(totals.budget)}</td>
-                      <td className="pt-3 pr-3 text-right text-xs text-brand-navy">{fmt(totals.actual)}</td>
+                      <td colSpan={2} className="pt-3 pr-3 text-xs text-brand-navy">
+                        TOTAL
+                      </td>
+                      <td className="pt-3 pr-3 text-right text-xs text-brand-navy">
+                        {fmt(totals.budget)}
+                      </td>
+                      <td className="pt-3 pr-3 text-right text-xs text-brand-navy">
+                        {fmt(totals.actual)}
+                      </td>
                       <td className="pt-3 pr-3 text-right">
-                        <span className={`text-xs font-bold ${totals.variance > 0 ? 'text-red-600' : 'text-green-600'}`}>
+                        <span
+                          className={`text-xs font-bold ${totals.variance > 0 ? 'text-red-600' : 'text-green-600'}`}
+                        >
                           {totals.variance > 0 ? '▲' : '▼'} {fmt(Math.abs(totals.variance))}
                         </span>
                       </td>

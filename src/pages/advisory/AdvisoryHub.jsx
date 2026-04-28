@@ -17,7 +17,7 @@ const CATEGORIES = [
     to: '/advisory/construction-law',
     icon: '⚖️',
     title: 'Construction Law',
-    desc: "Mechanics lien laws, prompt payment rules, contract statutes of limitations, and right-to-cure laws.",
+    desc: 'Mechanics lien laws, prompt payment rules, contract statutes of limitations, and right-to-cure laws.',
     color: 'bg-purple-50 border-purple-200',
     accent: 'text-purple-700',
   },
@@ -89,7 +89,7 @@ const CATEGORIES = [
     to: '/advisory/legal-strategy',
     icon: '🤝',
     title: 'Legal Strategy Advisor',
-    desc: 'Score your state\'s negotiation strength, identify your strongest legal position, and get dispute-specific strategy for liens, payment, and contract breach.',
+    desc: "Score your state's negotiation strength, identify your strongest legal position, and get dispute-specific strategy for liens, payment, and contract breach.",
     color: 'bg-violet-50 border-violet-200',
     accent: 'text-violet-700',
   },
@@ -130,8 +130,7 @@ export default function AdvisoryHub() {
             Advisory Board · All 50 States
           </span>
           <h1 className="font-display font-black text-5xl md:text-6xl mb-4">
-            Legal &amp; Construction{' '}
-            <span className="text-brand-amber">Reference Board</span>
+            Legal &amp; Construction <span className="text-brand-amber">Reference Board</span>
           </h1>
           <p className="text-white/70 text-xl max-w-3xl mx-auto">
             A contractor&apos;s field guide to licensing, lien law, utilities, safety, permits, and
@@ -141,15 +140,12 @@ export default function AdvisoryHub() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
-
         {/* Disclaimer */}
         <DisclaimerBanner />
 
         {/* State Quick-Jump */}
         <div className="card p-6">
-          <h2 className="font-display font-bold text-brand-navy text-xl mb-4">
-            Jump to a State
-          </h2>
+          <h2 className="font-display font-bold text-brand-navy text-xl mb-4">Jump to a State</h2>
           <div className="flex flex-col sm:flex-row gap-3 items-end">
             <div className="flex-1">
               <StateSelector
@@ -182,7 +178,9 @@ export default function AdvisoryHub() {
                 className={`card p-6 group border-2 hover:border-brand-amber transition-colors ${cat.color}`}
               >
                 <div className="text-4xl mb-3">{cat.icon}</div>
-                <h3 className={`font-display font-bold text-lg mb-2 group-hover:text-brand-amber transition-colors ${cat.accent}`}>
+                <h3
+                  className={`font-display font-bold text-lg mb-2 group-hover:text-brand-amber transition-colors ${cat.accent}`}
+                >
                   {cat.title}
                 </h3>
                 <p className="text-brand-navy/60 text-sm leading-relaxed">{cat.desc}</p>
@@ -196,12 +194,10 @@ export default function AdvisoryHub() {
 
         {/* Bottom CTA */}
         <section className="bg-brand-navy rounded-2xl p-8 text-center text-white">
-          <h2 className="font-display font-black text-2xl mb-3">
-            Need Project-Specific Guidance?
-          </h2>
+          <h2 className="font-display font-black text-2xl mb-3">Need Project-Specific Guidance?</h2>
           <p className="text-white/70 mb-6 max-w-xl mx-auto">
-            This advisory board is a starting point. For project compliance, contact J. Worden &amp; Sons
-            or consult a licensed attorney in your state.
+            This advisory board is a starting point. For project compliance, contact J. Worden &amp;
+            Sons or consult a licensed attorney in your state.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/contact" className="btn-primary">

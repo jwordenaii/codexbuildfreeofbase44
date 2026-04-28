@@ -10,24 +10,24 @@ import { useState, useRef } from 'react'
 
 const MODES = [
   {
-    id:      'contract',
-    label:   '📝 Contract',
-    accept:  '.pdf,.jpg,.jpeg,.png,.webp',
-    hint:    'PDF or image (JPEG/PNG/WebP). Max 20 MB.',
+    id: 'contract',
+    label: '📝 Contract',
+    accept: '.pdf,.jpg,.jpeg,.png,.webp',
+    hint: 'PDF or image (JPEG/PNG/WebP). Max 20 MB.',
     endpoint: '/api/v1/documents/parse-contract',
   },
   {
-    id:      'blueprint',
-    label:   '📐 Blueprint',
-    accept:  '.jpg,.jpeg,.png,.webp,.gif',
-    hint:    'Image file (JPEG/PNG/WebP/GIF). Max 20 MB.',
+    id: 'blueprint',
+    label: '📐 Blueprint',
+    accept: '.jpg,.jpeg,.png,.webp,.gif',
+    hint: 'Image file (JPEG/PNG/WebP/GIF). Max 20 MB.',
     endpoint: '/api/v1/documents/parse-blueprint',
   },
   {
-    id:      'permit',
-    label:   '🏗 Permit PDF',
-    accept:  '.pdf',
-    hint:    'PDF only. Max 20 MB.',
+    id: 'permit',
+    label: '🏗 Permit PDF',
+    accept: '.pdf',
+    hint: 'PDF only. Max 20 MB.',
     endpoint: '/api/v1/documents/parse-permit',
   },
 ]
@@ -40,8 +40,8 @@ function ResultBlock({ data }) {
         const display = Array.isArray(val)
           ? val.join(', ')
           : typeof val === 'object' && val !== null
-          ? JSON.stringify(val, null, 2)
-          : String(val ?? '—')
+            ? JSON.stringify(val, null, 2)
+            : String(val ?? '—')
         return (
           <div key={key} className="bg-gray-50 rounded-lg p-3">
             <div className="text-xs font-bold text-brand-navy/50 uppercase tracking-wide mb-1">
@@ -60,12 +60,12 @@ const BASE = import.meta.env.VITE_API_BASE_URL || ''
 const UPLOAD_TIMEOUT_MS = 60_000
 
 export default function DocumentsPanel() {
-  const [mode, setMode]       = useState('contract')
-  const [file, setFile]       = useState(null)
+  const [mode, setMode] = useState('contract')
+  const [file, setFile] = useState(null)
   const [uploading, setUploading] = useState(false)
-  const [result, setResult]   = useState(null)
-  const [error, setError]     = useState('')
-  const fileRef               = useRef(null)
+  const [result, setResult] = useState(null)
+  const [error, setError] = useState('')
+  const fileRef = useRef(null)
 
   const currentMode = MODES.find((m) => m.id === mode)
 
@@ -99,7 +99,9 @@ export default function DocumentsPanel() {
       }
       setResult(await res.json())
     } catch (e) {
-      setError(e.name === 'AbortError' ? `Upload timed out (${UPLOAD_TIMEOUT_MS / 1000} s).` : e.message)
+      setError(
+        e.name === 'AbortError' ? `Upload timed out (${UPLOAD_TIMEOUT_MS / 1000} s).` : e.message
+      )
     } finally {
       setUploading(false)
     }
@@ -129,7 +131,10 @@ export default function DocumentsPanel() {
             <button
               key={m.id}
               type="button"
-              onClick={() => { setMode(m.id); reset() }}
+              onClick={() => {
+                setMode(m.id)
+                reset()
+              }}
               className={`px-4 py-1.5 rounded-full text-sm font-semibold border transition-colors ${
                 mode === m.id
                   ? 'bg-brand-navy text-white border-brand-navy'

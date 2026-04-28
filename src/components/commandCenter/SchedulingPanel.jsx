@@ -27,25 +27,25 @@ const PHASES = [
 ]
 
 const PHASE_COLORS = {
-  'Mobilization':           'bg-purple-400',
-  'Clearing & Demolition':  'bg-red-400',
-  'Earthwork / Grading':    'bg-yellow-500',
-  'Erosion Control':        'bg-green-300',
-  'Underground Utilities':  'bg-blue-400',
-  'Storm Drainage':         'bg-cyan-400',
-  'Subbase / Base Course':  'bg-orange-400',
-  'Curb & Gutter':          'bg-stone-400',
-  'Asphalt Paving':         'bg-gray-700',
-  'Concrete Flatwork':      'bg-slate-400',
-  'Striping & Signage':     'bg-yellow-300',
-  'Punch List / Closeout':  'bg-green-500',
+  Mobilization: 'bg-purple-400',
+  'Clearing & Demolition': 'bg-red-400',
+  'Earthwork / Grading': 'bg-yellow-500',
+  'Erosion Control': 'bg-green-300',
+  'Underground Utilities': 'bg-blue-400',
+  'Storm Drainage': 'bg-cyan-400',
+  'Subbase / Base Course': 'bg-orange-400',
+  'Curb & Gutter': 'bg-stone-400',
+  'Asphalt Paving': 'bg-gray-700',
+  'Concrete Flatwork': 'bg-slate-400',
+  'Striping & Signage': 'bg-yellow-300',
+  'Punch List / Closeout': 'bg-green-500',
 }
 
 const STATUS_STYLE = {
   not_started: 'bg-gray-100 text-gray-600',
-  in_progress:  'bg-blue-100 text-blue-700',
-  completed:    'bg-green-100 text-green-700',
-  delayed:      'bg-red-100 text-red-700',
+  in_progress: 'bg-blue-100 text-blue-700',
+  completed: 'bg-green-100 text-green-700',
+  delayed: 'bg-red-100 text-red-700',
 }
 
 const BLANK_TASK = {
@@ -75,10 +75,15 @@ function computeCPM(tasks) {
     const t = byId[id]
     if (!t) return 0
     const predIds = t.predecessors
-      ? t.predecessors.split(',').map((s) => parseInt(s.trim(), 10)).filter(Boolean)
+      ? t.predecessors
+          .split(',')
+          .map((s) => parseInt(s.trim(), 10))
+          .filter(Boolean)
       : []
     let maxPredEF = 0
-    predIds.forEach((pid) => { maxPredEF = Math.max(maxPredEF, forwardPass(pid)) })
+    predIds.forEach((pid) => {
+      maxPredEF = Math.max(maxPredEF, forwardPass(pid))
+    })
     t.es = maxPredEF
     t.ef = t.es + t.duration
     return t.ef
@@ -96,13 +101,17 @@ function computeCPM(tasks) {
     if (!t) return projectDuration
     const successors = tasks.filter((s) => {
       const predIds = s.predecessors
-        ? s.predecessors.split(',').map((x) => parseInt(x.trim(), 10)).filter(Boolean)
+        ? s.predecessors
+            .split(',')
+            .map((x) => parseInt(x.trim(), 10))
+            .filter(Boolean)
         : []
       return predIds.includes(id)
     })
-    t.lf = successors.length === 0
-      ? projectDuration
-      : Math.min(...successors.map((s) => backwardPass(s.id)))
+    t.lf =
+      successors.length === 0
+        ? projectDuration
+        : Math.min(...successors.map((s) => backwardPass(s.id)))
     t.ls = t.lf - t.duration
     t.float = t.ls - t.es
     return t.ls
@@ -113,31 +122,119 @@ function computeCPM(tasks) {
 }
 
 const DEFAULT_TASKS = [
-  { id: 1,  name: 'Mobilization & Site Setup',         phase: 'Mobilization',          duration: 3,  predecessors: '',    assignee: 'J. Worden', status: 'not_started' },
-  { id: 2,  name: 'Clearing & Demo',                   phase: 'Clearing & Demolition',  duration: 5,  predecessors: '1',   assignee: '',          status: 'not_started' },
-  { id: 3,  name: 'Mass Earthwork / Cut-Fill',          phase: 'Earthwork / Grading',    duration: 10, predecessors: '2',   assignee: '',          status: 'not_started' },
-  { id: 4,  name: 'Install Erosion Controls',           phase: 'Erosion Control',        duration: 2,  predecessors: '2',   assignee: '',          status: 'not_started' },
-  { id: 5,  name: 'Storm Drainage Install',             phase: 'Storm Drainage',         duration: 7,  predecessors: '3',   assignee: '',          status: 'not_started' },
-  { id: 6,  name: 'Subbase & Aggregate Base Course',    phase: 'Subbase / Base Course',  duration: 6,  predecessors: '5',   assignee: '',          status: 'not_started' },
-  { id: 7,  name: 'Curb & Gutter',                     phase: 'Curb & Gutter',          duration: 4,  predecessors: '6',   assignee: '',          status: 'not_started' },
-  { id: 8,  name: 'Asphalt Paving – Base Course',       phase: 'Asphalt Paving',         duration: 3,  predecessors: '6',   assignee: '',          status: 'not_started' },
-  { id: 9,  name: 'Asphalt Paving – Surface Course',    phase: 'Asphalt Paving',         duration: 2,  predecessors: '8',   assignee: '',          status: 'not_started' },
-  { id: 10, name: 'Striping & Signage',                 phase: 'Striping & Signage',     duration: 2,  predecessors: '9,7', assignee: '',          status: 'not_started' },
-  { id: 11, name: 'Punch List & Closeout',              phase: 'Punch List / Closeout',  duration: 3,  predecessors: '10',  assignee: '',          status: 'not_started' },
+  {
+    id: 1,
+    name: 'Mobilization & Site Setup',
+    phase: 'Mobilization',
+    duration: 3,
+    predecessors: '',
+    assignee: 'J. Worden',
+    status: 'not_started',
+  },
+  {
+    id: 2,
+    name: 'Clearing & Demo',
+    phase: 'Clearing & Demolition',
+    duration: 5,
+    predecessors: '1',
+    assignee: '',
+    status: 'not_started',
+  },
+  {
+    id: 3,
+    name: 'Mass Earthwork / Cut-Fill',
+    phase: 'Earthwork / Grading',
+    duration: 10,
+    predecessors: '2',
+    assignee: '',
+    status: 'not_started',
+  },
+  {
+    id: 4,
+    name: 'Install Erosion Controls',
+    phase: 'Erosion Control',
+    duration: 2,
+    predecessors: '2',
+    assignee: '',
+    status: 'not_started',
+  },
+  {
+    id: 5,
+    name: 'Storm Drainage Install',
+    phase: 'Storm Drainage',
+    duration: 7,
+    predecessors: '3',
+    assignee: '',
+    status: 'not_started',
+  },
+  {
+    id: 6,
+    name: 'Subbase & Aggregate Base Course',
+    phase: 'Subbase / Base Course',
+    duration: 6,
+    predecessors: '5',
+    assignee: '',
+    status: 'not_started',
+  },
+  {
+    id: 7,
+    name: 'Curb & Gutter',
+    phase: 'Curb & Gutter',
+    duration: 4,
+    predecessors: '6',
+    assignee: '',
+    status: 'not_started',
+  },
+  {
+    id: 8,
+    name: 'Asphalt Paving – Base Course',
+    phase: 'Asphalt Paving',
+    duration: 3,
+    predecessors: '6',
+    assignee: '',
+    status: 'not_started',
+  },
+  {
+    id: 9,
+    name: 'Asphalt Paving – Surface Course',
+    phase: 'Asphalt Paving',
+    duration: 2,
+    predecessors: '8',
+    assignee: '',
+    status: 'not_started',
+  },
+  {
+    id: 10,
+    name: 'Striping & Signage',
+    phase: 'Striping & Signage',
+    duration: 2,
+    predecessors: '9,7',
+    assignee: '',
+    status: 'not_started',
+  },
+  {
+    id: 11,
+    name: 'Punch List & Closeout',
+    phase: 'Punch List / Closeout',
+    duration: 3,
+    predecessors: '10',
+    assignee: '',
+    status: 'not_started',
+  },
 ]
 
 export default function SchedulingPanel() {
-  const [tasks, setTasks]             = useState(DEFAULT_TASKS)
-  const [showAdd, setShowAdd]         = useState(false)
-  const [form, setForm]               = useState({ ...BLANK_TASK })
-  const [editId, setEditId]           = useState(null)
-  const [view, setView]               = useState('list')
+  const [tasks, setTasks] = useState(DEFAULT_TASKS)
+  const [showAdd, setShowAdd] = useState(false)
+  const [form, setForm] = useState({ ...BLANK_TASK })
+  const [editId, setEditId] = useState(null)
+  const [view, setView] = useState('list')
   const [projectName, setProjectName] = useState('New GC Project')
 
   const { tasks: cpmTasks, projectDuration } = useMemo(() => computeCPM(tasks), [tasks])
   const criticalIds = useMemo(
     () => new Set(cpmTasks.filter((t) => t.float === 0).map((t) => t.id)),
-    [cpmTasks],
+    [cpmTasks]
   )
 
   const nextId = () => Math.max(...tasks.map((t) => t.id), 0) + 1
@@ -154,10 +251,15 @@ export default function SchedulingPanel() {
     setShowAdd(false)
   }
 
-  const deleteTask  = (id) => setTasks((prev) => prev.filter((t) => t.id !== id))
-  const setStatus   = (id, status) => setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, status } : t)))
-  const startEdit   = (task) => { setForm({ ...task }); setEditId(task.id); setShowAdd(true) }
-  const set         = (k, v) => setForm((f) => ({ ...f, [k]: v }))
+  const deleteTask = (id) => setTasks((prev) => prev.filter((t) => t.id !== id))
+  const setStatus = (id, status) =>
+    setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, status } : t)))
+  const startEdit = (task) => {
+    setForm({ ...task })
+    setEditId(task.id)
+    setShowAdd(true)
+  }
+  const set = (k, v) => setForm((f) => ({ ...f, [k]: v }))
 
   const completedCount = tasks.filter((t) => t.status === 'completed').length
   const pctDone = tasks.length ? Math.round((completedCount / tasks.length) * 100) : 0
@@ -181,7 +283,9 @@ export default function SchedulingPanel() {
                 type="button"
                 onClick={() => setView(v)}
                 className={`px-3 py-1 rounded-full text-xs font-semibold transition-colors ${
-                  view === v ? 'bg-brand-navy text-white' : 'text-brand-navy/60 hover:text-brand-navy'
+                  view === v
+                    ? 'bg-brand-navy text-white'
+                    : 'text-brand-navy/60 hover:text-brand-navy'
                 }`}
               >
                 {v === 'list' ? '📋 List' : '📊 Gantt'}
@@ -209,7 +313,11 @@ export default function SchedulingPanel() {
           </div>
           <button
             type="button"
-            onClick={() => { setShowAdd(!showAdd); setEditId(null); setForm({ ...BLANK_TASK }) }}
+            onClick={() => {
+              setShowAdd(!showAdd)
+              setEditId(null)
+              setForm({ ...BLANK_TASK })
+            }}
             className="btn-primary text-xs !py-2"
           >
             + Add Task
@@ -225,7 +333,9 @@ export default function SchedulingPanel() {
           </h4>
           <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="sm:col-span-2">
-              <label className="block text-xs font-semibold text-brand-navy/60 mb-1">Task Name</label>
+              <label className="block text-xs font-semibold text-brand-navy/60 mb-1">
+                Task Name
+              </label>
               <input
                 type="text"
                 required
@@ -237,12 +347,20 @@ export default function SchedulingPanel() {
             </div>
             <div>
               <label className="block text-xs font-semibold text-brand-navy/60 mb-1">Phase</label>
-              <select value={form.phase} onChange={(e) => set('phase', e.target.value)} className="input text-sm w-full">
-                {PHASES.map((p) => <option key={p}>{p}</option>)}
+              <select
+                value={form.phase}
+                onChange={(e) => set('phase', e.target.value)}
+                className="input text-sm w-full"
+              >
+                {PHASES.map((p) => (
+                  <option key={p}>{p}</option>
+                ))}
               </select>
             </div>
             <div>
-              <label className="block text-xs font-semibold text-brand-navy/60 mb-1">Duration (days)</label>
+              <label className="block text-xs font-semibold text-brand-navy/60 mb-1">
+                Duration (days)
+              </label>
               <input
                 type="number"
                 min="1"
@@ -265,7 +383,9 @@ export default function SchedulingPanel() {
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-brand-navy/60 mb-1">Assignee</label>
+              <label className="block text-xs font-semibold text-brand-navy/60 mb-1">
+                Assignee
+              </label>
               <input
                 type="text"
                 value={form.assignee}
@@ -276,7 +396,11 @@ export default function SchedulingPanel() {
             </div>
             <div>
               <label className="block text-xs font-semibold text-brand-navy/60 mb-1">Status</label>
-              <select value={form.status} onChange={(e) => set('status', e.target.value)} className="input text-sm w-full">
+              <select
+                value={form.status}
+                onChange={(e) => set('status', e.target.value)}
+                className="input text-sm w-full"
+              >
                 <option value="not_started">Not Started</option>
                 <option value="in_progress">In Progress</option>
                 <option value="completed">Completed</option>
@@ -289,7 +413,10 @@ export default function SchedulingPanel() {
               </button>
               <button
                 type="button"
-                onClick={() => { setShowAdd(false); setEditId(null) }}
+                onClick={() => {
+                  setShowAdd(false)
+                  setEditId(null)
+                }}
                 className="btn-outline text-sm !py-2"
               >
                 Cancel
@@ -305,8 +432,11 @@ export default function SchedulingPanel() {
           <span className="text-lg leading-none mt-0.5">⚠️</span>
           <div>
             <strong>Critical Path ({projectDuration} days): </strong>
-            {cpmTasks.filter((t) => criticalIds.has(t.id)).map((t) => t.name).join(' → ')}.{' '}
-            Any delay to these tasks will extend the project end date.
+            {cpmTasks
+              .filter((t) => criticalIds.has(t.id))
+              .map((t) => t.name)
+              .join(' → ')}
+            . Any delay to these tasks will extend the project end date.
           </div>
         </div>
       )}
@@ -315,10 +445,15 @@ export default function SchedulingPanel() {
       <div className="card p-4">
         <div className="flex justify-between text-xs text-brand-navy/60 mb-1">
           <span>Overall Progress</span>
-          <span>{completedCount} / {tasks.length} tasks complete</span>
+          <span>
+            {completedCount} / {tasks.length} tasks complete
+          </span>
         </div>
         <div className="w-full bg-gray-100 rounded-full h-2.5">
-          <div className="h-2.5 rounded-full bg-brand-amber transition-all" style={{ width: `${pctDone}%` }} />
+          <div
+            className="h-2.5 rounded-full bg-brand-amber transition-all"
+            style={{ width: `${pctDone}%` }}
+          />
         </div>
       </div>
 
@@ -348,29 +483,49 @@ export default function SchedulingPanel() {
                       key={task.id}
                       className={`border-b border-brand-navy/5 ${isCritical ? 'bg-red-50/40' : 'hover:bg-brand-navy/[0.02]'}`}
                     >
-                      <td className="py-2.5 pr-2 text-brand-navy/30 text-xs font-mono">{task.id}</td>
+                      <td className="py-2.5 pr-2 text-brand-navy/30 text-xs font-mono">
+                        {task.id}
+                      </td>
                       <td className="py-2.5 pr-3">
-                        <div className={`font-semibold text-sm ${isCritical ? 'text-red-700' : 'text-brand-navy'}`}>
+                        <div
+                          className={`font-semibold text-sm ${isCritical ? 'text-red-700' : 'text-brand-navy'}`}
+                        >
                           {isCritical && <span className="mr-1 text-xs">🔴</span>}
                           {task.name}
                         </div>
                         {task.predecessors && (
-                          <div className="text-brand-navy/30 text-xs">after: {task.predecessors}</div>
+                          <div className="text-brand-navy/30 text-xs">
+                            after: {task.predecessors}
+                          </div>
                         )}
                         {task.assignee && (
                           <div className="text-brand-navy/40 text-xs">{task.assignee}</div>
                         )}
                       </td>
                       <td className="py-2.5 pr-3 hidden md:table-cell">
-                        <span className={`inline-block w-2 h-2 rounded-full mr-1.5 ${PHASE_COLORS[task.phase] || 'bg-gray-400'}`} />
+                        <span
+                          className={`inline-block w-2 h-2 rounded-full mr-1.5 ${PHASE_COLORS[task.phase] || 'bg-gray-400'}`}
+                        />
                         <span className="text-brand-navy/60 text-xs">{task.phase}</span>
                       </td>
-                      <td className="py-2.5 pr-2 text-center font-mono text-xs text-brand-navy">{task.duration}d</td>
-                      <td className="py-2.5 pr-2 text-center font-mono text-xs text-brand-navy/50">{task.es}</td>
-                      <td className="py-2.5 pr-2 text-center font-mono text-xs text-brand-navy/50">{task.ef}</td>
-                      <td className={`py-2.5 pr-2 text-center font-bold font-mono text-xs ${
-                        task.float === 0 ? 'text-red-600' : task.float <= 3 ? 'text-orange-500' : 'text-green-600'
-                      }`}>
+                      <td className="py-2.5 pr-2 text-center font-mono text-xs text-brand-navy">
+                        {task.duration}d
+                      </td>
+                      <td className="py-2.5 pr-2 text-center font-mono text-xs text-brand-navy/50">
+                        {task.es}
+                      </td>
+                      <td className="py-2.5 pr-2 text-center font-mono text-xs text-brand-navy/50">
+                        {task.ef}
+                      </td>
+                      <td
+                        className={`py-2.5 pr-2 text-center font-bold font-mono text-xs ${
+                          task.float === 0
+                            ? 'text-red-600'
+                            : task.float <= 3
+                              ? 'text-orange-500'
+                              : 'text-green-600'
+                        }`}
+                      >
                         {task.float}d
                       </td>
                       <td className="py-2.5 pr-3">
@@ -442,8 +597,11 @@ export default function SchedulingPanel() {
               return (
                 <div key={task.id} className="flex items-center mb-1.5">
                   <div className="w-44 shrink-0 pr-2">
-                    <div className={`text-xs font-semibold truncate ${isCritical ? 'text-red-600' : 'text-brand-navy'}`}>
-                      {isCritical && '🔴 '}{task.name}
+                    <div
+                      className={`text-xs font-semibold truncate ${isCritical ? 'text-red-600' : 'text-brand-navy'}`}
+                    >
+                      {isCritical && '🔴 '}
+                      {task.name}
                     </div>
                     <div className="text-[10px] text-brand-navy/30">
                       {task.duration}d · float: {task.float}d

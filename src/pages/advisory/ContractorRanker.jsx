@@ -38,10 +38,13 @@ function MiniBar({ score, max = 100 }) {
 
 function RankBadge({ label }) {
   const cls =
-    label === 'BEST VALUE' ? 'bg-green-100 text-green-800 border-green-200' :
-    label === 'STRONG'     ? 'bg-blue-100 text-blue-800 border-blue-200' :
-    label === 'ACCEPTABLE' ? 'bg-yellow-100 text-yellow-800 border-yellow-200' :
-                             'bg-red-100 text-red-800 border-red-200'
+    label === 'BEST VALUE'
+      ? 'bg-green-100 text-green-800 border-green-200'
+      : label === 'STRONG'
+        ? 'bg-blue-100 text-blue-800 border-blue-200'
+        : label === 'ACCEPTABLE'
+          ? 'bg-yellow-100 text-yellow-800 border-yellow-200'
+          : 'bg-red-100 text-red-800 border-red-200'
   return (
     <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-bold border ${cls}`}>
       {label}
@@ -85,22 +88,26 @@ function BidForm({ bid, index, onChange, onRemove }) {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
-          <label className="block text-xs font-medium text-brand-navy/70 mb-1">Company Name *</label>
+          <label className="block text-xs font-medium text-brand-navy/70 mb-1">
+            Company Name *
+          </label>
           <input
             type="text"
             value={bid.name}
-            onChange={e => update('name', e.target.value)}
+            onChange={(e) => update('name', e.target.value)}
             placeholder="Acme Paving Co."
             className="w-full px-3 py-2 text-sm border border-brand-navy/20 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-brand-amber"
           />
         </div>
 
         <div>
-          <label className="block text-xs font-medium text-brand-navy/70 mb-1">Bid Amount ($) *</label>
+          <label className="block text-xs font-medium text-brand-navy/70 mb-1">
+            Bid Amount ($) *
+          </label>
           <input
             type="number"
             value={bid.bidAmount}
-            onChange={e => update('bidAmount', e.target.value)}
+            onChange={(e) => update('bidAmount', e.target.value)}
             placeholder="85000"
             min="0"
             className="w-full px-3 py-2 text-sm border border-brand-navy/20 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-brand-amber"
@@ -112,7 +119,7 @@ function BidForm({ bid, index, onChange, onRemove }) {
           <input
             type="text"
             value={bid.licenseState}
-            onChange={e => update('licenseState', e.target.value.toUpperCase().slice(0, 2))}
+            onChange={(e) => update('licenseState', e.target.value.toUpperCase().slice(0, 2))}
             placeholder="CA"
             maxLength={2}
             className="w-full px-3 py-2 text-sm border border-brand-navy/20 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-brand-amber uppercase"
@@ -120,22 +127,26 @@ function BidForm({ bid, index, onChange, onRemove }) {
         </div>
 
         <div>
-          <label className="block text-xs font-medium text-brand-navy/70 mb-1">License Classes</label>
+          <label className="block text-xs font-medium text-brand-navy/70 mb-1">
+            License Classes
+          </label>
           <input
             type="text"
             value={bid.licenseClasses}
-            onChange={e => update('licenseClasses', e.target.value)}
+            onChange={(e) => update('licenseClasses', e.target.value)}
             placeholder="Class A, Class B"
             className="w-full px-3 py-2 text-sm border border-brand-navy/20 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-brand-amber"
           />
         </div>
 
         <div>
-          <label className="block text-xs font-medium text-brand-navy/70 mb-1">Surety Bond ($)</label>
+          <label className="block text-xs font-medium text-brand-navy/70 mb-1">
+            Surety Bond ($)
+          </label>
           <input
             type="number"
             value={bid.bondAmount}
-            onChange={e => update('bondAmount', e.target.value)}
+            onChange={(e) => update('bondAmount', e.target.value)}
             placeholder="50000"
             min="0"
             className="w-full px-3 py-2 text-sm border border-brand-navy/20 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-brand-amber"
@@ -143,11 +154,13 @@ function BidForm({ bid, index, onChange, onRemove }) {
         </div>
 
         <div>
-          <label className="block text-xs font-medium text-brand-navy/70 mb-1">Years in Business</label>
+          <label className="block text-xs font-medium text-brand-navy/70 mb-1">
+            Years in Business
+          </label>
           <input
             type="number"
             value={bid.yearsExperience}
-            onChange={e => update('yearsExperience', e.target.value)}
+            onChange={(e) => update('yearsExperience', e.target.value)}
             placeholder="10"
             min="0"
             className="w-full px-3 py-2 text-sm border border-brand-navy/20 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-brand-amber"
@@ -160,7 +173,7 @@ function BidForm({ bid, index, onChange, onRemove }) {
           <input
             type="checkbox"
             checked={bid.hasInsurance}
-            onChange={e => update('hasInsurance', e.target.checked)}
+            onChange={(e) => update('hasInsurance', e.target.checked)}
             className="accent-brand-amber"
           />
           General Liability Insurance
@@ -169,7 +182,7 @@ function BidForm({ bid, index, onChange, onRemove }) {
           <input
             type="checkbox"
             checked={bid.workersComp}
-            onChange={e => update('workersComp', e.target.checked)}
+            onChange={(e) => update('workersComp', e.target.checked)}
             className="accent-brand-amber"
           />
           Workers Comp
@@ -185,14 +198,17 @@ function RankedResults({ results }) {
   if (!results || results.length === 0) return null
   return (
     <div className="space-y-4">
-      {results.map(r => (
+      {results.map((r) => (
         <div
           key={r.rank}
           className={`card p-5 border-l-4 ${
-            r.rankColor === 'green' ? 'border-green-500' :
-            r.rankColor === 'blue'  ? 'border-blue-500' :
-            r.rankColor === 'yellow' ? 'border-yellow-400' :
-            'border-red-400'
+            r.rankColor === 'green'
+              ? 'border-green-500'
+              : r.rankColor === 'blue'
+                ? 'border-blue-500'
+                : r.rankColor === 'yellow'
+                  ? 'border-yellow-400'
+                  : 'border-red-400'
           }`}
         >
           <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
@@ -215,11 +231,11 @@ function RankedResults({ results }) {
           {/* Score bars */}
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-3">
             {[
-              { label: 'Bid Value',   key: 'bid' },
-              { label: 'License',     key: 'license' },
-              { label: 'Bond',        key: 'bond' },
-              { label: 'Experience',  key: 'experience' },
-              { label: 'Compliance',  key: 'compliance' },
+              { label: 'Bid Value', key: 'bid' },
+              { label: 'License', key: 'license' },
+              { label: 'Bond', key: 'bond' },
+              { label: 'Experience', key: 'experience' },
+              { label: 'Compliance', key: 'compliance' },
             ].map(({ label, key }) => (
               <div key={key}>
                 <div className="text-xs font-medium text-brand-navy/60 mb-1">{label}</div>
@@ -230,14 +246,17 @@ function RankedResults({ results }) {
 
           <div className="flex items-center justify-between">
             <div className="text-xs font-bold text-brand-navy/60">
-              Composite Score: <span className="text-brand-navy text-sm">{r.scores.composite}/100</span>
+              Composite Score:{' '}
+              <span className="text-brand-navy text-sm">{r.scores.composite}/100</span>
             </div>
           </div>
 
           {r.flags.length > 0 && (
             <div className="mt-3 space-y-1">
               {r.flags.map((flag, i) => (
-                <p key={i} className="text-xs text-yellow-700 bg-yellow-50 rounded px-2 py-1">{flag}</p>
+                <p key={i} className="text-xs text-yellow-700 bg-yellow-50 rounded px-2 py-1">
+                  {flag}
+                </p>
               ))}
             </div>
           )}
@@ -254,15 +273,15 @@ export default function ContractorRanker() {
 
   // Bid comparison state
   const [bids, setBids] = useState([{ ...BLANK_BID }, { ...BLANK_BID }])
-  const [estimateLow,  setEstimateLow]  = useState('')
+  const [estimateLow, setEstimateLow] = useState('')
   const [estimateHigh, setEstimateHigh] = useState('')
-  const [rankedBids, setRankedBids]     = useState(null)
+  const [rankedBids, setRankedBids] = useState(null)
 
   // License optimizer state
   const [licensingData, setLicensingData] = useState(null)
-  const [lienData,      setLienData]      = useState(null)
-  const [dataLoading,   setDataLoading]   = useState(false)
-  const [dataLoaded,    setDataLoaded]    = useState(false)
+  const [lienData, setLienData] = useState(null)
+  const [dataLoading, setDataLoading] = useState(false)
+  const [dataLoaded, setDataLoaded] = useState(false)
 
   async function loadOptimizerData() {
     if (dataLoaded) return
@@ -282,43 +301,40 @@ export default function ContractorRanker() {
   }, [activeTab]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const optimizedStates = useMemo(
-    () => licensingData ? optimizeLicenseStates(licensingData) : [],
+    () => (licensingData ? optimizeLicenseStates(licensingData) : []),
     [licensingData]
   )
 
-  const lienLeverage = useMemo(
-    () => lienData ? getLienLeverageByState(lienData) : [],
-    [lienData]
-  )
+  const lienLeverage = useMemo(() => (lienData ? getLienLeverageByState(lienData) : []), [lienData])
 
   // Bid handlers
-  const updateBid   = (i, bid) => setBids(prev => prev.map((b, idx) => idx === i ? bid : b))
-  const removeBid   = (i)      => setBids(prev => prev.filter((_, idx) => idx !== i))
-  const addBid      = ()       => setBids(prev => [...prev, { ...BLANK_BID }])
+  const updateBid = (i, bid) => setBids((prev) => prev.map((b, idx) => (idx === i ? bid : b)))
+  const removeBid = (i) => setBids((prev) => prev.filter((_, idx) => idx !== i))
+  const addBid = () => setBids((prev) => [...prev, { ...BLANK_BID }])
 
   const handleRank = () => {
     const parsedBids = bids
-      .filter(b => b.name.trim() && b.bidAmount)
-      .map(b => ({
+      .filter((b) => b.name.trim() && b.bidAmount)
+      .map((b) => ({
         ...b,
-        bidAmount:       parseFloat(b.bidAmount) || 0,
-        bondAmount:      parseFloat(b.bondAmount) || 0,
+        bidAmount: parseFloat(b.bidAmount) || 0,
+        bondAmount: parseFloat(b.bondAmount) || 0,
         yearsExperience: parseInt(b.yearsExperience) || 0,
-        licenseClasses:  b.licenseClasses ? b.licenseClasses.split(',').map(s => s.trim()) : [],
+        licenseClasses: b.licenseClasses ? b.licenseClasses.split(',').map((s) => s.trim()) : [],
       }))
     if (parsedBids.length === 0) return
     const results = rankContractorBids(
       parsedBids,
       parseFloat(estimateLow) || 0,
-      parseFloat(estimateHigh) || 0,
+      parseFloat(estimateHigh) || 0
     )
     setRankedBids(results)
   }
 
   const TABS = [
-    { id: 'bids',      label: '📋 Rank Bids',        desc: 'Compare contractor bids' },
+    { id: 'bids', label: '📋 Rank Bids', desc: 'Compare contractor bids' },
     { id: 'optimizer', label: '🏆 License Optimizer', desc: 'Best states for base license' },
-    { id: 'lien',      label: '⚖️ Lien Leverage',     desc: 'Strongest lien law states' },
+    { id: 'lien', label: '⚖️ Lien Leverage', desc: 'Strongest lien law states' },
   ]
 
   return (
@@ -341,12 +357,11 @@ export default function ContractorRanker() {
             Contractor Intelligence · All 50 States
           </span>
           <h1 className="font-display font-black text-5xl md:text-6xl mb-4">
-            Contractor{' '}
-            <span className="text-brand-amber">Ranker</span>
+            Contractor <span className="text-brand-amber">Ranker</span>
           </h1>
           <p className="text-white/70 text-xl max-w-3xl mx-auto">
-            Rank contractor bids by quality, optimize your license strategy, and identify
-            the states with the strongest contractor legal protections.
+            Rank contractor bids by quality, optimize your license strategy, and identify the states
+            with the strongest contractor legal protections.
           </p>
         </div>
       </div>
@@ -356,7 +371,7 @@ export default function ContractorRanker() {
 
         {/* Tabs */}
         <div className="flex flex-wrap gap-2">
-          {TABS.map(tab => (
+          {TABS.map((tab) => (
             <button
               key={tab.id}
               type="button"
@@ -376,7 +391,9 @@ export default function ContractorRanker() {
         {activeTab === 'bids' && (
           <div className="space-y-6">
             <div className="card p-6 bg-white">
-              <h2 className="font-display font-bold text-brand-navy text-xl mb-2">Bid Comparison</h2>
+              <h2 className="font-display font-bold text-brand-navy text-xl mb-2">
+                Bid Comparison
+              </h2>
               <p className="text-brand-navy/60 text-sm mb-6">
                 Enter contractor bids to rank them by composite quality score. Include your project
                 estimate to score bid competitiveness.
@@ -385,22 +402,26 @@ export default function ContractorRanker() {
               {/* Estimate range */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 p-4 bg-brand-amber/5 rounded-xl border border-brand-amber/20">
                 <div>
-                  <label className="block text-xs font-medium text-brand-navy/70 mb-1">Project Estimate — Low ($)</label>
+                  <label className="block text-xs font-medium text-brand-navy/70 mb-1">
+                    Project Estimate — Low ($)
+                  </label>
                   <input
                     type="number"
                     value={estimateLow}
-                    onChange={e => setEstimateLow(e.target.value)}
+                    onChange={(e) => setEstimateLow(e.target.value)}
                     placeholder="75000"
                     min="0"
                     className="w-full px-3 py-2 text-sm border border-brand-navy/20 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-brand-amber"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-brand-navy/70 mb-1">Project Estimate — High ($)</label>
+                  <label className="block text-xs font-medium text-brand-navy/70 mb-1">
+                    Project Estimate — High ($)
+                  </label>
                   <input
                     type="number"
                     value={estimateHigh}
-                    onChange={e => setEstimateHigh(e.target.value)}
+                    onChange={(e) => setEstimateHigh(e.target.value)}
                     placeholder="100000"
                     min="0"
                     className="w-full px-3 py-2 text-sm border border-brand-navy/20 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-brand-amber"
@@ -417,19 +438,11 @@ export default function ContractorRanker() {
 
               <div className="flex flex-wrap gap-3">
                 {bids.length < 8 && (
-                  <button
-                    type="button"
-                    onClick={addBid}
-                    className="btn-outline text-sm"
-                  >
+                  <button type="button" onClick={addBid} className="btn-outline text-sm">
                     + Add Contractor
                   </button>
                 )}
-                <button
-                  type="button"
-                  onClick={handleRank}
-                  className="btn-primary"
-                >
+                <button type="button" onClick={handleRank} className="btn-primary">
                   Rank Contractors →
                 </button>
               </div>
@@ -452,7 +465,9 @@ export default function ContractorRanker() {
         {/* ── Tab: License Optimizer ── */}
         {activeTab === 'optimizer' && (
           <div className="card p-6 bg-white">
-            <h2 className="font-display font-bold text-brand-navy text-xl mb-2">State License Optimizer</h2>
+            <h2 className="font-display font-bold text-brand-navy text-xl mb-2">
+              State License Optimizer
+            </h2>
             <p className="text-brand-navy/60 text-sm mb-6">
               Ranks all 50 states by how beneficial a contractor license there is — weighing
               reciprocity breadth (40%), license class scope (40%), and low bond requirements (20%).
@@ -482,7 +497,10 @@ export default function ContractorRanker() {
                   </thead>
                   <tbody>
                     {optimizedStates.map((s, i) => (
-                      <tr key={s.abbr} className="border-t border-brand-navy/5 hover:bg-brand-amber/5 transition-colors">
+                      <tr
+                        key={s.abbr}
+                        className="border-t border-brand-navy/5 hover:bg-brand-amber/5 transition-colors"
+                      >
                         <td className="px-4 py-2 text-brand-navy/50 font-medium">#{i + 1}</td>
                         <td className="px-4 py-2 font-medium text-brand-navy">
                           <Link to={`/advisory/state/${s.abbr}`} className="hover:text-brand-amber">
@@ -492,31 +510,44 @@ export default function ContractorRanker() {
                         <td className="px-4 py-2">
                           <div className="flex items-center gap-2">
                             <span className="font-bold text-brand-navy">{s.optimizerScore}</span>
-                            <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${
-                              s.optimizerLabel === 'OPTIMAL' ? 'bg-green-100 text-green-700' :
-                              s.optimizerLabel === 'GOOD'    ? 'bg-blue-100 text-blue-700' :
-                              s.optimizerLabel === 'AVERAGE' ? 'bg-yellow-100 text-yellow-700' :
-                              'bg-gray-100 text-gray-600'
-                            }`}>{s.optimizerLabel}</span>
+                            <span
+                              className={`text-xs font-bold px-2 py-0.5 rounded-full ${
+                                s.optimizerLabel === 'OPTIMAL'
+                                  ? 'bg-green-100 text-green-700'
+                                  : s.optimizerLabel === 'GOOD'
+                                    ? 'bg-blue-100 text-blue-700'
+                                    : s.optimizerLabel === 'AVERAGE'
+                                      ? 'bg-yellow-100 text-yellow-700'
+                                      : 'bg-gray-100 text-gray-600'
+                              }`}
+                            >
+                              {s.optimizerLabel}
+                            </span>
                           </div>
                         </td>
                         <td className="px-4 py-2">
-                          {s.reciprocityCount > 0
-                            ? <span className="text-green-700 font-medium">{s.reciprocityCount} state{s.reciprocityCount !== 1 ? 's' : ''}</span>
-                            : <span className="text-brand-navy/30">None</span>
-                          }
+                          {s.reciprocityCount > 0 ? (
+                            <span className="text-green-700 font-medium">
+                              {s.reciprocityCount} state{s.reciprocityCount !== 1 ? 's' : ''}
+                            </span>
+                          ) : (
+                            <span className="text-brand-navy/30">None</span>
+                          )}
                         </td>
                         <td className="px-4 py-2">
                           <MiniBar score={s.classScope} />
                         </td>
                         <td className="px-4 py-2 text-brand-navy/70">
-                          {s.bondMinCommercial > 0 ? `$${s.bondMinCommercial.toLocaleString()}` : '—'}
+                          {s.bondMinCommercial > 0
+                            ? `$${s.bondMinCommercial.toLocaleString()}`
+                            : '—'}
                         </td>
                         <td className="px-4 py-2">
-                          {s.stateLicenseRequired
-                            ? <span className="text-xs text-green-700">✅ Yes</span>
-                            : <span className="text-xs text-brand-navy/40">❌ No (local)</span>
-                          }
+                          {s.stateLicenseRequired ? (
+                            <span className="text-xs text-green-700">✅ Yes</span>
+                          ) : (
+                            <span className="text-xs text-brand-navy/40">❌ No (local)</span>
+                          )}
                         </td>
                       </tr>
                     ))}
@@ -530,11 +561,13 @@ export default function ContractorRanker() {
         {/* ── Tab: Lien Leverage ── */}
         {activeTab === 'lien' && (
           <div className="card p-6 bg-white">
-            <h2 className="font-display font-bold text-brand-navy text-xl mb-2">Lien Law Leverage by State</h2>
+            <h2 className="font-display font-bold text-brand-navy text-xl mb-2">
+              Lien Law Leverage by State
+            </h2>
             <p className="text-brand-navy/60 text-sm mb-6">
               Ranks all 50 states by the strength of contractor lien rights. When negotiating
-              contract jurisdiction, favor states at the top of this list — your lien rights
-              are strongest there. Scored on filing deadlines, notice simplicity, and enforcement scope.
+              contract jurisdiction, favor states at the top of this list — your lien rights are
+              strongest there. Scored on filing deadlines, notice simplicity, and enforcement scope.
             </p>
 
             {dataLoading && (
@@ -561,7 +594,10 @@ export default function ContractorRanker() {
                   </thead>
                   <tbody>
                     {lienLeverage.map((s, i) => (
-                      <tr key={s.abbr} className="border-t border-brand-navy/5 hover:bg-brand-amber/5 transition-colors">
+                      <tr
+                        key={s.abbr}
+                        className="border-t border-brand-navy/5 hover:bg-brand-amber/5 transition-colors"
+                      >
                         <td className="px-4 py-2 text-brand-navy/50">#{i + 1}</td>
                         <td className="px-4 py-2 font-medium text-brand-navy">
                           <Link to={`/advisory/state/${s.abbr}`} className="hover:text-brand-amber">
@@ -571,35 +607,46 @@ export default function ContractorRanker() {
                         <td className="px-4 py-2">
                           <div className="flex items-center gap-2">
                             <span className="font-bold">{s.lienScore}</span>
-                            <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${
-                              s.lienLabel === 'STRONG'   ? 'bg-green-100 text-green-700' :
-                              s.lienLabel === 'MODERATE' ? 'bg-yellow-100 text-yellow-700' :
-                              'bg-red-100 text-red-600'
-                            }`}>{s.lienLabel}</span>
+                            <span
+                              className={`text-xs font-bold px-2 py-0.5 rounded-full ${
+                                s.lienLabel === 'STRONG'
+                                  ? 'bg-green-100 text-green-700'
+                                  : s.lienLabel === 'MODERATE'
+                                    ? 'bg-yellow-100 text-yellow-700'
+                                    : 'bg-red-100 text-red-600'
+                              }`}
+                            >
+                              {s.lienLabel}
+                            </span>
                           </div>
                         </td>
                         <td className="px-4 py-2 text-brand-navy/70">
                           {s.lienFilingDeadlineDays ? `${s.lienFilingDeadlineDays} days` : '—'}
                         </td>
                         <td className="px-4 py-2">
-                          {s.preliminaryNoticeRequired
-                            ? <span className="text-yellow-600 text-xs">⚠️ Required</span>
-                            : <span className="text-green-600 text-xs">✅ Not req.</span>
-                          }
+                          {s.preliminaryNoticeRequired ? (
+                            <span className="text-yellow-600 text-xs">⚠️ Required</span>
+                          ) : (
+                            <span className="text-green-600 text-xs">✅ Not req.</span>
+                          )}
                         </td>
                         <td className="px-4 py-2">
-                          {s.noticeOfIntentRequired
-                            ? <span className="text-yellow-600 text-xs">⚠️ Required</span>
-                            : <span className="text-green-600 text-xs">✅ Not req.</span>
-                          }
+                          {s.noticeOfIntentRequired ? (
+                            <span className="text-yellow-600 text-xs">⚠️ Required</span>
+                          ) : (
+                            <span className="text-green-600 text-xs">✅ Not req.</span>
+                          )}
                         </td>
                         <td className="px-4 py-2">
-                          {s.residentialExceptions
-                            ? <span className="text-yellow-600 text-xs">⚠️ Yes</span>
-                            : <span className="text-green-600 text-xs">✅ No</span>
-                          }
+                          {s.residentialExceptions ? (
+                            <span className="text-yellow-600 text-xs">⚠️ Yes</span>
+                          ) : (
+                            <span className="text-green-600 text-xs">✅ No</span>
+                          )}
                         </td>
-                        <td className="px-4 py-2 text-xs text-brand-navy/50">{s.citation || '—'}</td>
+                        <td className="px-4 py-2 text-xs text-brand-navy/50">
+                          {s.citation || '—'}
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -611,9 +658,7 @@ export default function ContractorRanker() {
 
         {/* Bottom CTA */}
         <section className="bg-brand-navy rounded-2xl p-8 text-center text-white">
-          <h2 className="font-display font-black text-2xl mb-3">
-            Need Legal Strategy Guidance?
-          </h2>
+          <h2 className="font-display font-black text-2xl mb-3">Need Legal Strategy Guidance?</h2>
           <p className="text-white/70 mb-6 max-w-xl mx-auto">
             Get negotiation strength scores and dispute-specific strategy for any state.
           </p>

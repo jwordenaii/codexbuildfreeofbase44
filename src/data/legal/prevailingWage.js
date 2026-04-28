@@ -3,49 +3,53 @@ export default [
     state: 'Alabama',
     abbr: 'AL',
     prevailingWageLaw: false,
-    lawScope: 'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
+    lawScope:
+      'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
     administeredBy: 'N/A',
     thresholdForPublicWorks: null,
     davisBaconApplies: true,
     citation: 'Ala. Code § 39-5-1',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Alaska',
     abbr: 'AK',
     prevailingWageLaw: false,
-    lawScope: 'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
+    lawScope:
+      'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
     administeredBy: 'N/A',
     thresholdForPublicWorks: null,
     davisBaconApplies: true,
     citation: 'AS § 36.05.010 et seq.',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Arizona',
     abbr: 'AZ',
     prevailingWageLaw: false,
-    lawScope: 'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
+    lawScope:
+      'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
     administeredBy: 'N/A',
     thresholdForPublicWorks: null,
     davisBaconApplies: true,
     citation: 'A.R.S. § 34-323 (highway projects only)',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Arkansas',
     abbr: 'AR',
     prevailingWageLaw: false,
-    lawScope: 'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
+    lawScope:
+      'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
     administeredBy: 'N/A',
     thresholdForPublicWorks: null,
     davisBaconApplies: true,
     citation: 'Ark. Code Ann. § 22-9-301 et seq. (highway projects)',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'California',
@@ -57,7 +61,7 @@ export default [
     davisBaconApplies: true,
     citation: 'Cal. Lab. Code § 1720 et seq.',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Colorado',
@@ -69,7 +73,7 @@ export default [
     davisBaconApplies: true,
     citation: 'C.R.S. § 8-17-101 et seq.',
     notes: 'Colorado reinstated prevailing wage law in 2022 (C.R.S. § 8-17-101 et seq.).',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Connecticut',
@@ -81,7 +85,7 @@ export default [
     davisBaconApplies: true,
     citation: 'CGS § 31-53 et seq.',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Delaware',
@@ -93,31 +97,33 @@ export default [
     davisBaconApplies: true,
     citation: '29 Del. Code § 6960 et seq.',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Florida',
     abbr: 'FL',
     prevailingWageLaw: false,
-    lawScope: 'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
+    lawScope:
+      'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
     administeredBy: 'N/A',
     thresholdForPublicWorks: null,
     davisBaconApplies: true,
     citation: 'Fla. Stat. § 215.19 (repealed; no current PW law)',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Georgia',
     abbr: 'GA',
     prevailingWageLaw: false,
-    lawScope: 'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
+    lawScope:
+      'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
     administeredBy: 'N/A',
     thresholdForPublicWorks: null,
     davisBaconApplies: true,
     citation: 'O.C.G.A. § 13-10-80 et seq. (preempted for local)',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Hawaii',
@@ -129,19 +135,20 @@ export default [
     davisBaconApplies: true,
     citation: 'HRS § 104-1 et seq.',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Idaho',
     abbr: 'ID',
     prevailingWageLaw: false,
-    lawScope: 'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
+    lawScope:
+      'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
     administeredBy: 'N/A',
     thresholdForPublicWorks: null,
     davisBaconApplies: true,
     citation: 'Idaho Code § 44-1001 et seq. (limited to highway projects)',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Illinois',
@@ -153,43 +160,46 @@ export default [
     davisBaconApplies: true,
     citation: '820 ILCS 130/1 et seq.',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Indiana',
     abbr: 'IN',
     prevailingWageLaw: false,
-    lawScope: 'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
+    lawScope:
+      'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
     administeredBy: 'N/A',
     thresholdForPublicWorks: null,
     davisBaconApplies: true,
     citation: 'IC 5-16-7 (repealed 2015)',
     notes: 'Indiana repealed its prevailing wage law in 2015.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Iowa',
     abbr: 'IA',
     prevailingWageLaw: false,
-    lawScope: 'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
+    lawScope:
+      'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
     administeredBy: 'N/A',
     thresholdForPublicWorks: null,
     davisBaconApplies: true,
     citation: 'Iowa Code § 91C.1 (limited)',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Kansas',
     abbr: 'KS',
     prevailingWageLaw: false,
-    lawScope: 'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
+    lawScope:
+      'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
     administeredBy: 'N/A',
     thresholdForPublicWorks: null,
     davisBaconApplies: true,
     citation: 'K.S.A. 44-201 (limited)',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Kentucky',
@@ -201,19 +211,20 @@ export default [
     davisBaconApplies: true,
     citation: 'KRS 337.010 et seq.',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Louisiana',
     abbr: 'LA',
     prevailingWageLaw: false,
-    lawScope: 'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
+    lawScope:
+      'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
     administeredBy: 'N/A',
     thresholdForPublicWorks: null,
     davisBaconApplies: true,
     citation: 'La. Rev. Stat. § 38:2241 (limited)',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Maine',
@@ -225,7 +236,7 @@ export default [
     davisBaconApplies: true,
     citation: '26 M.R.S.A. § 1301 et seq.',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Maryland',
@@ -237,7 +248,7 @@ export default [
     davisBaconApplies: true,
     citation: 'Md. Code Ann., State Fin. & Proc. § 17-201 et seq.',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Massachusetts',
@@ -249,7 +260,7 @@ export default [
     davisBaconApplies: true,
     citation: 'M.G.L. c. 149, § 26 et seq.',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Michigan',
@@ -261,7 +272,7 @@ export default [
     davisBaconApplies: true,
     citation: 'MCL § 408.551 et seq.',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Minnesota',
@@ -273,19 +284,20 @@ export default [
     davisBaconApplies: true,
     citation: 'Minn. Stat. § 177.41 et seq.',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Mississippi',
     abbr: 'MS',
     prevailingWageLaw: false,
-    lawScope: 'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
+    lawScope:
+      'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
     administeredBy: 'N/A',
     thresholdForPublicWorks: null,
     davisBaconApplies: true,
     citation: 'Miss. Code Ann. § 31-5-1 (no current PW law)',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Missouri',
@@ -296,8 +308,9 @@ export default [
     thresholdForPublicWorks: 0,
     davisBaconApplies: true,
     citation: 'Mo. Rev. Stat. § 290.210 et seq.',
-    notes: 'Missouri voters repealed prevailing wage in 1994; legislature reinstated in 1995; currently enforced.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Missouri voters repealed prevailing wage in 1994; legislature reinstated in 1995; currently enforced.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Montana',
@@ -309,19 +322,20 @@ export default [
     davisBaconApplies: true,
     citation: 'Mont. Code Ann. § 18-2-401 et seq.',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Nebraska',
     abbr: 'NE',
     prevailingWageLaw: false,
-    lawScope: 'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
+    lawScope:
+      'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
     administeredBy: 'N/A',
     thresholdForPublicWorks: null,
     davisBaconApplies: true,
     citation: 'Neb. Rev. Stat. § 73-101 et seq. (limited)',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Nevada',
@@ -333,19 +347,20 @@ export default [
     davisBaconApplies: true,
     citation: 'NRS § 338.010 et seq.',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New Hampshire',
     abbr: 'NH',
     prevailingWageLaw: false,
-    lawScope: 'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
+    lawScope:
+      'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
     administeredBy: 'N/A',
     thresholdForPublicWorks: null,
     davisBaconApplies: true,
     citation: 'RSA 228:61 (highway only)',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New Jersey',
@@ -357,7 +372,7 @@ export default [
     davisBaconApplies: true,
     citation: 'N.J.S.A. 34:11-56.25 et seq.',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New Mexico',
@@ -369,7 +384,7 @@ export default [
     davisBaconApplies: true,
     citation: 'NMSA § 13-4-10 et seq.',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New York',
@@ -381,31 +396,33 @@ export default [
     davisBaconApplies: true,
     citation: 'Labor Law § 220 et seq.',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'North Carolina',
     abbr: 'NC',
     prevailingWageLaw: false,
-    lawScope: 'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
+    lawScope:
+      'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
     administeredBy: 'N/A',
     thresholdForPublicWorks: null,
     davisBaconApplies: true,
     citation: 'N.C. Gen. Stat. § 133-10 (repealed)',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'North Dakota',
     abbr: 'ND',
     prevailingWageLaw: false,
-    lawScope: 'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
+    lawScope:
+      'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
     administeredBy: 'N/A',
     thresholdForPublicWorks: null,
     davisBaconApplies: true,
     citation: 'N.D. Cent. Code § 34-14-01 (no current general PW law)',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Ohio',
@@ -417,19 +434,20 @@ export default [
     davisBaconApplies: true,
     citation: 'ORC § 4115.03 et seq.',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Oklahoma',
     abbr: 'OK',
     prevailingWageLaw: false,
-    lawScope: 'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
+    lawScope:
+      'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
     administeredBy: 'N/A',
     thresholdForPublicWorks: null,
     davisBaconApplies: true,
     citation: '40 O.S. § 196.1 (no current general PW law)',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Oregon',
@@ -441,7 +459,7 @@ export default [
     davisBaconApplies: true,
     citation: 'ORS § 279C.800 et seq.',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Pennsylvania',
@@ -453,7 +471,7 @@ export default [
     davisBaconApplies: true,
     citation: '43 P.S. § 165-1 et seq.',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Rhode Island',
@@ -465,79 +483,85 @@ export default [
     davisBaconApplies: true,
     citation: 'R.I. Gen. Laws § 37-13-1 et seq.',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'South Carolina',
     abbr: 'SC',
     prevailingWageLaw: false,
-    lawScope: 'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
+    lawScope:
+      'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
     administeredBy: 'N/A',
     thresholdForPublicWorks: null,
     davisBaconApplies: true,
     citation: 'S.C. Code Ann. § 6-5-10 (no current general PW law)',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'South Dakota',
     abbr: 'SD',
     prevailingWageLaw: false,
-    lawScope: 'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
+    lawScope:
+      'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
     administeredBy: 'N/A',
     thresholdForPublicWorks: null,
     davisBaconApplies: true,
     citation: 'SDCL § 5-18A-8 (no current general PW law)',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Tennessee',
     abbr: 'TN',
     prevailingWageLaw: false,
-    lawScope: 'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
+    lawScope:
+      'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
     administeredBy: 'N/A',
     thresholdForPublicWorks: null,
     davisBaconApplies: true,
     citation: 'TCA § 66-34-301 (no current general PW law)',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Texas',
     abbr: 'TX',
     prevailingWageLaw: false,
-    lawScope: 'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
+    lawScope:
+      'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
     administeredBy: 'N/A',
     thresholdForPublicWorks: null,
     davisBaconApplies: true,
-    citation: 'Tex. Gov\'t Code § 2258.001 et seq.',
+    citation: "Tex. Gov't Code § 2258.001 et seq.",
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Utah',
     abbr: 'UT',
     prevailingWageLaw: false,
-    lawScope: 'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
+    lawScope:
+      'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
     administeredBy: 'N/A',
     thresholdForPublicWorks: null,
     davisBaconApplies: true,
     citation: 'Utah Code § 34-5-1 (highway projects only)',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Vermont',
     abbr: 'VT',
     prevailingWageLaw: false,
-    lawScope: 'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
+    lawScope:
+      'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
     administeredBy: 'N/A',
     thresholdForPublicWorks: null,
     davisBaconApplies: true,
     citation: '21 V.S.A. § 391 (highway projects only)',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Virginia',
@@ -548,8 +572,9 @@ export default [
     thresholdForPublicWorks: 500000,
     davisBaconApplies: true,
     citation: 'Code of Va. § 2.2-4321.3',
-    notes: 'Virginia enacted a prevailing wage law effective May 1, 2021 (Code of Va. § 2.2-4321.3).',
-    lastVerified: '2026-01-01'
+    notes:
+      'Virginia enacted a prevailing wage law effective May 1, 2021 (Code of Va. § 2.2-4321.3).',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Washington',
@@ -561,42 +586,45 @@ export default [
     davisBaconApplies: true,
     citation: 'RCW § 39.12.010 et seq.',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'West Virginia',
     abbr: 'WV',
     prevailingWageLaw: false,
-    lawScope: 'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
+    lawScope:
+      'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
     administeredBy: 'N/A',
     thresholdForPublicWorks: null,
     davisBaconApplies: true,
     citation: 'W. Va. Code § 21-5A-1 (repealed 2016)',
     notes: 'West Virginia repealed its prevailing wage law in 2016.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Wisconsin',
     abbr: 'WI',
     prevailingWageLaw: false,
-    lawScope: 'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
+    lawScope:
+      'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
     administeredBy: 'N/A',
     thresholdForPublicWorks: null,
     davisBaconApplies: true,
     citation: 'Wis. Stat. § 66.0903 (repealed 2017-18)',
     notes: 'Wisconsin repealed its prevailing wage law in 2017-2018.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Wyoming',
     abbr: 'WY',
     prevailingWageLaw: false,
-    lawScope: 'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
+    lawScope:
+      'No general prevailing wage law; federal Davis-Bacon applies to federally funded projects',
     administeredBy: 'N/A',
     thresholdForPublicWorks: null,
     davisBaconApplies: true,
     citation: 'Wyo. Stat. § 27-4-501 (no current general PW law)',
     notes: '',
-    lastVerified: '2026-01-01'
-  }
+    lastVerified: '2026-01-01',
+  },
 ]

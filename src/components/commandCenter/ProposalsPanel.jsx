@@ -9,12 +9,13 @@ import { api } from '../../api/client'
 import { downloadPdf } from '../../lib/pdfUtils'
 
 function Badge({ children, color = 'gray' }) {
-  const cls = {
-    red:    'bg-red-100 text-red-700',
-    orange: 'bg-orange-100 text-orange-700',
-    blue:   'bg-blue-100 text-blue-700',
-    gray:   'bg-gray-100 text-gray-600',
-  }[color] || 'bg-gray-100 text-gray-600'
+  const cls =
+    {
+      red: 'bg-red-100 text-red-700',
+      orange: 'bg-orange-100 text-orange-700',
+      blue: 'bg-blue-100 text-blue-700',
+      gray: 'bg-gray-100 text-gray-600',
+    }[color] || 'bg-gray-100 text-gray-600'
   return (
     <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-bold ${cls}`}>
       {children}
@@ -23,26 +24,27 @@ function Badge({ children, color = 'gray' }) {
 }
 
 function scoreColor(score) {
-  if (score === 'HOT')  return 'red'
+  if (score === 'HOT') return 'red'
   if (score === 'WARM') return 'orange'
   return 'blue'
 }
 
 export default function ProposalsPanel() {
-  const [leads, setLeads]         = useState([])
+  const [leads, setLeads] = useState([])
   const [leadsLoading, setLeadsLoading] = useState(true)
-  const [leadsError, setLeadsError]     = useState('')
+  const [leadsError, setLeadsError] = useState('')
 
   const [selectedLeadId, setSelectedLeadId] = useState('')
-  const [generating, setGenerating]         = useState(false)
-  const [proposal, setProposal]             = useState(null)   // { proposal_id, proposal_text, pdf_b64 }
-  const [genError, setGenError]             = useState('')
+  const [generating, setGenerating] = useState(false)
+  const [proposal, setProposal] = useState(null) // { proposal_id, proposal_text, pdf_b64 }
+  const [genError, setGenError] = useState('')
 
-  const [sending, setSending]       = useState(false)
+  const [sending, setSending] = useState(false)
   const [sendResult, setSendResult] = useState('')
 
   useEffect(() => {
-    api.getCRMLeads({ limit: 100 })
+    api
+      .getCRMLeads({ limit: 100 })
       .then((d) => setLeads(d.leads || []))
       .catch((e) => setLeadsError(e.message))
       .finally(() => setLeadsLoading(false))
@@ -92,15 +94,12 @@ export default function ProposalsPanel() {
           📄 Proposal Generator
         </h2>
         <p className="text-brand-navy/50 text-sm mb-5">
-          Select a lead, generate a GPT-4o proposal, preview it, then download as PDF or email it directly.
+          Select a lead, generate a GPT-4o proposal, preview it, then download as PDF or email it
+          directly.
         </p>
 
-        {leadsLoading && (
-          <div className="text-brand-navy/40 text-sm">Loading leads…</div>
-        )}
-        {leadsError && (
-          <div className="text-red-500 text-sm">{leadsError}</div>
-        )}
+        {leadsLoading && <div className="text-brand-navy/40 text-sm">Loading leads…</div>}
+        {leadsError && <div className="text-red-500 text-sm">{leadsError}</div>}
 
         {!leadsLoading && !leadsError && (
           <div className="space-y-4">
@@ -110,7 +109,11 @@ export default function ProposalsPanel() {
               </label>
               <select
                 value={selectedLeadId}
-                onChange={(e) => { setSelectedLeadId(e.target.value); setProposal(null); setSendResult('') }}
+                onChange={(e) => {
+                  setSelectedLeadId(e.target.value)
+                  setProposal(null)
+                  setSendResult('')
+                }}
                 className="w-full border border-gray-200 rounded-lg px-4 py-3 text-brand-navy focus:outline-none focus:ring-2 focus:ring-brand-amber/50 focus:border-brand-amber"
               >
                 <option value="">— choose a lead —</option>
@@ -126,20 +129,29 @@ export default function ProposalsPanel() {
               <div className="bg-gray-50 rounded-xl p-4 text-sm space-y-1">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="font-bold text-brand-navy">{selectedLead.name}</span>
-                  <Badge color={scoreColor(selectedLead.score_label)}>{selectedLead.score_label || 'N/A'}</Badge>
+                  <Badge color={scoreColor(selectedLead.score_label)}>
+                    {selectedLead.score_label || 'N/A'}
+                  </Badge>
                 </div>
                 {[
-                  ['Email',   selectedLead.email],
-                  ['Phone',   selectedLead.phone],
+                  ['Email', selectedLead.email],
+                  ['Phone', selectedLead.phone],
                   ['Service', selectedLead.service_type],
-                  ['Size',    selectedLead.project_size_sqft ? `${selectedLead.project_size_sqft} sqft` : null],
-                  ['State',   selectedLead.state_code],
-                ].filter(([, v]) => v).map(([k, v]) => (
-                  <div key={k} className="flex gap-2">
-                    <span className="text-brand-navy/40 w-20 flex-shrink-0">{k}</span>
-                    <span className="text-brand-navy">{v}</span>
-                  </div>
-                ))}
+                  [
+                    'Size',
+                    selectedLead.project_size_sqft
+                      ? `${selectedLead.project_size_sqft} sqft`
+                      : null,
+                  ],
+                  ['State', selectedLead.state_code],
+                ]
+                  .filter(([, v]) => v)
+                  .map(([k, v]) => (
+                    <div key={k} className="flex gap-2">
+                      <span className="text-brand-navy/40 w-20 flex-shrink-0">{k}</span>
+                      <span className="text-brand-navy">{v}</span>
+                    </div>
+                  ))}
               </div>
             )}
 
@@ -152,9 +164,7 @@ export default function ProposalsPanel() {
               {generating ? 'Generating…' : '✨ Generate Proposal'}
             </button>
 
-            {genError && (
-              <div className="text-red-500 text-sm">{genError}</div>
-            )}
+            {genError && <div className="text-red-500 text-sm">{genError}</div>}
           </div>
         )}
       </div>
@@ -187,9 +197,13 @@ export default function ProposalsPanel() {
           </div>
 
           {sendResult && (
-            <div className={`text-sm rounded-lg px-4 py-2 ${
-              sendResult.startsWith('Error') ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700'
-            }`}>
+            <div
+              className={`text-sm rounded-lg px-4 py-2 ${
+                sendResult.startsWith('Error')
+                  ? 'bg-red-50 text-red-700'
+                  : 'bg-green-50 text-green-700'
+              }`}
+            >
               {sendResult}
             </div>
           )}

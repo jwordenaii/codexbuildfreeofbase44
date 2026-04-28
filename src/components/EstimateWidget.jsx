@@ -12,33 +12,33 @@ import { STATE_OPTIONS } from '../lib/states50'
 import { trackEvent } from '../api/client'
 
 const SERVICES = [
-  { value: 'paving',      label: 'Asphalt Paving' },
+  { value: 'paving', label: 'Asphalt Paving' },
   { value: 'sealcoating', label: 'Sealcoating' },
-  { value: 'crackfill',   label: 'Crack Filling' },
+  { value: 'crackfill', label: 'Crack Filling' },
   { value: 'parking_lot', label: 'Parking Lot' },
-  { value: 'driveway',    label: 'Driveway' },
+  { value: 'driveway', label: 'Driveway' },
   { value: 'maintenance', label: 'Maintenance Plan' },
 ]
 
 const PROPERTY_TYPES = [
   { value: 'residential', label: 'Residential' },
-  { value: 'commercial',  label: 'Commercial' },
+  { value: 'commercial', label: 'Commercial' },
 ]
 
 const SIZE_PRESETS = [
-  { label: '1-car driveway',    sqft: 400 },
-  { label: '2-car driveway',    sqft: 700 },
+  { label: '1-car driveway', sqft: 400 },
+  { label: '2-car driveway', sqft: 700 },
   { label: 'Small lot (<50 cars)', sqft: 15000 },
   { label: 'Medium lot (50–150 cars)', sqft: 40000 },
 ]
 
 export default function EstimateWidget({ className = '' }) {
-  const [service,  setService]  = useState('driveway')
+  const [service, setService] = useState('driveway')
   const [propType, setPropType] = useState('residential')
-  const [sqft,     setSqft]     = useState('')
-  const [state,    setState]    = useState('')
-  const [result,   setResult]   = useState(null)
-  const [touched,  setTouched]  = useState(false)
+  const [sqft, setSqft] = useState('')
+  const [state, setState] = useState('')
+  const [result, setResult] = useState(null)
+  const [touched, setTouched] = useState(false)
 
   const handleEstimate = () => {
     setTouched(true)
@@ -59,14 +59,18 @@ export default function EstimateWidget({ className = '' }) {
   }
 
   return (
-    <div className={`bg-white rounded-2xl shadow-xl border border-brand-navy/10 overflow-hidden ${className}`}>
+    <div
+      className={`bg-white rounded-2xl shadow-xl border border-brand-navy/10 overflow-hidden ${className}`}
+    >
       {/* Header */}
       <div className="bg-brand-navy text-white px-6 py-4">
         <div className="flex items-center gap-3">
           <span className="text-2xl">🧮</span>
           <div>
             <div className="font-display font-bold text-lg">Quick Estimate Calculator</div>
-            <div className="text-white/50 text-sm">Get a ballpark range in seconds — free, no obligation</div>
+            <div className="text-white/50 text-sm">
+              Get a ballpark range in seconds — free, no obligation
+            </div>
           </div>
         </div>
       </div>
@@ -81,7 +85,10 @@ export default function EstimateWidget({ className = '' }) {
               <button
                 key={s.value}
                 type="button"
-                onClick={() => { setService(s.value); setResult(null) }}
+                onClick={() => {
+                  setService(s.value)
+                  setResult(null)
+                }}
                 className={`py-2 px-3 rounded-lg text-sm font-medium border-2 transition-all ${
                   service === s.value
                     ? 'border-brand-amber bg-brand-amber/10 text-brand-navy'
@@ -102,7 +109,10 @@ export default function EstimateWidget({ className = '' }) {
               <button
                 key={p.value}
                 type="button"
-                onClick={() => { setPropType(p.value); setResult(null) }}
+                onClick={() => {
+                  setPropType(p.value)
+                  setResult(null)
+                }}
                 className={`flex-1 py-2 rounded-lg text-sm font-medium border-2 transition-all ${
                   propType === p.value
                     ? 'border-brand-amber bg-brand-amber/10 text-brand-navy'
@@ -136,7 +146,10 @@ export default function EstimateWidget({ className = '' }) {
             type="number"
             min="1"
             value={sqft}
-            onChange={(e) => { setSqft(e.target.value); setResult(null) }}
+            onChange={(e) => {
+              setSqft(e.target.value)
+              setResult(null)
+            }}
             placeholder="e.g. 700"
             className={`w-full border rounded-lg px-4 py-3 text-brand-navy focus:outline-none focus:ring-2 focus:ring-brand-amber/50 transition-colors ${
               touched && !sqft ? 'border-red-400' : 'border-gray-200'
@@ -150,16 +163,22 @@ export default function EstimateWidget({ className = '' }) {
         {/* State (optional) */}
         <div>
           <label className="block text-sm font-semibold text-brand-navy mb-2">
-            State <span className="font-normal text-brand-navy/40">(optional — refines estimate)</span>
+            State{' '}
+            <span className="font-normal text-brand-navy/40">(optional — refines estimate)</span>
           </label>
           <select
             value={state}
-            onChange={(e) => { setState(e.target.value); setResult(null) }}
+            onChange={(e) => {
+              setState(e.target.value)
+              setResult(null)
+            }}
             className="w-full border border-gray-200 rounded-lg px-4 py-3 text-brand-navy focus:outline-none focus:ring-2 focus:ring-brand-amber/50"
           >
             <option value="">Select a state…</option>
             {STATE_OPTIONS.map((s) => (
-              <option key={s.value} value={s.value}>{s.label}</option>
+              <option key={s.value} value={s.value}>
+                {s.label}
+              </option>
             ))}
           </select>
         </div>

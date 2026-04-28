@@ -13,18 +13,18 @@
 
 import { lazy, Suspense, useState, useEffect } from 'react'
 
-const RichmondGrid   = lazy(() => import('../components/RichmondGrid'))
+const RichmondGrid = lazy(() => import('../components/RichmondGrid'))
 const VirtualForeman = lazy(() => import('../components/VirtualForeman'))
-const LiveFieldFeed  = lazy(() => import('../components/LiveFieldFeed'))
-const TruckTracker   = lazy(() => import('../components/TruckTracker'))
-const TakeoffMap     = lazy(() => import('../components/TakeoffMap'))
+const LiveFieldFeed = lazy(() => import('../components/LiveFieldFeed'))
+const TruckTracker = lazy(() => import('../components/TruckTracker'))
+const TakeoffMap = lazy(() => import('../components/TakeoffMap'))
 
 const TABS = [
-  { id: 'grid',    label: 'Richmond Grid',   icon: '🗺️',  desc: 'Site mapping + auto-takeoff' },
-  { id: 'foreman', label: 'Virtual Foreman', icon: '🏗️',  desc: 'AI Q&A — sites, leads, logistics' },
-  { id: 'field',   label: 'Field Feed',      icon: '📷',  desc: 'Live lot measurement (TF.js)' },
-  { id: 'scan',    label: 'Scanning',        icon: '🛰️',  desc: 'Utilities, GPR, thermal + decay' },
-  { id: 'dash',    label: 'Dashboard',       icon: '📊',  desc: 'Fleet + lead pipeline KPIs' },
+  { id: 'grid', label: 'Richmond Grid', icon: '🗺️', desc: 'Site mapping + auto-takeoff' },
+  { id: 'foreman', label: 'Virtual Foreman', icon: '🏗️', desc: 'AI Q&A — sites, leads, logistics' },
+  { id: 'field', label: 'Field Feed', icon: '📷', desc: 'Live lot measurement (TF.js)' },
+  { id: 'scan', label: 'Scanning', icon: '🛰️', desc: 'Utilities, GPR, thermal + decay' },
+  { id: 'dash', label: 'Dashboard', icon: '📊', desc: 'Fleet + lead pipeline KPIs' },
 ]
 
 function TabLoader() {
@@ -39,12 +39,16 @@ function TabLoader() {
 
 function KpiCard({ icon, label, value, sub, accent = false }) {
   return (
-    <div className={`bg-white/5 border rounded-xl p-5 ${accent ? 'border-brand-amber/40' : 'border-white/10'}`}>
+    <div
+      className={`bg-white/5 border rounded-xl p-5 ${accent ? 'border-brand-amber/40' : 'border-white/10'}`}
+    >
       <div className="flex items-center gap-2 mb-2">
         <span className="text-xl">{icon}</span>
         <span className="text-white/50 text-xs uppercase tracking-wide">{label}</span>
       </div>
-      <div className={`font-black font-display text-3xl ${accent ? 'text-brand-amber' : 'text-white'}`}>
+      <div
+        className={`font-black font-display text-3xl ${accent ? 'text-brand-amber' : 'text-white'}`}
+      >
         {value}
       </div>
       {sub && <div className="text-white/40 text-xs mt-1">{sub}</div>}
@@ -62,7 +66,9 @@ function DashboardTab() {
       const BASE = import.meta.env.VITE_API_BASE_URL || ''
       const [statusRes, leadsRes] = await Promise.all([
         fetch(`${BASE}/api/v1/foreman/status`, { signal: AbortSignal.timeout(8_000) }),
-        fetch(`${BASE}/api/v1/geo/permit-leads?label=HOT&limit=20`, { signal: AbortSignal.timeout(8_000) }),
+        fetch(`${BASE}/api/v1/geo/permit-leads?label=HOT&limit=20`, {
+          signal: AbortSignal.timeout(8_000),
+        }),
       ])
       if (statusRes.ok) setStatus(await statusRes.json())
       if (leadsRes.ok) setPermitLeads(await leadsRes.json())
@@ -82,19 +88,41 @@ function DashboardTab() {
   if (loading) return <TabLoader />
 
   const s = status || {}
-  const sites  = s.sites || {}
-  const leads  = s.leads || {}
-  const perms  = s.permit_leads || {}
+  const sites = s.sites || {}
+  const leads = s.leads || {}
+  const perms = s.permit_leads || {}
   const trucks = s.trucks || {}
 
   return (
     <div className="space-y-8">
       {/* KPI grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <KpiCard icon="📍" label="Active Sites"    value={sites.by_status?.active ?? '—'} sub={`${sites.total ?? 0} total sites`} accent />
-        <KpiCard icon="🔥" label="HOT Leads"       value={leads.by_label?.HOT ?? '—'}    sub={`${leads.total ?? 0} in pipeline`} accent />
-        <KpiCard icon="📋" label="HOT Permits"     value={perms.by_label?.HOT ?? '—'}    sub={`${perms.total ?? 0} scraped`} />
-        <KpiCard icon="🚛" label="Trucks Online"   value={trucks.total ?? '—'}            sub={`${trucks.by_status?.on_site ?? 0} on-site`} />
+        <KpiCard
+          icon="📍"
+          label="Active Sites"
+          value={sites.by_status?.active ?? '—'}
+          sub={`${sites.total ?? 0} total sites`}
+          accent
+        />
+        <KpiCard
+          icon="🔥"
+          label="HOT Leads"
+          value={leads.by_label?.HOT ?? '—'}
+          sub={`${leads.total ?? 0} in pipeline`}
+          accent
+        />
+        <KpiCard
+          icon="📋"
+          label="HOT Permits"
+          value={perms.by_label?.HOT ?? '—'}
+          sub={`${perms.total ?? 0} scraped`}
+        />
+        <KpiCard
+          icon="🚛"
+          label="Trucks Online"
+          value={trucks.total ?? '—'}
+          sub={`${trucks.by_status?.on_site ?? 0} on-site`}
+        />
       </div>
 
       {/* Lead pipeline breakdown */}
@@ -116,7 +144,10 @@ function DashboardTab() {
                   <span className="text-white/60 text-xs">{count}</span>
                 </div>
                 <div className="h-2 bg-white/10 rounded-full overflow-hidden">
-                  <div className={`h-full ${colors[label]} rounded-full`} style={{ width: `${pct}%` }} />
+                  <div
+                    className={`h-full ${colors[label]} rounded-full`}
+                    style={{ width: `${pct}%` }}
+                  />
                 </div>
               </div>
             )
@@ -138,7 +169,10 @@ function DashboardTab() {
               <thead>
                 <tr className="border-b border-white/10">
                   {['Address', 'Type', 'Value', 'Sqft', 'Scraped'].map((h) => (
-                    <th key={h} className="px-4 py-2 text-left text-white/40 font-medium text-xs uppercase tracking-wide">
+                    <th
+                      key={h}
+                      className="px-4 py-2 text-left text-white/40 font-medium text-xs uppercase tracking-wide"
+                    >
                       {h}
                     </th>
                   ))}
@@ -146,8 +180,13 @@ function DashboardTab() {
               </thead>
               <tbody>
                 {permitLeads.map((lead) => (
-                  <tr key={lead.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                    <td className="px-4 py-3 text-white text-xs max-w-xs truncate">{lead.property_address}</td>
+                  <tr
+                    key={lead.id}
+                    className="border-b border-white/5 hover:bg-white/5 transition-colors"
+                  >
+                    <td className="px-4 py-3 text-white text-xs max-w-xs truncate">
+                      {lead.property_address}
+                    </td>
                     <td className="px-4 py-3 text-white/70 text-xs">{lead.permit_type}</td>
                     <td className="px-4 py-3 text-brand-amber text-xs font-bold">
                       {lead.project_value ? `$${lead.project_value.toLocaleString()}` : '—'}
@@ -177,16 +216,20 @@ function DashboardTab() {
 // ── Grid tab — lazy-loads Leaflet only when needed ────────────────────────────
 
 function GridTab() {
-  const [sites, setSites]             = useState([])
+  const [sites, setSites] = useState([])
   const [permitLeads, setPermitLeads] = useState([])
-  const [scraping, setScraping]       = useState(false)
-  const [scrapeMsg, setScrapeMsg]     = useState(null)
+  const [scraping, setScraping] = useState(false)
+  const [scrapeMsg, setScrapeMsg] = useState(null)
 
   useEffect(() => {
     const BASE = import.meta.env.VITE_API_BASE_URL || ''
     Promise.all([
-      fetch(`${BASE}/api/v1/geo/sites`).then((r) => r.json()).catch(() => []),
-      fetch(`${BASE}/api/v1/geo/radius-query`).then((r) => r.json()).catch(() => ({ permit_leads: [] })),
+      fetch(`${BASE}/api/v1/geo/sites`)
+        .then((r) => r.json())
+        .catch(() => []),
+      fetch(`${BASE}/api/v1/geo/radius-query`)
+        .then((r) => r.json())
+        .catch(() => ({ permit_leads: [] })),
     ]).then(([sitesData, radiusData]) => {
       setSites(Array.isArray(sitesData) ? sitesData : [])
       setPermitLeads(radiusData.permit_leads || [])
@@ -198,7 +241,9 @@ function GridTab() {
     setScrapeMsg(null)
     try {
       const BASE = import.meta.env.VITE_API_BASE_URL || ''
-      const res = await fetch(`${BASE}/api/v1/geo/permit-leads/scrape?max_pages=3`, { method: 'POST' })
+      const res = await fetch(`${BASE}/api/v1/geo/permit-leads/scrape?max_pages=3`, {
+        method: 'POST',
+      })
       const data = await res.json()
       setScrapeMsg({ type: 'success', text: data.message || 'Scrape started' })
     } catch {
@@ -229,7 +274,9 @@ function GridTab() {
       </div>
 
       {scrapeMsg && (
-        <p className={`text-sm px-3 py-2 rounded-lg ${scrapeMsg.type === 'success' ? 'bg-green-500/10 text-green-400 border border-green-500/30' : 'bg-red-500/10 text-red-400 border border-red-500/30'}`}>
+        <p
+          className={`text-sm px-3 py-2 rounded-lg ${scrapeMsg.type === 'success' ? 'bg-green-500/10 text-green-400 border border-green-500/30' : 'bg-red-500/10 text-red-400 border border-red-500/30'}`}
+        >
           {scrapeMsg.text}
         </p>
       )}
@@ -260,7 +307,9 @@ export default function CommandCenter() {
               <h1 className="font-display font-black text-white text-xl leading-tight">
                 JWordenAI <span className="text-brand-amber">Command Center</span>
               </h1>
-              <p className="text-white/40 text-xs mt-0.5">4D Virtual Foreman · Real-time Operations</p>
+              <p className="text-white/40 text-xs mt-0.5">
+                4D Virtual Foreman · Real-time Operations
+              </p>
             </div>
             <div className="hidden sm:flex items-center gap-1.5 text-xs text-white/30">
               <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
@@ -269,7 +318,10 @@ export default function CommandCenter() {
           </div>
 
           {/* Tab bar */}
-          <nav className="flex gap-1 overflow-x-auto pb-0 -mb-px" aria-label="Command center sections">
+          <nav
+            className="flex gap-1 overflow-x-auto pb-0 -mb-px"
+            aria-label="Command center sections"
+          >
             {TABS.map((tab) => (
               <button
                 key={tab.id}
@@ -323,7 +375,8 @@ export default function CommandCenter() {
             <div className="mb-4">
               <h2 className="text-brand-navy font-bold">Civil-Tech Scanning Stack</h2>
               <p className="text-brand-navy/50 text-sm">
-                Utility locating, GPR/subsurface risk, photo measurement, 3-D site context, and pavement age-decay simulation.
+                Utility locating, GPR/subsurface risk, photo measurement, 3-D site context, and
+                pavement age-decay simulation.
               </p>
             </div>
             <Suspense fallback={<TabLoader />}>

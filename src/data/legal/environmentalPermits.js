@@ -6,16 +6,19 @@ export default [
     npdesUrl: 'https://adem.alabama.gov',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required for land disturbance ≥1 acre under NPDES Construction General Permit',
-    erosionControlStandard: 'Alabama Handbook for Erosion Control, Sediment Control and Stormwater Management on Construction Sites',
+    swpppNote:
+      'SWPPP required for land disturbance ≥1 acre under NPDES Construction General Permit',
+    erosionControlStandard:
+      'Alabama Handbook for Erosion Control, Sediment Control and Stormwater Management on Construction Sites',
     wetlandSetbackFt: 0,
-    wetlandSetbackNote: 'Regulated by Army Corps Section 404 and Section 10; no additional state setback beyond federal',
+    wetlandSetbackNote:
+      'Regulated by Army Corps Section 404 and Section 10; no additional state setback beyond federal',
     stateWetlandProgram: false,
     stateEnvAgency: 'Alabama Department of Environmental Management (ADEM)',
     stateEnvUrl: 'https://adem.alabama.gov',
     citation: 'Ala. Admin. Code r. 335-6-12; ADEM Admin. Code r. 335-6-6',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Alaska',
@@ -24,16 +27,19 @@ export default [
     npdesUrl: 'https://dec.alaska.gov/water/wastewater/apdes',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under Alaska Pollutant Discharge Elimination System (APDES) for land disturbance ≥1 acre',
+    swpppNote:
+      'SWPPP required under Alaska Pollutant Discharge Elimination System (APDES) for land disturbance ≥1 acre',
     erosionControlStandard: 'Alaska Stormwater Management Manual',
     wetlandSetbackFt: 0,
-    wetlandSetbackNote: 'Army Corps Section 404 applies; ADEC administers state water quality certification (401)',
+    wetlandSetbackNote:
+      'Army Corps Section 404 applies; ADEC administers state water quality certification (401)',
     stateWetlandProgram: true,
     stateEnvAgency: 'Alaska Department of Environmental Conservation (ADEC)',
     stateEnvUrl: 'https://dec.alaska.gov',
     citation: '18 AAC 72; 18 AAC 83',
-    notes: 'Alaska administers its own APDES program; state wetland program administered through ADEC.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Alaska administers its own APDES program; state wetland program administered through ADEC.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Arizona',
@@ -42,61 +48,74 @@ export default [
     npdesUrl: 'https://www.epa.gov/npdes/npdes-stormwater-program',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under EPA Construction General Permit for land disturbance ≥1 acre; ADEQ administers AZPDES for some sectors',
-    erosionControlStandard: 'Arizona Pollutant Discharge Elimination System (AZPDES) Construction General Permit',
+    swpppNote:
+      'SWPPP required under EPA Construction General Permit for land disturbance ≥1 acre; ADEQ administers AZPDES for some sectors',
+    erosionControlStandard:
+      'Arizona Pollutant Discharge Elimination System (AZPDES) Construction General Permit',
     wetlandSetbackFt: 0,
-    wetlandSetbackNote: 'Army Corps Section 404; ADWR and ADEQ administer state water quality certifications',
+    wetlandSetbackNote:
+      'Army Corps Section 404; ADWR and ADEQ administer state water quality certifications',
     stateWetlandProgram: false,
     stateEnvAgency: 'Arizona Department of Environmental Quality (ADEQ)',
     stateEnvUrl: 'https://azdeq.gov',
     citation: 'A.R.S. § 49-255 et seq.; AZPDES CGP',
-    notes: 'Arizona not delegated for NPDES; EPA issues federal permits. ADEQ administers AZPDES under state law for some programs.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Arizona not delegated for NPDES; EPA issues federal permits. ADEQ administers AZPDES under state law for some programs.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Arkansas',
     abbr: 'AR',
-    npdesAuthority: 'Arkansas Department of Energy and Environment (ADEE) / Arkansas Division of Environmental Quality (DEQ)',
+    npdesAuthority:
+      'Arkansas Department of Energy and Environment (ADEE) / Arkansas Division of Environmental Quality (DEQ)',
     npdesUrl: 'https://www.adeq.state.ar.us',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
     swpppNote: 'SWPPP required under NPDES Construction General Permit for ≥1 acre disturbance',
     erosionControlStandard: 'Arkansas Storm Water Pollution Prevention Plan Requirements',
     wetlandSetbackFt: 0,
-    wetlandSetbackNote: 'Army Corps Section 404; ADEE administers Section 401 water quality certification',
+    wetlandSetbackNote:
+      'Army Corps Section 404; ADEE administers Section 401 water quality certification',
     stateWetlandProgram: false,
     stateEnvAgency: 'Arkansas Division of Environmental Quality (DEQ)',
     stateEnvUrl: 'https://www.adeq.state.ar.us',
     citation: 'Ark. Code Ann. § 8-4-201 et seq.; Reg. 6',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'California',
     abbr: 'CA',
-    npdesAuthority: 'California State Water Resources Control Board (SWRCB) / Regional Water Quality Control Boards',
+    npdesAuthority:
+      'California State Water Resources Control Board (SWRCB) / Regional Water Quality Control Boards',
     npdesUrl: 'https://www.waterboards.ca.gov',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under California Construction General Permit (Order 2009-0009-DWQ); Risk Level 1/2/3 determination required',
-    erosionControlStandard: 'California Stormwater Quality Association (CASQA) Construction BMP Handbook',
+    swpppNote:
+      'SWPPP required under California Construction General Permit (Order 2009-0009-DWQ); Risk Level 1/2/3 determination required',
+    erosionControlStandard:
+      'California Stormwater Quality Association (CASQA) Construction BMP Handbook',
     wetlandSetbackFt: 50,
-    wetlandSetbackNote: 'State wetlands regulated by CDFW (Streambed Alteration Agreements), Regional Water Boards, and Coastal Commission; additional 100-ft buffer in some regions',
+    wetlandSetbackNote:
+      'State wetlands regulated by CDFW (Streambed Alteration Agreements), Regional Water Boards, and Coastal Commission; additional 100-ft buffer in some regions',
     stateWetlandProgram: true,
     stateEnvAgency: 'California Environmental Protection Agency (CalEPA) / SWRCB',
     stateEnvUrl: 'https://www.waterboards.ca.gov',
     citation: 'Cal. Water Code § 13260 et seq.; Cal. Fish & Game Code § 1600 et seq.',
-    notes: 'California has one of the most extensive state environmental programs. CEQA review required for most projects. Coastal Development Permit required in coastal zone.',
-    lastVerified: '2026-01-01'
+    notes:
+      'California has one of the most extensive state environmental programs. CEQA review required for most projects. Coastal Development Permit required in coastal zone.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Colorado',
     abbr: 'CO',
-    npdesAuthority: 'Colorado Department of Public Health and Environment (CDPHE) - Water Quality Control Division',
+    npdesAuthority:
+      'Colorado Department of Public Health and Environment (CDPHE) - Water Quality Control Division',
     npdesUrl: 'https://cdphe.colorado.gov/water-quality',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under Colorado Discharge Permit System (CDPS) Construction General Permit for ≥1 acre disturbance',
+    swpppNote:
+      'SWPPP required under Colorado Discharge Permit System (CDPS) Construction General Permit for ≥1 acre disturbance',
     erosionControlStandard: 'Colorado Stormwater Management Plan requirements under CDPS permit',
     wetlandSetbackFt: 0,
     wetlandSetbackNote: 'Army Corps Section 404; CDPHE administers Section 401 certification',
@@ -104,8 +123,9 @@ export default [
     stateEnvAgency: 'Colorado Department of Public Health and Environment (CDPHE)',
     stateEnvUrl: 'https://cdphe.colorado.gov',
     citation: 'C.R.S. § 25-8-501 et seq.; 5 CCR 1002-61',
-    notes: 'Colorado has additional air quality permits required during construction in ozone non-attainment areas.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Colorado has additional air quality permits required during construction in ozone non-attainment areas.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Connecticut',
@@ -114,16 +134,20 @@ export default [
     npdesUrl: 'https://portal.ct.gov/DEEP',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under General Permit for the Discharge of Stormwater and Dewatering Wastewaters from Construction Activities',
+    swpppNote:
+      'SWPPP required under General Permit for the Discharge of Stormwater and Dewatering Wastewaters from Construction Activities',
     erosionControlStandard: 'Connecticut Guidelines for Soil Erosion and Sediment Control',
     wetlandSetbackFt: 50,
-    wetlandSetbackNote: 'State wetlands and watercourses regulated by DEEP and local inland wetlands commissions; 50-100 ft setbacks typical in local regulations',
+    wetlandSetbackNote:
+      'State wetlands and watercourses regulated by DEEP and local inland wetlands commissions; 50-100 ft setbacks typical in local regulations',
     stateWetlandProgram: true,
     stateEnvAgency: 'Connecticut Department of Energy and Environmental Protection (DEEP)',
     stateEnvUrl: 'https://portal.ct.gov/DEEP',
-    citation: 'CGS § 22a-36 et seq. (Inland Wetlands Act); CGS § 22a-361 (Structures in Tidal Wetlands)',
-    notes: 'Connecticut has a robust state wetlands program separate from federal. Local Inland Wetlands Commissions also regulate development near wetlands.',
-    lastVerified: '2026-01-01'
+    citation:
+      'CGS § 22a-36 et seq. (Inland Wetlands Act); CGS § 22a-361 (Structures in Tidal Wetlands)',
+    notes:
+      'Connecticut has a robust state wetlands program separate from federal. Local Inland Wetlands Commissions also regulate development near wetlands.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Delaware',
@@ -132,16 +156,20 @@ export default [
     npdesUrl: 'https://dnrec.delaware.gov',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required for land disturbance ≥1 acre under DNREC Sediment and Stormwater Program',
+    swpppNote:
+      'SWPPP required for land disturbance ≥1 acre under DNREC Sediment and Stormwater Program',
     erosionControlStandard: 'Delaware Erosion and Sediment Control Handbook',
     wetlandSetbackFt: 50,
-    wetlandSetbackNote: 'State Wetlands Act regulates tidal wetlands; 50-ft buffer required for many activities near wetlands',
+    wetlandSetbackNote:
+      'State Wetlands Act regulates tidal wetlands; 50-ft buffer required for many activities near wetlands',
     stateWetlandProgram: true,
     stateEnvAgency: 'Delaware Department of Natural Resources and Environmental Control (DNREC)',
     stateEnvUrl: 'https://dnrec.delaware.gov',
-    citation: '7 Del. Code § 6001 et seq. (Sediment and Stormwater); 7 Del. Code § 6601 et seq. (Wetlands)',
-    notes: 'Delaware requires a Sediment and Stormwater Management Plan approved before land disturbance. Wetland jurisdictional determination required.',
-    lastVerified: '2026-01-01'
+    citation:
+      '7 Del. Code § 6001 et seq. (Sediment and Stormwater); 7 Del. Code § 6601 et seq. (Wetlands)',
+    notes:
+      'Delaware requires a Sediment and Stormwater Management Plan approved before land disturbance. Wetland jurisdictional determination required.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Florida',
@@ -150,16 +178,20 @@ export default [
     npdesUrl: 'https://floridadep.gov',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under FDEP Generic Permit for Stormwater Discharge from Large and Small Construction Activities',
-    erosionControlStandard: 'Florida Stormwater, Erosion and Sedimentation Control Inspector\'s Manual',
+    swpppNote:
+      'SWPPP required under FDEP Generic Permit for Stormwater Discharge from Large and Small Construction Activities',
+    erosionControlStandard:
+      "Florida Stormwater, Erosion and Sedimentation Control Inspector's Manual",
     wetlandSetbackFt: 25,
-    wetlandSetbackNote: 'Environmental Resource Permit (ERP) system regulates wetland impacts; 25-ft minimum upland buffer typical; varies by Water Management District',
+    wetlandSetbackNote:
+      'Environmental Resource Permit (ERP) system regulates wetland impacts; 25-ft minimum upland buffer typical; varies by Water Management District',
     stateWetlandProgram: true,
     stateEnvAgency: 'Florida Department of Environmental Protection (FDEP)',
     stateEnvUrl: 'https://floridadep.gov',
     citation: 'Fla. Stat. § 373.413; Fla. Admin. Code r. 62-330',
-    notes: 'Florida regulates wetlands through Environmental Resource Permit (ERP) system administered by FDEP and five Water Management Districts. No net loss of wetlands policy.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Florida regulates wetlands through Environmental Resource Permit (ERP) system administered by FDEP and five Water Management Districts. No net loss of wetlands policy.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Georgia',
@@ -168,16 +200,19 @@ export default [
     npdesUrl: 'https://epd.georgia.gov',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under NPDES General Permit for Stormwater Runoff from Land Disturbing Activities (GAR100002)',
+    swpppNote:
+      'SWPPP required under NPDES General Permit for Stormwater Runoff from Land Disturbing Activities (GAR100002)',
     erosionControlStandard: 'Manual for Erosion and Sediment Control in Georgia (Green Book)',
     wetlandSetbackFt: 0,
-    wetlandSetbackNote: 'Army Corps Section 404; Georgia DNR and EPD administer state water quality certification; coastal marshlands regulated by GADNR',
+    wetlandSetbackNote:
+      'Army Corps Section 404; Georgia DNR and EPD administer state water quality certification; coastal marshlands regulated by GADNR',
     stateWetlandProgram: false,
     stateEnvAgency: 'Georgia Department of Natural Resources - Environmental Protection Division',
     stateEnvUrl: 'https://epd.georgia.gov',
     citation: 'O.C.G.A. § 12-7-1 et seq. (ESCP Act); § 12-5-280 et seq. (Marshlands)',
-    notes: 'Georgia requires a Land Disturbance Permit (LDP) for most grading activities. Issued by local issuing authorities under state oversight.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Georgia requires a Land Disturbance Permit (LDP) for most grading activities. Issued by local issuing authorities under state oversight.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Hawaii',
@@ -186,34 +221,41 @@ export default [
     npdesUrl: 'https://health.hawaii.gov/cwb',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under NPDES General Permit for Storm Water Discharges from Construction Activities (HIG100000)',
+    swpppNote:
+      'SWPPP required under NPDES General Permit for Storm Water Discharges from Construction Activities (HIG100000)',
     erosionControlStandard: 'Hawaii Stormwater Best Management Practices Manual',
     wetlandSetbackFt: 0,
-    wetlandSetbackNote: 'Army Corps Section 404; Hawaii DOH Section 401 certification; Coastal Zone Management program applies in coastal areas',
+    wetlandSetbackNote:
+      'Army Corps Section 404; Hawaii DOH Section 401 certification; Coastal Zone Management program applies in coastal areas',
     stateWetlandProgram: false,
     stateEnvAgency: 'Hawaii Department of Health (DOH)',
     stateEnvUrl: 'https://health.hawaii.gov',
     citation: 'HRS § 342D-1 et seq.; HAR § 11-55',
     notes: 'Hawaii has strict coastal zone management requirements under the Hawaii CZM Program.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Idaho',
     abbr: 'ID',
-    npdesAuthority: 'U.S. Environmental Protection Agency (EPA) Region 10 (Idaho not delegated for construction stormwater)',
+    npdesAuthority:
+      'U.S. Environmental Protection Agency (EPA) Region 10 (Idaho not delegated for construction stormwater)',
     npdesUrl: 'https://www.epa.gov/npdes',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under EPA Construction General Permit (CGP); IDEQ also issues land application permits',
-    erosionControlStandard: 'EPA Construction General Permit BMP requirements; IDEQ stormwater guidance',
+    swpppNote:
+      'SWPPP required under EPA Construction General Permit (CGP); IDEQ also issues land application permits',
+    erosionControlStandard:
+      'EPA Construction General Permit BMP requirements; IDEQ stormwater guidance',
     wetlandSetbackFt: 0,
-    wetlandSetbackNote: 'Army Corps Section 404; IDEQ administers Section 401 water quality certification',
+    wetlandSetbackNote:
+      'Army Corps Section 404; IDEQ administers Section 401 water quality certification',
     stateWetlandProgram: false,
     stateEnvAgency: 'Idaho Department of Environmental Quality (IDEQ)',
     stateEnvUrl: 'https://www.deq.idaho.gov',
     citation: 'Idaho Code § 39-175 et seq.; IDAPA 58.01.02',
-    notes: 'Idaho not delegated for NPDES construction stormwater; EPA issues federal CGP. IDEQ administers Section 401 certifications.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Idaho not delegated for NPDES construction stormwater; EPA issues federal CGP. IDEQ administers Section 401 certifications.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Illinois',
@@ -222,16 +264,19 @@ export default [
     npdesUrl: 'https://epa.illinois.gov',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under NPDES General NPDES Permit for Stormwater Discharges from Construction Site Activities (ILR10)',
+    swpppNote:
+      'SWPPP required under NPDES General NPDES Permit for Stormwater Discharges from Construction Site Activities (ILR10)',
     erosionControlStandard: 'Illinois Urban Manual - NRCS approved conservation practices',
     wetlandSetbackFt: 0,
-    wetlandSetbackNote: 'Army Corps Section 404; IEPA Section 401 certification; Chicago has additional local wetland ordinances',
+    wetlandSetbackNote:
+      'Army Corps Section 404; IEPA Section 401 certification; Chicago has additional local wetland ordinances',
     stateWetlandProgram: false,
     stateEnvAgency: 'Illinois Environmental Protection Agency (IEPA)',
     stateEnvUrl: 'https://epa.illinois.gov',
     citation: '415 ILCS 5/12; 35 Ill. Admin. Code Part 372',
-    notes: 'Illinois requires a Notice of Intent (NOI) before starting land disturbing activities. IEPA issues NPDES permits.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Illinois requires a Notice of Intent (NOI) before starting land disturbing activities. IEPA issues NPDES permits.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Indiana',
@@ -240,16 +285,19 @@ export default [
     npdesUrl: 'https://www.in.gov/idem',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under Indiana General Permit Rule 5 (327 IAC 15-5) for land disturbing activities ≥1 acre',
+    swpppNote:
+      'SWPPP required under Indiana General Permit Rule 5 (327 IAC 15-5) for land disturbing activities ≥1 acre',
     erosionControlStandard: 'Indiana Storm Water Quality Manual',
     wetlandSetbackFt: 0,
-    wetlandSetbackNote: 'Army Corps Section 404; IDEM administers Section 401 certification; isolated wetlands regulated by IDEM',
+    wetlandSetbackNote:
+      'Army Corps Section 404; IDEM administers Section 401 certification; isolated wetlands regulated by IDEM',
     stateWetlandProgram: true,
     stateEnvAgency: 'Indiana Department of Environmental Management (IDEM)',
     stateEnvUrl: 'https://www.in.gov/idem',
     citation: 'IC 13-18-1 et seq.; 327 IAC 15-5',
-    notes: 'Indiana regulates isolated wetlands not covered by federal jurisdiction through state law.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Indiana regulates isolated wetlands not covered by federal jurisdiction through state law.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Iowa',
@@ -258,7 +306,8 @@ export default [
     npdesUrl: 'https://www.iowadnr.gov',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under NPDES General Permit for Stormwater Discharge Associated with Industrial Activity for Construction Activities (NPDES No. 2)',
+    swpppNote:
+      'SWPPP required under NPDES General Permit for Stormwater Discharge Associated with Industrial Activity for Construction Activities (NPDES No. 2)',
     erosionControlStandard: 'Iowa Stormwater Management Manual',
     wetlandSetbackFt: 0,
     wetlandSetbackNote: 'Army Corps Section 404; Iowa DNR Section 401 certification',
@@ -267,7 +316,7 @@ export default [
     stateEnvUrl: 'https://www.iowadnr.gov',
     citation: 'Iowa Code § 455B.183 et seq.',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Kansas',
@@ -276,7 +325,8 @@ export default [
     npdesUrl: 'https://www.kdhe.ks.gov',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under NPDES General Permit for Stormwater Runoff from Construction Activities (KSCGP)',
+    swpppNote:
+      'SWPPP required under NPDES General Permit for Stormwater Runoff from Construction Activities (KSCGP)',
     erosionControlStandard: 'Kansas Stormwater Best Management Practices',
     wetlandSetbackFt: 0,
     wetlandSetbackNote: 'Army Corps Section 404; KDHE Section 401 certification',
@@ -285,7 +335,7 @@ export default [
     stateEnvUrl: 'https://www.kdhe.ks.gov',
     citation: 'K.S.A. 65-161 et seq.; K.A.R. 28-16-28',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Kentucky',
@@ -294,16 +344,18 @@ export default [
     npdesUrl: 'https://eec.ky.gov/Environmental-Protection/Water/Pages/default.aspx',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under Kentucky NPDES General Permit for Stormwater Discharges Associated with Construction Activities (KYG010000)',
+    swpppNote:
+      'SWPPP required under Kentucky NPDES General Permit for Stormwater Discharges Associated with Construction Activities (KYG010000)',
     erosionControlStandard: 'Kentucky Erosion Prevention and Sediment Control Field Guide',
     wetlandSetbackFt: 0,
-    wetlandSetbackNote: 'Army Corps Section 404; KY Division of Water Section 401 certification; isolated wetlands regulated under state law',
+    wetlandSetbackNote:
+      'Army Corps Section 404; KY Division of Water Section 401 certification; isolated wetlands regulated under state law',
     stateWetlandProgram: false,
     stateEnvAgency: 'Kentucky Energy and Environment Cabinet',
     stateEnvUrl: 'https://eec.ky.gov',
     citation: 'KRS 224.71-100 et seq.; 401 KAR 48:020',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Louisiana',
@@ -312,16 +364,19 @@ export default [
     npdesUrl: 'https://www.ldeq.state.la.us',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under Louisiana Pollutant Discharge Elimination System (LPDES) General Permit LAG470000',
+    swpppNote:
+      'SWPPP required under Louisiana Pollutant Discharge Elimination System (LPDES) General Permit LAG470000',
     erosionControlStandard: 'Louisiana Stormwater Construction General Permit BMP requirements',
     wetlandSetbackFt: 0,
-    wetlandSetbackNote: 'Army Corps Section 404 and Section 10 for coastal waters; USACE New Orleans District jurisdiction extensive; LDNR Coastal Use Permits required in Coastal Zone',
+    wetlandSetbackNote:
+      'Army Corps Section 404 and Section 10 for coastal waters; USACE New Orleans District jurisdiction extensive; LDNR Coastal Use Permits required in Coastal Zone',
     stateWetlandProgram: false,
     stateEnvAgency: 'Louisiana Department of Environmental Quality (LDEQ)',
     stateEnvUrl: 'https://www.ldeq.state.la.us',
     citation: 'La. Rev. Stat. § 30:2073 et seq.; La. Rev. Stat. § 49:214.21 et seq. (Coastal Zone)',
-    notes: 'Louisiana Coastal Use Permit required for most construction activity in the coastal zone. Extensive wetland mitigation requirements.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Louisiana Coastal Use Permit required for most construction activity in the coastal zone. Extensive wetland mitigation requirements.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Maine',
@@ -330,16 +385,19 @@ export default [
     npdesUrl: 'https://www.maine.gov/dep',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under Maine NPDES Multi-Sector General Permit; also required for projects with land disturbance ≥20,000 sq ft under Site Location of Development Act',
+    swpppNote:
+      'SWPPP required under Maine NPDES Multi-Sector General Permit; also required for projects with land disturbance ≥20,000 sq ft under Site Location of Development Act',
     erosionControlStandard: 'Maine Erosion and Sediment Control BMPs',
     wetlandSetbackFt: 75,
-    wetlandSetbackNote: 'Natural Resources Protection Act (NRPA) requires permit for activities within 75 ft of wetlands, great ponds, rivers, and streams',
+    wetlandSetbackNote:
+      'Natural Resources Protection Act (NRPA) requires permit for activities within 75 ft of wetlands, great ponds, rivers, and streams',
     stateWetlandProgram: true,
     stateEnvAgency: 'Maine Department of Environmental Protection (DEP)',
     stateEnvUrl: 'https://www.maine.gov/dep',
     citation: '38 M.R.S.A. § 480-A et seq. (NRPA); § 481 et seq. (Site Location)',
-    notes: 'Maine NRPA is one of the most protective state wetland programs. 75-ft buffer required; permit needed for most activities in protected natural resources zones.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Maine NRPA is one of the most protective state wetland programs. 75-ft buffer required; permit needed for most activities in protected natural resources zones.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Maryland',
@@ -348,34 +406,43 @@ export default [
     npdesUrl: 'https://mde.maryland.gov',
     landDisturbanceThresholdAcres: 0.17,
     swpppRequired: true,
-    swpppNote: 'Sediment Control Plan required for disturbances ≥5,000 sq ft (0.17 acres) under Grading and Sediment Control law; NPDES CGP for ≥1 acre',
-    erosionControlStandard: 'Maryland Standards and Specifications for Soil Erosion and Sediment Control',
+    swpppNote:
+      'Sediment Control Plan required for disturbances ≥5,000 sq ft (0.17 acres) under Grading and Sediment Control law; NPDES CGP for ≥1 acre',
+    erosionControlStandard:
+      'Maryland Standards and Specifications for Soil Erosion and Sediment Control',
     wetlandSetbackFt: 25,
-    wetlandSetbackNote: '100-Year Critical Areas 1,000-ft buffer from Chesapeake Bay; state nontidal wetlands permit required; 25-ft minimum non-disturbance buffer',
+    wetlandSetbackNote:
+      '100-Year Critical Areas 1,000-ft buffer from Chesapeake Bay; state nontidal wetlands permit required; 25-ft minimum non-disturbance buffer',
     stateWetlandProgram: true,
     stateEnvAgency: 'Maryland Department of the Environment (MDE)',
     stateEnvUrl: 'https://mde.maryland.gov',
-    citation: 'Md. Code Ann., Env. § 4-101 et seq. (Nontidal Wetlands); Art. 66B (Chesapeake Bay Critical Area)',
-    notes: 'Maryland has extensive Chesapeake Bay Critical Area regulations and a robust state nontidal wetlands program.',
-    lastVerified: '2026-01-01'
+    citation:
+      'Md. Code Ann., Env. § 4-101 et seq. (Nontidal Wetlands); Art. 66B (Chesapeake Bay Critical Area)',
+    notes:
+      'Maryland has extensive Chesapeake Bay Critical Area regulations and a robust state nontidal wetlands program.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Massachusetts',
     abbr: 'MA',
-    npdesAuthority: 'U.S. Environmental Protection Agency (EPA) Region 1 (Massachusetts not delegated for NPDES)',
+    npdesAuthority:
+      'U.S. Environmental Protection Agency (EPA) Region 1 (Massachusetts not delegated for NPDES)',
     npdesUrl: 'https://www.epa.gov/npdes',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under EPA CGP; MassDEP Wetlands Protection Act permits required; land disturbance ≥1 acre requires NOI',
+    swpppNote:
+      'SWPPP required under EPA CGP; MassDEP Wetlands Protection Act permits required; land disturbance ≥1 acre requires NOI',
     erosionControlStandard: 'Massachusetts Stormwater Handbook',
     wetlandSetbackFt: 100,
-    wetlandSetbackNote: 'Wetlands Protection Act requires 100-ft buffer zone around wetlands; Order of Conditions required for work within buffer zone',
+    wetlandSetbackNote:
+      'Wetlands Protection Act requires 100-ft buffer zone around wetlands; Order of Conditions required for work within buffer zone',
     stateWetlandProgram: true,
     stateEnvAgency: 'Massachusetts Department of Environmental Protection (MassDEP)',
     stateEnvUrl: 'https://www.mass.gov/orgs/massdep',
     citation: 'M.G.L. c. 131, § 40 (Wetlands Protection Act); 310 CMR 10',
-    notes: 'Massachusetts not delegated NPDES; EPA issues CGP. Massachusetts Wetlands Protection Act is one of the strongest state wetland protection laws. Local Conservation Commissions enforce WPA.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Massachusetts not delegated NPDES; EPA issues CGP. Massachusetts Wetlands Protection Act is one of the strongest state wetland protection laws. Local Conservation Commissions enforce WPA.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Michigan',
@@ -384,16 +451,19 @@ export default [
     npdesUrl: 'https://www.michigan.gov/egle',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under Michigan NPDES Phase II Stormwater General Permit (MIG010000) for ≥1 acre land disturbance',
+    swpppNote:
+      'SWPPP required under Michigan NPDES Phase II Stormwater General Permit (MIG010000) for ≥1 acre land disturbance',
     erosionControlStandard: 'Michigan Stormwater Construction Site BMPs',
     wetlandSetbackFt: 0,
-    wetlandSetbackNote: 'Michigan Wetlands Protection Act regulates all wetlands including isolated; state permit required for most impacts; no fixed setback but buffer often required',
+    wetlandSetbackNote:
+      'Michigan Wetlands Protection Act regulates all wetlands including isolated; state permit required for most impacts; no fixed setback but buffer often required',
     stateWetlandProgram: true,
     stateEnvAgency: 'Michigan Department of Environment, Great Lakes, and Energy (EGLE)',
     stateEnvUrl: 'https://www.michigan.gov/egle',
     citation: 'MCL § 324.30301 et seq. (Part 303 Wetlands); MCL § 324.8701 (Part 31 NPDES)',
-    notes: 'Michigan regulates all wetlands under Part 303 of the Natural Resources and Environmental Protection Act (NREPA), including isolated wetlands.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Michigan regulates all wetlands under Part 303 of the Natural Resources and Environmental Protection Act (NREPA), including isolated wetlands.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Minnesota',
@@ -402,16 +472,19 @@ export default [
     npdesUrl: 'https://www.pca.state.mn.us',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under MPCA Construction Stormwater General Permit (MN R100001) for land disturbance ≥1 acre',
+    swpppNote:
+      'SWPPP required under MPCA Construction Stormwater General Permit (MN R100001) for land disturbance ≥1 acre',
     erosionControlStandard: 'Minnesota Stormwater Manual',
     wetlandSetbackFt: 0,
-    wetlandSetbackNote: 'Minnesota Wetlands Conservation Act (WCA) regulates wetlands; no-net-loss policy; sequencing required; local WCA authority administers',
+    wetlandSetbackNote:
+      'Minnesota Wetlands Conservation Act (WCA) regulates wetlands; no-net-loss policy; sequencing required; local WCA authority administers',
     stateWetlandProgram: true,
     stateEnvAgency: 'Minnesota Pollution Control Agency (MPCA)',
     stateEnvUrl: 'https://www.pca.state.mn.us',
     citation: 'Minn. Stat. § 103G.2241 et seq. (WCA); § 115.03 (NPDES)',
-    notes: 'Minnesota WCA provides robust protections for all wetlands. Avoidance, minimization, and mitigation sequencing required.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Minnesota WCA provides robust protections for all wetlands. Avoidance, minimization, and mitigation sequencing required.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Mississippi',
@@ -420,16 +493,19 @@ export default [
     npdesUrl: 'https://www.mdeq.ms.gov',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under MSDES General Permit MSR10 for construction activities disturbing ≥1 acre',
+    swpppNote:
+      'SWPPP required under MSDES General Permit MSR10 for construction activities disturbing ≥1 acre',
     erosionControlStandard: 'Mississippi Erosion and Sediment Control Specifications',
     wetlandSetbackFt: 0,
-    wetlandSetbackNote: 'Army Corps Section 404; MDEQ Section 401 water quality certification; coastal wetlands regulated by MDMR',
+    wetlandSetbackNote:
+      'Army Corps Section 404; MDEQ Section 401 water quality certification; coastal wetlands regulated by MDMR',
     stateWetlandProgram: false,
     stateEnvAgency: 'Mississippi Department of Environmental Quality (MDEQ)',
     stateEnvUrl: 'https://www.mdeq.ms.gov',
     citation: 'Miss. Code Ann. § 49-17-1 et seq.',
-    notes: 'Coastal wetlands regulated by Mississippi Department of Marine Resources in coastal counties.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Coastal wetlands regulated by Mississippi Department of Marine Resources in coastal counties.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Missouri',
@@ -438,7 +514,8 @@ export default [
     npdesUrl: 'https://natural.mo.gov',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP (SWPPP/SWP3) required under Missouri NPDES General Permit for Land Disturbance (MOR10) for ≥1 acre',
+    swpppNote:
+      'SWPPP (SWPPP/SWP3) required under Missouri NPDES General Permit for Land Disturbance (MOR10) for ≥1 acre',
     erosionControlStandard: 'Missouri Land Disturbance General Permit BMP requirements',
     wetlandSetbackFt: 0,
     wetlandSetbackNote: 'Army Corps Section 404; MDNR Section 401 water quality certification',
@@ -447,7 +524,7 @@ export default [
     stateEnvUrl: 'https://natural.mo.gov',
     citation: 'Mo. Rev. Stat. § 644.016 et seq.; 10 CSR 20-6.200',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Montana',
@@ -456,16 +533,19 @@ export default [
     npdesUrl: 'https://deq.mt.gov',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under Montana Pollutant Discharge Elimination System (MPDES) General Permit MTR100000 for ≥1 acre',
+    swpppNote:
+      'SWPPP required under Montana Pollutant Discharge Elimination System (MPDES) General Permit MTR100000 for ≥1 acre',
     erosionControlStandard: 'Montana Storm Water Management Program for Construction Activities',
     wetlandSetbackFt: 0,
-    wetlandSetbackNote: 'Army Corps Section 404; Montana DEQ Section 401 certification; 310 Permit required for work in/near streams and rivers',
+    wetlandSetbackNote:
+      'Army Corps Section 404; Montana DEQ Section 401 certification; 310 Permit required for work in/near streams and rivers',
     stateWetlandProgram: false,
     stateEnvAgency: 'Montana Department of Environmental Quality (DEQ)',
     stateEnvUrl: 'https://deq.mt.gov',
     citation: 'Mont. Code Ann. § 75-5-401 et seq.; MCA § 75-7-101 (310 Permit)',
-    notes: 'Montana 310 Permit required from local conservation district for activities in or near perennial streams and rivers.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Montana 310 Permit required from local conservation district for activities in or near perennial streams and rivers.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Nebraska',
@@ -474,7 +554,8 @@ export default [
     npdesUrl: 'https://dee.ne.gov',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under NPDES General Permit for Stormwater Discharges from Construction Activities (NER010000) for ≥1 acre',
+    swpppNote:
+      'SWPPP required under NPDES General Permit for Stormwater Discharges from Construction Activities (NER010000) for ≥1 acre',
     erosionControlStandard: 'Nebraska Stormwater Management Program',
     wetlandSetbackFt: 0,
     wetlandSetbackNote: 'Army Corps Section 404; NDEE Section 401 certification',
@@ -483,7 +564,7 @@ export default [
     stateEnvUrl: 'https://dee.ne.gov',
     citation: 'Neb. Rev. Stat. § 81-1504 et seq.',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Nevada',
@@ -492,34 +573,40 @@ export default [
     npdesUrl: 'https://ndep.nv.gov',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under Nevada Pollutant Discharge Elimination System (NPDES) General Permit for Construction Activities (NVR100000) for ≥1 acre',
+    swpppNote:
+      'SWPPP required under Nevada Pollutant Discharge Elimination System (NPDES) General Permit for Construction Activities (NVR100000) for ≥1 acre',
     erosionControlStandard: 'Nevada Stormwater Best Management Practices Handbook',
     wetlandSetbackFt: 0,
-    wetlandSetbackNote: 'Army Corps Section 404; NDEP Section 401 certification; extensive arid land regulations',
+    wetlandSetbackNote:
+      'Army Corps Section 404; NDEP Section 401 certification; extensive arid land regulations',
     stateWetlandProgram: false,
     stateEnvAgency: 'Nevada Division of Environmental Protection (NDEP)',
     stateEnvUrl: 'https://ndep.nv.gov',
     citation: 'NRS § 445A.300 et seq.',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New Hampshire',
     abbr: 'NH',
-    npdesAuthority: 'U.S. Environmental Protection Agency (EPA) Region 1 (New Hampshire not delegated for NPDES)',
+    npdesAuthority:
+      'U.S. Environmental Protection Agency (EPA) Region 1 (New Hampshire not delegated for NPDES)',
     npdesUrl: 'https://www.epa.gov/npdes',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under EPA CGP; NH DES Alteration of Terrain permit required for disturbances ≥100,000 sq ft',
+    swpppNote:
+      'SWPPP required under EPA CGP; NH DES Alteration of Terrain permit required for disturbances ≥100,000 sq ft',
     erosionControlStandard: 'New Hampshire Stormwater Manual',
     wetlandSetbackFt: 50,
-    wetlandSetbackNote: 'Wetlands Bureau regulates all wetlands; 50-ft setback (Shoreland Water Quality Protection Act) near surface waters; Prime Wetlands designation for highest quality wetlands',
+    wetlandSetbackNote:
+      'Wetlands Bureau regulates all wetlands; 50-ft setback (Shoreland Water Quality Protection Act) near surface waters; Prime Wetlands designation for highest quality wetlands',
     stateWetlandProgram: true,
     stateEnvAgency: 'New Hampshire Department of Environmental Services (DES)',
     stateEnvUrl: 'https://www.des.nh.gov',
     citation: 'RSA 482-A (Fill and Dredge in Wetlands); RSA 483-B (Shoreland Protection)',
-    notes: 'New Hampshire not delegated NPDES. DES Wetlands Bureau regulates all wetlands under RSA 482-A. Alteration of Terrain (AOT) permit required.',
-    lastVerified: '2026-01-01'
+    notes:
+      'New Hampshire not delegated NPDES. DES Wetlands Bureau regulates all wetlands under RSA 482-A. Alteration of Terrain (AOT) permit required.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New Jersey',
@@ -528,34 +615,41 @@ export default [
     npdesUrl: 'https://www.nj.gov/dep',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under New Jersey Pollutant Discharge Elimination System (NJPDES) Stormwater General Permit 2 (NJG0088323) for ≥1 acre',
+    swpppNote:
+      'SWPPP required under New Jersey Pollutant Discharge Elimination System (NJPDES) Stormwater General Permit 2 (NJG0088323) for ≥1 acre',
     erosionControlStandard: 'NJ Standards for Soil Erosion and Sediment Control',
     wetlandSetbackFt: 50,
-    wetlandSetbackNote: 'State Freshwater Wetlands Protection Act requires 50-ft transition areas around most wetlands; 150-ft for exceptional resource value; Coastal Area Facility Review Act (CAFRA) in coastal zone',
+    wetlandSetbackNote:
+      'State Freshwater Wetlands Protection Act requires 50-ft transition areas around most wetlands; 150-ft for exceptional resource value; Coastal Area Facility Review Act (CAFRA) in coastal zone',
     stateWetlandProgram: true,
     stateEnvAgency: 'New Jersey Department of Environmental Protection (NJDEP)',
     stateEnvUrl: 'https://www.nj.gov/dep',
     citation: 'N.J.S.A. 13:9B-1 et seq. (FWPA); N.J.S.A. 13:19-1 et seq. (CAFRA)',
-    notes: 'New Jersey has one of the most protective state wetland programs. NJFWPA transition area requirements often more restrictive than federal Section 404.',
-    lastVerified: '2026-01-01'
+    notes:
+      'New Jersey has one of the most protective state wetland programs. NJFWPA transition area requirements often more restrictive than federal Section 404.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New Mexico',
     abbr: 'NM',
-    npdesAuthority: 'U.S. Environmental Protection Agency (EPA) Region 6 (New Mexico not delegated for NPDES)',
+    npdesAuthority:
+      'U.S. Environmental Protection Agency (EPA) Region 6 (New Mexico not delegated for NPDES)',
     npdesUrl: 'https://www.epa.gov/npdes',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under EPA Construction General Permit; NMED regulates under state Stormwater Program for some activities',
+    swpppNote:
+      'SWPPP required under EPA Construction General Permit; NMED regulates under state Stormwater Program for some activities',
     erosionControlStandard: 'EPA CGP BMP requirements; NMED Stormwater Program guidance',
     wetlandSetbackFt: 0,
-    wetlandSetbackNote: 'Army Corps Section 404; NMED Section 401 certification; acequia systems and ditch associations have additional water rights protections',
+    wetlandSetbackNote:
+      'Army Corps Section 404; NMED Section 401 certification; acequia systems and ditch associations have additional water rights protections',
     stateWetlandProgram: false,
     stateEnvAgency: 'New Mexico Environment Department (NMED)',
     stateEnvUrl: 'https://www.env.nm.gov',
     citation: 'NMSA § 74-6-1 et seq.; 20 NMAC 6.2',
-    notes: 'New Mexico not delegated NPDES; EPA issues permits. Acequia systems (irrigation ditches) have special legal protections. Groundwater protection important in arid regions.',
-    lastVerified: '2026-01-01'
+    notes:
+      'New Mexico not delegated NPDES; EPA issues permits. Acequia systems (irrigation ditches) have special legal protections. Groundwater protection important in arid regions.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New York',
@@ -564,34 +658,44 @@ export default [
     npdesUrl: 'https://www.dec.ny.gov',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under SPDES General Permit for Stormwater Discharges from Construction Activity (GP-0-20-001) for ≥1 acre land disturbance',
-    erosionControlStandard: 'New York Standards and Specifications for Erosion and Sediment Control (Blue Book)',
+    swpppNote:
+      'SWPPP required under SPDES General Permit for Stormwater Discharges from Construction Activity (GP-0-20-001) for ≥1 acre land disturbance',
+    erosionControlStandard:
+      'New York Standards and Specifications for Erosion and Sediment Control (Blue Book)',
     wetlandSetbackFt: 100,
-    wetlandSetbackNote: 'Article 24 (Freshwater Wetlands) requires DEC permit for activities within 100-ft adjacent area; Article 25 (Tidal Wetlands) for coastal areas; extensive local wetland regulations in NYC',
+    wetlandSetbackNote:
+      'Article 24 (Freshwater Wetlands) requires DEC permit for activities within 100-ft adjacent area; Article 25 (Tidal Wetlands) for coastal areas; extensive local wetland regulations in NYC',
     stateWetlandProgram: true,
     stateEnvAgency: 'New York State Department of Environmental Conservation (NYSDEC)',
     stateEnvUrl: 'https://www.dec.ny.gov',
     citation: 'ECL Art. 24 (Freshwater Wetlands); ECL Art. 25 (Tidal Wetlands); 6 NYCRR Part 608',
-    notes: 'New York regulates freshwater wetlands ≥12.4 acres and all adjacent areas within 100 feet. NYC has additional wetland and watercourse regulations under Local Law.',
-    lastVerified: '2026-01-01'
+    notes:
+      'New York regulates freshwater wetlands ≥12.4 acres and all adjacent areas within 100 feet. NYC has additional wetland and watercourse regulations under Local Law.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'North Carolina',
     abbr: 'NC',
-    npdesAuthority: 'North Carolina Department of Environmental Quality (NCDEQ) - Division of Energy, Mineral and Land Resources',
+    npdesAuthority:
+      'North Carolina Department of Environmental Quality (NCDEQ) - Division of Energy, Mineral and Land Resources',
     npdesUrl: 'https://deq.nc.gov',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'Erosion and Sediment Control Plan required for disturbances ≥1 acre; NPDES Construction General Permit (NCG010000) required',
-    erosionControlStandard: 'North Carolina Erosion and Sediment Control Planning and Design Manual',
+    swpppNote:
+      'Erosion and Sediment Control Plan required for disturbances ≥1 acre; NPDES Construction General Permit (NCG010000) required',
+    erosionControlStandard:
+      'North Carolina Erosion and Sediment Control Planning and Design Manual',
     wetlandSetbackFt: 30,
-    wetlandSetbackNote: 'Riparian buffers required: 50-ft for nutrient sensitive waters; 30-ft for other surface waters under Neuse and Tar-Pamlico Buffer Rules; DWR Section 401 certification',
+    wetlandSetbackNote:
+      'Riparian buffers required: 50-ft for nutrient sensitive waters; 30-ft for other surface waters under Neuse and Tar-Pamlico Buffer Rules; DWR Section 401 certification',
     stateWetlandProgram: false,
     stateEnvAgency: 'North Carolina Department of Environmental Quality (NCDEQ)',
     stateEnvUrl: 'https://deq.nc.gov',
-    citation: 'N.C. Gen. Stat. § 113A-50 et seq. (Sedimentation Pollution Control Act); 15A NCAC 04B',
-    notes: 'NC Sedimentation Pollution Control Act requires ESC Plan approval before land-disturbing activity on ≥1 acre. Riparian buffer rules are among the most protective in the Southeast.',
-    lastVerified: '2026-01-01'
+    citation:
+      'N.C. Gen. Stat. § 113A-50 et seq. (Sedimentation Pollution Control Act); 15A NCAC 04B',
+    notes:
+      'NC Sedimentation Pollution Control Act requires ESC Plan approval before land-disturbing activity on ≥1 acre. Riparian buffer rules are among the most protective in the Southeast.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'North Dakota',
@@ -600,16 +704,18 @@ export default [
     npdesUrl: 'https://www.health.nd.gov/deq',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under NDPDES Construction General Permit (NDR10-0000) for ≥1 acre land disturbance',
+    swpppNote:
+      'SWPPP required under NDPDES Construction General Permit (NDR10-0000) for ≥1 acre land disturbance',
     erosionControlStandard: 'North Dakota Stormwater Management Guidance',
     wetlandSetbackFt: 0,
-    wetlandSetbackNote: 'Army Corps Section 404; NDDEQ Section 401 certification; North Dakota Wetland Conservation Act provides some state protections',
+    wetlandSetbackNote:
+      'Army Corps Section 404; NDDEQ Section 401 certification; North Dakota Wetland Conservation Act provides some state protections',
     stateWetlandProgram: false,
     stateEnvAgency: 'North Dakota Department of Environmental Quality (NDDEQ)',
     stateEnvUrl: 'https://www.health.nd.gov/deq',
     citation: 'N.D. Cent. Code § 61-28-01 et seq.; NDAC 33.1-16-03',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Ohio',
@@ -618,16 +724,19 @@ export default [
     npdesUrl: 'https://epa.ohio.gov',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under Ohio NPDES Construction General Permit (OHC000004) for ≥1 acre land disturbance',
+    swpppNote:
+      'SWPPP required under Ohio NPDES Construction General Permit (OHC000004) for ≥1 acre land disturbance',
     erosionControlStandard: 'Ohio Rainwater and Land Development Manual',
     wetlandSetbackFt: 0,
-    wetlandSetbackNote: 'Army Corps Section 404; Ohio EPA Section 401 certification; isolated wetlands regulated under state Isolated Wetland Permit program',
+    wetlandSetbackNote:
+      'Army Corps Section 404; Ohio EPA Section 401 certification; isolated wetlands regulated under state Isolated Wetland Permit program',
     stateWetlandProgram: true,
     stateEnvAgency: 'Ohio Environmental Protection Agency (Ohio EPA)',
     stateEnvUrl: 'https://epa.ohio.gov',
     citation: 'ORC § 6111.01 et seq. (Water Pollution Control); ORC § 6111.022 (Isolated Wetlands)',
-    notes: 'Ohio regulates isolated wetlands under state Isolated Wetland Permit program. Ohio EPA Section 401 certification required for all federal permits.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Ohio regulates isolated wetlands under state Isolated Wetland Permit program. Ohio EPA Section 401 certification required for all federal permits.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Oklahoma',
@@ -636,16 +745,19 @@ export default [
     npdesUrl: 'https://www.deq.ok.gov',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under ODEQ/EPA Construction General Permit for ≥1 acre land disturbance',
-    erosionControlStandard: 'Oklahoma Stormwater Quality Management Program for Construction Activities',
+    swpppNote:
+      'SWPPP required under ODEQ/EPA Construction General Permit for ≥1 acre land disturbance',
+    erosionControlStandard:
+      'Oklahoma Stormwater Quality Management Program for Construction Activities',
     wetlandSetbackFt: 0,
     wetlandSetbackNote: 'Army Corps Section 404; ODEQ Section 401 certification',
     stateWetlandProgram: false,
     stateEnvAgency: 'Oklahoma Department of Environmental Quality (ODEQ)',
     stateEnvUrl: 'https://www.deq.ok.gov',
     citation: 'OS 27A § 2-6-201 et seq.',
-    notes: 'Oklahoma partial NPDES delegation; some permits administered by EPA. ODEQ administers state water quality program.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Oklahoma partial NPDES delegation; some permits administered by EPA. ODEQ administers state water quality program.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Oregon',
@@ -654,16 +766,21 @@ export default [
     npdesUrl: 'https://www.oregon.gov/deq',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under Oregon 1200-C Construction General Permit for ≥1 acre land disturbance',
-    erosionControlStandard: 'Oregon Erosion Prevention and Sediment Control Planning and Design Manual',
+    swpppNote:
+      'SWPPP required under Oregon 1200-C Construction General Permit for ≥1 acre land disturbance',
+    erosionControlStandard:
+      'Oregon Erosion Prevention and Sediment Control Planning and Design Manual',
     wetlandSetbackFt: 50,
-    wetlandSetbackNote: 'DSL Removal-Fill Law regulates activities in wetlands; Statewide Planning Goal 5 protects significant wetlands; 50-ft minimum riparian setback typical in local regulations',
+    wetlandSetbackNote:
+      'DSL Removal-Fill Law regulates activities in wetlands; Statewide Planning Goal 5 protects significant wetlands; 50-ft minimum riparian setback typical in local regulations',
     stateWetlandProgram: true,
-    stateEnvAgency: 'Oregon Department of Environmental Quality (DEQ) / Oregon Department of State Lands (DSL)',
+    stateEnvAgency:
+      'Oregon Department of Environmental Quality (DEQ) / Oregon Department of State Lands (DSL)',
     stateEnvUrl: 'https://www.oregon.gov/deq',
     citation: 'ORS § 196.800 et seq. (Removal-Fill Law); ORS § 197.175 (Goal 5)',
-    notes: 'Oregon DSL Removal-Fill Law regulates all fill/removal in waters of the state including wetlands. DSL individual permits required for significant impacts. Land Use Planning (Goal 5) provides additional protection.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Oregon DSL Removal-Fill Law regulates all fill/removal in waters of the state including wetlands. DSL individual permits required for significant impacts. Land Use Planning (Goal 5) provides additional protection.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Pennsylvania',
@@ -672,16 +789,19 @@ export default [
     npdesUrl: 'https://www.dep.pa.gov',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'E&S Plan and PNDI review required for disturbances ≥5,000 sq ft; PADEP NPDES General Permit (PAG-02) for ≥1 acre',
+    swpppNote:
+      'E&S Plan and PNDI review required for disturbances ≥5,000 sq ft; PADEP NPDES General Permit (PAG-02) for ≥1 acre',
     erosionControlStandard: 'Pennsylvania Erosion and Sediment Pollution Control Program Manual',
     wetlandSetbackFt: 50,
-    wetlandSetbackNote: 'Chapter 105 (Water Obstruction and Encroachment) permit required for activities in/near wetlands and waterways; general permit GP-11 for minor impacts; 50-ft riparian buffer common',
+    wetlandSetbackNote:
+      'Chapter 105 (Water Obstruction and Encroachment) permit required for activities in/near wetlands and waterways; general permit GP-11 for minor impacts; 50-ft riparian buffer common',
     stateWetlandProgram: true,
     stateEnvAgency: 'Pennsylvania Department of Environmental Protection (PADEP)',
     stateEnvUrl: 'https://www.dep.pa.gov',
     citation: '25 Pa. Code §§ 102 (E&S), 105 (Water Obstruction), 92a (NPDES)',
-    notes: 'Pennsylvania requires PNDI (Pennsylvania Natural Diversity Inventory) screening before construction. Chapter 105 permits cover activities in waters including wetlands.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Pennsylvania requires PNDI (Pennsylvania Natural Diversity Inventory) screening before construction. Chapter 105 permits cover activities in waters including wetlands.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Rhode Island',
@@ -690,16 +810,19 @@ export default [
     npdesUrl: 'https://www.dem.ri.gov',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under Rhode Island RIPDES Construction General Permit (RIR10I000) for ≥1 acre land disturbance',
+    swpppNote:
+      'SWPPP required under Rhode Island RIPDES Construction General Permit (RIR10I000) for ≥1 acre land disturbance',
     erosionControlStandard: 'Rhode Island Stormwater Design and Installation Standards Manual',
     wetlandSetbackFt: 50,
-    wetlandSetbackNote: 'Freshwater Wetlands Act requires assent for activities within 50 ft of freshwater wetlands; 200-ft buffer around vernal pools; coastal wetlands regulated by Coastal Resources Management Council (CRMC)',
+    wetlandSetbackNote:
+      'Freshwater Wetlands Act requires assent for activities within 50 ft of freshwater wetlands; 200-ft buffer around vernal pools; coastal wetlands regulated by Coastal Resources Management Council (CRMC)',
     stateWetlandProgram: true,
     stateEnvAgency: 'Rhode Island Department of Environmental Management (RIDEM)',
     stateEnvUrl: 'https://www.dem.ri.gov',
     citation: 'R.I. Gen. Laws § 2-1-18 et seq. (Freshwater Wetlands); § 46-23-1 et seq. (CRMC)',
-    notes: 'Rhode Island requires RIDEM assent for most activities near wetlands. Coastal wetlands regulated by CRMC (Coastal Resources Management Council).',
-    lastVerified: '2026-01-01'
+    notes:
+      'Rhode Island requires RIDEM assent for most activities near wetlands. Coastal wetlands regulated by CRMC (Coastal Resources Management Council).',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'South Carolina',
@@ -708,16 +831,19 @@ export default [
     npdesUrl: 'https://scdes.sc.gov',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under NPDES Construction General Permit (SCR100000) for ≥1 acre land disturbance',
+    swpppNote:
+      'SWPPP required under NPDES Construction General Permit (SCR100000) for ≥1 acre land disturbance',
     erosionControlStandard: 'South Carolina Stormwater Management BMP Manual',
     wetlandSetbackFt: 0,
-    wetlandSetbackNote: 'Army Corps Section 404; SCDES Section 401 water quality certification; coastal critical area permit required in Beachfront Management Act zone',
+    wetlandSetbackNote:
+      'Army Corps Section 404; SCDES Section 401 water quality certification; coastal critical area permit required in Beachfront Management Act zone',
     stateWetlandProgram: false,
     stateEnvAgency: 'South Carolina Department of Environmental Services (SCDES)',
     stateEnvUrl: 'https://scdes.sc.gov',
     citation: 'S.C. Code Ann. § 48-14-10 et seq. (Stormwater); § 48-43-10 et seq. (Beachfront)',
-    notes: 'Coastal Critical Area Permit required for development in the critical area within 2,500 ft of the Atlantic Ocean shoreline.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Coastal Critical Area Permit required for development in the critical area within 2,500 ft of the Atlantic Ocean shoreline.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'South Dakota',
@@ -726,16 +852,18 @@ export default [
     npdesUrl: 'https://danr.sd.gov',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under South Dakota NPDES Construction General Permit (SDR100000) for ≥1 acre disturbance',
+    swpppNote:
+      'SWPPP required under South Dakota NPDES Construction General Permit (SDR100000) for ≥1 acre disturbance',
     erosionControlStandard: 'South Dakota Construction Site Stormwater BMPs',
     wetlandSetbackFt: 0,
-    wetlandSetbackNote: 'Army Corps Section 404; DANR Section 401 certification; state has significant Prairie Pothole wetland areas',
+    wetlandSetbackNote:
+      'Army Corps Section 404; DANR Section 401 certification; state has significant Prairie Pothole wetland areas',
     stateWetlandProgram: false,
     stateEnvAgency: 'South Dakota Department of Agriculture and Natural Resources (DANR)',
     stateEnvUrl: 'https://danr.sd.gov',
     citation: 'SDCL § 34A-2-1 et seq.; ARSD 74:52:01',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Tennessee',
@@ -744,52 +872,62 @@ export default [
     npdesUrl: 'https://www.tn.gov/environment',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under NPDES Multi-Sector General Permit (TNR100000) for ≥1 acre land disturbance; also requires Construction Stormwater Permit',
+    swpppNote:
+      'SWPPP required under NPDES Multi-Sector General Permit (TNR100000) for ≥1 acre land disturbance; also requires Construction Stormwater Permit',
     erosionControlStandard: 'Tennessee Erosion and Sediment Control Manual',
     wetlandSetbackFt: 0,
-    wetlandSetbackNote: 'Army Corps Section 404; TDEC Section 401 water quality certification; Aquatic Resource Alteration Permit (ARAP) required for alterations to streams and wetlands',
+    wetlandSetbackNote:
+      'Army Corps Section 404; TDEC Section 401 water quality certification; Aquatic Resource Alteration Permit (ARAP) required for alterations to streams and wetlands',
     stateWetlandProgram: false,
     stateEnvAgency: 'Tennessee Department of Environment and Conservation (TDEC)',
     stateEnvUrl: 'https://www.tn.gov/environment',
     citation: 'TCA § 69-3-101 et seq. (Water Quality Control Act); ARAP Rule 1200-04-07',
-    notes: 'Tennessee Aquatic Resource Alteration Permit (ARAP) required for stream/wetland impacts. Coordinated with USACE Section 404.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Tennessee Aquatic Resource Alteration Permit (ARAP) required for stream/wetland impacts. Coordinated with USACE Section 404.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Texas',
     abbr: 'TX',
-    npdesAuthority: 'Texas Commission on Environmental Quality (TCEQ) - Texas Pollutant Discharge Elimination System (TPDES)',
+    npdesAuthority:
+      'Texas Commission on Environmental Quality (TCEQ) - Texas Pollutant Discharge Elimination System (TPDES)',
     npdesUrl: 'https://www.tceq.texas.gov',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under TPDES Construction General Permit (TXR150000) for ≥1 acre land disturbance; Stormwater Pollution Prevention Plan required',
+    swpppNote:
+      'SWPPP required under TPDES Construction General Permit (TXR150000) for ≥1 acre land disturbance; Stormwater Pollution Prevention Plan required',
     erosionControlStandard: 'Texas Commission on Environmental Quality Stormwater BMP Program',
     wetlandSetbackFt: 0,
-    wetlandSetbackNote: 'Army Corps Section 404 (Galveston District); TCEQ Section 401 certification; coastal areas regulated by Texas General Land Office',
+    wetlandSetbackNote:
+      'Army Corps Section 404 (Galveston District); TCEQ Section 401 certification; coastal areas regulated by Texas General Land Office',
     stateWetlandProgram: false,
     stateEnvAgency: 'Texas Commission on Environmental Quality (TCEQ)',
     stateEnvUrl: 'https://www.tceq.texas.gov',
     citation: 'Tex. Water Code § 26.001 et seq.; 30 TAC § 281',
-    notes: 'Texas has its own TPDES program. Large land development in coastal areas requires additional GLO permits. Edwards Aquifer recharge zone has special construction requirements.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Texas has its own TPDES program. Large land development in coastal areas requires additional GLO permits. Edwards Aquifer recharge zone has special construction requirements.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Utah',
     abbr: 'UT',
-    npdesAuthority: 'Utah Division of Water Quality (DWQ) - Utah Pollutant Discharge Elimination System (UPDES)',
+    npdesAuthority:
+      'Utah Division of Water Quality (DWQ) - Utah Pollutant Discharge Elimination System (UPDES)',
     npdesUrl: 'https://deq.utah.gov/division-water-quality',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under UPDES Construction General Permit (UTR300000) for ≥1 acre land disturbance',
+    swpppNote:
+      'SWPPP required under UPDES Construction General Permit (UTR300000) for ≥1 acre land disturbance',
     erosionControlStandard: 'Utah Stormwater BMP Manual',
     wetlandSetbackFt: 0,
-    wetlandSetbackNote: 'Army Corps Section 404; Utah DWQ Section 401 certification; Great Salt Lake wetlands have special regulatory protections',
+    wetlandSetbackNote:
+      'Army Corps Section 404; Utah DWQ Section 401 certification; Great Salt Lake wetlands have special regulatory protections',
     stateWetlandProgram: false,
     stateEnvAgency: 'Utah Department of Environmental Quality (DEQ)',
     stateEnvUrl: 'https://deq.utah.gov',
     citation: 'Utah Code § 19-5-101 et seq.; R317-8',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Vermont',
@@ -798,16 +936,20 @@ export default [
     npdesUrl: 'https://dec.vermont.gov',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under Vermont Construction General Permit (CGP) for ≥1 acre land disturbance; Vermont also requires Act 250 Land Use Permit for development >1 acre or 10 dwelling units',
-    erosionControlStandard: 'Vermont Low Risk Site Handbook for Erosion Prevention and Sediment Control',
+    swpppNote:
+      'SWPPP required under Vermont Construction General Permit (CGP) for ≥1 acre land disturbance; Vermont also requires Act 250 Land Use Permit for development >1 acre or 10 dwelling units',
+    erosionControlStandard:
+      'Vermont Low Risk Site Handbook for Erosion Prevention and Sediment Control',
     wetlandSetbackFt: 50,
-    wetlandSetbackNote: 'Vermont Wetlands Rules protect all wetlands; 50-ft buffer to significant wetlands; Act 250 review for larger projects near wetlands',
+    wetlandSetbackNote:
+      'Vermont Wetlands Rules protect all wetlands; 50-ft buffer to significant wetlands; Act 250 review for larger projects near wetlands',
     stateWetlandProgram: true,
     stateEnvAgency: 'Vermont Department of Environmental Conservation (DEC)',
     stateEnvUrl: 'https://dec.vermont.gov',
     citation: '10 V.S.A. § 905 (Wetlands); 10 V.S.A. § 6001 et seq. (Act 250)',
-    notes: 'Vermont Act 250 is a significant statewide land use permit required for major developments. Vermont Wetlands Rules administered by DEC Wetlands Program.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Vermont Act 250 is a significant statewide land use permit required for major developments. Vermont Wetlands Rules administered by DEC Wetlands Program.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Virginia',
@@ -816,16 +958,20 @@ export default [
     npdesUrl: 'https://www.deq.virginia.gov',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under Virginia Pollution Abatement (VPA) / VPDES Construction General Permit (VAG11) for ≥1 acre land disturbance',
-    erosionControlStandard: 'Virginia Erosion and Stormwater Management Program (VESMP) Regulations',
+    swpppNote:
+      'SWPPP required under Virginia Pollution Abatement (VPA) / VPDES Construction General Permit (VAG11) for ≥1 acre land disturbance',
+    erosionControlStandard:
+      'Virginia Erosion and Stormwater Management Program (VESMP) Regulations',
     wetlandSetbackFt: 0,
-    wetlandSetbackNote: 'Army Corps Section 404; VDEQ Section 401 certification; Virginia Marine Resources Commission (VMRC) for tidal wetlands; Chesapeake Bay Act RPA 100-ft buffer',
+    wetlandSetbackNote:
+      'Army Corps Section 404; VDEQ Section 401 certification; Virginia Marine Resources Commission (VMRC) for tidal wetlands; Chesapeake Bay Act RPA 100-ft buffer',
     stateWetlandProgram: false,
     stateEnvAgency: 'Virginia Department of Environmental Quality (VDEQ)',
     stateEnvUrl: 'https://www.deq.virginia.gov',
     citation: 'Code of Va. § 62.1-44.15 et seq. (VESMP); § 28.2-1300 et seq. (VMRC Wetlands)',
-    notes: 'Chesapeake Bay Preservation Act requires 100-ft Resource Protection Area (RPA) buffer along tidal shorelines and other water features. VMRC regulates tidal wetlands.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Chesapeake Bay Preservation Act requires 100-ft Resource Protection Area (RPA) buffer along tidal shorelines and other water features. VMRC regulates tidal wetlands.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Washington',
@@ -834,16 +980,21 @@ export default [
     npdesUrl: 'https://ecology.wa.gov',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under Construction Stormwater General Permit (WAR100000) for ≥1 acre land disturbance; turbidity monitoring required at many sites',
-    erosionControlStandard: 'Washington State Department of Ecology Stormwater Management Manual for Western Washington (SWMMWW) and Eastern Washington (SWMMEW)',
+    swpppNote:
+      'SWPPP required under Construction Stormwater General Permit (WAR100000) for ≥1 acre land disturbance; turbidity monitoring required at many sites',
+    erosionControlStandard:
+      'Washington State Department of Ecology Stormwater Management Manual for Western Washington (SWMMWW) and Eastern Washington (SWMMEW)',
     wetlandSetbackFt: 50,
-    wetlandSetbackNote: 'Critical Areas Ordinances (CAOs) required by all counties and cities; typical 50-200 ft wetland buffer depending on wetland category and local code; DOE also regulates under Shoreline Management Act',
+    wetlandSetbackNote:
+      'Critical Areas Ordinances (CAOs) required by all counties and cities; typical 50-200 ft wetland buffer depending on wetland category and local code; DOE also regulates under Shoreline Management Act',
     stateWetlandProgram: true,
     stateEnvAgency: 'Washington State Department of Ecology',
     stateEnvUrl: 'https://ecology.wa.gov',
-    citation: 'RCW § 90.48 (Water Pollution Control); RCW § 90.58 (Shoreline Management Act); WAC 173-26',
-    notes: 'Washington has comprehensive state wetland regulations. SMA Substantial Development Permits required for projects within 200 ft of shorelines. Hydraulic Project Approval (HPA) required from WDFW for work near fish-bearing waters.',
-    lastVerified: '2026-01-01'
+    citation:
+      'RCW § 90.48 (Water Pollution Control); RCW § 90.58 (Shoreline Management Act); WAC 173-26',
+    notes:
+      'Washington has comprehensive state wetland regulations. SMA Substantial Development Permits required for projects within 200 ft of shorelines. Hydraulic Project Approval (HPA) required from WDFW for work near fish-bearing waters.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'West Virginia',
@@ -852,16 +1003,18 @@ export default [
     npdesUrl: 'https://dep.wv.gov',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under WV/NPDES Construction Stormwater General Permit (WVR104000) for ≥1 acre land disturbance',
+    swpppNote:
+      'SWPPP required under WV/NPDES Construction Stormwater General Permit (WVR104000) for ≥1 acre land disturbance',
     erosionControlStandard: 'West Virginia Stormwater Management and Design Guidance Manual',
     wetlandSetbackFt: 0,
-    wetlandSetbackNote: 'Army Corps Section 404; WVDEP Section 401 certification; stream buffer requirements under state law',
+    wetlandSetbackNote:
+      'Army Corps Section 404; WVDEP Section 401 certification; stream buffer requirements under state law',
     stateWetlandProgram: false,
     stateEnvAgency: 'West Virginia Department of Environmental Protection (WVDEP)',
     stateEnvUrl: 'https://dep.wv.gov',
     citation: 'W. Va. Code § 22-11-1 et seq.',
     notes: '',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Wisconsin',
@@ -870,16 +1023,19 @@ export default [
     npdesUrl: 'https://dnr.wisconsin.gov',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under Wisconsin WPDES Construction General Permit (WI-S067831-3) for ≥1 acre land disturbance',
+    swpppNote:
+      'SWPPP required under Wisconsin WPDES Construction General Permit (WI-S067831-3) for ≥1 acre land disturbance',
     erosionControlStandard: 'Wisconsin Construction Site Best Management Practices Handbook',
     wetlandSetbackFt: 0,
-    wetlandSetbackNote: 'Chapter NR 103 (water quality standards for wetlands); Wetland individual permit required through WDNR for impacts >0.1 acre; 30-ft setback from wetlands in many shoreland ordinances',
+    wetlandSetbackNote:
+      'Chapter NR 103 (water quality standards for wetlands); Wetland individual permit required through WDNR for impacts >0.1 acre; 30-ft setback from wetlands in many shoreland ordinances',
     stateWetlandProgram: true,
     stateEnvAgency: 'Wisconsin Department of Natural Resources (WDNR)',
     stateEnvUrl: 'https://dnr.wisconsin.gov',
     citation: 'Wis. Stat. § 281.31 (Wetlands); § 281.16 (Stormwater); NR 103',
-    notes: 'Wisconsin regulates wetlands through a state permit program coordinated with USACE. Shoreland-Wetland Zoning Ordinances required by all counties.',
-    lastVerified: '2026-01-01'
+    notes:
+      'Wisconsin regulates wetlands through a state permit program coordinated with USACE. Shoreland-Wetland Zoning Ordinances required by all counties.',
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Wyoming',
@@ -888,7 +1044,8 @@ export default [
     npdesUrl: 'https://deq.wyoming.gov',
     landDisturbanceThresholdAcres: 1,
     swpppRequired: true,
-    swpppNote: 'SWPPP required under Wyoming NPDES Construction General Permit (WYR10I000) for ≥1 acre land disturbance',
+    swpppNote:
+      'SWPPP required under Wyoming NPDES Construction General Permit (WYR10I000) for ≥1 acre land disturbance',
     erosionControlStandard: 'Wyoming Stormwater Program for Construction Activities',
     wetlandSetbackFt: 0,
     wetlandSetbackNote: 'Army Corps Section 404; WDEQ Section 401 certification',
@@ -897,6 +1054,6 @@ export default [
     stateEnvUrl: 'https://deq.wyoming.gov',
     citation: 'Wyo. Stat. § 35-11-101 et seq.',
     notes: '',
-    lastVerified: '2026-01-01'
-  }
+    lastVerified: '2026-01-01',
+  },
 ]

@@ -28,7 +28,11 @@ export default function LegalTable({ columns, data, searchKeys = [], caption }) 
     if (query.trim()) {
       const q = query.toLowerCase()
       rows = rows.filter((row) =>
-        searchKeys.some((k) => String(row[k] ?? '').toLowerCase().includes(q))
+        searchKeys.some((k) =>
+          String(row[k] ?? '')
+            .toLowerCase()
+            .includes(q)
+        )
       )
     }
     if (sortKey) {
@@ -96,10 +100,7 @@ export default function LegalTable({ columns, data, searchKeys = [], caption }) 
           <tbody>
             {filtered.length === 0 ? (
               <tr>
-                <td
-                  colSpan={columns.length}
-                  className="px-4 py-8 text-center text-brand-navy/40"
-                >
+                <td colSpan={columns.length} className="px-4 py-8 text-center text-brand-navy/40">
                   No results found.
                 </td>
               </tr>

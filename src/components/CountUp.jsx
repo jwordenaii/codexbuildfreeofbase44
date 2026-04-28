@@ -11,13 +11,7 @@ import { useEffect, useRef, useState } from 'react'
  *   duration — animation duration in ms (default 1800)
  *   decimals — decimal places to show (default 0)
  */
-export default function CountUp({
-  end,
-  prefix = '',
-  suffix = '',
-  duration = 1800,
-  decimals = 0,
-}) {
+export default function CountUp({ end, prefix = '', suffix = '', duration = 1800, decimals = 0 }) {
   const [value, setValue] = useState(0)
   const ref = useRef(null)
   const hasRun = useRef(false)
@@ -49,8 +43,7 @@ export default function CountUp({
     return () => observer.disconnect()
   }, [end, duration, decimals])
 
-  const display =
-    decimals > 0 ? value.toFixed(decimals) : Math.round(value).toString()
+  const display = decimals > 0 ? value.toFixed(decimals) : Math.round(value).toString()
 
   return (
     <span ref={ref}>

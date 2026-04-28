@@ -136,7 +136,9 @@ When answering about specific sites or leads, be precise and data-driven. When a
 
 
 class ForemanChatRequest(BaseModel):
-    question: str = Field(..., min_length=1, max_length=1500, strip_whitespace=True)
+    model_config = {"str_strip_whitespace": True}
+
+    question: str = Field(..., min_length=1, max_length=1500)
     context: str | None = Field(default=None, max_length=500, description="Optional context hint, e.g. 'site_id:42' or 'truck_id:T-01'")
 
 

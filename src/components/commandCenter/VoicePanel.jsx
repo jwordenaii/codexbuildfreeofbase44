@@ -9,14 +9,14 @@ import { useState, useRef } from 'react'
 
 const ACCEPTED = '.mp3,.wav,.m4a,.ogg,.webm,audio/mpeg,audio/wav,audio/mp4,audio/ogg,audio/webm'
 const BASE = import.meta.env.VITE_API_BASE_URL || ''
-const UPLOAD_TIMEOUT_MS = 90_000  // Whisper transcription may take up to ~90 s for long audio
+const UPLOAD_TIMEOUT_MS = 90_000 // Whisper transcription may take up to ~90 s for long audio
 
 export default function VoicePanel() {
-  const [file, setFile]           = useState(null)
+  const [file, setFile] = useState(null)
   const [uploading, setUploading] = useState(false)
-  const [result, setResult]       = useState(null)
-  const [error, setError]         = useState('')
-  const fileRef                   = useRef(null)
+  const [result, setResult] = useState(null)
+  const [error, setError] = useState('')
+  const fileRef = useRef(null)
 
   const handleFile = (e) => {
     setFile(e.target.files[0] || null)
@@ -48,7 +48,9 @@ export default function VoicePanel() {
       }
       setResult(await res.json())
     } catch (e) {
-      setError(e.name === 'AbortError' ? `Upload timed out (${UPLOAD_TIMEOUT_MS / 1000} s).` : e.message)
+      setError(
+        e.name === 'AbortError' ? `Upload timed out (${UPLOAD_TIMEOUT_MS / 1000} s).` : e.message
+      )
     } finally {
       setUploading(false)
     }
@@ -64,9 +66,7 @@ export default function VoicePanel() {
   return (
     <div className="space-y-6">
       <div className="card p-6">
-        <h2 className="font-display font-bold text-brand-navy text-xl mb-1">
-          🎙 Voice Intake
-        </h2>
+        <h2 className="font-display font-bold text-brand-navy text-xl mb-1">🎙 Voice Intake</h2>
         <p className="text-brand-navy/50 text-sm mb-5">
           Upload a recorded call or voicemail (MP3/WAV/M4A/OGG/WebM, max 25 MB). JWordenAI will
           transcribe it with Whisper, extract lead entities, and optionally create a lead record.
@@ -76,7 +76,9 @@ export default function VoicePanel() {
           {file ? (
             <div className="text-brand-navy text-sm">
               <span className="font-semibold">{file.name}</span>
-              <span className="text-brand-navy/50 ml-2">({(file.size / 1024 / 1024).toFixed(2)} MB)</span>
+              <span className="text-brand-navy/50 ml-2">
+                ({(file.size / 1024 / 1024).toFixed(2)} MB)
+              </span>
             </div>
           ) : (
             <p className="text-brand-navy/40 text-sm">MP3, WAV, M4A, OGG, or WebM — max 25 MB</p>
@@ -107,7 +109,9 @@ export default function VoicePanel() {
             {uploading ? 'Transcribing…' : '🎤 Transcribe & Extract Lead'}
           </button>
           {(file || result) && (
-            <button type="button" onClick={reset} className="btn-outline">Clear</button>
+            <button type="button" onClick={reset} className="btn-outline">
+              Clear
+            </button>
           )}
         </div>
 
@@ -157,14 +161,20 @@ export default function VoicePanel() {
                   if (k === 'confidence') return null
                   return (
                     <div key={k} className="bg-gray-50 rounded-lg p-3">
-                      <div className="text-xs text-brand-navy/40 uppercase tracking-wide">{k.replace(/_/g, ' ')}</div>
-                      <div className="text-sm font-semibold text-brand-navy mt-0.5">{String(v || '—')}</div>
+                      <div className="text-xs text-brand-navy/40 uppercase tracking-wide">
+                        {k.replace(/_/g, ' ')}
+                      </div>
+                      <div className="text-sm font-semibold text-brand-navy mt-0.5">
+                        {String(v || '—')}
+                      </div>
                     </div>
                   )
                 })}
                 {result.entities.confidence != null && (
                   <div className="bg-gray-50 rounded-lg p-3">
-                    <div className="text-xs text-brand-navy/40 uppercase tracking-wide">Confidence</div>
+                    <div className="text-xs text-brand-navy/40 uppercase tracking-wide">
+                      Confidence
+                    </div>
                     <div className="text-sm font-semibold text-brand-navy mt-0.5">
                       {(result.entities.confidence * 100).toFixed(0)}%
                     </div>

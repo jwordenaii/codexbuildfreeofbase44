@@ -43,38 +43,42 @@ async function request(method, path, body) {
 /** Build a query string from an object, omitting null/undefined/empty values. */
 function buildQS(params) {
   const qs = new URLSearchParams(
-    Object.fromEntries(Object.entries(params).filter(([, v]) => v !== undefined && v !== null && v !== ''))
+    Object.fromEntries(
+      Object.entries(params).filter(([, v]) => v !== undefined && v !== null && v !== '')
+    )
   ).toString()
   return qs ? `?${qs}` : ''
 }
 
 export const api = {
-  submitQuote:    (data) => request('POST', '/api/v1/leads/quote',   data),
-  submitContact:  (data) => request('POST', '/api/v1/leads/contact', data),
-  getReviews:     ()     => request('GET',  '/api/v1/reviews'),
-  getSchema:      ()     => request('GET',  '/api/v1/schema/local-business'),
-  askAI:          (data) => request('POST', '/api/v1/ai/chat',       data),
+  submitQuote: (data) => request('POST', '/api/v1/leads/quote', data),
+  submitContact: (data) => request('POST', '/api/v1/leads/contact', data),
+  getReviews: () => request('GET', '/api/v1/reviews'),
+  getSchema: () => request('GET', '/api/v1/schema/local-business'),
+  askAI: (data) => request('POST', '/api/v1/ai/chat', data),
   // AI-assisted contact form field suggestions (page_context + message → service_type + hint)
   contactSuggest: (data) => request('POST', '/api/v1/ai/contact-suggest', data),
   // Content blocks managed via the admin Webpage Maker.
   // The frontend uses these as optional overrides — hardcoded defaults remain
   // in place if a block is missing (graceful degradation).
-  getContent:     ()     => request('GET',  '/api/v1/content'),
-  getContentBlock:(key)  => request('GET',  `/api/v1/content/${key}`),
+  getContent: () => request('GET', '/api/v1/content'),
+  getContentBlock: (key) => request('GET', `/api/v1/content/${key}`),
   // ── Geospatial ─────────────────────────────────────────────────────────────
-  getSites:       ()     => request('GET',  '/api/v1/geo/sites'),
-  createSite:     (data) => request('POST', '/api/v1/geo/sites',     data),
-  updateSite:     (id, data) => request('PUT', `/api/v1/geo/sites/${id}`, data),
+  getSites: () => request('GET', '/api/v1/geo/sites'),
+  createSite: (data) => request('POST', '/api/v1/geo/sites', data),
+  updateSite: (id, data) => request('PUT', `/api/v1/geo/sites/${id}`, data),
   getPermitLeads: (params = {}) => {
     return request('GET', `/api/v1/geo/permit-leads${buildQS(params)}`)
   },
-  triggerScrape:  (maxPages = 5) => request('POST', `/api/v1/geo/permit-leads/scrape?max_pages=${maxPages}`),
-  radiusQuery:    (lat, lng, miles = 20) => request('GET', `/api/v1/geo/radius-query?lat=${lat}&lng=${lng}&radius_miles=${miles}`),
-  getTrucks:      ()     => request('GET',  '/api/v1/geo/trucks'),
-  pingTruck:      (id, data) => request('POST', `/api/v1/geo/trucks/${id}`, data),
+  triggerScrape: (maxPages = 5) =>
+    request('POST', `/api/v1/geo/permit-leads/scrape?max_pages=${maxPages}`),
+  radiusQuery: (lat, lng, miles = 20) =>
+    request('GET', `/api/v1/geo/radius-query?lat=${lat}&lng=${lng}&radius_miles=${miles}`),
+  getTrucks: () => request('GET', '/api/v1/geo/trucks'),
+  pingTruck: (id, data) => request('POST', `/api/v1/geo/trucks/${id}`, data),
   // ── Virtual Foreman ────────────────────────────────────────────────────────
-  askForeman:     (data) => request('POST', '/api/v1/foreman/chat',  data),
-  getForemanStatus: ()   => request('GET',  '/api/v1/foreman/status'),
+  askForeman: (data) => request('POST', '/api/v1/foreman/chat', data),
+  getForemanStatus: () => request('GET', '/api/v1/foreman/status'),
   getVisionResult: (jobId) => request('GET', `/api/v1/ai/vision-result/${jobId}`),
 }
 

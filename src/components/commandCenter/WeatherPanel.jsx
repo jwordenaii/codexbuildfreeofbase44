@@ -6,9 +6,24 @@ import { useState } from 'react'
 import { api } from '../../api/client'
 
 const SUIT_STYLE = {
-  good:    { bg: 'bg-green-50 border-green-200', label: 'text-green-700', badge: 'bg-green-100 text-green-800', icon: '✅' },
-  marginal:{ bg: 'bg-yellow-50 border-yellow-200', label: 'text-yellow-700', badge: 'bg-yellow-100 text-yellow-800', icon: '⚠️' },
-  poor:    { bg: 'bg-red-50 border-red-200', label: 'text-red-700', badge: 'bg-red-100 text-red-800', icon: '❌' },
+  good: {
+    bg: 'bg-green-50 border-green-200',
+    label: 'text-green-700',
+    badge: 'bg-green-100 text-green-800',
+    icon: '✅',
+  },
+  marginal: {
+    bg: 'bg-yellow-50 border-yellow-200',
+    label: 'text-yellow-700',
+    badge: 'bg-yellow-100 text-yellow-800',
+    icon: '⚠️',
+  },
+  poor: {
+    bg: 'bg-red-50 border-red-200',
+    label: 'text-red-700',
+    badge: 'bg-red-100 text-red-800',
+    icon: '❌',
+  },
 }
 
 function DayCard({ day }) {
@@ -38,9 +53,7 @@ function DayCard({ day }) {
           <div className={`font-semibold ${suit.label}`}>{day.wind_mph} mph</div>
         </div>
       </div>
-      {day.reason && (
-        <div className={`mt-2 text-xs ${suit.label}`}>{day.reason}</div>
-      )}
+      {day.reason && <div className={`mt-2 text-xs ${suit.label}`}>{day.reason}</div>}
     </div>
   )
 }
@@ -97,9 +110,7 @@ export default function WeatherPanel() {
       </div>
 
       {error && (
-        <div className="card p-4 bg-red-50 border-red-200 text-red-700 text-sm">
-          {error}
-        </div>
+        <div className="card p-4 bg-red-50 border-red-200 text-red-700 text-sm">{error}</div>
       )}
 
       {forecast && (
@@ -108,11 +119,15 @@ export default function WeatherPanel() {
             <div className="text-sm text-brand-navy/60">
               📍 <strong className="text-brand-navy">{forecast.location || address}</strong>
             </div>
-            <span className={`text-xs font-bold px-3 py-1 rounded-full ${
-              goodDays >= 4 ? 'bg-green-100 text-green-800' :
-              goodDays >= 2 ? 'bg-yellow-100 text-yellow-800' :
-              'bg-red-100 text-red-800'
-            }`}>
+            <span
+              className={`text-xs font-bold px-3 py-1 rounded-full ${
+                goodDays >= 4
+                  ? 'bg-green-100 text-green-800'
+                  : goodDays >= 2
+                    ? 'bg-yellow-100 text-yellow-800'
+                    : 'bg-red-100 text-red-800'
+              }`}
+            >
               {goodDays} good paving day{goodDays !== 1 ? 's' : ''} this week
             </span>
           </div>

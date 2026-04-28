@@ -9,7 +9,12 @@ import states from '../../data/legal/states'
  *   label    — optional label string (default: 'Select a State')
  *   className — optional extra class on wrapper
  */
-export default function StateSelector({ value, onChange, label = 'Select a State', className = '' }) {
+export default function StateSelector({
+  value,
+  onChange,
+  label = 'Select a State',
+  className = '',
+}) {
   return (
     <div className={`space-y-1 ${className}`}>
       {label && (

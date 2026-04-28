@@ -18,25 +18,25 @@ import * as THREE from 'three'
 
 // ── Colour palette keyed by material name ────────────────────────────────────
 const MATERIAL_COLORS = {
-  asphalt:     '#2d2d2d',
-  concrete:    '#b0aca4',
+  asphalt: '#2d2d2d',
+  concrete: '#b0aca4',
   cobblestone: '#7a6a58',
-  pavers:      '#c8a87a',
-  gravel:      '#9a9080',
+  pavers: '#c8a87a',
+  gravel: '#9a9080',
 }
 
 const STRUCTURE_COLORS = {
-  brick:        '#b5563c',
-  stucco:       '#e8dcc8',
-  hardieplank:  '#5a7fa0',
-  vinyl:        '#e8e4dc',
-  stone:        '#7a7062',
+  brick: '#b5563c',
+  stucco: '#e8dcc8',
+  hardieplank: '#5a7fa0',
+  vinyl: '#e8e4dc',
+  stone: '#7a7062',
 }
 
 // ── Helper: convert sqft to approximate world-space dims (1 unit = 10 ft) ────
 function sqftToDims(sqft) {
   // Try to keep a 4:3 aspect ratio for the lot
-  const area  = Math.max(sqft, 400)
+  const area = Math.max(sqft, 400)
   const width = Math.sqrt(area * (4 / 3)) / 10
   const depth = Math.sqrt(area * (3 / 4)) / 10
   return { width, depth }
@@ -44,8 +44,8 @@ function sqftToDims(sqft) {
 
 // ── Ground plane with optional texture ───────────────────────────────────────
 function GroundPlane({ width, depth, materialType, aerialUrl }) {
-  const color    = MATERIAL_COLORS[materialType] ?? '#4a7c45'
-  const texture  = useMemo(() => {
+  const color = MATERIAL_COLORS[materialType] ?? '#4a7c45'
+  const texture = useMemo(() => {
     if (!aerialUrl) return null
     const loader = new THREE.TextureLoader()
     return loader.load(aerialUrl)
@@ -80,9 +80,9 @@ function DrivewayOverlay({ groundWidth, groundDepth, materialType }) {
 // ── Building shell ───────────────────────────────────────────────────────────
 function BuildingShell({ sqft, floors, exteriorMaterial, roofColor }) {
   const { width, depth } = sqftToDims(sqft / Math.max(floors, 1))
-  const w    = Math.min(width,  8)
-  const d    = Math.min(depth,  6)
-  const h    = floors * 1.4
+  const w = Math.min(width, 8)
+  const d = Math.min(depth, 6)
+  const h = floors * 1.4
   const wall = STRUCTURE_COLORS[exteriorMaterial] ?? STRUCTURE_COLORS.brick
   const roof = roofColor ?? '#4a4a4a'
 
@@ -105,9 +105,9 @@ function BuildingShell({ sqft, floors, exteriorMaterial, roofColor }) {
 // ── Addition block ───────────────────────────────────────────────────────────
 function AdditionBlock({ sqft, floors, exteriorMaterial }) {
   const { width, depth } = sqftToDims(sqft / Math.max(floors, 1))
-  const w    = Math.min(width * 0.55, 4)
-  const d    = Math.min(depth * 0.55, 3.5)
-  const h    = floors * 1.2
+  const w = Math.min(width * 0.55, 4)
+  const d = Math.min(depth * 0.55, 3.5)
+  const h = floors * 1.2
   const wall = STRUCTURE_COLORS[exteriorMaterial] ?? STRUCTURE_COLORS.brick
 
   return (
@@ -122,14 +122,14 @@ function AdditionBlock({ sqft, floors, exteriorMaterial }) {
 
 // ── Parking lot grid ─────────────────────────────────────────────────────────
 function ParkingLot({ groundWidth, groundDepth, materialType }) {
-  const color     = MATERIAL_COLORS[materialType] ?? MATERIAL_COLORS.asphalt
-  const stalls    = Math.floor((groundWidth * groundDepth) / 2.5)
-  const stallW    = 0.55
-  const stallD    = 1.1
-  const cols      = Math.max(Math.floor(groundWidth / (stallW + 0.08)), 1)
-  const rows      = Math.ceil(stalls / cols)
-  const startX    = -(cols * (stallW + 0.08)) / 2 + stallW / 2
-  const startZ    = -(rows * (stallD + 0.06)) / 2 + stallD / 2
+  const color = MATERIAL_COLORS[materialType] ?? MATERIAL_COLORS.asphalt
+  const stalls = Math.floor((groundWidth * groundDepth) / 2.5)
+  const stallW = 0.55
+  const stallD = 1.1
+  const cols = Math.max(Math.floor(groundWidth / (stallW + 0.08)), 1)
+  const rows = Math.ceil(stalls / cols)
+  const startX = -(cols * (stallW + 0.08)) / 2 + stallW / 2
+  const startZ = -(rows * (stallD + 0.06)) / 2 + stallD / 2
 
   return (
     <group>
@@ -196,13 +196,13 @@ function AnimatedLight() {
 // ── Scene root ───────────────────────────────────────────────────────────────
 function Scene({ config }) {
   const {
-    buildType    = 'driveway',
-    sqft         = 2000,
-    groundMaterial   = 'asphalt',
+    buildType = 'driveway',
+    sqft = 2000,
+    groundMaterial = 'asphalt',
     exteriorMaterial = 'brick',
-    roofColor        = '#4a4a4a',
-    floors           = 1,
-    aerialUrl        = null,
+    roofColor = '#4a4a4a',
+    floors = 1,
+    aerialUrl = null,
   } = config
 
   const { width: gw, depth: gd } = sqftToDims(sqft)
@@ -227,18 +227,10 @@ function Scene({ config }) {
 
       {/* Build overlay based on type */}
       {buildType === 'driveway' && (
-        <DrivewayOverlay
-          groundWidth={gw}
-          groundDepth={gd}
-          materialType={groundMaterial}
-        />
+        <DrivewayOverlay groundWidth={gw} groundDepth={gd} materialType={groundMaterial} />
       )}
       {buildType === 'parking_lot' && (
-        <ParkingLot
-          groundWidth={gw}
-          groundDepth={gd}
-          materialType={groundMaterial}
-        />
+        <ParkingLot groundWidth={gw} groundDepth={gd} materialType={groundMaterial} />
       )}
       {(buildType === 'new_construction_residential' || buildType === 'commercial_build') && (
         <BuildingShell
@@ -256,11 +248,7 @@ function Scene({ config }) {
             exteriorMaterial={exteriorMaterial}
             roofColor={roofColor}
           />
-          <AdditionBlock
-            sqft={sqft * 0.35}
-            floors={floors}
-            exteriorMaterial={exteriorMaterial}
-          />
+          <AdditionBlock sqft={sqft * 0.35} floors={floors} exteriorMaterial={exteriorMaterial} />
         </>
       )}
       {buildType === 'adu' && (
@@ -308,7 +296,10 @@ function Scene({ config }) {
 // ── Public component ─────────────────────────────────────────────────────────
 export default function PropertyVisualizer({ config = {}, className = '' }) {
   return (
-    <div className={`w-full rounded-2xl overflow-hidden shadow-xl border border-brand-navy/10 bg-brand-navy/5 ${className}`} style={{ height: 420 }}>
+    <div
+      className={`w-full rounded-2xl overflow-hidden shadow-xl border border-brand-navy/10 bg-brand-navy/5 ${className}`}
+      style={{ height: 420 }}
+    >
       <Canvas
         shadows
         camera={{ position: [8, 7, 10], fov: 45, near: 0.1, far: 200 }}

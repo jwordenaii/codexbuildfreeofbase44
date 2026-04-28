@@ -58,9 +58,7 @@ function ReviewCard({ review, index }) {
       transition={{ duration: 0.4, delay: (index % 3) * 0.1 }}
     >
       <StarRating rating={review.rating} />
-      <p className="mt-3 text-brand-navy/80 text-sm leading-relaxed">
-        &ldquo;{review.text}&rdquo;
-      </p>
+      <p className="mt-3 text-brand-navy/80 text-sm leading-relaxed">&ldquo;{review.text}&rdquo;</p>
       <div className="mt-4 flex items-center justify-between">
         <div>
           <div className="font-semibold text-brand-navy text-sm">{review.author}</div>
@@ -192,9 +190,7 @@ export default function Reviews() {
       {/* Leave a review CTA */}
       <section className="py-16 bg-brand-navy text-white text-center">
         <div className="max-w-2xl mx-auto px-4">
-          <h2 className="font-display font-black text-3xl mb-4">
-            Had a great experience?
-          </h2>
+          <h2 className="font-display font-black text-3xl mb-4">Had a great experience?</h2>
           <p className="text-white/60 mb-8">
             Your review helps other homeowners and businesses find quality asphalt contractors.
           </p>

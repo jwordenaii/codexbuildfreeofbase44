@@ -14,14 +14,15 @@ export default [
     workerCompProgramRequired: true,
     citation: 'Ala. Code § 25-5-1 et seq.',
     notes: 'Federal OSHA has jurisdiction for both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Alaska',
     abbr: 'AK',
     statePlanState: true,
     publicSectorOnly: false,
-    oshAuthority: 'Alaska Occupational Safety and Health (AKOSH) - Department of Labor and Workforce Development',
+    oshAuthority:
+      'Alaska Occupational Safety and Health (AKOSH) - Department of Labor and Workforce Development',
     oshUrl: 'https://labor.alaska.gov/lss/oshhome.htm',
     fallProtectionThresholdFt: 6,
     scaffoldingRegulations: 'OSHA 29 CFR 1926 Subpart L (or state equivalent)',
@@ -31,7 +32,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'AS § 18.60.010 et seq.',
     notes: 'State plan covers both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Arizona',
@@ -48,7 +49,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'A.R.S. § 23-401 et seq.',
     notes: 'State plan covers both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Arkansas',
@@ -65,7 +66,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'Ark. Code Ann. § 11-2-101 et seq. (worker safety general duty)',
     notes: 'Federal OSHA has jurisdiction for both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'California',
@@ -82,7 +83,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'Cal. Lab. Code § 6300 et seq.',
     notes: 'State plan covers both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Colorado',
@@ -99,7 +100,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'C.R.S. § 8-1-101 et seq.',
     notes: 'Federal OSHA has jurisdiction for both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Connecticut',
@@ -116,7 +117,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'CGS § 31-367 et seq.',
     notes: 'State plan covers public sector only; private employers covered by Federal OSHA.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Delaware',
@@ -133,7 +134,7 @@ export default [
     workerCompProgramRequired: true,
     citation: '19 Del. Code § 105',
     notes: 'Federal OSHA has jurisdiction for both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Florida',
@@ -150,7 +151,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'Fla. Stat. § 442.001 et seq.',
     notes: 'Federal OSHA has jurisdiction for both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Georgia',
@@ -167,7 +168,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'O.C.G.A. § 34-2-10 et seq.',
     notes: 'Federal OSHA has jurisdiction for both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Hawaii',
@@ -184,7 +185,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'HRS § 396-1 et seq.',
     notes: 'State plan covers both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Idaho',
@@ -201,7 +202,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'Idaho Code § 72-101 et seq.',
     notes: 'Federal OSHA has jurisdiction for both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Illinois',
@@ -218,7 +219,7 @@ export default [
     workerCompProgramRequired: true,
     citation: '820 ILCS 220/1 et seq. (Health and Safety Act)',
     notes: 'State plan covers public sector only; private employers covered by Federal OSHA.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Indiana',
@@ -235,7 +236,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'IC 22-8-1.1-1 et seq.',
     notes: 'State plan covers both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Iowa',
@@ -252,7 +253,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'Iowa Code § 88.1 et seq.',
     notes: 'State plan covers both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Kansas',
@@ -269,7 +270,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'K.S.A. 44-636 et seq.',
     notes: 'Federal OSHA has jurisdiction for both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Kentucky',
@@ -286,7 +287,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'KRS 338.011 et seq.',
     notes: 'State plan covers both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Louisiana',
@@ -303,7 +304,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'La. Rev. Stat. § 23:13 et seq.',
     notes: 'Federal OSHA has jurisdiction for both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Maine',
@@ -320,7 +321,7 @@ export default [
     workerCompProgramRequired: true,
     citation: '26 M.R.S.A. § 561 et seq.',
     notes: 'Federal OSHA has jurisdiction for both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Maryland',
@@ -337,7 +338,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'Md. Code Ann., Lab. & Empl. § 5-101 et seq.',
     notes: 'State plan covers both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Massachusetts',
@@ -354,7 +355,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'M.G.L. c. 149, § 6 et seq.',
     notes: 'Federal OSHA has jurisdiction for both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Michigan',
@@ -371,7 +372,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'MCL § 408.1001 et seq.',
     notes: 'State plan covers both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Minnesota',
@@ -388,7 +389,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'Minn. Stat. § 182.65 et seq.',
     notes: 'State plan covers both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Mississippi',
@@ -405,7 +406,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'Miss. Code Ann. § 71-3-1 et seq.',
     notes: 'Federal OSHA has jurisdiction for both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Missouri',
@@ -422,7 +423,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'Mo. Rev. Stat. § 287.010 et seq.',
     notes: 'Federal OSHA has jurisdiction for both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Montana',
@@ -439,7 +440,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'Mont. Code Ann. § 50-71-101 et seq.',
     notes: 'Federal OSHA has jurisdiction for both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Nebraska',
@@ -456,7 +457,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'Neb. Rev. Stat. § 48-401 et seq.',
     notes: 'Federal OSHA has jurisdiction for both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Nevada',
@@ -473,7 +474,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'NRS § 618.005 et seq.',
     notes: 'State plan covers both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New Hampshire',
@@ -490,14 +491,15 @@ export default [
     workerCompProgramRequired: true,
     citation: 'RSA 281-A:64 et seq.',
     notes: 'Federal OSHA has jurisdiction for both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New Jersey',
     abbr: 'NJ',
     statePlanState: true,
     publicSectorOnly: true,
-    oshAuthority: 'New Jersey Department of Labor and Workforce Development - PEOSH (public sector only)',
+    oshAuthority:
+      'New Jersey Department of Labor and Workforce Development - PEOSH (public sector only)',
     oshUrl: 'https://www.nj.gov/labor/worker-protections/safetyhealth',
     fallProtectionThresholdFt: 6,
     scaffoldingRegulations: 'OSHA 29 CFR 1926 Subpart L (or state equivalent)',
@@ -507,14 +509,15 @@ export default [
     workerCompProgramRequired: true,
     citation: 'N.J.S.A. 34:6A-1 et seq.',
     notes: 'State plan covers public sector only; private employers covered by Federal OSHA.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New Mexico',
     abbr: 'NM',
     statePlanState: true,
     publicSectorOnly: false,
-    oshAuthority: 'New Mexico Environment Department - Occupational Health and Safety Bureau (OHSB)',
+    oshAuthority:
+      'New Mexico Environment Department - Occupational Health and Safety Bureau (OHSB)',
     oshUrl: 'https://www.env.nm.gov/occupational-health-safety',
     fallProtectionThresholdFt: 6,
     scaffoldingRegulations: 'OSHA 29 CFR 1926 Subpart L (or state equivalent)',
@@ -524,14 +527,15 @@ export default [
     workerCompProgramRequired: true,
     citation: 'NMSA § 50-9-1 et seq.',
     notes: 'State plan covers both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'New York',
     abbr: 'NY',
     statePlanState: true,
     publicSectorOnly: true,
-    oshAuthority: 'New York State Department of Labor - PESH (public sector only; private = Federal OSHA)',
+    oshAuthority:
+      'New York State Department of Labor - PESH (public sector only; private = Federal OSHA)',
     oshUrl: 'https://www.labor.ny.gov/workerprotection/safetyhealth/DOSH_PESH.shtm',
     fallProtectionThresholdFt: 6,
     scaffoldingRegulations: 'OSHA 29 CFR 1926 Subpart L (or state equivalent)',
@@ -541,7 +545,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'Labor Law § 27-a et seq.',
     notes: 'State plan covers public sector only; private employers covered by Federal OSHA.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'North Carolina',
@@ -558,7 +562,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'N.C. Gen. Stat. § 95-126 et seq.',
     notes: 'State plan covers both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'North Dakota',
@@ -575,7 +579,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'N.D. Cent. Code § 65-01-01 et seq.',
     notes: 'Federal OSHA has jurisdiction for both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Ohio',
@@ -592,7 +596,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'ORC § 4167.01 et seq.',
     notes: 'Federal OSHA has jurisdiction for both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Oklahoma',
@@ -609,7 +613,7 @@ export default [
     workerCompProgramRequired: true,
     citation: '85A O.S. § 1 et seq.',
     notes: 'Federal OSHA has jurisdiction for both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Oregon',
@@ -626,7 +630,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'ORS § 654.001 et seq.',
     notes: 'State plan covers both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Pennsylvania',
@@ -643,7 +647,7 @@ export default [
     workerCompProgramRequired: true,
     citation: '43 P.S. § 25-1 et seq.',
     notes: 'Federal OSHA has jurisdiction for both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Rhode Island',
@@ -660,7 +664,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'R.I. Gen. Laws § 28-20-1 et seq.',
     notes: 'Federal OSHA has jurisdiction for both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'South Carolina',
@@ -677,7 +681,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'S.C. Code Ann. § 41-15-10 et seq.',
     notes: 'State plan covers both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'South Dakota',
@@ -694,7 +698,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'SDCL § 62-1-1 et seq.',
     notes: 'Federal OSHA has jurisdiction for both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Tennessee',
@@ -711,7 +715,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'TCA § 50-3-101 et seq.',
     notes: 'State plan covers both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Texas',
@@ -728,7 +732,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'Tex. Lab. Code § 411.001 et seq.',
     notes: 'Federal OSHA has jurisdiction for both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Utah',
@@ -745,7 +749,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'Utah Code § 34A-6-101 et seq.',
     notes: 'State plan covers both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Vermont',
@@ -762,7 +766,7 @@ export default [
     workerCompProgramRequired: true,
     citation: '21 V.S.A. § 201 et seq.',
     notes: 'State plan covers both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Virginia',
@@ -779,7 +783,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'Code of Va. § 40.1-1 et seq.',
     notes: 'State plan covers both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Washington',
@@ -796,7 +800,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'RCW § 49.17.010 et seq.',
     notes: 'State plan covers both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'West Virginia',
@@ -813,7 +817,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'W. Va. Code § 23-1-1 et seq.',
     notes: 'Federal OSHA has jurisdiction for both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Wisconsin',
@@ -830,7 +834,7 @@ export default [
     workerCompProgramRequired: true,
     citation: 'Wis. Stat. § 101.01 et seq.',
     notes: 'Federal OSHA has jurisdiction for both public and private sector employers.',
-    lastVerified: '2026-01-01'
+    lastVerified: '2026-01-01',
   },
   {
     state: 'Wyoming',
@@ -847,6 +851,6 @@ export default [
     workerCompProgramRequired: true,
     citation: 'Wyo. Stat. § 27-11-101 et seq.',
     notes: 'State plan covers both public and private sector employers.',
-    lastVerified: '2026-01-01'
-  }
+    lastVerified: '2026-01-01',
+  },
 ]

@@ -46,7 +46,8 @@ const INSPIRATION_ITEMS = [
   {
     category: 'interior',
     title: 'Modern Farmhouse Kitchen',
-    description: 'Shaker cabinetry, quartz waterfall island, warm brass hardware, and wide-plank white oak floors.',
+    description:
+      'Shaker cabinetry, quartz waterfall island, warm brass hardware, and wide-plank white oak floors.',
     tags: ['Kitchen', 'Farmhouse', 'Quartz', 'White Oak'],
     href: '/services#interior-design',
     gradient: 'from-amber-50 to-stone-100',
@@ -55,7 +56,8 @@ const INSPIRATION_ITEMS = [
   {
     category: 'interior',
     title: 'Transitional Primary Suite',
-    description: 'Spa-inspired bath with freestanding soaker tub, floor-to-ceiling tile, and custom built-in closet system.',
+    description:
+      'Spa-inspired bath with freestanding soaker tub, floor-to-ceiling tile, and custom built-in closet system.',
     tags: ['Primary Suite', 'Bathroom', 'Tile', 'Custom Millwork'],
     href: '/services#interior-design',
     gradient: 'from-slate-50 to-blue-50',
@@ -64,7 +66,8 @@ const INSPIRATION_ITEMS = [
   {
     category: 'interior',
     title: 'Open-Concept Living Room',
-    description: 'Coffered ceiling, built-in bookcase flanking stone fireplace, linen sectional, and layered lighting plan.',
+    description:
+      'Coffered ceiling, built-in bookcase flanking stone fireplace, linen sectional, and layered lighting plan.',
     tags: ['Living Room', 'Fireplace', 'Built-ins', 'Lighting'],
     href: '/services#interior-design',
     gradient: 'from-warm-50 to-amber-50',
@@ -73,7 +76,8 @@ const INSPIRATION_ITEMS = [
   {
     category: 'interior',
     title: 'Executive Home Office',
-    description: 'Floor-to-ceiling walnut paneling, integrated smart lighting (Lutron), built-in shelving, and acoustic panels.',
+    description:
+      'Floor-to-ceiling walnut paneling, integrated smart lighting (Lutron), built-in shelving, and acoustic panels.',
     tags: ['Home Office', 'Walnut', 'Smart Home', 'Acoustic'],
     href: '/services#interior-design',
     gradient: 'from-stone-100 to-gray-100',
@@ -83,7 +87,8 @@ const INSPIRATION_ITEMS = [
   {
     category: 'outdoor',
     title: 'Herringbone Brick Paver Patio',
-    description: 'Classic 45° herringbone tumbled brick pattern with soldier-course border, built on an 8" engineered base.',
+    description:
+      'Classic 45° herringbone tumbled brick pattern with soldier-course border, built on an 8" engineered base.',
     tags: ['Brick Pavers', 'Herringbone', 'Patio', 'Tumbled Brick'],
     href: '/services#cobblestone-pavers',
     gradient: 'from-orange-50 to-red-50',
@@ -92,7 +97,8 @@ const INSPIRATION_ITEMS = [
   {
     category: 'outdoor',
     title: 'Reclaimed Cobblestone Courtyard',
-    description: 'Hand-laid reclaimed cobblestone plaza with radial fan focal point and integrated landscape lighting.',
+    description:
+      'Hand-laid reclaimed cobblestone plaza with radial fan focal point and integrated landscape lighting.',
     tags: ['Cobblestone', 'Courtyard', 'Reclaimed', 'Fan Pattern'],
     href: '/services#cobblestone-pavers',
     gradient: 'from-stone-100 to-amber-50',
@@ -101,7 +107,8 @@ const INSPIRATION_ITEMS = [
   {
     category: 'outdoor',
     title: 'Outdoor Kitchen & Paver Pool Deck',
-    description: 'Permeable concrete pavers around pool deck with outdoor kitchen island and covered pergola structure.',
+    description:
+      'Permeable concrete pavers around pool deck with outdoor kitchen island and covered pergola structure.',
     tags: ['Pool Deck', 'Outdoor Kitchen', 'Pergola', 'Permeable'],
     href: '/services#cobblestone-pavers',
     gradient: 'from-sky-50 to-teal-50',
@@ -110,7 +117,8 @@ const INSPIRATION_ITEMS = [
   {
     category: 'outdoor',
     title: 'Estate Entry Cobblestone Drive',
-    description: 'Grand driveway in tumbled cobblestone with contrasting soldier-course border and centered medallion.',
+    description:
+      'Grand driveway in tumbled cobblestone with contrasting soldier-course border and centered medallion.',
     tags: ['Driveway', 'Estate', 'Cobblestone', 'Medallion'],
     href: '/services#cobblestone-pavers',
     gradient: 'from-gray-50 to-stone-100',
@@ -120,7 +128,8 @@ const INSPIRATION_ITEMS = [
   {
     category: 'masonry',
     title: 'Natural Fieldstone Retaining Wall',
-    description: 'Dry-stack Virginia fieldstone retaining wall with integrated fieldstone steps and planting pockets.',
+    description:
+      'Dry-stack Virginia fieldstone retaining wall with integrated fieldstone steps and planting pockets.',
     tags: ['Retaining Wall', 'Fieldstone', 'Dry-Stack', 'Steps'],
     href: '/services#stone-masonry',
     gradient: 'from-stone-100 to-gray-100',
@@ -129,7 +138,8 @@ const INSPIRATION_ITEMS = [
   {
     category: 'masonry',
     title: 'Outdoor Stone Fireplace',
-    description: 'Mortared Pennsylvania bluestone fireplace surround with raised hearth, wood box, and built-in seating wall.',
+    description:
+      'Mortared Pennsylvania bluestone fireplace surround with raised hearth, wood box, and built-in seating wall.',
     tags: ['Fireplace', 'Bluestone', 'Mortared', 'Seating Wall'],
     href: '/services#stone-masonry',
     gradient: 'from-blue-50 to-slate-100',
@@ -138,7 +148,8 @@ const INSPIRATION_ITEMS = [
   {
     category: 'masonry',
     title: 'Flagstone Terrace & Garden Path',
-    description: 'Sand-set Pennsylvania bluestone terrace with irregular flagstone stepping-stone garden path and moss joints.',
+    description:
+      'Sand-set Pennsylvania bluestone terrace with irregular flagstone stepping-stone garden path and moss joints.',
     tags: ['Flagstone', 'Terrace', 'Garden Path', 'Bluestone'],
     href: '/services#stone-masonry',
     gradient: 'from-green-50 to-stone-50',
@@ -147,7 +158,8 @@ const INSPIRATION_ITEMS = [
   {
     category: 'masonry',
     title: 'Stone Veneer Foundation & Columns',
-    description: 'Natural ledgestone veneer on home foundation and entry porch columns, tied with limestone capstone.',
+    description:
+      'Natural ledgestone veneer on home foundation and entry porch columns, tied with limestone capstone.',
     tags: ['Stone Veneer', 'Columns', 'Ledgestone', 'Curb Appeal'],
     href: '/services#stone-masonry',
     gradient: 'from-amber-50 to-stone-100',
@@ -157,7 +169,8 @@ const INSPIRATION_ITEMS = [
   {
     category: 'construction',
     title: 'QSR / Drive-Thru New Build',
-    description: 'Ground-up QSR restaurant construction — shell, MEP rough-in, drive-thru lane, ADA paving, and site work.',
+    description:
+      'Ground-up QSR restaurant construction — shell, MEP rough-in, drive-thru lane, ADA paving, and site work.',
     tags: ['QSR', 'Ground-Up', 'Drive-Thru', 'Commercial'],
     href: '/services#general-contracting',
     gradient: 'from-brand-navy/5 to-blue-50',
@@ -166,7 +179,8 @@ const INSPIRATION_ITEMS = [
   {
     category: 'construction',
     title: 'Commercial Office Build-Out',
-    description: 'Open-plan office fit-out with glass-front conference rooms, custom millwork reception, and Lutron lighting.',
+    description:
+      'Open-plan office fit-out with glass-front conference rooms, custom millwork reception, and Lutron lighting.',
     tags: ['Office', 'Fit-Out', 'Commercial', 'Millwork'],
     href: '/services#general-contracting',
     gradient: 'from-sky-50 to-indigo-50',
@@ -175,7 +189,8 @@ const INSPIRATION_ITEMS = [
   {
     category: 'construction',
     title: 'Luxury Residential Addition',
-    description: 'Two-story rear addition with great room, primary suite, and walk-out bluestone patio — fully permitted.',
+    description:
+      'Two-story rear addition with great room, primary suite, and walk-out bluestone patio — fully permitted.',
     tags: ['Addition', 'Residential', 'Luxury', 'Two-Story'],
     href: '/services#general-contracting',
     gradient: 'from-amber-50 to-warm-50',
@@ -184,7 +199,8 @@ const INSPIRATION_ITEMS = [
   {
     category: 'construction',
     title: 'Full-Home Renovation',
-    description: 'Complete gut renovation of 1970s ranch home — new framing, MEP, insulation, finishes, and landscaping.',
+    description:
+      'Complete gut renovation of 1970s ranch home — new framing, MEP, insulation, finishes, and landscaping.',
     tags: ['Renovation', 'Full-Home', 'Residential', 'GC'],
     href: '/services#general-contracting',
     gradient: 'from-rose-50 to-orange-50',
@@ -263,7 +279,8 @@ export default function InspirationGallery({ maxItems = null }) {
                   <div
                     className="absolute inset-0 opacity-5"
                     style={{
-                      backgroundImage: 'repeating-linear-gradient(45deg, currentColor 0, currentColor 1px, transparent 0, transparent 12px)',
+                      backgroundImage:
+                        'repeating-linear-gradient(45deg, currentColor 0, currentColor 1px, transparent 0, transparent 12px)',
                       backgroundSize: '12px 12px',
                       color: item.accent,
                     }}
@@ -280,9 +297,7 @@ export default function InspirationGallery({ maxItems = null }) {
 
                 {/* Text content */}
                 <div className="bg-white p-4">
-                  <h3
-                    className="font-display font-bold text-base text-brand-navy mb-1 group-hover:text-brand-amber transition-colors leading-snug"
-                  >
+                  <h3 className="font-display font-bold text-base text-brand-navy mb-1 group-hover:text-brand-amber transition-colors leading-snug">
                     {item.title}
                   </h3>
                   <p className="text-xs text-brand-navy/60 leading-relaxed mb-3">

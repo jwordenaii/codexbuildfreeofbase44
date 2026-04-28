@@ -12,7 +12,7 @@ import { getVptPermits, getDeqPermits } from '../api/permits'
 import { api } from '../api/client'
 
 const SCORE_COLORS = {
-  HOT:  'bg-red-100 text-red-700 border-red-200',
+  HOT: 'bg-red-100 text-red-700 border-red-200',
   WARM: 'bg-yellow-100 text-yellow-700 border-yellow-200',
   COOL: 'bg-blue-100 text-blue-700 border-blue-200',
 }
@@ -21,7 +21,11 @@ const SCORE_COLORS = {
 function fmtDate(iso) {
   if (!iso) return '—'
   try {
-    return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+    return new Date(iso).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    })
   } catch {
     return iso
   }
@@ -47,7 +51,9 @@ function PermitRow({ permit, onCreateQuote }) {
         {fmtDate(permit.issued_date)}
       </td>
       <td className="py-3 px-4">
-        <span className={`inline-block text-xs font-bold px-2 py-0.5 rounded-full border ${colorClass}`}>
+        <span
+          className={`inline-block text-xs font-bold px-2 py-0.5 rounded-full border ${colorClass}`}
+        >
           {score.label || 'COOL'}
         </span>
       </td>
@@ -134,7 +140,11 @@ export default function PermitFeed({
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div className="flex items-center gap-3">
           <h3 className="font-display font-bold text-brand-navy text-lg">
-            {source === 'deq' ? 'DEQ PEEP Permits' : source === 'national' ? 'National Permit Feed' : 'VPT Permit Feed'}
+            {source === 'deq'
+              ? 'DEQ PEEP Permits'
+              : source === 'national'
+                ? 'National Permit Feed'
+                : 'VPT Permit Feed'}
           </h3>
           {loading && (
             <span className="w-4 h-4 border-2 border-brand-amber border-t-transparent rounded-full animate-spin inline-block" />

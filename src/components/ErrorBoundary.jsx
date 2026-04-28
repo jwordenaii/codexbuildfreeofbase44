@@ -27,17 +27,12 @@ export default class ErrorBoundary extends Component {
       <div className="min-h-screen bg-brand-navy flex items-center justify-center px-4">
         <div className="max-w-md w-full text-center">
           <div className="text-6xl mb-6">⚠️</div>
-          <h1 className="font-display font-black text-white text-3xl mb-3">
-            Something went wrong
-          </h1>
+          <h1 className="font-display font-black text-white text-3xl mb-3">Something went wrong</h1>
           <p className="text-white/60 mb-8">
             An unexpected error occurred. Please refresh the page or return home.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <button
-              onClick={() => window.location.reload()}
-              className="btn-primary"
-            >
+            <button onClick={() => window.location.reload()} className="btn-primary">
               Refresh Page
             </button>
             <Link to="/" className="btn-outline">

@@ -26,9 +26,9 @@ export function scoreLienLaw(lienEntry) {
   const days = lienEntry.lienFilingDeadlineDays || 0
   if (days >= 180) score += 30
   else if (days >= 120) score += 25
-  else if (days >= 90)  score += 18
-  else if (days >= 60)  score += 12
-  else                  score += 5
+  else if (days >= 90) score += 18
+  else if (days >= 60) score += 12
+  else score += 5
 
   // No preliminary notice required = simpler = better
   if (!lienEntry.preliminaryNoticeRequired) score += 25
@@ -46,8 +46,8 @@ export function scoreLienLaw(lienEntry) {
   const fDays = lienEntry.lienForeClosureDeadlineDays || 0
   if (fDays >= 365) score += 15
   else if (fDays >= 180) score += 12
-  else if (fDays >= 90)  score += 8
-  else                   score += 3
+  else if (fDays >= 90) score += 8
+  else score += 3
 
   return Math.min(score, 100)
 }
@@ -63,7 +63,7 @@ export function scorePaymentLaw(payEntry) {
 
   // Owner-to-GC payment speed (lower days = faster = better)
   const ownerDays = payEntry.ownerToGcDays || 30
-  if (ownerDays <= 7)  score += 20
+  if (ownerDays <= 7) score += 20
   else if (ownerDays <= 14) score += 15
   else if (ownerDays <= 21) score += 10
   else if (ownerDays <= 30) score += 7
@@ -71,7 +71,7 @@ export function scorePaymentLaw(payEntry) {
 
   // GC-to-Sub payment speed
   const subDays = payEntry.gcToSubDays || 14
-  if (subDays <= 7)  score += 15
+  if (subDays <= 7) score += 15
   else if (subDays <= 14) score += 10
   else score += 5
 
@@ -107,7 +107,7 @@ export function scoreContractLaw(contractEntry) {
 
   // Long statute of limitations (written contracts)
   const sol = contractEntry.statuteOfLimitationsWrittenYears || 3
-  if (sol >= 8)  score += 20
+  if (sol >= 8) score += 20
   else if (sol >= 6) score += 15
   else if (sol >= 4) score += 10
   else score += 5
@@ -116,7 +116,7 @@ export function scoreContractLaw(contractEntry) {
   const sor = contractEntry.statuteOfReposeYears || 8
   if (sor >= 15) score += 15
   else if (sor >= 10) score += 12
-  else if (sor >= 8)  score += 8
+  else if (sor >= 8) score += 8
   else score += 4
 
   return Math.min(score, 100)
@@ -134,8 +134,8 @@ export function scoreContractLaw(contractEntry) {
  * @returns {{ lien, payment, contract, composite, label, color }}
  */
 export function scoreState(abbr, lienEntry, payEntry, contractEntry) {
-  const lien     = scoreLienLaw(lienEntry)
-  const payment  = scorePaymentLaw(payEntry)
+  const lien = scoreLienLaw(lienEntry)
+  const payment = scorePaymentLaw(payEntry)
   const contract = scoreContractLaw(contractEntry)
   const composite = Math.round((lien + payment + contract) / 3)
 
@@ -160,10 +160,14 @@ export function scoreState(abbr, lienEntry, payEntry, contractEntry) {
 export function weightedScore(scores, disputeType) {
   const { lien, payment, contract } = scores
   switch (disputeType) {
-    case 'lien':            return Math.round(lien * 0.70 + payment * 0.15 + contract * 0.15)
-    case 'payment':         return Math.round(payment * 0.70 + lien * 0.15 + contract * 0.15)
-    case 'contract_breach': return Math.round(contract * 0.70 + lien * 0.15 + payment * 0.15)
-    default:                return Math.round((lien + payment + contract) / 3)
+    case 'lien':
+      return Math.round(lien * 0.7 + payment * 0.15 + contract * 0.15)
+    case 'payment':
+      return Math.round(payment * 0.7 + lien * 0.15 + contract * 0.15)
+    case 'contract_breach':
+      return Math.round(contract * 0.7 + lien * 0.15 + payment * 0.15)
+    default:
+      return Math.round((lien + payment + contract) / 3)
   }
 }
 
@@ -173,7 +177,7 @@ const STRATEGY_RULES = {
   lien: {
     title: 'Mechanics Lien Dispute',
     description:
-      'Mechanics liens cloud property title and force payment disputes to resolution before the owner can sell or refinance. A properly filed lien is one of a contractor\'s most powerful tools.',
+      "Mechanics liens cloud property title and force payment disputes to resolution before the owner can sell or refinance. A properly filed lien is one of a contractor's most powerful tools.",
     keyActions: [
       'File the lien immediately — deadlines are strict and missing them waives your rights entirely.',
       'Send preliminary notice as early as possible, even before the formal deadline.',
@@ -193,14 +197,14 @@ const STRATEGY_RULES = {
     ],
     weakPositionAdvice:
       'If the filing deadline has passed, pursue prompt-payment interest claims and bond claims on public projects as alternative remedies.',
-    citationNote: 'See your state\'s mechanics lien statute and /advisory/construction-law.',
+    citationNote: "See your state's mechanics lien statute and /advisory/construction-law.",
   },
   payment: {
     title: 'Payment / Prompt-Payment Dispute',
     description:
       'Prompt payment statutes enforce payment timelines and add mandatory interest penalties for late payment. Many states cover both public and private projects.',
     keyActions: [
-      'Send a formal written demand referencing the state\'s prompt payment statute by citation.',
+      "Send a formal written demand referencing the state's prompt payment statute by citation.",
       'Calculate statutory interest from the exact due date and include it in your demand.',
       'On public projects, pursue both the payment bond and the owner simultaneously.',
       'Demand payment via certified mail to create a verifiable paper trail.',
@@ -212,18 +216,18 @@ const STRATEGY_RULES = {
       'Suspend work after proper written notice for non-payment in most states.',
     ],
     subLeverage: [
-      'Pay-if-paid clauses are unenforceable in several states — check your state\'s rule.',
+      "Pay-if-paid clauses are unenforceable in several states — check your state's rule.",
       'Assert lien rights simultaneously with prompt payment claims for maximum pressure.',
       'Document all approved change orders and disputed invoices carefully.',
     ],
     weakPositionAdvice:
       'If your state only covers public projects, focus on bond claims and pursue breach of contract for private projects.',
-    citationNote: 'See your state\'s prompt payment statute and /advisory/construction-law.',
+    citationNote: "See your state's prompt payment statute and /advisory/construction-law.",
   },
   contract_breach: {
     title: 'Contract Breach / Dispute',
     description:
-      'Contract breach disputes depend heavily on the written contract terms, statute of limitations, anti-indemnity protections, and whether the state\'s implied warranty law applies.',
+      "Contract breach disputes depend heavily on the written contract terms, statute of limitations, anti-indemnity protections, and whether the state's implied warranty law applies.",
     keyActions: [
       'File suit well before the statute of limitations expires — written contracts typically allow 3–10 years.',
       'Review all anti-indemnity statutes — indemnification clauses that shift fault may be void.',
@@ -243,12 +247,11 @@ const STRATEGY_RULES = {
     ],
     weakPositionAdvice:
       'If the statute of limitations has run, investigate tolling grounds — fraud, discovery rule, or contractual SOL extension.',
-    citationNote: 'See your state\'s construction contract law and /advisory/contracts.',
+    citationNote: "See your state's construction contract law and /advisory/contracts.",
   },
   general: {
     title: 'General Construction Law Inquiry',
-    description:
-      'Multi-factor analysis of the state\'s overall legal environment for contractors.',
+    description: "Multi-factor analysis of the state's overall legal environment for contractors.",
     keyActions: [
       'Maintain a fully executed written contract before any work begins.',
       'Verify contractor license and bond are current in the project state.',
@@ -306,12 +309,12 @@ export function recommendStrategy(abbr, disputeType, role, stateData, allStatesS
     strengthLabel: composite >= 75 ? 'STRONG' : composite >= 55 ? 'MODERATE' : 'WEAK',
     strengthColor: composite >= 75 ? 'green' : composite >= 55 ? 'yellow' : 'red',
     strategy: {
-      title:              rules.title,
-      description:        rules.description,
-      keyActions:         rules.keyActions,
-      roleLeverage:       leverage,
+      title: rules.title,
+      description: rules.description,
+      keyActions: rules.keyActions,
+      roleLeverage: leverage,
       weakPositionAdvice: rules.weakPositionAdvice,
-      citationNote:       rules.citationNote,
+      citationNote: rules.citationNote,
     },
     topStates,
   }
@@ -329,19 +332,17 @@ export function recommendStrategy(abbr, disputeType, role, stateData, allStatesS
  * @returns {Array} sorted state objects with scores
  */
 export function rankStatesByDispute(disputeType, lienData, payData, contractData) {
-  const lienMap     = Object.fromEntries((lienData     || []).map(e => [e.abbr, e]))
-  const payMap      = Object.fromEntries((payData      || []).map(e => [e.abbr, e]))
-  const contractMap = Object.fromEntries((contractData || []).map(e => [e.abbr, e]))
+  const lienMap = Object.fromEntries((lienData || []).map((e) => [e.abbr, e]))
+  const payMap = Object.fromEntries((payData || []).map((e) => [e.abbr, e]))
+  const contractMap = Object.fromEntries((contractData || []).map((e) => [e.abbr, e]))
 
-  const abbrs = [...new Set([
-    ...Object.keys(lienMap),
-    ...Object.keys(payMap),
-    ...Object.keys(contractMap),
-  ])]
+  const abbrs = [
+    ...new Set([...Object.keys(lienMap), ...Object.keys(payMap), ...Object.keys(contractMap)]),
+  ]
 
   return abbrs
-    .map(abbr => {
-      const scores  = scoreState(abbr, lienMap[abbr], payMap[abbr], contractMap[abbr])
+    .map((abbr) => {
+      const scores = scoreState(abbr, lienMap[abbr], payMap[abbr], contractMap[abbr])
       const weighted = weightedScore(scores, disputeType)
       return { ...scores, weighted, state: lienMap[abbr]?.state || payMap[abbr]?.state || abbr }
     })
@@ -349,15 +350,15 @@ export function rankStatesByDispute(disputeType, lienData, payData, contractData
 }
 
 export const DISPUTE_TYPES = [
-  { value: 'lien',            label: 'Mechanics Lien Dispute' },
-  { value: 'payment',         label: 'Payment / Prompt-Payment' },
+  { value: 'lien', label: 'Mechanics Lien Dispute' },
+  { value: 'payment', label: 'Payment / Prompt-Payment' },
   { value: 'contract_breach', label: 'Contract Breach' },
-  { value: 'general',         label: 'General Construction Law' },
+  { value: 'general', label: 'General Construction Law' },
 ]
 
 export const ROLES = [
-  { value: 'gc',       label: 'General Contractor' },
-  { value: 'sub',      label: 'Subcontractor' },
+  { value: 'gc', label: 'General Contractor' },
+  { value: 'sub', label: 'Subcontractor' },
   { value: 'supplier', label: 'Material Supplier' },
-  { value: 'owner',    label: 'Property Owner' },
+  { value: 'owner', label: 'Property Owner' },
 ]

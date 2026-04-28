@@ -49,9 +49,11 @@ _DEFAULT_RADIUS_MILES = 20.0
 # ── Pydantic request/response models ─────────────────────────────────────────
 
 class ProjectSiteIn(BaseModel):
-    name: str = Field(..., min_length=1, max_length=200, strip_whitespace=True)
-    address: Optional[str] = Field(default=None, max_length=300, strip_whitespace=True)
-    city: Optional[str] = Field(default=None, max_length=100, strip_whitespace=True)
+    model_config = {"str_strip_whitespace": True}
+
+    name: str = Field(..., min_length=1, max_length=200)
+    address: Optional[str] = Field(default=None, max_length=300)
+    city: Optional[str] = Field(default=None, max_length=100)
     state: Optional[str] = Field(default="VA", max_length=2)
     status: str = Field(default="active", max_length=30)
     service_type: Optional[str] = Field(default=None, max_length=60)
@@ -86,7 +88,9 @@ class ProjectSiteOut(BaseModel):
 
 
 class TruckPingIn(BaseModel):
-    driver_name: Optional[str] = Field(default=None, max_length=120, strip_whitespace=True)
+    model_config = {"str_strip_whitespace": True}
+
+    driver_name: Optional[str] = Field(default=None, max_length=120)
     lat: float = Field(..., ge=-90, le=90)
     lng: float = Field(..., ge=-180, le=180)
     speed_mph: Optional[float] = Field(default=None, ge=0, le=200)

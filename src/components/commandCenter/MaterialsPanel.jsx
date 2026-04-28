@@ -6,10 +6,30 @@ import { useState, useEffect, useCallback } from 'react'
 import { api } from '../../api/client'
 
 const SIGNAL_STYLE = {
-  buy:    { bg: 'bg-green-50 border-green-200', text: 'text-green-700', badge: 'bg-green-100 text-green-800', icon: '📉' },
-  hold:   { bg: 'bg-yellow-50 border-yellow-200', text: 'text-yellow-700', badge: 'bg-yellow-100 text-yellow-800', icon: '⏸' },
-  watch:  { bg: 'bg-orange-50 border-orange-200', text: 'text-orange-700', badge: 'bg-orange-100 text-orange-800', icon: '👀' },
-  avoid:  { bg: 'bg-red-50 border-red-200', text: 'text-red-700', badge: 'bg-red-100 text-red-800', icon: '📈' },
+  buy: {
+    bg: 'bg-green-50 border-green-200',
+    text: 'text-green-700',
+    badge: 'bg-green-100 text-green-800',
+    icon: '📉',
+  },
+  hold: {
+    bg: 'bg-yellow-50 border-yellow-200',
+    text: 'text-yellow-700',
+    badge: 'bg-yellow-100 text-yellow-800',
+    icon: '⏸',
+  },
+  watch: {
+    bg: 'bg-orange-50 border-orange-200',
+    text: 'text-orange-700',
+    badge: 'bg-orange-100 text-orange-800',
+    icon: '👀',
+  },
+  avoid: {
+    bg: 'bg-red-50 border-red-200',
+    text: 'text-red-700',
+    badge: 'bg-red-100 text-red-800',
+    icon: '📈',
+  },
 }
 
 export default function MaterialsPanel() {
@@ -32,7 +52,9 @@ export default function MaterialsPanel() {
     }
   }, [])
 
-  useEffect(() => { load() }, [load])
+  useEffect(() => {
+    load()
+  }, [load])
 
   if (loading) {
     return (
@@ -47,7 +69,9 @@ export default function MaterialsPanel() {
     return (
       <div className="card p-6 bg-red-50 border-red-200 text-red-700 text-sm">
         <strong>Price data unavailable:</strong> {error}
-        <button type="button" onClick={load} className="ml-4 underline text-xs">Retry</button>
+        <button type="button" onClick={load} className="ml-4 underline text-xs">
+          Retry
+        </button>
       </div>
     )
   }
@@ -73,7 +97,8 @@ export default function MaterialsPanel() {
               Baseline: ${data?.baseline_price_per_ton ?? '—'}/ton
               {data?.multiplier != null && (
                 <span className={`ml-2 font-semibold ${style.text}`}>
-                  {data.multiplier > 1 ? '+' : ''}{((data.multiplier - 1) * 100).toFixed(1)}% vs baseline
+                  {data.multiplier > 1 ? '+' : ''}
+                  {((data.multiplier - 1) * 100).toFixed(1)}% vs baseline
                 </span>
               )}
             </div>
@@ -93,7 +118,9 @@ export default function MaterialsPanel() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
         <div className="card p-4">
           <div className="text-brand-navy/50 text-xs mb-1">Data Source</div>
-          <div className="font-semibold text-brand-navy">{data?.source || 'EIA Weekly Petroleum'}</div>
+          <div className="font-semibold text-brand-navy">
+            {data?.source || 'EIA Weekly Petroleum'}
+          </div>
         </div>
         <div className="card p-4">
           <div className="text-brand-navy/50 text-xs mb-1">Last EIA Report</div>
@@ -101,20 +128,24 @@ export default function MaterialsPanel() {
         </div>
         <div className="card p-4">
           <div className="text-brand-navy/50 text-xs mb-1">Price Category</div>
-          <div className="font-semibold text-brand-navy capitalize">{data?.price_category || '—'}</div>
+          <div className="font-semibold text-brand-navy capitalize">
+            {data?.price_category || '—'}
+          </div>
         </div>
       </div>
 
       {/* Pricing impact note */}
       <div className="card p-4 bg-blue-50 border-blue-100 text-blue-800 text-xs">
-        <strong>How this affects your bids:</strong> Asphalt price volatility directly impacts material cost.
-        When the multiplier is above 1.15×, consider adding a material escalation clause to contracts
-        longer than 30 days.
+        <strong>How this affects your bids:</strong> Asphalt price volatility directly impacts
+        material cost. When the multiplier is above 1.15×, consider adding a material escalation
+        clause to contracts longer than 30 days.
       </div>
 
       <div className="text-right text-xs text-brand-navy/30">
         {lastUpdated && `Fetched at ${lastUpdated}`}{' '}
-        <button type="button" onClick={load} className="underline hover:text-brand-navy ml-1">Refresh</button>
+        <button type="button" onClick={load} className="underline hover:text-brand-navy ml-1">
+          Refresh
+        </button>
       </div>
     </div>
   )

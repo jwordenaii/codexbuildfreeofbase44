@@ -51,14 +51,13 @@ export default function ServiceAreas() {
       {/* ── Hero ── */}
       <section className="bg-brand-navy py-20 text-white text-center">
         <div className="max-w-4xl mx-auto px-4">
-          <span className="text-brand-amber text-xs font-bold uppercase tracking-widest">Where We Work</span>
-          <h1 className="font-display font-black text-4xl md:text-6xl mt-3 mb-4">
-            Service Areas
-          </h1>
+          <span className="text-brand-amber text-xs font-bold uppercase tracking-widest">
+            Where We Work
+          </span>
+          <h1 className="font-display font-black text-4xl md:text-6xl mt-3 mb-4">Service Areas</h1>
           <p className="text-white/70 text-xl max-w-2xl mx-auto mb-8">
-            Based in Chester, VA — we serve Richmond, Hampton Roads, the
-            I-95 corridor, and beyond. Commercial and residential asphalt
-            work across Virginia and into the Southeast.
+            Based in Chester, VA — we serve Richmond, Hampton Roads, the I-95 corridor, and beyond.
+            Commercial and residential asphalt work across Virginia and into the Southeast.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
@@ -138,7 +137,9 @@ export default function ServiceAreas() {
                           </span>
                         ))}
                         {area.services.length > 3 && (
-                          <span className="text-xs text-brand-amber">+{area.services.length - 3} more</span>
+                          <span className="text-xs text-brand-amber">
+                            +{area.services.length - 3} more
+                          </span>
                         )}
                       </div>
                     </Link>
@@ -157,9 +158,9 @@ export default function ServiceAreas() {
             Don&apos;t see your city?
           </h2>
           <p className="text-brand-navy/60 mb-6">
-            We travel for the right commercial project. If you&apos;re in Virginia or a
-            neighboring state and need a professional asphalt contractor, reach out —
-            we&apos;ll let you know if we can make it work.
+            We travel for the right commercial project. If you&apos;re in Virginia or a neighboring
+            state and need a professional asphalt contractor, reach out — we&apos;ll let you know if
+            we can make it work.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link to="/contact" className="btn-primary">
@@ -179,8 +180,8 @@ export default function ServiceAreas() {
             Ready for a Free Estimate?
           </h2>
           <p className="text-brand-navy/70 mb-6">
-            Fill out the quick quote form or call us directly. We get back to every
-            request — usually within a few hours.
+            Fill out the quick quote form or call us directly. We get back to every request —
+            usually within a few hours.
           </p>
           <Link
             to="/quote"

@@ -14,9 +14,7 @@ export default function NotFound() {
           <div className="font-display font-black text-brand-amber text-[8rem] leading-none select-none">
             404
           </div>
-          <h1 className="font-display font-black text-white text-3xl mt-4 mb-3">
-            Page Not Found
-          </h1>
+          <h1 className="font-display font-black text-white text-3xl mt-4 mb-3">Page Not Found</h1>
           <p className="text-white/60 mb-10 text-lg">
             Looks like this road doesn&apos;t exist — yet. Let us pave the way back.
           </p>

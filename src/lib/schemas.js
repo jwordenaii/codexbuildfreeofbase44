@@ -11,18 +11,17 @@
 import { SAME_AS_URLS } from './social'
 import STATES, { WORDEN_ACTIVE_STATES } from './states50'
 
-export const SITE_URL =
-  import.meta.env.VITE_SITE_URL || 'https://www.jwordenasphaltpaving.com'
+export const SITE_URL = import.meta.env.VITE_SITE_URL || 'https://www.jwordenasphaltpaving.com'
 
 // National area served — all 50 states + DC via Schema.org State objects.
 // Google uses this to understand the contractor's service geography.
 // WORDEN_ACTIVE_STATES are listed first (verified completed work).
 const _activeSet = new Set(WORDEN_ACTIVE_STATES)
 const _sortedStates = [
-  ...STATES.filter(s => _activeSet.has(s.abbr)),
-  ...STATES.filter(s => !_activeSet.has(s.abbr)),
+  ...STATES.filter((s) => _activeSet.has(s.abbr)),
+  ...STATES.filter((s) => !_activeSet.has(s.abbr)),
 ]
-const NATIONAL_AREA_SERVED = _sortedStates.map(s => ({
+const NATIONAL_AREA_SERVED = _sortedStates.map((s) => ({
   '@type': 'State',
   name: s.name,
   containedInPlace: { '@type': 'Country', name: 'United States' },
