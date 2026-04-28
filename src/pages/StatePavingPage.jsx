@@ -2,6 +2,7 @@ import { Link, useParams } from 'react-router-dom'
 import SchemaMarkup, { faqSchema, serviceSchema } from '../components/SchemaMarkup'
 import { getStatePavingPageModel, STATE_PAGE_ROUTES } from '../lib/states50'
 import { getStatePageIndexingReadiness, GOOGLE_SEO_POLICY_TRACKER } from '../lib/googleSeoPolicy'
+import { COMPETITOR_CONTENT_QUALITY_GATE } from '../lib/competitorSeoStrategy'
 import NotFound from './NotFound'
 
 function statePavingSchema(model) {
@@ -140,6 +141,15 @@ export default function StatePavingPage() {
               <ul className="space-y-2 text-xs text-brand-navy/65">
                 {GOOGLE_SEO_POLICY_TRACKER.policyWatchItems.map((item) => (
                   <li key={item.area}>• {item.area}</li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="rounded-2xl border border-brand-navy/10 p-6">
+              <h3 className="font-display font-bold text-brand-navy mb-3">Competitor Logic Gate</h3>
+              <ul className="space-y-2 text-xs text-brand-navy/65">
+                {COMPETITOR_CONTENT_QUALITY_GATE.map((rule) => (
+                  <li key={rule}>• {rule}</li>
                 ))}
               </ul>
             </div>

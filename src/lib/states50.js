@@ -186,6 +186,7 @@ export function getStatePavingPageModel(slugOrAbbr) {
       'Add real service proof, photos, reviews, project examples, or market-specific details before indexing.',
       'Explain climate, drainage, traffic load, pricing, and compliance differences for the state.',
       'Include preservation-specific guidance so buyers understand when to seal, repair, overlay, recycle, or rebuild.',
+      'Convert competitor references into original buyer logic, sector pages, project proof, and CTAs instead of copying competitor wording.',
       'Keep calls to action honest about current service capacity and travel limits.',
     ],
   }

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import SchemaMarkup, { serviceSchema, faqSchema, howToSchema } from '../components/SchemaMarkup'
 import FAQAccordion from '../components/FAQAccordion'
 import InspirationGallery from '../components/InspirationGallery'
+import { COMPETITOR_CONTENT_QUALITY_GATE } from '../lib/competitorSeoStrategy'
 
 const SERVICES = [
   {
@@ -431,6 +432,35 @@ export default function Services() {
                   ))}
                 </div>
                 <p className="text-white/70 text-sm leading-relaxed">{cluster.proof}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Competitor-informed quality gate */}
+      <section className="py-20 bg-white">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10">
+            <span className="text-brand-amber text-xs font-bold uppercase tracking-widest">
+              Quality gate before we publish or expand
+            </span>
+            <h2 className="section-heading mt-2 mb-4">
+              How Competitor Research Becomes Better Worden Content
+            </h2>
+            <p className="text-brand-navy/60 max-w-2xl mx-auto">
+              We do not copy competitor pages. We convert their strongest ranking
+              patterns into original service logic, clearer buyer guidance, better
+              proof, stronger internal links, and more useful calls to action.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-4">
+            {COMPETITOR_CONTENT_QUALITY_GATE.map((rule) => (
+              <div key={rule} className="rounded-xl border border-brand-navy/10 p-5 flex gap-3">
+                <span className="w-6 h-6 rounded-full bg-brand-amber text-brand-navy font-bold text-xs flex items-center justify-center flex-shrink-0">
+                  ✓
+                </span>
+                <p className="text-sm text-brand-navy/70 leading-relaxed">{rule}</p>
               </div>
             ))}
           </div>

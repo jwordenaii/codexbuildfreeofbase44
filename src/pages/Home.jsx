@@ -7,6 +7,10 @@ import FAQAccordion from '../components/FAQAccordion'
 import SocialLinks from '../components/SocialLinks'
 import EstimateWidget from '../components/EstimateWidget'
 import InspirationGallery from '../components/InspirationGallery'
+import {
+  COMPETITOR_INSPIRED_SITE_LOGIC,
+  COMPETITOR_STRATEGY_REFERENCES,
+} from '../lib/competitorSeoStrategy'
 
 const SERVICES = [
   {
@@ -380,6 +384,45 @@ export default function Home() {
             </p>
           </div>
           <InspirationGallery maxItems={8} />
+        </div>
+      </section>
+
+      {/* ── Competitor-informed strategy logic ─────────────────────────── */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <span className="text-brand-amber text-xs font-bold uppercase tracking-widest">
+              Studied from national leaders, written as Worden-only strategy
+            </span>
+            <h2 className="section-heading mt-2 mb-4">
+              How We Use Competitor Examples the Right Way
+            </h2>
+            <p className="text-brand-navy/60 max-w-3xl mx-auto">
+              Rose Paving shows national commercial authority. Sunland shows sector-specific
+              positioning. Asphalt Paving Systems shows preservation-first technical depth.
+              We use those as strategy signals, then rewrite the logic around our own
+              service proof, Virginia roots, QSR experience, and pavement intelligence.
+            </p>
+          </div>
+          <div className="grid lg:grid-cols-[0.8fr_1.2fr] gap-8">
+            <div className="space-y-4">
+              {COMPETITOR_STRATEGY_REFERENCES.map((ref) => (
+                <div key={ref.name} className="rounded-2xl bg-brand-navy text-white p-5">
+                  <h3 className="font-display font-bold text-brand-amber">{ref.name}</h3>
+                  <p className="text-white/70 text-sm mt-1">{ref.pattern}</p>
+                  <p className="text-white/50 text-xs leading-relaxed mt-3">{ref.useFor}</p>
+                </div>
+              ))}
+            </div>
+            <div className="grid sm:grid-cols-2 gap-4">
+              {COMPETITOR_INSPIRED_SITE_LOGIC.map((item) => (
+                <div key={item.title} className="card p-5">
+                  <h3 className="font-display font-bold text-brand-navy">{item.title}</h3>
+                  <p className="text-sm text-brand-navy/60 leading-relaxed mt-3">{item.logic}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
