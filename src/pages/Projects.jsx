@@ -12,6 +12,25 @@ import { trackEvent } from '../api/client'
  */
 
 const PROJECTS = [
+  // ── Provided project photo ──────────────────────────────────────────────
+  {
+    id: 'commercial-asphalt-access-road-photo',
+    name: 'Commercial Asphalt Access Road & Gated Facility',
+    year: 2024,
+    yearDisplay: 'Featured Photo',
+    type: 'Commercial',
+    location: 'Virginia and regional commercial work',
+    headline: 'Fresh asphalt access, clean edges, and commercial-site coordination.',
+    description:
+      'A documented commercial asphalt access road and gated facility approach showing the kind of practical site work buyers want to see before requesting an estimate: clean transitions, usable access, edge detail, and work completed around active commercial operations.',
+    scope: ['Commercial access paving', 'Industrial site access', 'Edge detail', 'Traffic access coordination', 'Photo-documented work'],
+    highlight: 'Owner-provided project image added to the portfolio.',
+    emoji: '🛣',
+    imageUrl: 'https://github.com/user-attachments/assets/52e9f487-8090-43d6-a3f8-ab9d18933545',
+    imageAlt:
+      'Commercial asphalt access road beside a fenced industrial facility with fresh pavement and clean edge detail',
+  },
+
   // ── Virginia Roots ────────────────────────────────────────────────────
   {
     id: 'va-coastal-corridor',
@@ -383,6 +402,19 @@ export default function Projects() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: (i % 2) * 0.1 }}
               >
+                {project.imageUrl && (
+                  <figure className="-m-6 mb-5">
+                    <img
+                      src={project.imageUrl}
+                      alt={project.imageAlt}
+                      className="h-72 w-full rounded-t-2xl object-cover"
+                      loading={i < 2 ? 'eager' : 'lazy'}
+                    />
+                    <figcaption className="bg-brand-navy px-5 py-3 text-xs font-semibold text-brand-amber">
+                      {project.headline}
+                    </figcaption>
+                  </figure>
+                )}
                 <div className="flex items-start gap-4 mb-4">
                   <div className="text-4xl flex-shrink-0">{project.emoji}</div>
                   <div className="flex-1 min-w-0">
