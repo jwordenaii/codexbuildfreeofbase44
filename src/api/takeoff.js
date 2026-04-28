@@ -67,3 +67,19 @@ export function getAerialView(address) {
   const params = new URLSearchParams({ address })
   return request('GET', `/api/v1/takeoff/aerial?${params}`)
 }
+
+/**
+ * Analyze 811 + civil-tech utility locating data before digging.
+ * @param {object} payload
+ */
+export function analyzeGroundScan(payload) {
+  return request('POST', '/api/v1/takeoff/ground-scan', payload)
+}
+
+/**
+ * Simulate pavement age decay for roads, parking lots, and driveways.
+ * @param {object} payload
+ */
+export function simulatePavementDecay(payload) {
+  return request('POST', '/api/v1/takeoff/pavement-decay', payload)
+}

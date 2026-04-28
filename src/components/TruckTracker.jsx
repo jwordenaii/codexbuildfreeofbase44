@@ -20,7 +20,15 @@ const STATUS_STYLES = {
 
 function TruckCard({ truck }) {
   const style = STATUS_STYLES[truck.status] || STATUS_STYLES.idle
-  const tempWarning = truck.asphalt_temp_f != null && truck.asphalt_temp_f < 275
+  const targetTemp = truck.target_delivery_temp_f || 275
+  const temp = truck.asphalt_temp_f
+  const eta = truck.estimated_arrival_minutes || 0
+  const projectedDrop = eta > 0 ? Math.min(35, eta * 0.18) : 0
+  const projectedArrivalTemp = temp != null ? temp - projectedDrop : null
+  const tempCritical = projectedArrivalTemp != null && projectedArrivalTemp < 250
+  const tempWarning = projectedArrivalTemp != null && projectedArrivalTemp < targetTemp && !tempCritical
+  const tempHot = temp != null && temp > 350
+  const departedAt = truck.plant_departed_at ? new Date(truck.plant_departed_at) : null
 
   return (
     <div className="bg-white/5 border border-white/10 rounded-xl p-4 hover:border-white/20 transition-colors">
@@ -53,9 +61,37 @@ function TruckCard({ truck }) {
         {truck.asphalt_temp_f != null && (
           <div>
             <div className="text-white/30">HMA Temp</div>
-            <div className={`font-bold ${tempWarning ? 'text-red-400' : 'text-green-400'}`}>
+            <div className={`font-bold ${tempCritical ? 'text-red-400' : tempWarning || tempHot ? 'text-brand-amber' : 'text-green-400'}`}>
               {truck.asphalt_temp_f.toFixed(0)}°F
-              {tempWarning && ' ⚠️'}
+              {(tempCritical || tempWarning || tempHot) && ' ⚠️'}
+            </div>
+          </div>
+        )}
+        {projectedArrivalTemp != null && (
+          <div>
+            <div className="text-white/30">Projected @ Site</div>
+            <div className={`${tempCritical ? 'text-red-400' : tempWarning ? 'text-brand-amber' : 'text-white/70'} font-semibold`}>
+              {projectedArrivalTemp.toFixed(0)}°F
+            </div>
+          </div>
+        )}
+        {truck.mix_type && (
+          <div>
+            <div className="text-white/30">Mix</div>
+            <div className="text-white/70">{truck.mix_type}</div>
+          </div>
+        )}
+        {truck.estimated_arrival_minutes != null && (
+          <div>
+            <div className="text-white/30">ETA</div>
+            <div className="text-white/70">{truck.estimated_arrival_minutes.toFixed(0)} min</div>
+          </div>
+        )}
+        {departedAt && (
+          <div>
+            <div className="text-white/30">Plant departed</div>
+            <div className="text-white/50">
+              {departedAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
             </div>
           </div>
         )}
@@ -198,11 +234,11 @@ export default function TruckTracker() {
       </div>
 
       {/* Temperature alert */}
-      {trucks.some((t) => t.asphalt_temp_f != null && t.asphalt_temp_f < 275) && (
+      {trucks.some((t) => t.asphalt_temp_f != null && t.asphalt_temp_f < (t.target_delivery_temp_f || 275)) && (
         <div className="bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-3 flex items-center gap-2">
           <span>⚠️</span>
           <p className="text-red-400 text-sm">
-            HMA temperature below 275°F on one or more trucks — risk of premature cooling.
+            HMA thermal risk detected — one or more loads are below target delivery temperature.
           </p>
         </div>
       )}

@@ -18,7 +18,13 @@ import {
   AdvancedMarker,
   useMapsLibrary,
 } from '@vis.gl/react-google-maps'
-import { getSolarData, getAerialView, measureImage } from '../api/takeoff'
+import {
+  analyzeGroundScan,
+  getSolarData,
+  getAerialView,
+  measureImage,
+  simulatePavementDecay,
+} from '../api/takeoff'
 
 const MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || ''
 
@@ -118,6 +124,65 @@ function MeasurePanel({ data }) {
   )
 }
 
+function GroundScanPanel({ data }) {
+  if (!data) return null
+  const riskClass = data.risk_level === 'HIGH'
+    ? 'text-red-600 bg-red-50 border-red-200'
+    : data.risk_level === 'MEDIUM'
+      ? 'text-yellow-700 bg-yellow-50 border-yellow-200'
+      : 'text-green-700 bg-green-50 border-green-200'
+  return (
+    <div className={`rounded-xl border p-4 space-y-3 text-sm ${riskClass}`}>
+      <div className="flex items-center justify-between">
+        <h4 className="font-display font-bold">🛰️ Utility Locate Risk: {data.risk_level}</h4>
+        <span className="text-xs">Confidence {(data.confidence * 100).toFixed(0)}%</span>
+      </div>
+      <p>{data.recommendation}</p>
+      {data.findings?.length > 0 && (
+        <ul className="list-disc pl-5 space-y-1">
+          {data.findings.map((f) => <li key={f}>{f}</li>)}
+        </ul>
+      )}
+      {data.recommended_steps?.length > 0 && (
+        <details>
+          <summary className="cursor-pointer font-semibold">Required next steps</summary>
+          <ul className="list-disc pl-5 mt-1 space-y-1">
+            {data.recommended_steps.map((s) => <li key={s}>{s}</li>)}
+          </ul>
+        </details>
+      )}
+    </div>
+  )
+}
+
+function DecayPanel({ data }) {
+  if (!data) return null
+  return (
+    <div className="rounded-xl bg-brand-navy/5 border border-brand-navy/10 p-4 space-y-3 text-sm">
+      <div className="flex items-center justify-between">
+        <h4 className="font-display font-bold text-brand-navy">🛣️ Pavement Age-Decay Simulation</h4>
+        <span className={`text-xs font-bold ${data.risk_level === 'HIGH' ? 'text-red-600' : data.risk_level === 'MEDIUM' ? 'text-yellow-700' : 'text-green-700'}`}>
+          {data.risk_level}
+        </span>
+      </div>
+      <p><span className="text-brand-navy/60">Current score:</span>{' '}
+        <strong>{data.current_condition_score}/100</strong>
+        <span className="text-brand-navy/40 ml-1">({data.annual_decay_points} pts/year decay)</span>
+      </p>
+      <div className="grid grid-cols-5 gap-2">
+        {data.projection?.map((p) => (
+          <div key={p.year} className="rounded-lg bg-white border border-brand-navy/10 p-2 text-center">
+            <div className="text-xs text-brand-navy/40">Year {p.year}</div>
+            <div className="font-bold text-brand-navy">{p.condition_score}</div>
+            <div className="text-[10px] uppercase text-brand-navy/40">{p.condition_band}</div>
+          </div>
+        ))}
+      </div>
+      <p className="text-brand-navy/70">{data.recommended_action}</p>
+    </div>
+  )
+}
+
 // ── Main component ────────────────────────────────────────────────────────────
 
 export default function TakeoffMap() {
@@ -127,8 +192,27 @@ export default function TakeoffMap() {
   const [solarData, setSolarData] = useState(null)
   const [aerialUrl, setAerialUrl] = useState(null)
   const [measureData, setMeasureData] = useState(null)
+  const [groundScanData, setGroundScanData] = useState(null)
+  const [decayData, setDecayData] = useState(null)
   const [pixelsPerFoot, setPixelsPerFoot] = useState(10)
-  const [loading, setLoading] = useState({ geocode: false, solar: false, aerial: false, measure: false })
+  const [scanForm, setScanForm] = useState({
+    ticket_status: 'requested',
+    technologies: ['811 ticket', 'EM locator', 'GPR', 'GIS overlay', 'vacuum potholing'],
+    scan_area_sqft: '',
+    anomalies_detected: false,
+    soil_moisture: 'normal',
+  })
+  const [decayForm, setDecayForm] = useState({
+    pavement_type: 'commercial_parking_lot',
+    age_years: 8,
+    traffic_level: 'high',
+    drainage_quality: 'fair',
+    crack_severity: 'medium',
+    potholes: 2,
+    rutting_inches: 0.25,
+    last_sealcoat_years: 4,
+  })
+  const [loading, setLoading] = useState({ geocode: false, solar: false, aerial: false, measure: false, scan: false, decay: false })
   const [errors, setErrors] = useState({})
   const geocodeRef = useRef(null)
 
@@ -210,6 +294,50 @@ export default function TakeoffMap() {
     } finally {
       setLoad('measure', false)
       e.target.value = ''
+    }
+  }
+
+  const handleGroundScan = async () => {
+    clearError('scan')
+    setLoad('scan', true)
+    setGroundScanData(null)
+    try {
+      const payload = {
+        address,
+        scan_area_sqft: scanForm.scan_area_sqft ? Number(scanForm.scan_area_sqft) : undefined,
+        ticket_status: scanForm.ticket_status,
+        technologies: scanForm.technologies,
+        soil_moisture: scanForm.soil_moisture,
+        anomalies_detected: scanForm.anomalies_detected,
+        utilities: [
+          { utility_type: 'gas', marked: scanForm.ticket_status === 'clear', confidence: 0.82 },
+          { utility_type: 'electric', marked: scanForm.ticket_status === 'clear', confidence: 0.78 },
+        ],
+      }
+      setGroundScanData(await analyzeGroundScan(payload))
+    } catch (err) {
+      setError('scan', err.message)
+    } finally {
+      setLoad('scan', false)
+    }
+  }
+
+  const handleDecaySim = async () => {
+    clearError('decay')
+    setLoad('decay', true)
+    setDecayData(null)
+    try {
+      setDecayData(await simulatePavementDecay({
+        ...decayForm,
+        age_years: Number(decayForm.age_years),
+        potholes: Number(decayForm.potholes),
+        rutting_inches: Number(decayForm.rutting_inches),
+        last_sealcoat_years: Number(decayForm.last_sealcoat_years),
+      }))
+    } catch (err) {
+      setError('decay', err.message)
+    } finally {
+      setLoad('decay', false)
     }
   }
 
@@ -339,6 +467,126 @@ export default function TakeoffMap() {
           </div>
           {errors.measure && <p className="text-sm text-red-600">{errors.measure}</p>}
           <MeasurePanel data={measureData} />
+        </div>
+
+        {/* Civil-tech utility locating / ground scanning */}
+        <div className="rounded-xl border border-gray-200 p-4 space-y-3">
+          <h4 className="font-display font-bold text-brand-navy text-sm">
+            🛰️ Highest-Level Utility Locating Before Digging
+          </h4>
+          <p className="text-xs text-brand-navy/50">
+            Combines 811 ticket status, EM locating, GPR, GIS/as-built overlay, LiDAR/drone capture,
+            thermal/moisture checks, and vacuum potholing confirmation.
+          </p>
+          <div className="grid sm:grid-cols-4 gap-3">
+            <div>
+              <label className="text-xs font-semibold text-brand-navy/60 block">811 status</label>
+              <select
+                value={scanForm.ticket_status}
+                onChange={(e) => setScanForm((f) => ({ ...f, ticket_status: e.target.value }))}
+                className="input text-sm"
+              >
+                <option value="not_started">Not started</option>
+                <option value="requested">Requested</option>
+                <option value="clear">Clear / positive response</option>
+                <option value="conflict">Conflict</option>
+                <option value="expired">Expired</option>
+              </select>
+            </div>
+            <div>
+              <label className="text-xs font-semibold text-brand-navy/60 block">Area sq ft</label>
+              <input
+                type="number"
+                value={scanForm.scan_area_sqft}
+                onChange={(e) => setScanForm((f) => ({ ...f, scan_area_sqft: e.target.value }))}
+                className="input text-sm"
+                placeholder="25000"
+              />
+            </div>
+            <div>
+              <label className="text-xs font-semibold text-brand-navy/60 block">Soil moisture</label>
+              <select
+                value={scanForm.soil_moisture}
+                onChange={(e) => setScanForm((f) => ({ ...f, soil_moisture: e.target.value }))}
+                className="input text-sm"
+              >
+                <option value="dry">Dry</option>
+                <option value="normal">Normal</option>
+                <option value="saturated">Saturated</option>
+              </select>
+            </div>
+            <label className="flex items-end gap-2 text-sm text-brand-navy/70">
+              <input
+                type="checkbox"
+                checked={scanForm.anomalies_detected}
+                onChange={(e) => setScanForm((f) => ({ ...f, anomalies_detected: e.target.checked }))}
+              />
+              Anomalies found
+            </label>
+          </div>
+          <button
+            type="button"
+            onClick={handleGroundScan}
+            disabled={loading.scan}
+            className="btn-outline disabled:opacity-50"
+          >
+            {loading.scan ? 'Analyzing…' : 'Analyze Utility Locate Package'}
+          </button>
+          {errors.scan && <p className="text-sm text-red-600">{errors.scan}</p>}
+          <GroundScanPanel data={groundScanData} />
+        </div>
+
+        {/* Road / parking lot / driveway scanning + age-decay */}
+        <div className="rounded-xl border border-gray-200 p-4 space-y-3">
+          <h4 className="font-display font-bold text-brand-navy text-sm">
+            🛣️ Road / Parking Lot / Driveway Scan + Age Decay
+          </h4>
+          <div className="grid sm:grid-cols-4 gap-3">
+            {[
+              ['pavement_type', 'Type', [['residential_driveway', 'Residential'], ['commercial_parking_lot', 'Commercial Lot'], ['road', 'Road']]],
+              ['traffic_level', 'Traffic', [['low', 'Low'], ['medium', 'Medium'], ['high', 'High'], ['heavy_truck', 'Heavy Truck']]],
+              ['drainage_quality', 'Drainage', [['good', 'Good'], ['fair', 'Fair'], ['poor', 'Poor']]],
+              ['crack_severity', 'Cracks', [['none', 'None'], ['low', 'Low'], ['medium', 'Medium'], ['high', 'High']]],
+            ].map(([name, label, options]) => (
+              <div key={name}>
+                <label className="text-xs font-semibold text-brand-navy/60 block">{label}</label>
+                <select
+                  value={decayForm[name]}
+                  onChange={(e) => setDecayForm((f) => ({ ...f, [name]: e.target.value }))}
+                  className="input text-sm"
+                >
+                  {options.map(([value, text]) => <option key={value} value={value}>{text}</option>)}
+                </select>
+              </div>
+            ))}
+            {[
+              ['age_years', 'Age years'],
+              ['potholes', 'Potholes'],
+              ['rutting_inches', 'Rutting in.'],
+              ['last_sealcoat_years', 'Sealcoat age'],
+            ].map(([name, label]) => (
+              <div key={name}>
+                <label className="text-xs font-semibold text-brand-navy/60 block">{label}</label>
+                <input
+                  type="number"
+                  step="0.1"
+                  value={decayForm[name]}
+                  onChange={(e) => setDecayForm((f) => ({ ...f, [name]: e.target.value }))}
+                  className="input text-sm"
+                />
+              </div>
+            ))}
+          </div>
+          <button
+            type="button"
+            onClick={handleDecaySim}
+            disabled={loading.decay}
+            className="btn-outline disabled:opacity-50"
+          >
+            {loading.decay ? 'Simulating…' : 'Run Age-Decay Simulation'}
+          </button>
+          {errors.decay && <p className="text-sm text-red-600">{errors.decay}</p>}
+          <DecayPanel data={decayData} />
         </div>
       </div>
     </APIProvider>

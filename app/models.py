@@ -241,12 +241,43 @@ class TruckPosition(Base):
     speed_mph       = Column(Float, nullable=True)
     heading_deg     = Column(Float, nullable=True)
     asphalt_temp_f  = Column(Float, nullable=True)
+    mix_type        = Column(String(60), nullable=True)
+    plant_departed_at = Column(DateTime(timezone=True), nullable=True)
+    target_delivery_temp_f = Column(Float, nullable=True)
+    estimated_arrival_minutes = Column(Float, nullable=True)
     status          = Column(String(30), nullable=True, default="en_route")  # en_route | on_site | idle
     site_id         = Column(Integer, nullable=True)   # FK to project_sites (soft ref)
     updated_at      = Column(DateTime(timezone=True), default=_utcnow, onupdate=_utcnow, nullable=False)
 
     def __repr__(self) -> str:
         return f"<TruckPosition truck={self.truck_id!r} status={self.status!r}>"
+
+
+class GroundScanReport(Base):
+    """
+    Civil-tech utility locating and subsurface scan record before digging.
+
+    Supports modern locate workflows: 811 ticket tracking, electromagnetic
+    locating, GPR, potholing/vacuum excavation, LiDAR/as-built overlays,
+    thermal/moisture flags, soil/base concerns, and AI risk summarisation.
+    """
+
+    __tablename__ = "ground_scan_reports"
+
+    id                 = Column(Integer, primary_key=True, index=True)
+    project_site_id    = Column(Integer, nullable=True, index=True)
+    address            = Column(String(300), nullable=True)
+    scan_area_sqft     = Column(Float, nullable=True)
+    ticket_811         = Column(String(100), nullable=True)
+    ticket_status      = Column(String(40), nullable=True)
+    technologies_json  = Column(Text, nullable=True)
+    utilities_json     = Column(Text, nullable=True)
+    risk_level         = Column(String(20), nullable=False, default="UNKNOWN")
+    confidence         = Column(Float, nullable=True)
+    recommendation     = Column(Text, nullable=True)
+    notes              = Column(Text, nullable=True)
+    tenant_id          = Column(String(60), nullable=True, index=True, default="default")
+    created_at         = Column(DateTime(timezone=True), default=_utcnow, nullable=False)
 
 
 # ── Multi-turn chat session ───────────────────────────────────────────────────
