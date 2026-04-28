@@ -10,6 +10,41 @@ Production web + FastAPI backend for lead intake, CRM operations, proposals, and
 - Backend API tests: `pytest -q`
 - E2E smoke tests: `npm run test:e2e`
 
+## Frontend Deploy Checklist
+
+Keep the Netlify/public-site deploy separate from backend infrastructure changes unless the release explicitly includes both.
+
+Before merging a frontend deploy PR:
+
+- Confirm Netlify installs dependencies and runs `npm run build`.
+- Set required Netlify environment variables:
+  - `VITE_API_BASE_URL`
+  - `VITE_SITE_URL`
+  - `VITE_GA4_ID`
+  - `VITE_GOOGLE_MAPS_API_KEY`
+  - `VITE_STRIPE_PUBLISHABLE_KEY` if payments are live
+- Do not add backend/admin secrets with a `VITE_` prefix. Vite exposes those values in browser JavaScript.
+- Confirm the sitemap and canonical URLs use the production domain.
+
+After deploy:
+
+- Submit a quote and contact form.
+- Confirm the frontend calls the intended backend API URL.
+- Confirm Google Maps loads anywhere it is used.
+- Confirm Stripe checkout uses the intended live or test publishable key.
+- Confirm the backend health endpoint returns OK: `GET /health`.
+
+## Backend Deploy Notes
+
+Postgres and Redis are backend infrastructure and can be handled in a separate deployment PR. For a beginner-friendly production path, use managed Postgres and Redis from the same backend host when possible, such as Render or Railway.
+
+Before moving production traffic to Postgres:
+
+- Apply Alembic migrations.
+- Set `AUTO_CREATE_TABLES=false`.
+- Enable database backups.
+- Keep Redis configured for Celery, caching, and background jobs.
+
 ## Database Migrations (Alembic)
 
 Alembic is now the schema evolution path.
