@@ -200,6 +200,28 @@ class PermitLead(Base):
         return f"<PermitLead id={self.id} address={self.property_address!r} label={self.priority_label!r}>"
 
 
+class FollowUpTask(Base):
+    """
+    Tracks automated follow-up notifications sent (or scheduled) for a lead.
+
+    task_type values: hot_1h | warm_3d | cool_7d
+    status values:    pending | sent | cancelled
+    """
+
+    __tablename__ = "follow_up_tasks"
+
+    id           = Column(Integer, primary_key=True, index=True)
+    lead_id      = Column(Integer, nullable=False, index=True)
+    task_type    = Column(String(30), nullable=False)
+    scheduled_at = Column(DateTime(timezone=True), nullable=False)
+    sent_at      = Column(DateTime(timezone=True), nullable=True)
+    status       = Column(String(20), nullable=False, default="pending")
+    created_at   = Column(DateTime(timezone=True), default=_utcnow, nullable=False)
+
+    def __repr__(self) -> str:
+        return f"<FollowUpTask id={self.id} lead_id={self.lead_id} type={self.task_type!r} status={self.status!r}>"
+
+
 class TruckPosition(Base):
     """
     Real-time truck telemetry ping stored for zero-delay routing dashboard.
