@@ -229,11 +229,14 @@ def run_chat(
     use_fast_model: bool = False,
     history: Optional[list] = None,
     db=None,
+    page_context: Optional[str] = None,
 ) -> AIDecision:
     """
     Natural language Q&A.  Returns an AIDecision with confidence score.
     Upgrades to GPT-4o for complex / legal questions automatically.
     Supports multi-turn history (Feature 1) and corrections injection (Feature 2).
+    page_context is a human-readable label of the site page the visitor is on
+    (e.g. "quote / booking page") used to steer the AI response.
     """
     openai_key = os.getenv("OPENAI_API_KEY", "")
 
@@ -247,9 +250,16 @@ def run_chat(
         except Exception:  # pragma: no cover
             pass
 
-    user_msg = question
+    # Build user message with optional context injections
+    context_parts = []
     if state_fragment:
-        user_msg = f"{state_fragment}\n\n{question}"
+        context_parts.append(state_fragment)
+    if page_context:
+        context_parts.append(f"(User is currently on the {page_context})")
+
+    user_msg = question
+    if context_parts:
+        user_msg = "\n".join(context_parts) + "\n\n" + question
 
     # Inject RAG knowledge base context into system prompt
     try:

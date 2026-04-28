@@ -54,6 +54,8 @@ export const api = {
   getReviews:     ()     => request('GET',  '/api/v1/reviews'),
   getSchema:      ()     => request('GET',  '/api/v1/schema/local-business'),
   askAI:          (data) => request('POST', '/api/v1/ai/chat',       data),
+  // AI-assisted contact form field suggestions (page_context + message → service_type + hint)
+  contactSuggest: (data) => request('POST', '/api/v1/ai/contact-suggest', data),
   // Content blocks managed via the admin Webpage Maker.
   // The frontend uses these as optional overrides — hardcoded defaults remain
   // in place if a block is missing (graceful degradation).

@@ -207,6 +207,11 @@ class ChatRequest(BaseModel):
     question: str = Field(..., min_length=1, max_length=1000, strip_whitespace=True)
     state_code: Optional[str] = Field(default=None, max_length=2)
     session_id: Optional[str] = Field(default=None, max_length=100)
+    # Page context: human-readable label of the page the user is on
+    # (e.g. "quote / booking page", "services page"). Used to steer the AI
+    # toward the most helpful response for the current page without exposing
+    # internal route details to the model.
+    page_context: Optional[str] = Field(default=None, max_length=100, strip_whitespace=True)
 
 
 class ChatResponse(BaseModel):
@@ -266,15 +271,25 @@ def _stub_chat(question: str) -> str:
     )
 
 
-def _openai_chat(question: str, state_code: Optional[str]) -> str:
+def _openai_chat(
+    question: str,
+    state_code: Optional[str],
+    page_context: Optional[str] = None,
+) -> str:
     try:
         client = _get_openai_client()
         if client is None:
             return _stub_chat(question)
 
-        user_msg = question
+        context_parts = []
         if state_code:
-            user_msg = f"[State context: {state_code.upper()}] {question}"
+            context_parts.append(f"State context: {state_code.upper()}")
+        if page_context:
+            context_parts.append(f"User is currently on the {page_context}")
+
+        user_msg = question
+        if context_parts:
+            user_msg = f"[{'; '.join(context_parts)}] {question}"
 
         response = client.chat.completions.create(
             model="gpt-4o-mini",
@@ -313,7 +328,7 @@ async def chat(req: ChatRequest, db: Session = Depends(get_db)):
     # Load conversation history
     history = get_session(session_id, db=db)
 
-    decision = run_chat(req.question, state_code=req.state_code, history=history)
+    decision = run_chat(req.question, state_code=req.state_code, history=history, page_context=req.page_context)
 
     # Save user message + AI response to session
     try:
@@ -338,3 +353,96 @@ async def chat(req: ChatRequest, db: Session = Depends(get_db)):
             logger.warning("Could not save review queue item: %s", exc)
 
     return ChatResponse(answer=decision.answer, engine=decision.engine, session_id=session_id)
+
+
+# ── AI-Assisted Contact Suggestion ───────────────────────────────────────────
+
+class ContactSuggestRequest(BaseModel):
+    message: str = Field(..., min_length=5, max_length=1000, strip_whitespace=True)
+
+
+class ContactSuggestResponse(BaseModel):
+    service_type: Optional[str] = None   # e.g. "sealcoating", "driveway", "parking_lot"
+    hint: Optional[str] = None           # short tip to show in the UI
+    engine: str = "stub"
+
+
+_SERVICE_KEYWORDS: dict[str, list[str]] = {
+    "driveway":    ["driveway", "drive way", "residential", "home", "house"],
+    "parking_lot": ["parking", "lot", "commercial", "business", "strip mall", "office", "warehouse"],
+    "sealcoating": ["sealcoat", "seal coat", "sealing", "seal"],
+    "crack_filling": ["crack", "cracking", "pothole"],
+    "paving":      ["pave", "paving", "asphalt", "blacktop"],
+}
+
+
+def _stub_suggest(message: str) -> ContactSuggestResponse:
+    """Rule-based service type suggestion — used when OpenAI is unavailable."""
+    m = message.lower()
+    for service, keywords in _SERVICE_KEYWORDS.items():
+        if any(kw in m for kw in keywords):
+            hints = {
+                "driveway":    "Tip: including your driveway dimensions helps us give a faster quote.",
+                "parking_lot": "Tip: mentioning your lot square footage or number of stalls helps us estimate quickly.",
+                "sealcoating": "Tip: if you know your last sealcoat date, include it — that helps us plan.",
+                "crack_filling": "Tip: note how many linear feet of cracks if you can — we can ballpark from that.",
+                "paving":      "Tip: a rough square footage estimate helps us prepare a faster quote for you.",
+            }
+            return ContactSuggestResponse(
+                service_type=service,
+                hint=hints.get(service),
+                engine="rule_engine",
+            )
+    return ContactSuggestResponse(engine="rule_engine")
+
+
+@router.post(
+    "/contact-suggest",
+    summary="AI-assisted contact form field suggestions",
+    response_model=ContactSuggestResponse,
+)
+async def contact_suggest(req: ContactSuggestRequest):
+    """
+    Public endpoint — no auth required.
+
+    Given a partial message from the contact form, returns:
+      • service_type  — best-guess service category (rule-based or GPT)
+      • hint          — a short UI tip to help the user complete their message
+
+    No PII is retained from this endpoint. The response is purely advisory;
+    the user can override any pre-filled field.
+    """
+    client = _get_openai_client()
+    if client is None:
+        return _stub_suggest(req.message)
+
+    try:
+        import json as _json
+        prompt = (
+            "You are a paving company intake assistant. Given the customer's message, "
+            "return JSON with two fields:\n"
+            '  "service_type": one of ["driveway", "parking_lot", "sealcoating", "crack_filling", "paving", "other", null]\n'
+            '  "hint": a one-sentence tip to help the customer add useful detail (max 100 chars), or null\n'
+            "Return only valid JSON, no markdown fences."
+        )
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": prompt},
+                {"role": "user", "content": req.message[:500]},
+            ],
+            max_tokens=80,
+            temperature=0.3,
+        )
+        raw = response.choices[0].message.content or ""
+        if "```" in raw:
+            raw = raw.split("```")[1].lstrip("json").strip()
+        data = _json.loads(raw)
+        return ContactSuggestResponse(
+            service_type=data.get("service_type") or None,
+            hint=data.get("hint") or None,
+            engine="gpt-4o-mini",
+        )
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("contact_suggest OpenAI call failed: %s", exc)
+        return _stub_suggest(req.message)
