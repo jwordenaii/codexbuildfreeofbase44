@@ -24,6 +24,7 @@ Before merging a frontend deploy PR:
   - `VITE_GOOGLE_MAPS_API_KEY`
   - `VITE_STRIPE_PUBLISHABLE_KEY` if payments are live
 - Do not add backend/admin secrets with a `VITE_` prefix. Vite exposes those values in browser JavaScript.
+- Do not set or rely on `VITE_MASTER_API_KEY`; keep master/admin API keys server-side only.
 - Confirm the sitemap and canonical URLs use the production domain.
 
 After deploy:

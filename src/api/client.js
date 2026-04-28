@@ -9,14 +9,12 @@
 
 const BASE = import.meta.env.VITE_API_BASE_URL || ''
 const DEFAULT_TIMEOUT_MS = 10_000
-const MASTER_KEY = import.meta.env.VITE_MASTER_API_KEY || ''
 
 async function request(method, path, body) {
   const controller = new AbortController()
   const timeoutId = setTimeout(() => controller.abort(), DEFAULT_TIMEOUT_MS)
 
   const headers = { 'Content-Type': 'application/json' }
-  if (MASTER_KEY) headers.Authorization = `Bearer ${MASTER_KEY}`
 
   const opts = {
     method,
