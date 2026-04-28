@@ -17,11 +17,13 @@ const RichmondGrid   = lazy(() => import('../components/RichmondGrid'))
 const VirtualForeman = lazy(() => import('../components/VirtualForeman'))
 const LiveFieldFeed  = lazy(() => import('../components/LiveFieldFeed'))
 const TruckTracker   = lazy(() => import('../components/TruckTracker'))
+const TakeoffMap     = lazy(() => import('../components/TakeoffMap'))
 
 const TABS = [
   { id: 'grid',    label: 'Richmond Grid',   icon: '🗺️',  desc: 'Site mapping + auto-takeoff' },
   { id: 'foreman', label: 'Virtual Foreman', icon: '🏗️',  desc: 'AI Q&A — sites, leads, logistics' },
   { id: 'field',   label: 'Field Feed',      icon: '📷',  desc: 'Live lot measurement (TF.js)' },
+  { id: 'scan',    label: 'Scanning',        icon: '🛰️',  desc: 'Utilities, GPR, thermal + decay' },
   { id: 'dash',    label: 'Dashboard',       icon: '📊',  desc: 'Fleet + lead pipeline KPIs' },
 ]
 
@@ -312,6 +314,20 @@ export default function CommandCenter() {
             </div>
             <Suspense fallback={<TabLoader />}>
               <LiveFieldFeed />
+            </Suspense>
+          </div>
+        )}
+
+        {activeTab === 'scan' && (
+          <div className="max-w-5xl mx-auto bg-white rounded-2xl p-5 shadow-xl">
+            <div className="mb-4">
+              <h2 className="text-brand-navy font-bold">Civil-Tech Scanning Stack</h2>
+              <p className="text-brand-navy/50 text-sm">
+                Utility locating, GPR/subsurface risk, photo measurement, 3-D site context, and pavement age-decay simulation.
+              </p>
+            </div>
+            <Suspense fallback={<TabLoader />}>
+              <TakeoffMap />
             </Suspense>
           </div>
         )}
