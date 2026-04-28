@@ -1,6 +1,7 @@
 import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
 import sitemap from 'vite-plugin-sitemap'
+import { STATE_PAGE_ROUTES, WORDEN_ACTIVE_STATES } from './src/lib/states50.js'
 
 const DEFAULT_SITE_URL = 'https://jworden.netlify.app'
 
@@ -26,6 +27,9 @@ const BLOG_SLUGS = [
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   const siteUrl = env.VITE_SITE_URL || process.env.URL || DEFAULT_SITE_URL
+  const includeAllStatePages = env.VITE_INCLUDE_ALL_STATE_PAGES === 'true'
+  const activeStateRoutes = STATE_PAGE_ROUTES.filter((state) => WORDEN_ACTIVE_STATES.includes(state.abbr))
+  const stateRoutes = includeAllStatePages ? STATE_PAGE_ROUTES : activeStateRoutes
 
   return {
   plugins: [
@@ -43,8 +47,9 @@ export default defineConfig(({ mode }) => {
         '/reviews',
         '/projects',
         // Service areas
-        '/service-areas',
-        ...CITY_SLUGS.map((s) => `/service-areas/${s}`),
+         '/service-areas',
+         ...CITY_SLUGS.map((s) => `/service-areas/${s}`),
+         ...stateRoutes.map((state) => state.path),
         // Blog
         '/blog',
         ...BLOG_SLUGS.map((s) => `/blog/${s}`),

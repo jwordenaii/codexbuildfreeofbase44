@@ -22,6 +22,7 @@ const Visualizer    = lazy(() => import('./pages/Visualizer'))
 // Service area pages
 const ServiceAreas  = lazy(() => import('./pages/ServiceAreas'))
 const CityPage      = lazy(() => import('./pages/CityPage'))
+const StatePavingPage = lazy(() => import('./pages/StatePavingPage'))
 
 // Blog / knowledge center
 const Blog          = lazy(() => import('./pages/Blog'))
@@ -63,6 +64,7 @@ export default function App() {
                 {/* Service areas */}
                 <Route path="/service-areas"             element={<ServiceAreas />} />
                 <Route path="/service-areas/:citySlug"   element={<CityPage />} />
+                <Route path="/states/:stateSlug"         element={<StatePavingPage />} />
                 {/* Blog / Knowledge Center */}
                 <Route path="/blog"          element={<Blog />} />
                 <Route path="/blog/:slug"    element={<BlogPost />} />

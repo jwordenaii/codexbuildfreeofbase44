@@ -84,6 +84,19 @@ export const STATE_MAP = Object.fromEntries(STATES.map(s => [s.abbr, s]))
 /** Sorted option list for <select> elements */
 export const STATE_OPTIONS = STATES.map(s => ({ value: s.abbr, label: `${s.name} (${s.abbr})` }))
 
+export function stateSlug(state) {
+  return state.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+}
+
+export const STATE_PAGE_ROUTES = STATES.map(s => ({
+  abbr: s.abbr,
+  name: s.name,
+  slug: stateSlug(s),
+  path: `/states/${stateSlug(s)}`,
+}))
+
+export const STATE_SLUG_MAP = Object.fromEntries(STATES.map(s => [stateSlug(s), s]))
+
 /** States where J. Worden & Sons has verified completed work */
 export const WORDEN_ACTIVE_STATES = [
   'VA','NC','GA','FL','MI','TX','KS','MO','IA','MN','NY','NJ',
@@ -126,6 +139,52 @@ export function getStateSummary(abbr) {
       : s.asphaltMonths <= 5
       ? `Limited paving season (~${s.asphaltMonths} months). Schedule early.`
       : `Paving season approx. ${s.asphaltMonths} months.`,
+  }
+}
+
+export function getStateBySlug(slug) {
+  return STATE_SLUG_MAP[slug] || null
+}
+
+export function getStatePavingPageModel(slugOrAbbr) {
+  const state = STATE_MAP[String(slugOrAbbr).toUpperCase()] || getStateBySlug(String(slugOrAbbr).toLowerCase())
+  if (!state) return null
+  const multiplier = getPriceMultiplier(state.abbr)
+  const climateNote = state.asphaltMonths >= 10
+    ? `${state.name} supports a long paving season, but heat, rain, stormwater, and curing windows still affect scheduling.`
+    : state.asphaltMonths <= 5
+    ? `${state.name} has a short paving season, so commercial owners should plan repairs, overlays, and sealcoating early.`
+    : `${state.name} has a seasonal asphalt window, making spring-through-fall planning important for durable paving.`
+  return {
+    ...state,
+    slug: stateSlug(state),
+    path: `/states/${stateSlug(state)}`,
+    title: `Asphalt Paving Contractor in ${state.name}`,
+    metaDescription: `Future-ready ${state.name} asphalt paving page model for parking lots, driveways, sealcoating, crack filling, repair, 811 planning, pricing, climate, and compliance guidance.`,
+    h1: `${state.name} Asphalt Paving, Parking Lots, Driveways & Sealcoating`,
+    pricingSignal: multiplier > 1.05
+      ? `${state.name} tends to run above national average paving costs because labor or material indexes are higher.`
+      : multiplier < 0.9
+      ? `${state.name} tends to be more cost-favorable than high-index markets, subject to job size and base conditions.`
+      : `${state.name} is near the national paving cost average, with final pricing driven by base, drainage, access, and tonnage.`,
+    climateNote,
+    complianceSignals: getStateSummary(state.abbr)?.complianceNotes || [],
+    targetServices: [
+      'Commercial parking lot paving',
+      'Residential driveway paving',
+      'Sealcoating and crack filling',
+      'Asphalt repair and pothole patching',
+      'Mill-and-overlay planning',
+      'ADA parking layout and line striping',
+      '811 utility-safe planning before excavation',
+      'Pavement lifecycle and maintenance planning',
+    ],
+    contentRequirements: [
+      'Use original local content; do not mass-publish thin doorway pages.',
+      'Add real service proof, photos, reviews, project examples, or market-specific details before indexing.',
+      'Explain climate, drainage, traffic load, pricing, and compliance differences for the state.',
+      'Keep calls to action honest about current service capacity and travel limits.',
+    ],
   }
 }
 
