@@ -63,6 +63,11 @@ function MapContents({ onGeocode }) {
   return null
 }
 
+function MaybeMapsProvider({ children }) {
+  if (!MAPS_API_KEY) return children
+  return <APIProvider apiKey={MAPS_API_KEY}>{children}</APIProvider>
+}
+
 // ── Solar result panel ────────────────────────────────────────────────────────
 
 function SolarPanel({ data }) {
@@ -341,91 +346,91 @@ export default function TakeoffMap() {
     }
   }
 
-  if (!MAPS_API_KEY) {
-    return (
-      <div className="rounded-xl bg-yellow-50 border border-yellow-200 p-6 text-sm text-yellow-800">
-        <strong>Google Maps not configured.</strong> Add{' '}
-        <code className="font-mono bg-yellow-100 px-1 rounded">VITE_GOOGLE_MAPS_API_KEY</code> to your
-        environment variables to enable the Takeoff Map.
-      </div>
-    )
-  }
-
   return (
-    <APIProvider apiKey={MAPS_API_KEY}>
+    <MaybeMapsProvider>
       <div className="space-y-5">
 
-        {/* Address form */}
-        <form onSubmit={handleAddressSubmit} className="flex flex-col sm:flex-row gap-3">
-          <input
-            type="text"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            placeholder="Enter a project address…"
-            className="flex-1 input"
-            required
-          />
-          <button
-            type="submit"
-            disabled={loading.geocode || loading.solar}
-            className="btn-primary whitespace-nowrap disabled:opacity-50"
-          >
-            {loading.geocode || loading.solar ? (
-              <span className="flex items-center gap-2">
-                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                Loading…
-              </span>
-            ) : 'Analyze Site'}
-          </button>
-          <button
-            type="button"
-            onClick={handleAerialView}
-            disabled={!address || loading.aerial}
-            className="btn-outline whitespace-nowrap disabled:opacity-50"
-          >
-            {loading.aerial ? '…' : '🎥 3D View'}
-          </button>
-        </form>
+        {MAPS_API_KEY ? (
+          <>
+            {/* Address form */}
+            <form onSubmit={handleAddressSubmit} className="flex flex-col sm:flex-row gap-3">
+              <input
+                type="text"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                placeholder="Enter a project address…"
+                className="flex-1 input"
+                required
+              />
+              <button
+                type="submit"
+                disabled={loading.geocode || loading.solar}
+                className="btn-primary whitespace-nowrap disabled:opacity-50"
+              >
+                {loading.geocode || loading.solar ? (
+                  <span className="flex items-center gap-2">
+                    <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    Loading…
+                  </span>
+                ) : 'Analyze Site'}
+              </button>
+              <button
+                type="button"
+                onClick={handleAerialView}
+                disabled={!address || loading.aerial}
+                className="btn-outline whitespace-nowrap disabled:opacity-50"
+              >
+                {loading.aerial ? '…' : '🎥 3D View'}
+              </button>
+            </form>
 
-        {errors.geocode && <p className="text-sm text-red-600">{errors.geocode}</p>}
-        {errors.solar   && <p className="text-sm text-yellow-700">{errors.solar}</p>}
-        {errors.aerial  && <p className="text-sm text-yellow-700">{errors.aerial}</p>}
+            {errors.geocode && <p className="text-sm text-red-600">{errors.geocode}</p>}
+            {errors.solar   && <p className="text-sm text-yellow-700">{errors.solar}</p>}
+            {errors.aerial  && <p className="text-sm text-yellow-700">{errors.aerial}</p>}
 
-        {/* Map */}
-        <div className="rounded-xl overflow-hidden border border-gray-200 shadow-sm">
-          <Map
-            style={{ width: '100%', height: '380px' }}
-            center={mapCenter}
-            zoom={DEFAULT_ZOOM}
-            mapId="takeoff-map"
-            gestureHandling="cooperative"
-          >
-            {markerPos && <AdvancedMarker position={markerPos} />}
-            <MapContents onGeocode={(fn) => { geocodeRef.current = fn }} />
-          </Map>
-        </div>
+            {/* Map */}
+            <div className="rounded-xl overflow-hidden border border-gray-200 shadow-sm">
+              <Map
+                style={{ width: '100%', height: '380px' }}
+                center={mapCenter}
+                zoom={DEFAULT_ZOOM}
+                mapId="takeoff-map"
+                gestureHandling="cooperative"
+              >
+                {markerPos && <AdvancedMarker position={markerPos} />}
+                <MapContents onGeocode={(fn) => { geocodeRef.current = fn }} />
+              </Map>
+            </div>
 
-        {/* Solar results */}
-        {solarData && <SolarPanel data={solarData} />}
-        {errors.solar && !solarData && (
-          <p className="text-xs text-brand-navy/40">Solar data unavailable for this location.</p>
-        )}
+            {/* Solar results */}
+            {solarData && <SolarPanel data={solarData} />}
+            {errors.solar && !solarData && (
+              <p className="text-xs text-brand-navy/40">Solar data unavailable for this location.</p>
+            )}
 
-        {/* Aerial video */}
-        {aerialUrl && (
-          <div className="rounded-xl overflow-hidden border border-gray-200">
-            <video
-              src={aerialUrl}
-              autoPlay
-              loop
-              muted
-              playsInline
-              controls
-              className="w-full max-h-64 object-cover bg-black"
-            />
-            <p className="text-xs text-brand-navy/40 p-2">
-              Google Aerial View · {address}
-            </p>
+            {/* Aerial video */}
+            {aerialUrl && (
+              <div className="rounded-xl overflow-hidden border border-gray-200">
+                <video
+                  src={aerialUrl}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  controls
+                  className="w-full max-h-64 object-cover bg-black"
+                />
+                <p className="text-xs text-brand-navy/40 p-2">
+                  Google Aerial View · {address}
+                </p>
+              </div>
+            )}
+          </>
+        ) : (
+          <div className="rounded-xl bg-yellow-50 border border-yellow-200 p-4 text-sm text-yellow-800">
+            <strong>Maps/3-D site context not configured.</strong> Add{' '}
+            <code className="font-mono bg-yellow-100 px-1 rounded">VITE_GOOGLE_MAPS_API_KEY</code> to enable
+            Google Maps, Solar DSM, and Aerial View. Utility locating, GPR risk, photo measurement, and pavement decay still work.
           </div>
         )}
 
@@ -589,6 +594,6 @@ export default function TakeoffMap() {
           <DecayPanel data={decayData} />
         </div>
       </div>
-    </APIProvider>
+    </MaybeMapsProvider>
   )
 }
