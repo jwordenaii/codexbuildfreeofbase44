@@ -23,6 +23,7 @@ import {
   getSolarData,
   getAerialView,
   measureImage,
+  runPremiumCivilStack,
   simulatePavementDecay,
 } from '../api/takeoff'
 
@@ -188,6 +189,44 @@ function DecayPanel({ data }) {
   )
 }
 
+function PremiumStackPanel({ data }) {
+  if (!data) return null
+  const decisionClass = data.decision === 'GO'
+    ? 'text-green-700 bg-green-50 border-green-200'
+    : data.decision === 'CONDITIONAL'
+      ? 'text-yellow-700 bg-yellow-50 border-yellow-200'
+      : 'text-red-700 bg-red-50 border-red-200'
+  return (
+    <div className={`rounded-xl border p-4 space-y-4 text-sm ${decisionClass}`}>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        <div>
+          <h4 className="font-display font-bold">👑 Seven Premium Civil-Tech Modules: {data.decision}</h4>
+          <p className="text-xs opacity-80">{data.module_count} modules · Overall {data.overall_score}/100 · {data.overall_risk} risk</p>
+        </div>
+        <span className="font-black text-3xl font-display">{data.overall_score}</span>
+      </div>
+      <div className="grid md:grid-cols-2 gap-3">
+        {data.modules?.map((module) => (
+          <details key={module.name} className="rounded-lg bg-white/70 border border-current/10 p-3" open={module.risk_level !== 'LOW'}>
+            <summary className="cursor-pointer font-bold flex items-center justify-between gap-3">
+              <span>{module.title}</span>
+              <span className={module.risk_level === 'HIGH' ? 'text-red-700' : module.risk_level === 'MEDIUM' ? 'text-yellow-700' : 'text-green-700'}>
+                {module.score}/100
+              </span>
+            </summary>
+            <p className="mt-2 text-xs">{module.summary}</p>
+            {module.actions?.length > 0 && (
+              <ul className="mt-2 list-disc pl-5 text-xs space-y-1">
+                {module.actions.map((action) => <li key={action}>{action}</li>)}
+              </ul>
+            )}
+          </details>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 // ── Main component ────────────────────────────────────────────────────────────
 
 export default function TakeoffMap() {
@@ -199,6 +238,7 @@ export default function TakeoffMap() {
   const [measureData, setMeasureData] = useState(null)
   const [groundScanData, setGroundScanData] = useState(null)
   const [decayData, setDecayData] = useState(null)
+  const [premiumStackData, setPremiumStackData] = useState(null)
   const [pixelsPerFoot, setPixelsPerFoot] = useState(10)
   const [scanForm, setScanForm] = useState({
     ticket_status: 'requested',
@@ -217,7 +257,7 @@ export default function TakeoffMap() {
     rutting_inches: 0.25,
     last_sealcoat_years: 4,
   })
-  const [loading, setLoading] = useState({ geocode: false, solar: false, aerial: false, measure: false, scan: false, decay: false })
+  const [loading, setLoading] = useState({ geocode: false, solar: false, aerial: false, measure: false, scan: false, decay: false, premium: false })
   const [errors, setErrors] = useState({})
   const geocodeRef = useRef(null)
 
@@ -340,6 +380,32 @@ export default function TakeoffMap() {
       setError('decay', err.message)
     } finally {
       setLoad('decay', false)
+    }
+  }
+
+  const handlePremiumStack = async () => {
+    clearError('premium')
+    setLoad('premium', true)
+    setPremiumStackData(null)
+    try {
+      setPremiumStackData(await runPremiumCivilStack({
+        address,
+        scan_area_sqft: scanForm.scan_area_sqft ? Number(scanForm.scan_area_sqft) : undefined,
+        ticket_status: scanForm.ticket_status,
+        technologies: scanForm.technologies,
+        soil_moisture: scanForm.soil_moisture,
+        anomalies_detected: scanForm.anomalies_detected,
+        utilities: [],
+        ...decayForm,
+        age_years: Number(decayForm.age_years),
+        potholes: Number(decayForm.potholes),
+        rutting_inches: Number(decayForm.rutting_inches),
+        last_sealcoat_years: Number(decayForm.last_sealcoat_years),
+      }))
+    } catch (err) {
+      setError('premium', err.message)
+    } finally {
+      setLoad('premium', false)
     }
   }
 
@@ -589,6 +655,31 @@ export default function TakeoffMap() {
           </button>
           {errors.decay && <p className="text-sm text-red-600">{errors.decay}</p>}
           <DecayPanel data={decayData} />
+        </div>
+
+        {/* Seven premium autonomous modules */}
+        <div className="rounded-xl border border-brand-amber/40 bg-brand-amber/5 p-4 space-y-3">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div>
+              <h4 className="font-display font-bold text-brand-navy text-sm">
+                👑 Seven Premium Autonomous Civil-Tech Modules
+              </h4>
+              <p className="text-xs text-brand-navy/50">
+                Runs utility locate shield, GPR digital twin, pavement decay twin, asphalt thermal AI,
+                drainage/moisture radar, traffic phasing, and autonomous go/no-go foreman together.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={handlePremiumStack}
+              disabled={loading.premium}
+              className="btn-primary whitespace-nowrap disabled:opacity-50"
+            >
+              {loading.premium ? 'Running 7 Modules…' : 'Run Premium 7'}
+            </button>
+          </div>
+          {errors.premium && <p className="text-sm text-red-600">{errors.premium}</p>}
+          <PremiumStackPanel data={premiumStackData} />
         </div>
       </div>
     </MaybeMapsProvider>

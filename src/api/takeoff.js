@@ -83,3 +83,11 @@ export function analyzeGroundScan(payload) {
 export function simulatePavementDecay(payload) {
   return request('POST', '/api/v1/takeoff/pavement-decay', payload)
 }
+
+/**
+ * Run the seven-module premium civil-tech stack.
+ * @param {object} payload
+ */
+export function runPremiumCivilStack(payload) {
+  return request('POST', '/api/v1/takeoff/premium-civil-stack', payload)
+}
