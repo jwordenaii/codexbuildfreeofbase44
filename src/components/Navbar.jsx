@@ -3,6 +3,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom'
 
 const NAV_LINKS = [
   { to: '/', label: 'Home' },
+  { to: '/jwordenai', label: 'JWORDENAI™', highlight: true },
   { to: '/services', label: 'Services' },
   { to: '/about', label: 'About' },
   { to: '/reviews', label: 'Reviews' },
@@ -60,17 +61,23 @@ export default function Navbar() {
 
           {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-1" aria-label="Primary navigation">
-            {NAV_LINKS.map(({ to, label }) => (
+            {NAV_LINKS.map(({ to, label, highlight }) => (
               <NavLink
                 key={to}
                 to={to}
                 end={to === '/'}
                 className={({ isActive }) =>
-                  `px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                    isActive
-                      ? 'bg-brand-amber text-brand-navy'
-                      : 'text-white/80 hover:text-white hover:bg-white/10'
-                  }`
+                  highlight
+                    ? `px-4 py-2 rounded-md text-sm font-bold transition-colors border ${
+                        isActive
+                          ? 'bg-brand-amber text-brand-navy border-brand-amber'
+                          : 'text-brand-amber border-brand-amber/60 hover:bg-brand-amber/10'
+                      }`
+                    : `px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                        isActive
+                          ? 'bg-brand-amber text-brand-navy'
+                          : 'text-white/80 hover:text-white hover:bg-white/10'
+                      }`
                 }
               >
                 {label}
@@ -142,17 +149,23 @@ export default function Navbar() {
             open ? 'max-h-96 pb-4 border-t border-white/10' : 'max-h-0'
           }`}
         >
-          {NAV_LINKS.map(({ to, label }) => (
+          {NAV_LINKS.map(({ to, label, highlight }) => (
             <NavLink
               key={to}
               to={to}
               end={to === '/'}
               className={({ isActive }) =>
-                `block px-4 py-3 text-sm font-medium rounded-md transition-colors ${
-                  isActive
-                    ? 'bg-brand-amber text-brand-navy'
-                    : 'text-white/80 hover:text-white hover:bg-white/10'
-                }`
+                highlight
+                  ? `block px-4 py-3 text-sm font-bold rounded-md transition-colors border ${
+                      isActive
+                        ? 'bg-brand-amber text-brand-navy border-brand-amber'
+                        : 'text-brand-amber border-brand-amber/40 hover:bg-brand-amber/10'
+                    }`
+                  : `block px-4 py-3 text-sm font-medium rounded-md transition-colors ${
+                      isActive
+                        ? 'bg-brand-amber text-brand-navy'
+                        : 'text-white/80 hover:text-white hover:bg-white/10'
+                    }`
               }
             >
               {label}

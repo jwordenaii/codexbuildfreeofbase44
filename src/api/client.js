@@ -80,6 +80,53 @@ export const api = {
   askForeman: (data) => request('POST', '/api/v1/foreman/chat', data),
   getForemanStatus: () => request('GET', '/api/v1/foreman/status'),
   getVisionResult: (jobId) => request('GET', `/api/v1/ai/vision-result/${jobId}`),
+  // ── JWORDENAI Public Customer Tools ───────────────────────────────────────
+  // Public endpoint — no auth required. Accepts FormData with an 'file' field.
+  scanDriveway: (formData) => {
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 30_000) // 30s for image upload
+    return fetch(`${BASE}/api/v1/ai/driveway-scan`, {
+      method: 'POST',
+      body: formData,
+      signal: controller.signal,
+    })
+      .then((res) => {
+        clearTimeout(timeoutId)
+        if (!res.ok) return res.json().then((e) => { throw new Error(e.detail || `HTTP ${res.status}`) })
+        return res.json()
+      })
+      .catch((err) => {
+        clearTimeout(timeoutId)
+        if (err.name === 'AbortError') throw new Error('Request timed out. Please try again.')
+        throw err
+      })
+  },
+  // ── Workforce / Predictive Staffing ───────────────────────────────────────
+  getWorkforce: (params = {}) => request('GET', `/api/v1/workforce${buildQS(params)}`),
+  createWorkforceMember: (data) => request('POST', '/api/v1/workforce', data),
+  updateWorkforceMember: (id, data) => request('PUT', `/api/v1/workforce/${id}`, data),
+  deleteWorkforceMember: (id) => request('DELETE', `/api/v1/workforce/${id}`),
+  getAvailableWorkforce: (params = {}) => request('GET', `/api/v1/workforce/available${buildQS(params)}`),
+  getExpiringCerts: (params = {}) => request('GET', `/api/v1/workforce/expiring-certs${buildQS(params)}`),
+  getPredictiveStaffing: (data) => request('POST', '/api/v1/workforce/predictive-staffing', data),
+  // ── Safety / AI Monitoring ─────────────────────────────────────────────────
+  getSafetyAIMonitor: (params = {}) => request('GET', `/api/v1/safety/ai-monitor${buildQS(params)}`),
+  postSafetyAIAlert: (data) => request('POST', '/api/v1/safety/ai-monitor/alert', data),
+  // ── Generative AI ──────────────────────────────────────────────────────────
+  submitGenAIJob: (data) => request('POST', '/api/v1/generative-ai/jobs', data),
+  listGenAIJobs: (params = {}) => request('GET', `/api/v1/generative-ai/jobs${buildQS(params)}`),
+  getGenAIJob: (id) => request('GET', `/api/v1/generative-ai/jobs/${id}`),
+  generateLayout: (data) => request('POST', '/api/v1/generative-ai/layout', data),
+  generateSequencing: (data) => request('POST', '/api/v1/generative-ai/sequencing', data),
+  // ── IoT ────────────────────────────────────────────────────────────────────
+  listIoTDevices: (params = {}) => request('GET', `/api/v1/iot/devices${buildQS(params)}`),
+  registerIoTDevice: (data) => request('POST', '/api/v1/iot/devices', data),
+  updateIoTDevice: (id, data) => request('PUT', `/api/v1/iot/devices/${id}`, data),
+  deleteIoTDevice: (id) => request('DELETE', `/api/v1/iot/devices/${id}`),
+  ingestIoTReading: (data) => request('POST', '/api/v1/iot/readings', data),
+  ingestIoTReadingsBatch: (data) => request('POST', '/api/v1/iot/readings/batch', data),
+  getIoTReadings: (params = {}) => request('GET', `/api/v1/iot/readings${buildQS(params)}`),
+  getIoTSummary: (params = {}) => request('GET', `/api/v1/iot/summary${buildQS(params)}`),
 }
 
 // ── GA4 event helpers ─────────────────────────────────────────────────────────

@@ -243,3 +243,106 @@ async def expiring_certs(
 
     alerts.sort(key=lambda x: x["days_left"])
     return {"count": len(alerts), "days_ahead": days_ahead, "alerts": alerts}
+
+
+# ── Predictive staffing / labor optimization ──────────────────────────────────
+
+class PredictiveStaffingRequest(BaseModel):
+    job_site: str
+    required_trades: list[str]          # e.g. ["paving", "grading", "flagging"]
+    project_area_sqft: Optional[float] = None
+    project_duration_days: Optional[int] = None
+    start_date: Optional[str] = None    # ISO date
+
+
+@router.post("/predictive-staffing", summary="Predictive staffing and labor optimization for a project")
+@limiter.limit("20/minute")
+async def predictive_staffing(
+    request: Request,
+    req: PredictiveStaffingRequest,
+    db: Session = Depends(get_db),
+    _: dict = Depends(verify_premium_security),
+):
+    """
+    Analyze the available workforce and recommend an optimized crew assignment
+    for the given project.  Uses skills ratings, certification status, and
+    current availability to rank candidates per trade.
+
+    Returns per-trade recommendations with confidence scores and flags any
+    skill gaps that would require subcontractor coverage or training.
+    """
+    now = datetime.now(timezone.utc)
+    all_members = db.query(WorkforceMember).filter(WorkforceMember.available == 1).all()
+
+    area = req.project_area_sqft or 5000.0
+    duration = req.project_duration_days or 5
+
+    # Base crew size heuristic: 1 worker per 500 sqft per day, min 2 per trade
+    base_crew_per_trade = max(2, round(area / (500 * duration)))
+
+    recommendations: list[dict] = []
+    unfilled_trades: list[str] = []
+
+    for trade in req.required_trades:
+        # Filter members qualified for this trade (trade field match or skill_ratings key)
+        qualified = []
+        for m in all_members:
+            trade_match = m.trade and trade.lower() in m.trade.lower()
+            ratings = json.loads(m.skill_ratings) if m.skill_ratings else {}
+            rating_match = any(trade.lower() in k.lower() for k in ratings)
+            if trade_match or rating_match:
+                certs = json.loads(m.certifications) if m.certifications else []
+                # Penalize members with expired certs
+                has_expired = any(_cert_expiry_status(c, now) == "expired" for c in certs)
+                ratings_vals = [v for k, v in ratings.items() if trade.lower() in k.lower()]
+                skill_score = max(ratings_vals) if ratings_vals else 3  # default mid-range
+                qualified.append({
+                    "member_id": m.id,
+                    "name": m.name,
+                    "trade": m.trade,
+                    "skill_score": skill_score,
+                    "has_expired_cert": has_expired,
+                    "certifications": certs,
+                })
+
+        # Sort: higher skill score first, expired certs last
+        qualified.sort(key=lambda x: (-x["skill_score"], x["has_expired_cert"]))
+
+        needed = base_crew_per_trade
+        assigned = qualified[:needed]
+        gap = max(0, needed - len(assigned))
+
+        recommendations.append({
+            "trade": trade,
+            "crew_needed": needed,
+            "crew_assigned": len(assigned),
+            "gap": gap,
+            "coverage": "full" if gap == 0 else ("partial" if assigned else "none"),
+            "assigned_members": assigned,
+            "gap_recommendation": (
+                f"Hire or subcontract {gap} qualified '{trade}' worker(s) before project start."
+                if gap > 0 else "No gap — sufficient crew available."
+            ),
+        })
+        if gap > 0:
+            unfilled_trades.append(trade)
+
+    total_crew = sum(r["crew_assigned"] for r in recommendations)
+    duration_days = duration
+    labor_efficiency_score = round(
+        (1 - len(unfilled_trades) / max(len(req.required_trades), 1)) * 100, 1
+    )
+
+    return {
+        "job_site": req.job_site,
+        "project_area_sqft": area,
+        "project_duration_days": duration_days,
+        "start_date": req.start_date,
+        "total_crew_recommended": sum(r["crew_needed"] for r in recommendations),
+        "total_crew_available": total_crew,
+        "unfilled_trades": unfilled_trades,
+        "labor_efficiency_score": labor_efficiency_score,
+        "recommendations": recommendations,
+        "generated_at": now.isoformat(),
+        "note": "JWORDENAI™ predictive staffing — scores based on skill ratings and cert status.",
+    }

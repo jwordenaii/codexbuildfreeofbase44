@@ -451,3 +451,137 @@ async def contact_suggest(req: ContactSuggestRequest):
     except Exception as exc:  # noqa: BLE001
         logger.warning("contact_suggest OpenAI call failed: %s", exc)
         return _stub_suggest(req.message)
+
+
+# ── Public Driveway Condition Scanner ─────────────────────────────────────────
+
+_DRIVEWAY_SCAN_PROMPT = (
+    "You are a professional asphalt paving estimator at J. Worden & Sons, with 40+ years of experience. "
+    "A homeowner has uploaded a photo of their driveway or paved surface. "
+    "Analyze the image and return a JSON object with EXACTLY these fields (no markdown fences):\n"
+    '  "condition_score": integer 1–10 (10 = brand new, 1 = severely deteriorated)\n'
+    '  "condition_label": one of ["Excellent", "Good", "Fair", "Poor", "Critical"]\n'
+    '  "issues_found": list of strings — specific damage types visible (e.g. "alligator cracking", '
+    '"longitudinal cracks", "potholes", "fading/oxidation", "drainage pooling", "edge crumbling", "raveling")\n'
+    '  "prep_work_required": list of objects — each with "task" (string) and "why" (short explanation string)\n'
+    '  "recommended_service": one of ["sealcoating", "crack_filling_and_sealcoating", '
+    '"partial_overlay", "full_replacement", "patch_and_sealcoat", "maintenance_only"]\n'
+    '  "urgency": one of ["No rush — routine maintenance", "Within 1–2 seasons", '
+    '"This season — before it worsens", "Urgent — address now"]\n'
+    '  "customer_summary": 2–3 sentence friendly explanation of what you see and what it means for them\n'
+    "Return only valid JSON. If the image is not of a paved surface, set condition_score to null and "
+    'customer_summary to "Please upload a clear photo of your driveway or paved surface."'
+)
+
+
+def _stub_driveway_scan() -> dict:
+    """Friendly stub response used when no OpenAI key is configured."""
+    return {
+        "engine": "stub",
+        "condition_score": 5,
+        "condition_label": "Fair",
+        "issues_found": ["surface oxidation/fading", "minor longitudinal cracks"],
+        "prep_work_required": [
+            {
+                "task": "Crack filling",
+                "why": "Sealing open cracks prevents water intrusion that accelerates base damage.",
+            },
+            {
+                "task": "Surface cleaning & degreasing",
+                "why": "Removes oils and debris so the sealcoat bonds properly.",
+            },
+        ],
+        "recommended_service": "crack_filling_and_sealcoating",
+        "urgency": "Within 1–2 seasons",
+        "customer_summary": (
+            "Your driveway looks like it's in fair shape — some surface wear and minor cracking is visible. "
+            "A crack fill and fresh sealcoat this season will protect the base and add years of life. "
+            "This is the most cost-effective treatment at this stage."
+        ),
+        "notes": "Set OPENAI_API_KEY to enable real AI-powered image analysis. This is a demonstration response.",
+    }
+
+
+def _openai_driveway_scan(image_bytes: bytes, mime_type: str) -> dict:
+    import json as _json
+    try:
+        client = _get_openai_client()
+        if client is None:
+            raise RuntimeError("OPENAI_API_KEY not configured")
+
+        b64 = base64.b64encode(image_bytes).decode()
+        data_url = f"data:{mime_type};base64,{b64}"
+
+        response = client.chat.completions.create(
+            model="gpt-4o",
+            messages=[
+                {"role": "system", "content": _DRIVEWAY_SCAN_PROMPT},
+                {
+                    "role": "user",
+                    "content": [
+                        {"type": "image_url", "image_url": {"url": data_url}},
+                        {
+                            "type": "text",
+                            "text": (
+                                "Please analyze this driveway/paved surface and tell me what "
+                                "condition it's in and what prep work is needed before paving or repaving."
+                            ),
+                        },
+                    ],
+                },
+            ],
+            max_tokens=800,
+        )
+
+        text = response.choices[0].message.content or ""
+        if "```" in text:
+            text = text.split("```")[1].lstrip("json").strip()
+        result = _json.loads(text)
+        result["engine"] = "gpt-4o"
+        return result
+    except Exception as exc:  # noqa: BLE001
+        logger.error("OpenAI driveway scan failed: %s", exc)
+        fallback = _stub_driveway_scan()
+        fallback["engine"] = "stub_fallback"
+        fallback["error"] = str(exc)
+        return fallback
+
+
+@router.post(
+    "/driveway-scan",
+    summary="Public: AI driveway condition scan — no auth required",
+    tags=["ai", "public"],
+)
+async def driveway_scan(file: UploadFile = File(...)):
+    """
+    Public endpoint — no authentication required.
+
+    Accepts a customer photo of their driveway or paved surface.
+    Returns a customer-friendly condition report with:
+    - Condition score (1–10) and label
+    - Issues identified in the image
+    - Prep work required before paving or repaving
+    - Recommended service type
+    - Urgency level
+    - A plain-English summary for the homeowner
+
+    Powered by GPT-4o Vision. Gracefully falls back to a structured
+    stub response when OPENAI_API_KEY is not configured.
+    """
+    if file.content_type not in _ALLOWED_MIME:
+        raise HTTPException(
+            status_code=415,
+            detail=f"Unsupported file type. Please upload a JPEG, PNG, or WebP image.",
+        )
+
+    image_bytes = await file.read()
+    if len(image_bytes) > _MAX_SIZE_BYTES:
+        raise HTTPException(status_code=413, detail="Image exceeds 10 MB limit. Please use a smaller photo.")
+
+    openai_key = os.getenv("OPENAI_API_KEY", "")
+    if openai_key:
+        analysis = _openai_driveway_scan(image_bytes, file.content_type)
+    else:
+        analysis = _stub_driveway_scan()
+
+    return {"status": "success", "analysis": analysis}

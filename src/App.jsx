@@ -19,6 +19,10 @@ const CommandCenter = lazy(() => import('./pages/CommandCenter'))
 const Projects = lazy(() => import('./pages/Projects'))
 const Visualizer = lazy(() => import('./pages/Visualizer'))
 
+// JWORDENAI public platform
+const JWordenAI = lazy(() => import('./pages/JWordenAI'))
+const DrivewayScan = lazy(() => import('./pages/DrivewayScan'))
+
 // Service area pages
 const ServiceAreas = lazy(() => import('./pages/ServiceAreas'))
 const CityPage = lazy(() => import('./pages/CityPage'))
@@ -74,6 +78,9 @@ export default function App() {
                 <Route path="/projects" element={<Projects />} />
                 {/* 3-D Property Visualizer */}
                 <Route path="/visualizer" element={<Visualizer />} />
+                {/* JWORDENAI public platform */}
+                <Route path="/jwordenai" element={<JWordenAI />} />
+                <Route path="/jwordenai/scan" element={<DrivewayScan />} />
                 {/* Advisory Board routes */}
                 <Route path="/advisory" element={<AdvisoryHub />} />
                 <Route path="/advisory/state/:stateCode" element={<StateDetail />} />
