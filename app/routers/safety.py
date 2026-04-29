@@ -10,6 +10,8 @@ Routes:
   DELETE /api/v1/safety/incidents/{id}         — delete incident
   GET    /api/v1/safety/osha-rate              — calculate OSHA recordable rate
   GET    /api/v1/safety/scores                 — per-site safety scores
+  GET    /api/v1/safety/ai-monitor             — real-time AI safety monitoring snapshot
+  POST   /api/v1/safety/ai-monitor/alert       — submit a real-time sensor alert for AI triage
 """
 
 from __future__ import annotations
@@ -269,3 +271,203 @@ async def site_scores(
         s["score"] = max(0, min(100, score))
 
     return {"sites": sorted(sites.values(), key=lambda x: x["score"], reverse=True)}
+
+
+# ── Real-time AI safety monitoring ────────────────────────────────────────────
+
+# Risk thresholds for the AI monitor (configurable via env in a production system)
+_INCIDENT_RATE_WARN = 0.5   # incidents per 1000 crew-hours (warning)
+_INCIDENT_RATE_HIGH = 1.0   # incidents per 1000 crew-hours (high risk)
+
+
+class AIAlertCreate(BaseModel):
+    job_site: str
+    sensor_type: str               # e.g. "wearable_heart_rate", "gas_detector", "proximity"
+    reading_value: float
+    unit: Optional[str] = None
+    device_id: Optional[str] = None
+    context: Optional[str] = None  # free-text from the device or operator
+
+
+@router.get("/ai-monitor", summary="Real-time AI safety monitoring snapshot")
+@limiter.limit("30/minute")
+async def ai_safety_monitor(
+    request: Request,
+    job_site: Optional[str] = Query(default=None),
+    db: Session = Depends(get_db),
+    _: dict = Depends(verify_premium_security),
+):
+    """
+    Returns an AI-generated safety risk snapshot for one or all job sites.
+
+    The risk level is derived from recent incident rates and toolbox talk
+    compliance, providing an introductory real-time monitoring signal that
+    can be extended with live IoT sensor feeds.
+    """
+    now = datetime.now(timezone.utc)
+
+    iq = db.query(SafetyIncident)
+    tq = db.query(SafetyToolboxTalk)
+    if job_site:
+        iq = iq.filter(SafetyIncident.job_site.ilike(f"%{job_site}%"))
+        tq = tq.filter(SafetyToolboxTalk.job_site.ilike(f"%{job_site}%"))
+
+    incidents = iq.all()
+    talks = tq.all()
+
+    # Aggregate per site
+    sites: dict[str, dict] = {}
+    for i in incidents:
+        s = sites.setdefault(i.job_site, {
+            "job_site": i.job_site, "incidents": 0, "recordables": 0,
+            "talks": 0, "signed_off_talks": 0,
+        })
+        s["incidents"] += 1
+        if i.osha_recordable:
+            s["recordables"] += 1
+
+    for t in talks:
+        s = sites.setdefault(t.job_site, {
+            "job_site": t.job_site, "incidents": 0, "recordables": 0,
+            "talks": 0, "signed_off_talks": 0,
+        })
+        s["talks"] += 1
+        if t.signed_off:
+            s["signed_off_talks"] += 1
+
+    # Compute AI risk signal per site
+    results = []
+    for s in sites.values():
+        total_incidents = s["incidents"]
+        talk_compliance = (
+            s["signed_off_talks"] / s["talks"] if s["talks"] > 0 else 0.0
+        )
+        # Approximate incident rate per 1000 crew-hours (assume 200 h / incident data point)
+        approx_rate = total_incidents / max(s["talks"] * 200, 200) * 1000
+
+        if s["recordables"] > 0 or approx_rate >= _INCIDENT_RATE_HIGH:
+            risk_level = "high"
+            recommendation = (
+                "Immediate review required: recordable incidents detected. "
+                "Consider site standdown and safety audit."
+            )
+        elif approx_rate >= _INCIDENT_RATE_WARN or talk_compliance < 0.5:
+            risk_level = "medium"
+            recommendation = (
+                "Elevated risk signal: ensure all crew members complete toolbox talks "
+                "and review recent near-miss reports."
+            )
+        else:
+            risk_level = "low"
+            recommendation = (
+                "Safety profile looks healthy. Maintain current toolbox talk cadence."
+            )
+
+        results.append({
+            "job_site": s["job_site"],
+            "risk_level": risk_level,
+            "total_incidents": total_incidents,
+            "recordable_incidents": s["recordables"],
+            "toolbox_talks": s["talks"],
+            "talk_compliance_pct": round(talk_compliance * 100, 1),
+            "ai_recommendation": recommendation,
+            "snapshot_at": now.isoformat(),
+        })
+
+    results.sort(key=lambda x: {"high": 0, "medium": 1, "low": 2}.get(x["risk_level"], 3))
+    return {
+        "total_sites": len(results),
+        "generated_at": now.isoformat(),
+        "monitor": results,
+    }
+
+
+@router.post("/ai-monitor/alert", summary="Submit a real-time sensor alert for AI triage")
+@limiter.limit("60/minute")
+async def ai_monitor_alert(
+    request: Request,
+    req: AIAlertCreate,
+    db: Session = Depends(get_db),
+    _: dict = Depends(verify_premium_security),
+):
+    """
+    Accept a real-time sensor reading and return an AI-triaged risk assessment
+    and recommended action.  Automatically creates a safety incident record when
+    the reading exceeds critical thresholds.
+    """
+    from fastapi import HTTPException as _HTTPException  # noqa: PLC0415 (unused here but kept for pattern)
+    now = datetime.now(timezone.utc)
+
+    # Simple threshold rules per sensor type
+    thresholds: dict[str, dict] = {
+        "gas_detector":          {"warn": 10.0,  "critical": 25.0,  "unit": "ppm"},
+        "wearable_heart_rate":   {"warn": 120.0, "critical": 160.0, "unit": "bpm"},
+        "proximity":             {"warn": 5.0,   "critical": 2.0,   "unit": "m"},
+        "noise_level":           {"warn": 85.0,  "critical": 100.0, "unit": "dB"},
+        "temperature_f":         {"warn": 95.0,  "critical": 105.0, "unit": "°F"},
+    }
+
+    rule = thresholds.get(req.sensor_type, {"warn": None, "critical": None, "unit": req.unit})
+    warn_thresh = rule["warn"]
+    crit_thresh = rule["critical"]
+
+    # For proximity sensors, lower is more dangerous
+    is_proximity = req.sensor_type == "proximity"
+
+    if warn_thresh is not None:
+        if is_proximity:
+            is_critical = req.reading_value <= crit_thresh
+            is_warning = req.reading_value <= warn_thresh and not is_critical
+        else:
+            is_critical = req.reading_value >= crit_thresh
+            is_warning = req.reading_value >= warn_thresh and not is_critical
+    else:
+        is_critical = False
+        is_warning = False
+
+    if is_critical:
+        severity = "critical"
+        action = (
+            f"CRITICAL: {req.sensor_type} reading of {req.reading_value} {req.unit or rule['unit']} "
+            f"exceeds safety threshold. Evacuate the affected zone immediately and notify supervisor."
+        )
+        # Auto-create a safety incident record
+        incident = SafetyIncident(
+            job_site=req.job_site,
+            incident_date=now,
+            incident_type="near-miss",
+            root_cause=f"AI-triaged sensor alert: {req.sensor_type}",
+            description=(
+                f"Automated alert from device {req.device_id or 'unknown'}. "
+                f"Reading: {req.reading_value} {req.unit or ''}. Context: {req.context or 'N/A'}"
+            ),
+            corrective_action=action,
+            osha_recordable=0,
+            days_away=0,
+        )
+        db.add(incident)
+        db.commit()
+        db.refresh(incident)
+        incident_id = incident.id
+    elif is_warning:
+        severity = "warning"
+        action = (
+            f"WARNING: {req.sensor_type} reading of {req.reading_value} {req.unit or rule['unit']} "
+            f"is approaching unsafe levels. Monitor closely and prepare to evacuate if it rises further."
+        )
+        incident_id = None
+    else:
+        severity = "normal"
+        action = f"Reading of {req.reading_value} {req.unit or rule['unit']} is within safe parameters."
+        incident_id = None
+
+    return {
+        "job_site": req.job_site,
+        "sensor_type": req.sensor_type,
+        "device_id": req.device_id,
+        "reading_value": req.reading_value,
+        "severity": severity,
+        "ai_action": action,
+        "incident_id": incident_id,
+        "triaged_at": now.isoformat(),
+    }
