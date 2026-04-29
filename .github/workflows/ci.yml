@@ -23,6 +23,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Create .env from .env.example
+        run: cp .env.example .env.local
+
       - name: Lint
         run: npm run lint
 
@@ -31,6 +34,8 @@ jobs:
         env:
           VITE_API_BASE_URL: https://placeholder.railway.app
           VITE_GA4_ID: G-XXXXXXXXXX
+          # CI placeholder — production deploys use the VITE_SITE_URL secret
+          VITE_SITE_URL: https://jworden.netlify.app
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
@@ -40,7 +45,7 @@ jobs:
           retention-days: 7
 
   backend:
-    name: Backend — Python Import Check
+    name: Backend — Imports, Migrations & Tests
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -60,11 +65,40 @@ jobs:
           JWORDEN_MASTER_KEY: ci-test-key
           JWT_SECRET_KEY: ci-test-secret
 
-  tests:
-    name: Tests — Frontend Unit, Backend API, E2E Smoke
+      - name: Validate Alembic migrations (upgrade to head on SQLite)
+        run: alembic upgrade head
+        env:
+          DATABASE_URL: sqlite:///./ci_migration_check.db
+          JWORDEN_MASTER_KEY: ci-test-key
+          JWT_SECRET_KEY: ci-test-secret
+
+      - name: Backend API tests
+        run: pytest -q
+        env:
+          JWORDEN_MASTER_KEY: test-master-key
+          JWT_SECRET_KEY: test-jwt-secret
+          AUTO_CREATE_TABLES: "true"
+
+  docker:
+    name: Docker — Build Validation
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate docker-compose config
+        run: docker compose config --quiet
+
+      - name: Build Docker image (builder stage)
+        run: docker build --target builder -t jworden-api:ci .
+
+  tests:
+    name: Tests — Frontend Unit & E2E Smoke
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    needs: [frontend, backend]
     steps:
       - uses: actions/checkout@v4
 
@@ -73,25 +107,11 @@ jobs:
           node-version: "20"
           cache: "npm"
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
       - name: Install frontend dependencies
         run: npm ci
 
-      - name: Install backend dependencies
-        run: pip install -r requirements.txt
-
       - name: Frontend unit tests
         run: npm test
-
-      - name: Backend API tests
-        run: pytest -q
-        env:
-          JWORDEN_MASTER_KEY: test-master-key
-          JWT_SECRET_KEY: test-jwt-secret
-          AUTO_CREATE_TABLES: "true"
 
       - name: Install Playwright browser
         run: npx playwright install --with-deps chromium
@@ -101,3 +121,39 @@ jobs:
         env:
           VITE_API_BASE_URL: http://127.0.0.1:9999
           VITE_CC_PASSWORD: e2e-pin
+
+  deploy-netlify:
+    name: Deploy — Netlify Production
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    needs: [frontend, backend, tests]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build for production
+        run: npm run build
+        env:
+          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
+          VITE_SITE_URL: ${{ secrets.VITE_SITE_URL }}
+          VITE_GA4_ID: ${{ secrets.VITE_GA4_ID }}
+          VITE_GOOGLE_MAPS_API_KEY: ${{ secrets.VITE_GOOGLE_MAPS_API_KEY }}
+          VITE_STRIPE_PUBLISHABLE_KEY: ${{ secrets.VITE_STRIPE_PUBLISHABLE_KEY }}
+
+      - name: Install Netlify CLI
+        run: npm install -g netlify-cli
+
+      - name: Deploy to Netlify
+        run: netlify deploy --dir=dist --prod --message "CI deploy from ${{ github.sha }}"
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
