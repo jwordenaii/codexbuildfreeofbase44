@@ -6,7 +6,7 @@
 [build.environment]
   NODE_VERSION = "20"
   PYTHON_VERSION = "3.11"
-  VITE_API_BASE_URL = "https://codexbuildfreeofbase44.up.railway.app"
+  VITE_API_BASE_URL = "https://codexbuildfreeofbase44-production.up.railway.app"
   VITE_SITE_URL = "https://www.jwordenasphaltpaving.com"
 
 # Exclude static files from SPA fallback
