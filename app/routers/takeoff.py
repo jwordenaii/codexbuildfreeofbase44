@@ -16,6 +16,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
 from ..core.limiter import limiter
+from ..core.security import verify_premium_security
 from ..database import get_db
 from ..models import GroundScanReport
 from ..services.vision_takeoff import aerial_view_lookup, measure_image_areas, solar_lookup
@@ -117,7 +118,7 @@ class SolarRequest(BaseModel):
     summary="Google Solar API — DSM, roof area, and flux map metadata",
 )
 @limiter.limit("20/minute")
-async def solar_data(request: Request, req: SolarRequest):
+async def solar_data(request: Request, req: SolarRequest, _: dict = Depends(verify_premium_security)):
     """
     Call the Google Solar API buildingInsights endpoint for the building
     closest to the supplied lat/lng.  Returns DSM metadata, max array area,
@@ -151,6 +152,7 @@ async def measure_image(
         ge=0,
         description="Ignore polygons smaller than this area (sq ft)",
     ),
+    _: dict = Depends(verify_premium_security),
 ):
     """
     Run the OpenCV pipeline on an uploaded project photo:
@@ -193,6 +195,7 @@ async def measure_image(
 async def aerial_view(
     request: Request,
     address: str = Query(..., min_length=5, max_length=300, description="Street address"),
+    _: dict = Depends(verify_premium_security),
 ):
     """
     Retrieve a signed cinematic aerial video URL from Google Aerial View API
@@ -294,7 +297,7 @@ def _ground_scan_analysis(req: GroundScanRequest) -> dict:
 
 @router.post("/ground-scan", summary="Analyze civil-tech utility locating and subsurface scan before digging")
 @limiter.limit("30/minute")
-async def ground_scan(request: Request, req: GroundScanRequest, db: Session = Depends(get_db)):
+async def ground_scan(request: Request, req: GroundScanRequest, db: Session = Depends(get_db), _: dict = Depends(verify_premium_security)):
     analysis = _ground_scan_analysis(req)
     report = GroundScanReport(
         project_site_id=req.project_site_id,
@@ -362,7 +365,7 @@ def _risk_from_score(score: float) -> str:
 
 @router.post("/pavement-decay", summary="Road, parking lot, and driveway age-decay simulation")
 @limiter.limit("60/minute")
-async def pavement_decay(request: Request, req: PavementDecayRequest):
+async def pavement_decay(request: Request, req: PavementDecayRequest, _: dict = Depends(verify_premium_security)):
     pci_now = _base_condition(req)
     annual = _annual_decay(req)
     projection = []
@@ -413,7 +416,7 @@ def _premium_module(name: str, title: str, score: float, summary: str, actions: 
 
 @router.post("/premium-civil-stack", summary="Seven premium autonomous civil-tech scan modules")
 @limiter.limit("30/minute")
-async def premium_civil_stack(request: Request, req: PremiumCivilStackRequest):
+async def premium_civil_stack(request: Request, req: PremiumCivilStackRequest, _: dict = Depends(verify_premium_security)):
     tech = {t.lower().replace("-", " ").replace("_", " ") for t in req.technologies}
     ground_req = GroundScanRequest(
         address=req.address,
