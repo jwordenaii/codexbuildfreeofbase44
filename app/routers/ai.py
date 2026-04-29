@@ -8,17 +8,60 @@ chat           — Natural language Q&A about construction law / paving services
 import base64
 import logging
 import os
+import time
 import uuid
 from typing import Optional
 
-from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
+from fastapi import APIRouter, Depends, File, HTTPException, Request, UploadFile
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
+from ..core.limiter import limiter
 from ..core.security import verify_premium_security
 from ..database import get_db
 
 logger = logging.getLogger(__name__)
+
+# ── Retry helper ──────────────────────────────────────────────────────────────
+
+def _retry_with_backoff(fn, *, retries: int = 3, base_delay: float = 1.0):
+    """
+    Call *fn* up to *retries* times with exponential backoff.
+
+    Retries on transient errors (network, timeout, rate-limit).  Raises the
+    last exception if all attempts fail.
+    """
+    last_exc: Exception | None = None
+    for attempt in range(retries):
+        try:
+            return fn()
+        except Exception as exc:  # noqa: BLE001
+            last_exc = exc
+            # Don't retry on non-transient errors (auth, bad request, etc.)
+            err_str = str(exc).lower()
+            if any(k in err_str for k in ("invalid_api_key", "permission", "invalid request")):
+                raise
+            delay = base_delay * (2 ** attempt)
+            logger.warning(
+                "OpenAI call failed (attempt %d/%d), retrying in %.1fs: %s",
+                attempt + 1,
+                retries,
+                delay,
+                exc,
+            )
+            time.sleep(delay)
+    raise last_exc  # type: ignore[misc]
+
+
+def _capture_exception(exc: Exception, context: str) -> None:
+    """Send exception to Sentry if configured, otherwise log it."""
+    try:
+        import sentry_sdk  # noqa: PLC0415
+        with sentry_sdk.push_scope() as scope:
+            scope.set_tag("context", context)
+            sentry_sdk.capture_exception(exc)
+    except Exception:  # noqa: BLE001
+        pass  # Sentry not installed or not configured — already logged by caller
 
 router = APIRouter(prefix="/api/v1/ai", tags=["ai"])
 
@@ -77,15 +120,16 @@ def _stub_analysis() -> dict:
 
 def _openai_analysis(image_bytes: bytes, mime_type: str) -> dict:
     import json
-    try:
-        client = _get_openai_client()
-        if client is None:
-            raise RuntimeError("OPENAI_API_KEY not configured")
 
-        b64 = base64.b64encode(image_bytes).decode()
-        data_url = f"data:{mime_type};base64,{b64}"
+    client = _get_openai_client()
+    if client is None:
+        raise RuntimeError("OPENAI_API_KEY not configured")
 
-        response = client.chat.completions.create(
+    b64 = base64.b64encode(image_bytes).decode()
+    data_url = f"data:{mime_type};base64,{b64}"
+
+    def _call():
+        return client.chat.completions.create(
             model="gpt-4o",
             messages=[
                 {
@@ -108,7 +152,13 @@ def _openai_analysis(image_bytes: bytes, mime_type: str) -> dict:
                 },
             ],
             max_tokens=600,
+            timeout=30,
         )
+
+    try:
+        t0 = time.monotonic()
+        response = _retry_with_backoff(_call, retries=3, base_delay=1.0)
+        latency_ms = round((time.monotonic() - t0) * 1000, 2)
 
         text = response.choices[0].message.content or ""
         # Strip markdown code fences if model adds them
@@ -116,9 +166,11 @@ def _openai_analysis(image_bytes: bytes, mime_type: str) -> dict:
             text = text.split("```")[1].lstrip("json").strip()
         result = json.loads(text)
         result["engine"] = "gpt-4o"
+        result["latency_ms"] = latency_ms
         return result
     except Exception as exc:  # noqa: BLE001
-        logger.error("OpenAI vision call failed: %s", exc)
+        logger.error("OpenAI vision call failed after retries: %s", exc, exc_info=True)
+        _capture_exception(exc, context="photo_inspect")
         fallback = _stub_analysis()
         fallback["engine"] = "stub_fallback"
         fallback["error"] = str(exc)
@@ -129,7 +181,9 @@ def _openai_analysis(image_bytes: bytes, mime_type: str) -> dict:
     "/photo-inspect",
     summary="AI asphalt damage assessment from photo",
 )
+@limiter.limit("20/minute")
 async def photo_inspect(
+    request: Request,
     file: UploadFile = File(...),
     security: dict = Depends(verify_premium_security),
 ):
@@ -146,6 +200,17 @@ async def photo_inspect(
     openai_key = os.getenv("OPENAI_API_KEY", "")
     if openai_key:
         analysis = _openai_analysis(image_bytes, file.content_type)
+        # If the analysis engine is stub_fallback, the OpenAI call failed entirely.
+        # Return 503 so callers know the AI service is degraded.
+        if analysis.get("engine") == "stub_fallback":
+            raise HTTPException(
+                status_code=503,
+                detail={
+                    "error": "AI vision service temporarily unavailable",
+                    "reason": analysis.get("error", "unknown"),
+                    "fallback": analysis,
+                },
+            )
     else:
         analysis = _stub_analysis()
 
@@ -279,22 +344,22 @@ def _openai_chat(
     state_code: Optional[str],
     page_context: Optional[str] = None,
 ) -> str:
-    try:
-        client = _get_openai_client()
-        if client is None:
-            return _stub_chat(question)
+    client = _get_openai_client()
+    if client is None:
+        return _stub_chat(question)
 
-        context_parts = []
-        if state_code:
-            context_parts.append(f"State context: {state_code.upper()}")
-        if page_context:
-            context_parts.append(f"User is currently on the {page_context}")
+    context_parts = []
+    if state_code:
+        context_parts.append(f"State context: {state_code.upper()}")
+    if page_context:
+        context_parts.append(f"User is currently on the {page_context}")
 
-        user_msg = question
-        if context_parts:
-            user_msg = f"[{'; '.join(context_parts)}] {question}"
+    user_msg = question
+    if context_parts:
+        user_msg = f"[{'; '.join(context_parts)}] {question}"
 
-        response = client.chat.completions.create(
+    def _call():
+        return client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
                 {"role": "system", "content": _CHAT_SYSTEM_PROMPT},
@@ -302,10 +367,15 @@ def _openai_chat(
             ],
             max_tokens=300,
             temperature=0.7,
+            timeout=20,
         )
+
+    try:
+        response = _retry_with_backoff(_call, retries=2, base_delay=0.5)
         return response.choices[0].message.content or _stub_chat(question)
     except Exception as exc:  # noqa: BLE001 — openai raises many subtypes; json/network errors also possible
-        logger.error("OpenAI chat call failed: %s", exc)
+        logger.error("OpenAI chat call failed after retries: %s", exc, exc_info=True)
+        _capture_exception(exc, context="chat")
         return _stub_chat(question)
 
 
@@ -314,7 +384,8 @@ def _openai_chat(
     summary="JWordenAI natural language Q&A",
     response_model=ChatResponse,
 )
-async def chat(req: ChatRequest, db: Session = Depends(get_db)):
+@limiter.limit("10/minute")
+async def chat(request: Request, req: ChatRequest, db: Session = Depends(get_db)):
     """
     Public endpoint — no auth required.
     Supports multi-turn conversation via session_id (Feature 1).
@@ -406,7 +477,8 @@ def _stub_suggest(message: str) -> ContactSuggestResponse:
     summary="AI-assisted contact form field suggestions",
     response_model=ContactSuggestResponse,
 )
-async def contact_suggest(req: ContactSuggestRequest):
+@limiter.limit("10/minute")
+async def contact_suggest(request: Request, req: ContactSuggestRequest):
     """
     Public endpoint — no auth required.
 
@@ -430,15 +502,20 @@ async def contact_suggest(req: ContactSuggestRequest):
             '  "hint": a one-sentence tip to help the customer add useful detail (max 100 chars), or null\n'
             "Return only valid JSON, no markdown fences."
         )
-        response = client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[
-                {"role": "system", "content": prompt},
-                {"role": "user", "content": req.message[:500]},
-            ],
-            max_tokens=80,
-            temperature=0.3,
-        )
+
+        def _call():
+            return client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[
+                    {"role": "system", "content": prompt},
+                    {"role": "user", "content": req.message[:500]},
+                ],
+                max_tokens=80,
+                temperature=0.3,
+                timeout=15,
+            )
+
+        response = _retry_with_backoff(_call, retries=2, base_delay=0.5)
         raw = response.choices[0].message.content or ""
         if "```" in raw:
             raw = raw.split("```")[1].lstrip("json").strip()
@@ -449,5 +526,6 @@ async def contact_suggest(req: ContactSuggestRequest):
             engine="gpt-4o-mini",
         )
     except Exception as exc:  # noqa: BLE001
-        logger.warning("contact_suggest OpenAI call failed: %s", exc)
+        logger.warning("contact_suggest OpenAI call failed after retries: %s", exc)
+        _capture_exception(exc, context="contact_suggest")
         return _stub_suggest(req.message)

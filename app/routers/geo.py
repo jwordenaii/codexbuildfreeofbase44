@@ -32,6 +32,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
 from ..core.limiter import limiter
+from ..core.security import verify_premium_security
 from ..database import get_db
 from ..models import PermitLead, ProjectSite, TruckPosition
 from ..schemas.permit_lead import PermitLeadOut
@@ -155,6 +156,7 @@ def _parse_optional_dt(value: Optional[str]) -> Optional[datetime]:
 def list_sites(
     status: Optional[str] = Query(default=None, description="Filter by status: active | completed | pending"),
     db: Session = Depends(get_db),
+    _: dict = Depends(verify_premium_security),
 ):
     q = db.query(ProjectSite)
     if status:
@@ -168,6 +170,7 @@ def create_site(
     request: Request,
     site_in: ProjectSiteIn,
     db: Session = Depends(get_db),
+    _: dict = Depends(verify_premium_security),
 ):
     # Validate geometry_json if provided
     if site_in.geometry_json:
@@ -185,7 +188,7 @@ def create_site(
 
 
 @router.get("/sites/{site_id}", response_model=ProjectSiteOut, summary="Get project site by ID")
-def get_site(site_id: int, db: Session = Depends(get_db)):
+def get_site(site_id: int, db: Session = Depends(get_db), _: dict = Depends(verify_premium_security)):
     site = db.query(ProjectSite).filter(ProjectSite.id == site_id).first()
     if not site:
         raise HTTPException(status_code=404, detail=f"Project site {site_id} not found")
@@ -199,6 +202,7 @@ def update_site(
     request: Request,
     site_in: ProjectSiteIn,
     db: Session = Depends(get_db),
+    _: dict = Depends(verify_premium_security),
 ):
     site = db.query(ProjectSite).filter(ProjectSite.id == site_id).first()
     if not site:
@@ -227,6 +231,7 @@ def list_permit_leads(
     state: Optional[str] = Query(default=None, max_length=2, description="Filter by state code"),
     limit: int = Query(default=50, ge=1, le=500),
     db: Session = Depends(get_db),
+    _: dict = Depends(verify_premium_security),
 ):
     q = db.query(PermitLead)
     if label:
@@ -242,6 +247,7 @@ def trigger_scrape(
     request: Request,
     background_tasks: BackgroundTasks,
     max_pages: int = Query(default=5, ge=1, le=50, description="Max pages to scrape per run"),
+    _: dict = Depends(verify_premium_security),
 ):
     """
     Enqueue a Virginia LIS permit scrape task.
@@ -279,6 +285,7 @@ def radius_query(
     lng: float = Query(default=_RICHMOND_LNG, ge=-180, le=180),
     radius_miles: float = Query(default=_DEFAULT_RADIUS_MILES, ge=0.1, le=500),
     db: Session = Depends(get_db),
+    _: dict = Depends(verify_premium_security),
 ):
     """
     Find all project sites and permit leads within ``radius_miles`` of (lat, lng).
@@ -340,7 +347,7 @@ def radius_query(
 # ── Truck Positions ───────────────────────────────────────────────────────────
 
 @router.get("/trucks", response_model=List[TruckOut], summary="List live truck positions")
-def list_trucks(db: Session = Depends(get_db)):
+def list_trucks(db: Session = Depends(get_db), _: dict = Depends(verify_premium_security)):
     return db.query(TruckPosition).order_by(TruckPosition.truck_id).all()
 
 
@@ -351,6 +358,7 @@ def upsert_truck(
     request: Request,
     ping: TruckPingIn,
     db: Session = Depends(get_db),
+    _: dict = Depends(verify_premium_security),
 ):
     truck = db.query(TruckPosition).filter(TruckPosition.truck_id == truck_id).first()
     data = ping.model_dump(exclude_unset=True)
