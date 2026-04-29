@@ -10,7 +10,7 @@ Routes:
   GET    /api/v1/workforce/expiring-certs    — members with expiring certifications
 
   Predictive staffing (JWORDENAI):
-  POST   /api/v1/workforce/optimize          — run predictive staffing optimisation for a project
+  POST   /api/v1/workforce/optimize          — run predictive staffing optimization for a project
 """
 
 from __future__ import annotations
@@ -248,9 +248,9 @@ async def expiring_certs(
     return {"count": len(alerts), "days_ahead": days_ahead, "alerts": alerts}
 
 
-# ── Predictive staffing optimisation (JWORDENAI) ──────────────────────────────
+# ── Predictive staffing optimization (JWORDENAI) ──────────────────────────────
 
-class StaffingOptimiseRequest(BaseModel):
+class StaffingOptimizeRequest(BaseModel):
     project_name: str
     project_size_sqft: float
     service_type: str                       # paving | concrete | civil | mixed
@@ -260,7 +260,7 @@ class StaffingOptimiseRequest(BaseModel):
     target_productivity_sqft_per_day: Optional[float] = None
 
 
-def _optimise_staffing(req: StaffingOptimiseRequest, available_members: list) -> dict:
+def _optimize_staffing(req: StaffingOptimizeRequest, available_members: list) -> dict:
     """
     Deterministic staffing optimiser.
 
@@ -314,9 +314,9 @@ def _optimise_staffing(req: StaffingOptimiseRequest, available_members: list) ->
     }
 
 
-@router.post("/optimize", summary="Run predictive staffing optimisation for a project")
+@router.post("/optimize", summary="Run predictive staffing optimization for a project")
 @limiter.limit("20/minute")
-async def optimise_staffing(
+async def optimize_staffing(
     request: Request,
     db: Session = Depends(get_db),
     _: dict = Depends(verify_premium_security),
@@ -328,7 +328,7 @@ async def optimise_staffing(
     """
     try:
         body = await request.json()
-        req = StaffingOptimiseRequest.model_validate(body)
+        req = StaffingOptimizeRequest.model_validate(body)
     except ValidationError as exc:
         raise HTTPException(status_code=422, detail=exc.errors()) from exc
 
@@ -340,5 +340,5 @@ async def optimise_staffing(
     available = db.query(WorkforceMember).filter(WorkforceMember.available == 1).all()
     available_dicts = [_member_dict(m) for m in available]
 
-    result = _optimise_staffing(req, available_dicts)
+    result = _optimize_staffing(req, available_dicts)
     return {"status": "ok", **result}

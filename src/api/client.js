@@ -101,7 +101,7 @@ export const api = {
     request('GET', `/api/v1/safety/monitor/alerts${buildQS(params)}`),
   updateSafetyAlert: (id, data) => request('PUT', `/api/v1/safety/monitor/alerts/${id}`, data),
   // ── Workforce Optimisation (JWORDENAI) ─────────────────────────────────────
-  optimiseStaffing: (data) => request('POST', '/api/v1/workforce/optimize', data),
+  optimizeStaffing: (data) => request('POST', '/api/v1/workforce/optimize', data),
 }
 
 // ── GA4 event helpers ─────────────────────────────────────────────────────────

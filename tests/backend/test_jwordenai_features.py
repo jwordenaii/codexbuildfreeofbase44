@@ -3,7 +3,7 @@ test_jwordenai_features.py — Integration tests for the new JWORDENAI backend f
   - Generative AI (layout generation + 4D simulation)
   - IoT integration (device registry + telemetry ingestion)
   - Safety AI monitor (real-time observations + alert management)
-  - Workforce optimisation (predictive staffing)
+  - Workforce optimization (predictive staffing)
 """
 
 

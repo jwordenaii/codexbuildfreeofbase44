@@ -8,8 +8,8 @@ Routes:
   GET  /api/v1/gen-ai/simulate/{job_id}   — retrieve a simulation result
   GET  /api/v1/gen-ai/jobs                — list all generative AI jobs
 
-Layout generation analyses project dimensions and constraints to propose a
-material-efficient, energy-optimised site arrangement.
+Layout generation analyzes project dimensions and constraints to propose a
+material-efficient, energy-optimized site arrangement.
 
 4D simulation models the full construction sequence (3D geometry + time) and
 surfaces schedule risk, resource conflicts, and critical-path bottlenecks.
@@ -187,7 +187,7 @@ def _simulate_sequence(req: SimulationRequest) -> dict:
 
 # ── Layout generation ─────────────────────────────────────────────────────────
 
-@router.post("/layout", summary="Generate an AI-optimised site layout")
+@router.post("/layout", summary="Generate an AI-optimized site layout")
 @limiter.limit("20/minute")
 async def generate_layout(
     request: Request,
@@ -196,7 +196,7 @@ async def generate_layout(
     security: dict = Depends(verify_premium_security),
 ):
     """
-    Analyse project constraints and generate an optimised layout that
+    Analyze project constraints and generate an optimized layout that
     minimises material waste and maximises energy efficiency.
     """
     t0 = time.monotonic()
