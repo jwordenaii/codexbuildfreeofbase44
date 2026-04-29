@@ -6,6 +6,7 @@
  * gated behind the staff Command Center (login required).
  */
 
+import React from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 
@@ -86,17 +87,15 @@ const fadeUp = (delay = 0) => ({
 
 /* ── Page ───────────────────────────────────────────────────────────────── */
 export default function JWordenAI() {
+  // Update document metadata for SEO
+  React.useEffect(() => {
+    document.title = PAGE_TITLE
+    const metaDesc = document.querySelector('meta[name="description"]')
+    if (metaDesc) metaDesc.setAttribute('content', PAGE_DESC)
+  }, [])
+
   return (
     <>
-      {/* ── SEO head tags via document.title (Vite / no react-helmet) ── */}
-      {typeof document !== 'undefined' &&
-        (() => {
-          document.title = PAGE_TITLE
-          const metaDesc = document.querySelector('meta[name="description"]')
-          if (metaDesc) metaDesc.setAttribute('content', PAGE_DESC)
-          return null
-        })()}
-
       {/* ── Hero ──────────────────────────────────────────────────────── */}
       <section className="relative bg-brand-navy text-white overflow-hidden pt-24 pb-20">
         {/* Decorative glow */}

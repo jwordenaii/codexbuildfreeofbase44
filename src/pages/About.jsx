@@ -481,7 +481,7 @@ export default function About() {
                 Powered by
               </span>
               <h2 className="font-display font-black text-4xl mt-2 mb-4">
-                JWORDENAI<sup className="text-brand-amber text-2xl">™</sup>
+                JWORDENAI<sup className="text-brand-amber text-2xl" aria-label="trademark">™</sup>
               </h2>
               <p className="text-white/70 leading-relaxed mb-6">
                 Every estimate we build, every project we manage, and every maintenance program we
