@@ -1,28 +1,436 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@700;800;900&display=swap');
+/*
+ * J. Worden & Sons — Premium Luxury Design System
+ * Playfair Display (headings) + Inter (body)
+ * Gold accent · Charcoal · Cream · Silver
+ */
+
+/* ── Google Fonts ──────────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ── Base layer ────────────────────────────────────────────────────────────── */
 @layer base {
   html {
     scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
+
   body {
-    @apply bg-white text-brand-charcoal font-sans antialiased;
+    /* Warm cream background, deep charcoal text — premium foundation */
+    background-color: #fafaf8;
+    color: #1a1a1a;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 1rem;
+    line-height: 1.7;
+    @apply antialiased;
   }
+
+  /* Headings — Playfair Display for elegance and authority */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', Georgia, serif;
+    color: #1a1a1a;
+    line-height: 1.2;
+    font-weight: 700;
+  }
+
+  h1 { font-size: clamp(2.25rem, 5vw, 4rem); letter-spacing: -0.02em; }
+  h2 { font-size: clamp(1.875rem, 4vw, 3rem); letter-spacing: -0.015em; }
+  h3 { font-size: clamp(1.5rem, 3vw, 2.25rem); letter-spacing: -0.01em; }
+  h4 { font-size: clamp(1.25rem, 2.5vw, 1.75rem); }
+  h5 { font-size: 1.25rem; }
+  h6 { font-size: 1.125rem; }
+
+  /* Links — gold accent on hover */
+  a {
+    transition: color 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  /* Selection — branded gold highlight */
+  ::selection {
+    background-color: rgba(245, 166, 35, 0.25);
+    color: #1a1a1a;
+  }
+
+  /* Focus ring — gold, accessible */
+  :focus-visible {
+    outline: 2px solid #f5a623;
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+
+  /* Scrollbar — refined, minimal */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: #f0f0ec; }
+  ::-webkit-scrollbar-thumb { background: #d0d0d0; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #f5a623; }
 }
 
+/* ── Component layer ───────────────────────────────────────────────────────── */
 @layer components {
+
+  /* ── Buttons ─────────────────────────────────────────────────────────────── */
+
+  /* Primary — premium gold with charcoal text, lift on hover */
   .btn-primary {
-    @apply inline-flex items-center gap-2 bg-brand-yellow hover:bg-brand-yellow-dark text-brand-charcoal font-bold px-6 py-3 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg active:scale-95;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, #f5a623 0%, #e8961a 100%);
+    color: #1a1a1a;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 0.875rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.875rem 2rem;
+    border-radius: 0.375rem;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(245, 166, 35, 0.25), 0 1px 4px rgba(245, 166, 35, 0.15);
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+    overflow: hidden;
   }
+
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #f9c46b 0%, #f5a623 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(245, 166, 35, 0.35), 0 2px 8px rgba(245, 166, 35, 0.20);
+  }
+
+  .btn-primary:hover::before {
+    opacity: 1;
+  }
+
+  .btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(245, 166, 35, 0.20);
+  }
+
+  .btn-primary > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Outline — refined border, fills gold on hover */
   .btn-outline {
-    @apply inline-flex items-center gap-2 border-2 border-brand-yellow text-brand-yellow hover:bg-brand-yellow hover:text-brand-charcoal font-bold px-6 py-3 rounded-lg transition-all duration-200;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: transparent;
+    color: #1a1a1a;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 0.875rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.8125rem 1.9375rem; /* 1px less to account for border */
+    border-radius: 0.375rem;
+    border: 1.5px solid #f5a623;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
+
+  .btn-outline:hover {
+    background: linear-gradient(135deg, #f5a623 0%, #e8961a 100%);
+    color: #1a1a1a;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(245, 166, 35, 0.25);
+  }
+
+  .btn-outline:active {
+    transform: translateY(0);
+  }
+
+  /* Ghost — for dark backgrounds */
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 0.875rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.875rem 2rem;
+    border-radius: 0.375rem;
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-2px);
+  }
+
+  /* ── Section headings ────────────────────────────────────────────────────── */
+
+  /* Primary section heading — Playfair, large, charcoal */
   .section-heading {
-    @apply font-display text-3xl md:text-4xl font-black text-brand-charcoal;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    color: #1a1a1a;
+    letter-spacing: -0.015em;
+    line-height: 1.15;
+    position: relative;
+    display: inline-block;
   }
+
+  /* Gold underline accent on section headings */
+  .section-heading::after {
+    content: '';
+    display: block;
+    width: 3rem;
+    height: 3px;
+    background: linear-gradient(90deg, #f5a623 0%, #d4880a 100%);
+    margin-top: 0.75rem;
+    border-radius: 2px;
+  }
+
+  /* Centered variant */
+  .section-heading-center {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    color: #1a1a1a;
+    letter-spacing: -0.015em;
+    line-height: 1.15;
+    text-align: center;
+    position: relative;
+    display: block;
+  }
+
+  .section-heading-center::after {
+    content: '';
+    display: block;
+    width: 3rem;
+    height: 3px;
+    background: linear-gradient(90deg, #f5a623 0%, #d4880a 100%);
+    margin: 0.75rem auto 0;
+    border-radius: 2px;
+  }
+
+  /* Light variant — for dark backgrounds */
+  .section-heading-light {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: -0.015em;
+    line-height: 1.15;
+    position: relative;
+    display: inline-block;
+  }
+
+  .section-heading-light::after {
+    content: '';
+    display: block;
+    width: 3rem;
+    height: 3px;
+    background: linear-gradient(90deg, #f5a623 0%, #d4880a 100%);
+    margin-top: 0.75rem;
+    border-radius: 2px;
+  }
+
+  /* ── Cards ───────────────────────────────────────────────────────────────── */
+
+  /* Premium card — cream background, refined shadow, silver border */
   .card {
-    @apply bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden;
+    background-color: #fafaf8;
+    border-radius: 0.5rem;
+    border: 1px solid #e8e8e8;
+    box-shadow: 0 1px 2px rgba(26,26,26,0.04),
+                0 4px 12px rgba(26,26,26,0.06),
+                0 12px 32px rgba(26,26,26,0.08);
+    overflow: hidden;
+    transition: box-shadow 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .card:hover {
+    box-shadow: 0 2px 4px rgba(26,26,26,0.04),
+                0 8px 24px rgba(26,26,26,0.08),
+                0 24px 64px rgba(26,26,26,0.12);
+    transform: translateY(-3px);
+  }
+
+  /* Card with generous padding */
+  .card-body {
+    padding: 2rem 2.25rem;
+  }
+
+  /* Dark card — for charcoal sections */
+  .card-dark {
+    background-color: #242424;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.12),
+                0 4px 12px rgba(0,0,0,0.16),
+                0 12px 32px rgba(0,0,0,0.20);
+    overflow: hidden;
+    transition: box-shadow 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .card-dark:hover {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.16),
+                0 8px 24px rgba(0,0,0,0.22),
+                0 24px 64px rgba(0,0,0,0.28);
+    transform: translateY(-3px);
+  }
+
+  /* ── Premium utility classes ─────────────────────────────────────────────── */
+
+  /* .text-luxury — large, spaced, elegant label text */
+  .text-luxury {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #f5a623;
+  }
+
+  /* .text-luxury-dark — same treatment on light backgrounds */
+  .text-luxury-dark {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #3a3a3a;
+  }
+
+  /* .divider-premium — subtle gold horizontal rule */
+  .divider-premium {
+    display: block;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      #e8e8e8 20%,
+      #f5a623 50%,
+      #e8e8e8 80%,
+      transparent 100%
+    );
+    border: none;
+    margin: 0;
+  }
+
+  /* .divider-premium-short — compact gold accent line */
+  .divider-premium-short {
+    display: block;
+    width: 3rem;
+    height: 3px;
+    background: linear-gradient(90deg, #f5a623 0%, #d4880a 100%);
+    border: none;
+    border-radius: 2px;
+    margin: 0;
+  }
+
+  /* .shadow-premium — refined, layered shadow utility */
+  .shadow-premium {
+    box-shadow: 0 1px 2px rgba(26,26,26,0.04),
+                0 4px 12px rgba(26,26,26,0.06),
+                0 12px 32px rgba(26,26,26,0.08);
+  }
+
+  .shadow-premium-lg {
+    box-shadow: 0 2px 4px rgba(26,26,26,0.04),
+                0 8px 24px rgba(26,26,26,0.08),
+                0 24px 64px rgba(26,26,26,0.12);
+  }
+
+  /* ── Section wrappers ────────────────────────────────────────────────────── */
+
+  /* Cream section — warm, premium background */
+  .section-cream {
+    background-color: #fafaf8;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+
+  /* Charcoal section — sophisticated dark */
+  .section-charcoal {
+    background-color: #1a1a1a;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+
+  /* Off-white section — subtle contrast from cream */
+  .section-offwhite {
+    background-color: #f0f0ec;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+
+  /* ── Gold accent elements ────────────────────────────────────────────────── */
+
+  /* Inline gold highlight span */
+  .text-gold {
+    color: #f5a623;
+  }
+
+  /* Gold badge / pill */
+  .badge-gold {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    background: rgba(245, 166, 35, 0.12);
+    color: #d4880a;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.3125rem 0.75rem;
+    border-radius: 100px;
+    border: 1px solid rgba(245, 166, 35, 0.3);
+  }
+
+  /* ── Form inputs — premium styling ──────────────────────────────────────── */
+
+  .input-premium {
+    width: 100%;
+    background-color: #ffffff;
+    border: 1.5px solid #e8e8e8;
+    border-radius: 0.375rem;
+    padding: 0.875rem 1.125rem;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.9375rem;
+    color: #1a1a1a;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: inset 0 1px 3px rgba(26,26,26,0.04);
+  }
+
+  .input-premium::placeholder {
+    color: #a0a0a0;
+  }
+
+  .input-premium:focus {
+    outline: none;
+    border-color: #f5a623;
+    box-shadow: 0 0 0 3px rgba(245, 166, 35, 0.12),
+                inset 0 1px 3px rgba(26,26,26,0.04);
   }
 }
