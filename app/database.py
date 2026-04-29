@@ -69,3 +69,8 @@ def create_all_tables() -> None:
         logger.info('Database tables verified/created (url=%s)', _DATABASE_URL.split('@')[-1])
     except Exception as exc:  # noqa: BLE001
         logger.error('Could not create database tables: %s', exc)
+        try:
+            import sentry_sdk  # noqa: PLC0415
+            sentry_sdk.capture_exception(exc)
+        except Exception:  # noqa: BLE001
+            pass

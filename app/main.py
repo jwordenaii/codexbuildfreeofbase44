@@ -9,15 +9,46 @@ from dotenv import load_dotenv  # noqa: E402 — must run before other imports
 load_dotenv()
 
 # ── Sentry (Feature: observability) ──────────────────────────────────────────
+# Initialised BEFORE the FastAPI app is created so every integration hooks in
+# at import time and no early errors are missed.
 _SENTRY_DSN = os.getenv("SENTRY_DSN", "")
 if _SENTRY_DSN:
     try:
         import sentry_sdk  # noqa: PLC0415
+        from sentry_sdk.integrations.fastapi import FastApiIntegration  # noqa: PLC0415
+        from sentry_sdk.integrations.starlette import StarletteIntegration  # noqa: PLC0415
+        from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration  # noqa: PLC0415
+        from sentry_sdk.integrations.celery import CeleryIntegration  # noqa: PLC0415
+        from sentry_sdk.integrations.logging import LoggingIntegration  # noqa: PLC0415
+        import logging as _logging  # noqa: PLC0415
+
         sentry_sdk.init(
             dsn=_SENTRY_DSN,
+            # Performance monitoring — sample 10 % of requests by default.
+            # Override with SENTRY_TRACES_SAMPLE_RATE env var (0.0–1.0).
             traces_sample_rate=float(os.getenv("SENTRY_TRACES_SAMPLE_RATE", "0.1")),
+            integrations=[
+                # Captures every unhandled HTTP exception and request context.
+                StarletteIntegration(transaction_style="endpoint"),
+                FastApiIntegration(transaction_style="endpoint"),
+                # Captures slow / failing DB queries with full query text.
+                SqlalchemyIntegration(),
+                # Captures Celery task failures and task timing.
+                CeleryIntegration(monitor_beat_tasks=True),
+                # Promotes WARNING+ log records to Sentry breadcrumbs;
+                # ERROR+ log records are sent as Sentry events.
+                LoggingIntegration(
+                    level=_logging.WARNING,   # breadcrumb threshold
+                    event_level=_logging.ERROR,  # event threshold
+                ),
+            ],
+            # Attach the current git revision so errors link to the exact commit.
+            release=os.getenv("RAILWAY_GIT_COMMIT_SHA", "unknown"),
+            environment=os.getenv("RAILWAY_ENVIRONMENT_NAME", "production"),
+            # Send 100 % of error events (only traces are sampled).
+            send_default_pii=False,
         )
-        logging.getLogger(__name__).info("Sentry initialised")
+        logging.getLogger(__name__).info("Sentry initialised (env=%s)", os.getenv("RAILWAY_ENVIRONMENT_NAME", "production"))
     except Exception as _se:  # noqa: BLE001
         logging.getLogger(__name__).warning("Sentry init failed: %s", _se)
 

@@ -20,6 +20,15 @@ from ..database import get_db
 
 logger = logging.getLogger(__name__)
 
+
+def _capture_exception(exc: Exception) -> None:
+    """Forward an exception to Sentry if the SDK is initialised."""
+    try:
+        import sentry_sdk  # noqa: PLC0415
+        sentry_sdk.capture_exception(exc)
+    except Exception:  # noqa: BLE001
+        pass
+
 router = APIRouter(prefix="/api/v1/ai", tags=["ai"])
 
 _ALLOWED_MIME = {"image/jpeg", "image/png", "image/webp"}
@@ -119,6 +128,7 @@ def _openai_analysis(image_bytes: bytes, mime_type: str) -> dict:
         return result
     except Exception as exc:  # noqa: BLE001
         logger.error("OpenAI vision call failed: %s", exc)
+        _capture_exception(exc)
         fallback = _stub_analysis()
         fallback["engine"] = "stub_fallback"
         fallback["error"] = str(exc)
@@ -306,6 +316,7 @@ def _openai_chat(
         return response.choices[0].message.content or _stub_chat(question)
     except Exception as exc:  # noqa: BLE001 — openai raises many subtypes; json/network errors also possible
         logger.error("OpenAI chat call failed: %s", exc)
+        _capture_exception(exc)
         return _stub_chat(question)
 
 
@@ -450,4 +461,5 @@ async def contact_suggest(req: ContactSuggestRequest):
         )
     except Exception as exc:  # noqa: BLE001
         logger.warning("contact_suggest OpenAI call failed: %s", exc)
+        _capture_exception(exc)
         return _stub_suggest(req.message)

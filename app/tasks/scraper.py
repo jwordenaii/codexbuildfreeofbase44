@@ -125,6 +125,11 @@ try:
             return scrape_and_persist(max_pages=max_pages)
         except Exception as exc:  # noqa: BLE001
             logger.error("scrape_virginia_lis task failed: %s", exc)
+            try:
+                import sentry_sdk  # noqa: PLC0415
+                sentry_sdk.capture_exception(exc)
+            except Exception:  # noqa: BLE001
+                pass
             raise self.retry(exc=exc, countdown=300) from exc
 
 except ImportError:
