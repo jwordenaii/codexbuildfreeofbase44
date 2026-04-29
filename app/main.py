@@ -208,6 +208,7 @@ from .routers import customers as customers_router
 from .routers import auth as auth_router
 from .routers import health as health_router
 from .routers import metrics as metrics_router
+from .routers import gallery as gallery_router
 
 logger = logging.getLogger(__name__)
 
@@ -347,6 +348,9 @@ app.include_router(customers_router.router)
 app.include_router(auth_router.router)
 app.include_router(health_router.router)
 app.include_router(metrics_router.router)
+
+# Gallery
+app.include_router(gallery_router.router)
 
 
 # ── Legacy endpoints (kept for backward compatibility) ────────────────────────
