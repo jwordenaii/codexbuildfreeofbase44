@@ -30,9 +30,19 @@ _connect_args = {'check_same_thread': False} if _DATABASE_URL.startswith('sqlite
 _pool_kwargs: dict = {}
 if not _DATABASE_URL.startswith("sqlite"):
     _pool_kwargs = {
-        "pool_size":    int(os.getenv("DB_POOL_SIZE",    "10")),
-        "max_overflow": int(os.getenv("DB_MAX_OVERFLOW", "20")),
-        "pool_recycle": int(os.getenv("DB_POOL_RECYCLE", "1800")),  # recycle idle connections every 30 min
+        # pool_size: steady-state connections kept open.
+        # Raised from 10 → 20 to handle concurrent request bursts without
+        # waiting for a new connection to be established.
+        "pool_size":    int(os.getenv("DB_POOL_SIZE",    "20")),
+        # max_overflow: extra connections allowed above pool_size during spikes.
+        # Raised from 20 → 40 so burst traffic (10× growth target) doesn't
+        # exhaust the pool and return 503s.
+        "max_overflow": int(os.getenv("DB_MAX_OVERFLOW", "40")),
+        # pool_recycle: close and replace connections idle for 30 minutes.
+        # Prevents stale connections after PostgreSQL's idle timeout.
+        "pool_recycle": int(os.getenv("DB_POOL_RECYCLE", "1800")),
+        # pool_timeout: raise TimeoutError if no connection is available
+        # within 30 seconds (prevents indefinite request queuing).
         "pool_timeout": int(os.getenv("DB_POOL_TIMEOUT", "30")),
     }
 

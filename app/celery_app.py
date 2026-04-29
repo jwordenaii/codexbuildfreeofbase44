@@ -30,6 +30,7 @@ celery_app = Celery(
     include=[
         "app.tasks.scraper",
         "app.tasks.vision",
+        "app.tasks.cache_warmer",
     ],
 )
 
@@ -61,6 +62,13 @@ celery_app.conf.update(
             "task": "app.tasks.vision.process_vision_batch",
             "schedule": crontab(minute="*/15"),
             "kwargs": {"batch_size": 20},
+        },
+        # Pre-load hot data into Redis every 5 minutes.
+        # Keeps analytics, KPI wall, and CRM lead caches warm so the first
+        # request after a TTL expiry is served from Redis, not the database.
+        "warm-cache-every-5m": {
+            "task": "app.tasks.cache_warmer.warm_cache_task",
+            "schedule": crontab(minute="*/5"),
         },
     },
 )

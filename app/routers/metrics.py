@@ -6,6 +6,7 @@ Routes (all require premium security):
   GET /api/v1/metrics/redis     — Redis memory usage, key count, connected clients
   GET /api/v1/metrics/database  — Postgres connection pool stats, query latency
   GET /api/v1/metrics/ai        — OpenAI call counters, latency, error rate
+  GET /api/v1/metrics/cache     — Redis cache hit/miss ratio and counters
 
 All endpoints are rate-limited to 30/minute and require the premium security
 header (master key or JWT).
@@ -20,7 +21,8 @@ import time
 from fastapi import APIRouter, Depends, Request
 from fastapi.responses import JSONResponse
 
-from ..core.limiter import limiter
+from ..core.cache import get_cache_stats
+from ..core.limiter import HEALTH_LIMIT, limiter
 from ..core.security import verify_premium_security
 from ..services.celery_health import (
     check_celery_workers,
@@ -38,7 +40,7 @@ _REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
 # ── Celery metrics ────────────────────────────────────────────────────────────
 
 @router.get("/celery", summary="Celery queue depth, active tasks, and worker status")
-@limiter.limit("30/minute")
+@limiter.limit(HEALTH_LIMIT)
 async def celery_metrics(
     request: Request,
     _: dict = Depends(verify_premium_security),
@@ -77,7 +79,7 @@ async def celery_metrics(
 # ── Redis metrics ─────────────────────────────────────────────────────────────
 
 @router.get("/redis", summary="Redis memory usage, key count, and client connections")
-@limiter.limit("30/minute")
+@limiter.limit(HEALTH_LIMIT)
 async def redis_metrics(
     request: Request,
     _: dict = Depends(verify_premium_security),
@@ -127,7 +129,7 @@ async def redis_metrics(
 # ── Database metrics ──────────────────────────────────────────────────────────
 
 @router.get("/database", summary="Postgres connection pool stats and query latency")
-@limiter.limit("30/minute")
+@limiter.limit(HEALTH_LIMIT)
 async def database_metrics(
     request: Request,
     _: dict = Depends(verify_premium_security),
@@ -189,7 +191,7 @@ def record_ai_call(success: bool, latency_ms: float) -> None:
 
 
 @router.get("/ai", summary="OpenAI API call counts, latency, and error rate")
-@limiter.limit("30/minute")
+@limiter.limit(HEALTH_LIMIT)
 async def ai_metrics(
     request: Request,
     _: dict = Depends(verify_premium_security),
@@ -218,5 +220,28 @@ async def ai_metrics(
         "failed_calls": _ai_counters["failed_calls"],
         "error_rate_pct": error_rate,
         "avg_latency_ms": avg_latency,
+        "note": "Counters are per-process and reset on worker restart.",
+    }
+
+
+# ── Cache metrics ─────────────────────────────────────────────────────────────
+
+
+@router.get("/cache", summary="Redis cache hit/miss ratio and per-key counters")
+@limiter.limit(HEALTH_LIMIT)
+async def cache_metrics(
+    request: Request,
+    _: dict = Depends(verify_premium_security),
+):
+    """
+    Return in-process cache hit/miss counters and the computed hit ratio.
+
+    Counters are per-worker-process and reset on restart.  A hit_ratio_pct
+    above 70 % indicates the cache is working effectively.  Below 30 % may
+    indicate TTLs are too short or the cache warmer is not running.
+    """
+    stats = get_cache_stats()
+    return {
+        **stats,
         "note": "Counters are per-process and reset on worker restart.",
     }

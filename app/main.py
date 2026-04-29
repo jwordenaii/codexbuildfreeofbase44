@@ -162,6 +162,7 @@ if _SENTRY_DSN:
 
 from fastapi import FastAPI, BackgroundTasks, Depends
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
 from pydantic import BaseModel
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
@@ -257,6 +258,12 @@ app.add_middleware(
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["Authorization", "Content-Type"],
 )
+
+# ── GZip compression ──────────────────────────────────────────────────────────
+# Compress responses larger than 500 bytes.  Covers JSON, HTML, CSS, and JS.
+# Binary formats (images, PDFs) are already compressed and are excluded
+# automatically by the middleware when the Content-Type is not compressible.
+app.add_middleware(GZipMiddleware, minimum_size=500)
 
 
 # ── Request logging middleware ────────────────────────────────────────────────
