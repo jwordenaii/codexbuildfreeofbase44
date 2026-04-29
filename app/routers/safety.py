@@ -10,6 +10,7 @@ Routes:
   DELETE /api/v1/safety/incidents/{id}         — delete incident
   GET    /api/v1/safety/osha-rate              — calculate OSHA recordable rate
   GET    /api/v1/safety/scores                 — per-site safety scores
+  GET    /api/v1/safety/ai-monitor             — AI real-time risk assessment for a job site
 """
 
 from __future__ import annotations
@@ -269,3 +270,77 @@ async def site_scores(
         s["score"] = max(0, min(100, score))
 
     return {"sites": sorted(sites.values(), key=lambda x: x["score"], reverse=True)}
+
+
+# ── AI real-time monitoring ───────────────────────────────────────────────────
+
+@router.get("/ai-monitor", summary="AI-powered real-time safety risk assessment for a job site")
+@limiter.limit("30/minute")
+async def ai_monitor(
+    request: Request,
+    job_site: str = Query(..., description="Job site name to assess"),
+    db: Session = Depends(get_db),
+    _: dict = Depends(verify_premium_security),
+):
+    """
+    Aggregate recent incidents and toolbox compliance for a job site, then
+    return an AI-driven risk level and recommended mitigations.
+
+    Risk levels: low | moderate | high | critical
+    """
+    from datetime import timedelta  # noqa: PLC0415 — lightweight local import
+
+    now = datetime.now(timezone.utc)
+    window_start = now - timedelta(days=30)
+
+    incidents_30d = (
+        db.query(SafetyIncident)
+        .filter(SafetyIncident.job_site.ilike(f"%{job_site}%"))
+        .filter(SafetyIncident.incident_date >= window_start)
+        .all()
+    )
+    recordables = [i for i in incidents_30d if i.osha_recordable]
+
+    talks_30d = (
+        db.query(SafetyToolboxTalk)
+        .filter(SafetyToolboxTalk.job_site.ilike(f"%{job_site}%"))
+        .filter(SafetyToolboxTalk.talk_date >= window_start)
+        .all()
+    )
+    total_crew = sum(t.crew_count for t in talks_30d)
+    signed_off = sum(t.signed_off for t in talks_30d)
+    compliance_pct = round((signed_off / total_crew * 100) if total_crew > 0 else 0.0, 1)
+
+    # Risk scoring: recordable incidents carry the highest weight
+    risk_score = len(recordables) * 3 + len(incidents_30d) - (compliance_pct / 25)
+
+    if risk_score <= 0:
+        risk_level = "low"
+    elif risk_score <= 3:
+        risk_level = "moderate"
+    elif risk_score <= 7:
+        risk_level = "high"
+    else:
+        risk_level = "critical"
+
+    mitigations: list[str] = []
+    if len(recordables) > 0:
+        mitigations.append("Review and update OSHA-recordable incident corrective actions immediately.")
+    if compliance_pct < 80:
+        mitigations.append("Increase toolbox talk frequency — crew sign-off rate is below 80%.")
+    if len(incidents_30d) > 2:
+        mitigations.append("Conduct a site-wide safety stand-down before resuming work.")
+    if not mitigations:
+        mitigations.append("Maintain current safety protocols and continue regular toolbox talks.")
+
+    return {
+        "job_site": job_site,
+        "window_days": 30,
+        "incidents_30d": len(incidents_30d),
+        "recordables_30d": len(recordables),
+        "toolbox_talks_30d": len(talks_30d),
+        "crew_compliance_pct": compliance_pct,
+        "risk_level": risk_level,
+        "mitigations": mitigations,
+        "assessed_at": now.isoformat(),
+    }

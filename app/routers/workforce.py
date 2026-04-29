@@ -2,12 +2,13 @@
 workforce.py — Crew & Skills Matrix router for JWordenAI.
 
 Routes:
-  GET    /api/v1/workforce                   — list workforce members
-  POST   /api/v1/workforce                   — add member
-  PUT    /api/v1/workforce/{id}              — update member
-  DELETE /api/v1/workforce/{id}              — remove member
-  GET    /api/v1/workforce/available         — query available + qualified members
-  GET    /api/v1/workforce/expiring-certs    — members with expiring certifications
+  GET    /api/v1/workforce                        — list workforce members
+  POST   /api/v1/workforce                        — add member
+  PUT    /api/v1/workforce/{id}                   — update member
+  DELETE /api/v1/workforce/{id}                   — remove member
+  GET    /api/v1/workforce/available              — query available + qualified members
+  GET    /api/v1/workforce/expiring-certs         — members with expiring certifications
+  GET    /api/v1/workforce/predictive-staffing    — predictive staffing & labor optimization
 """
 
 from __future__ import annotations
@@ -243,3 +244,74 @@ async def expiring_certs(
 
     alerts.sort(key=lambda x: x["days_left"])
     return {"count": len(alerts), "days_ahead": days_ahead, "alerts": alerts}
+
+
+# ── Predictive staffing ───────────────────────────────────────────────────────
+
+@router.get("/predictive-staffing", summary="Predictive staffing and labor optimization recommendations")
+@limiter.limit("30/minute")
+async def predictive_staffing(
+    request: Request,
+    project_sqft: float = Query(..., ge=1, description="Estimated project area in sq ft"),
+    trade: Optional[str] = Query(default=None, description="Filter available crew by trade"),
+    target_days: int = Query(default=5, ge=1, le=365, description="Desired completion window in working days"),
+    db: Session = Depends(get_db),
+    _: dict = Depends(verify_premium_security),
+):
+    """
+    Analyse available workforce and recommend an optimal crew composition for
+    a project of the given size, ensuring target completion within `target_days`.
+
+    Returns:
+      - recommended crew size
+      - matched available members
+      - estimated daily output and schedule risk
+      - labor optimization tips
+    """
+    # Fetch available crew (optionally filtered by trade)
+    q = db.query(WorkforceMember).filter(WorkforceMember.available == 1)
+    if trade:
+        q = q.filter(WorkforceMember.trade.ilike(f"%{trade}%"))
+    available = q.order_by(WorkforceMember.name.asc()).all()
+
+    # Rough productivity constant: ~500 sqft per worker per day (asphalt paving benchmark)
+    SQFT_PER_WORKER_DAY = 500.0
+    total_worker_days_needed = project_sqft / SQFT_PER_WORKER_DAY
+    recommended_crew_size = max(1, round(total_worker_days_needed / target_days))
+
+    matched = available[:recommended_crew_size]
+    shortfall = max(0, recommended_crew_size - len(available))
+
+    # Realistic schedule estimate given actual available crew
+    effective_crew = len(matched) if matched else 1
+    estimated_days = round(total_worker_days_needed / effective_crew)
+
+    # Schedule risk
+    if shortfall > 0:
+        schedule_risk = "high"
+    elif estimated_days > target_days * 1.2:
+        schedule_risk = "moderate"
+    else:
+        schedule_risk = "low"
+
+    tips: list[str] = []
+    if shortfall > 0:
+        tips.append(f"You need {shortfall} additional worker(s). Consider subcontractors or overtime.")
+    if schedule_risk == "moderate":
+        tips.append("Estimated duration exceeds target by >20%. Pre-stage materials to minimise idle time.")
+    if not trade:
+        tips.append("Specify a trade filter to narrow the match to qualified crew only.")
+    if not tips:
+        tips.append("Staffing looks optimal for the target window. Confirm crew availability at mobilisation.")
+
+    return {
+        "project_sqft": project_sqft,
+        "target_days": target_days,
+        "recommended_crew_size": recommended_crew_size,
+        "available_crew_count": len(available),
+        "matched_crew": [_member_dict(m) for m in matched],
+        "shortfall": shortfall,
+        "estimated_completion_days": estimated_days,
+        "schedule_risk": schedule_risk,
+        "optimization_tips": tips,
+    }

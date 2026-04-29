@@ -80,6 +80,27 @@ export const api = {
   askForeman: (data) => request('POST', '/api/v1/foreman/chat', data),
   getForemanStatus: () => request('GET', '/api/v1/foreman/status'),
   getVisionResult: (jobId) => request('GET', `/api/v1/ai/vision-result/${jobId}`),
+  // ── Generative AI (JWORDENAI) ──────────────────────────────────────────────
+  generateLayout: (data) => request('POST', '/api/v1/generative-ai/layout', data),
+  generateSequencing: (data) => request('POST', '/api/v1/generative-ai/sequencing', data),
+  getGenerativeAIJobs: (params = {}) =>
+    request('GET', `/api/v1/generative-ai/jobs${buildQS(params)}`),
+  getGenerativeAIJob: (jobId) => request('GET', `/api/v1/generative-ai/jobs/${jobId}`),
+  // ── IoT (JWORDENAI) ────────────────────────────────────────────────────────
+  getIoTDevices: (params = {}) => request('GET', `/api/v1/iot/devices${buildQS(params)}`),
+  registerIoTDevice: (data) => request('POST', '/api/v1/iot/devices', data),
+  updateIoTDevice: (deviceId, data) => request('PUT', `/api/v1/iot/devices/${deviceId}`, data),
+  deregisterIoTDevice: (deviceId) => request('DELETE', `/api/v1/iot/devices/${deviceId}`),
+  ingestIoTReading: (data) => request('POST', '/api/v1/iot/readings', data),
+  getIoTReadings: (params = {}) => request('GET', `/api/v1/iot/readings${buildQS(params)}`),
+  getIoTLatestReadings: (params = {}) =>
+    request('GET', `/api/v1/iot/readings/latest${buildQS(params)}`),
+  // ── Safety AI monitoring (JWORDENAI) ──────────────────────────────────────
+  getSafetyAIMonitor: (jobSite) =>
+    request('GET', `/api/v1/safety/ai-monitor?job_site=${encodeURIComponent(jobSite)}`),
+  // ── Workforce predictive staffing (JWORDENAI) ─────────────────────────────
+  getPredictiveStaffing: (params = {}) =>
+    request('GET', `/api/v1/workforce/predictive-staffing${buildQS(params)}`),
 }
 
 // ── GA4 event helpers ─────────────────────────────────────────────────────────

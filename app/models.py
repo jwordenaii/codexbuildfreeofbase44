@@ -821,3 +821,71 @@ class Tenant(Base):
 
     def __repr__(self) -> str:
         return f"<Tenant tenant_id={self.tenant_id!r} company={self.company_name!r}>"
+
+
+# ── IoT Devices ───────────────────────────────────────────────────────────────
+
+class IoTDevice(Base):
+    """Registered IoT hardware device (drone, wearable, mixer, sensor, etc.)."""
+
+    __tablename__ = "iot_devices"
+
+    id              = Column(Integer, primary_key=True, index=True)
+    device_id       = Column(String(100), nullable=False, index=True, unique=True)
+    device_type     = Column(String(30),  nullable=False)       # drone | wearable | mixer | sensor
+    label           = Column(String(120), nullable=True)
+    job_site        = Column(String(300), nullable=True)
+    status          = Column(String(20),  nullable=False, default="active")  # active | offline | maintenance
+    firmware_version= Column(String(40),  nullable=True)
+    last_seen_at    = Column(DateTime(timezone=True), nullable=True)
+    tenant_id       = Column(String(60),  nullable=True, index=True, default="default")
+    created_at      = Column(DateTime(timezone=True), default=_utcnow, nullable=False)
+    updated_at      = Column(DateTime(timezone=True), default=_utcnow, onupdate=_utcnow, nullable=False)
+
+    def __repr__(self) -> str:
+        return f"<IoTDevice device_id={self.device_id!r} type={self.device_type!r}>"
+
+
+class IoTReading(Base):
+    """A single telemetry reading from a registered IoT device."""
+
+    __tablename__ = "iot_readings"
+
+    id          = Column(Integer, primary_key=True, index=True)
+    device_id   = Column(String(100), nullable=False, index=True)  # FK to iot_devices.device_id
+    metric      = Column(String(60),  nullable=False)               # temperature | vibration | gps | heart_rate …
+    value       = Column(Float,       nullable=True)
+    unit        = Column(String(20),  nullable=True)
+    payload     = Column(Text,        nullable=True)               # raw JSON for multi-field readings
+    job_site    = Column(String(300), nullable=True)
+    recorded_at = Column(DateTime(timezone=True), default=_utcnow, nullable=False, index=True)
+    tenant_id   = Column(String(60),  nullable=True, index=True, default="default")
+
+    def __repr__(self) -> str:
+        return f"<IoTReading device={self.device_id!r} metric={self.metric!r} value={self.value}>"
+
+
+# ── Generative AI Simulations ─────────────────────────────────────────────────
+
+class GenerativeAIJob(Base):
+    """
+    A queued or completed generative AI job — layout optimisation,
+    4D construction sequencing, or risk analysis simulation.
+    """
+
+    __tablename__ = "generative_ai_jobs"
+
+    id              = Column(Integer, primary_key=True, index=True)
+    job_type        = Column(String(40),  nullable=False, index=True)   # layout | sequencing | risk
+    status          = Column(String(20),  nullable=False, default="queued")  # queued | running | done | failed
+    input_summary   = Column(String(500), nullable=True)
+    result          = Column(Text,        nullable=True)               # JSON result payload
+    error_message   = Column(Text,        nullable=True)
+    ai_engine       = Column(String(60),  nullable=True, default="stub")
+    processing_ms   = Column(Integer,     nullable=True)
+    tenant_id       = Column(String(60),  nullable=True, index=True, default="default")
+    created_at      = Column(DateTime(timezone=True), default=_utcnow, nullable=False)
+    completed_at    = Column(DateTime(timezone=True), nullable=True)
+
+    def __repr__(self) -> str:
+        return f"<GenerativeAIJob id={self.id} type={self.job_type!r} status={self.status!r}>"
