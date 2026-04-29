@@ -488,7 +488,7 @@ export default function Services() {
               Quality gate before we publish or expand
             </span>
             <h2 className="section-heading mt-2 mb-4">
-              How Competitor Research Becomes Better Worden Content
+              How Competitor Research Becomes Better J Worden &amp; Sons Content
             </h2>
             <p className="text-brand-navy/60 max-w-2xl mx-auto">
               We do not copy competitor pages. We convert their strongest ranking patterns into

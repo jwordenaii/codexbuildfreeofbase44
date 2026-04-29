@@ -39,19 +39,19 @@ const TIMELINE = [
     year: 'The Franchise Era Begins',
     headline: 'First KFC Contract — Virginia.',
     event:
-      'The company lands its first KFC franchise paving contract in Virginia. The standard is different at the national franchise level — tight tolerances, brand-compliant documentation, zero margin for rework. Worden & Sons delivers, and the relationship grows.',
+      'The company lands its first KFC franchise paving contract in Virginia. The standard is different at the national franchise level — tight tolerances, brand-compliant documentation, zero margin for rework. J Worden & Sons delivers, and the relationship grows.',
   },
   {
     year: 'National Expansion',
     headline: 'KFC: Virginia → NC → GA → FL → MI.',
     event:
-      "Word spreads through the KFC franchise network. Contracts follow in North Carolina, Georgia, Florida, and Michigan. The Worden name becomes a known quantity in national QSR paving — a contractor that shows up, meets spec, and doesn't create problems for the operator.",
+      "Word spreads through the KFC franchise network. Contracts follow in North Carolina, Georgia, Florida, and Michigan. The J Worden & Sons name becomes a known quantity in national QSR paving — a contractor that shows up, meets spec, and doesn't create problems for the operator.",
   },
   {
     year: 'New Build Program',
     headline: 'Selected for KFC New QSR Build Program.',
     event:
-      "KFC selects Worden & Sons to assist with ground-up new store construction under a national new build program. This is not maintenance or resurfacing — it's building new fast-food sites from the ground up, civil through finish. The program runs through the end of 2023.",
+      "KFC selects J Worden & Sons to assist with ground-up new store construction under a national new build program. This is not maintenance or resurfacing — it's building new fast-food sites from the ground up, civil through finish. The program runs through the end of 2023.",
   },
   {
     year: '2015',
@@ -103,7 +103,7 @@ const NOTABLE_PROJECTS = [
     scope: 'VA, NC, GA, FL, MI',
     headline: 'Earning the National Trust.',
     story:
-      'What started as a single KFC contract in Virginia grew into a multi-state franchise program spanning Virginia, North Carolina, Georgia, Florida, and Michigan. KFC franchise operators require precise documentation, brand-standard ADA compliance, and zero rework. Worden & Sons became the contractor operators specifically requested.',
+      'What started as a single KFC contract in Virginia grew into a multi-state franchise program spanning Virginia, North Carolina, Georgia, Florida, and Michigan. KFC franchise operators require precise documentation, brand-standard ADA compliance, and zero rework. J Worden & Sons became the contractor operators specifically requested.',
     emoji: '🍗',
   },
   {

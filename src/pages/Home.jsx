@@ -380,7 +380,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <span className="text-brand-amber text-xs font-bold uppercase tracking-widest">
-              Studied from national leaders, written as Worden-only strategy
+              Studied from national leaders, written as J Worden &amp; Sons-only strategy
             </span>
             <h2 className="section-heading mt-2 mb-4">
               How We Use Competitor Examples the Right Way
@@ -421,7 +421,7 @@ export default function Home() {
             <div>
               <h2 className="font-display font-black text-4xl mb-6">
                 Why Four Generations Have
-                <span className="text-brand-amber block">Trusted the Worden Name</span>
+                <span className="text-brand-amber block">Trusted the J Worden &amp; Sons Name</span>
               </h2>
               <ul className="space-y-4">
                 {[
