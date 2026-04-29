@@ -1,14 +1,33 @@
 User-agent: *
 Allow: /
-
-# Keep admin and API endpoints out of crawl index
-Disallow: /admin
-Disallow: /admin/
 Disallow: /api/
 Disallow: /command-center
+Disallow: /admin/
+Crawl-delay: 10
 
-# Allow Googlebot full access to pages
 User-agent: Googlebot
 Allow: /
+Crawl-delay: 0
 
-Sitemap: https://jworden.netlify.app/sitemap.xml
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 5
+
+# Block AI training scrapers
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+Sitemap: https://jwordenasphaltpaving.com/sitemap.xml
+Sitemap: https://jwordenasphaltpaving.com/sitemap-images.xml

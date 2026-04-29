@@ -38,10 +38,7 @@ export default function FloatingCTA() {
       <Link
         to="/quote"
         aria-label="Get a free asphalt paving quote"
-        className="flex items-center gap-2 bg-brand-amber text-brand-navy font-bold px-5 py-3.5 rounded-full text-sm transition-all duration-250 active:scale-95"
-        style={{ boxShadow: '0 6px 24px rgba(245,166,35,0.45), 0 2px 8px rgba(0,0,0,0.15)' }}
-        onMouseEnter={(e) => { e.currentTarget.style.boxShadow = '0 10px 32px rgba(245,166,35,0.55), 0 4px 12px rgba(0,0,0,0.18)'; e.currentTarget.style.transform = 'translateY(-2px)' }}
-        onMouseLeave={(e) => { e.currentTarget.style.boxShadow = '0 6px 24px rgba(245,166,35,0.45), 0 2px 8px rgba(0,0,0,0.15)'; e.currentTarget.style.transform = '' }}
+        className="flex items-center gap-2 bg-brand-amber text-brand-navy font-bold px-5 py-3.5 rounded-full text-sm transition-all duration-250 active:scale-95 hover:-translate-y-0.5 hover:shadow-amber-lg shadow-amber"
         onClick={() => {
           if (typeof window.gtag === 'function')
             window.gtag('event', 'cta_click', { location: 'floating_button' })

@@ -41,6 +41,26 @@
     <!-- ── Font preconnect (critical for LCP) ────────────────────── -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://github.com" />
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+
+    <!-- ── Preload hero company photo — drives LCP score ─────────── -->
+    <link
+      rel="preload"
+      as="image"
+      href="https://github.com/user-attachments/assets/52e9f487-8090-43d6-a3f8-ab9d18933545"
+      fetchpriority="high"
+    />
+
+    <!-- ── Critical inline styles — prevents FOUC, improves CLS ──── -->
+    <style>
+      *,*::before,*::after{box-sizing:border-box}
+      html{font-size:16px;-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+      body{margin:0;background:#FAFAF9;color:#161616;font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+      #root{min-height:100vh;display:flex;flex-direction:column}
+      .skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+      .skip-link:focus{position:fixed;left:1rem;top:1rem;width:auto;height:auto;padding:.75rem 1.5rem;background:#F5A623;color:#161616;font-weight:700;border-radius:.5rem;z-index:9999;outline:3px solid #161616;outline-offset:2px}
+    </style>
 
     <!-- ── Load fonts asynchronously — eliminates render-blocking ── -->
     <link

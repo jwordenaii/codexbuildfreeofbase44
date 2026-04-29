@@ -80,19 +80,77 @@ export default defineConfig(({ mode }) => {
     'import.meta.env.VITE_GA4_ID': JSON.stringify(env.VITE_GA4_ID || ''),
   },
   build: {
+    target: 'es2020',
+    cssCodeSplit: true,
+    reportCompressedSize: false,
+    chunkSizeWarningLimit: 600,
     rollupOptions: {
       output: {
-        // Code-split by route for faster page loads
         manualChunks(id) {
-          if (id.includes('node_modules')) {
-            if (id.includes('framer-motion')) return 'framer'
-            if (id.includes('react-router')) return 'router'
-            if (id.includes('@tanstack')) return 'query'
-            if (id.includes('@vis.gl') || id.includes('google-maps')) return 'maps'
-            if (id.includes('react-pdf') || id.includes('pdfmake')) return 'pdf'
-            if (id.includes('recharts') || id.includes('d3-') || id.includes('victory')) return 'charts'
-            return 'vendor'
-          }
+          if (!id.includes('node_modules')) return
+
+          // ── AI / MediaPipe — heavy WASM-adjacent library ───────────
+          if (id.includes('/@mediapipe/') || id.includes('/mediapipe/'))
+            return 'vendor-ai'
+
+          // ── Maps / geo ─────────────────────────────────────────────
+          if (
+            id.includes('/@vis.gl/') ||
+            id.includes('/@googlemaps/') ||
+            id.includes('/google-maps/') ||
+            id.includes('/leaflet/') ||
+            id.includes('/leaflet-draw/')
+          ) return 'vendor-maps'
+
+          // ── Stripe / payments ──────────────────────────────────────
+          if (id.includes('/@stripe/') || id.includes('/stripe/'))
+            return 'vendor-payments'
+
+          // ── PDF generation ─────────────────────────────────────────
+          if (
+            id.includes('/react-pdf/') ||
+            id.includes('/pdfmake/') ||
+            id.includes('/@react-pdf/')
+          ) return 'vendor-pdf'
+
+          // ── Charts / data-vis ──────────────────────────────────────
+          if (
+            id.includes('/recharts/') ||
+            id.includes('/d3-') ||
+            id.includes('/victory/')
+          ) return 'vendor-charts'
+
+          // ── Animation ─────────────────────────────────────────────
+          if (id.includes('/framer-motion/') || id.includes('/motion-'))
+            return 'vendor-motion'
+
+          // ── Routing ────────────────────────────────────────────────
+          if (id.includes('/react-router')) return 'vendor-router'
+
+          // ── Data fetching ──────────────────────────────────────────
+          if (id.includes('/@tanstack/')) return 'vendor-query'
+
+          // ── State / utilities ──────────────────────────────────────
+          if (id.includes('/zustand/') || id.includes('/jotai/'))
+            return 'vendor-state'
+
+          // ── React core — keep react + react-dom together to avoid
+          //    circular chunk references ────────────────────────────
+          if (
+            id.includes('/react/') ||
+            id.includes('/react-dom/') ||
+            id.includes('/react-reconciler/') ||
+            id.includes('/scheduler/')
+          ) return 'vendor-react'
+
+          // NOTE: three.js / @react-three / @react-spring are intentionally
+          // NOT manually chunked here — they are only imported by the lazy-
+          // loaded <Visualizer> page, so Rollup naturally places them in a
+          // separate async chunk that is never downloaded on page load.
+
+          // ── Everything else: let Rollup decide naturally.
+          // Returning undefined lets three.js stay in the lazy Visualizer
+          // async chunk instead of bloating the synchronous vendor bundle.
         },
       },
     },

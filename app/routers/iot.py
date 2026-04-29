@@ -92,7 +92,7 @@ def _reading_dict(r: IoTReading) -> dict:
         "metric": r.metric,
         "value": r.value,
         "unit": r.unit,
-        "recorded_at": r.recorded_at.isoformat(),
+        "recorded_at": r.recorded_at.isoformat() if r.recorded_at else None,
     }
 
 

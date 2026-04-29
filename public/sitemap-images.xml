@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://jwordenasphaltpaving.com/projects</loc>
+    <image:image>
+      <image:loc>https://github.com/user-attachments/assets/52e9f487-8090-43d6-a3f8-ab9d18933545</image:loc>
+      <image:title>Commercial Asphalt Access Road — J. Worden &amp; Sons</image:title>
+      <image:caption>Fresh asphalt access road beside a fenced industrial facility, completed by J. Worden &amp; Sons Asphalt Paving, Chester VA</image:caption>
+      <image:geo_location>Chester, Virginia, US</image:geo_location>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://jwordenasphaltpaving.com/</loc>
+    <image:image>
+      <image:loc>https://github.com/user-attachments/assets/52e9f487-8090-43d6-a3f8-ab9d18933545</image:loc>
+      <image:title>J. Worden &amp; Sons — Verified Commercial Paving Work</image:title>
+      <image:caption>Commercial asphalt access road with clean edge detail by J. Worden &amp; Sons, fourth-generation paving since 1984</image:caption>
+      <image:geo_location>Chester, Virginia, US</image:geo_location>
+    </image:image>
+  </url>
+</urlset>

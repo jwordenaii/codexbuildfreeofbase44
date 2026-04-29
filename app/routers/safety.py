@@ -12,6 +12,9 @@ Routes:
   GET    /api/v1/safety/scores                 — per-site safety scores
   GET    /api/v1/safety/ai-monitor             — real-time AI safety monitoring snapshot
   POST   /api/v1/safety/ai-monitor/alert       — submit a real-time sensor alert for AI triage
+  POST   /api/v1/safety/monitor                — create AI-classified field observation alert
+  GET    /api/v1/safety/monitor/alerts         — list safety monitor alerts
+  PUT    /api/v1/safety/monitor/alerts/{id}    — acknowledge or resolve a safety alert
 """
 
 from __future__ import annotations
@@ -20,14 +23,14 @@ import logging
 from datetime import datetime, timezone
 from typing import Optional
 
-from fastapi import APIRouter, Depends, Query, Request
+from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from ..core.limiter import limiter
 from ..core.security import verify_premium_security
 from ..database import get_db
-from ..models import SafetyIncident, SafetyToolboxTalk
+from ..models import SafetyAlert, SafetyIncident, SafetyToolboxTalk
 
 logger = logging.getLogger(__name__)
 
@@ -395,7 +398,6 @@ async def ai_monitor_alert(
     and recommended action.  Automatically creates a safety incident record when
     the reading exceeds critical thresholds.
     """
-    from fastapi import HTTPException as _HTTPException  # noqa: PLC0415 (unused here but kept for pattern)
     now = datetime.now(timezone.utc)
 
     # Simple threshold rules per sensor type
@@ -471,3 +473,147 @@ async def ai_monitor_alert(
         "incident_id": incident_id,
         "triaged_at": now.isoformat(),
     }
+
+
+# ── Safety Monitor CRUD ───────────────────────────────────────────────────────
+
+_VALID_MONITOR_SOURCES = {"camera", "drone", "sensor", "wearable", "manual"}
+
+
+def _classify_observation(text: str) -> tuple[str, str, float]:
+    """Return (alert_type, severity, ai_confidence) from raw observation text."""
+    t = text.lower()
+    # PPE violations
+    ppe_terms = {"helmet", "hard hat", "hardhat", "ppe", "vest", "glove", "goggle", "harness", "boot"}
+    if any(term in t for term in ppe_terms):
+        return "ppe_violation", "high", 0.91
+    # Structural/fall/collapse hazards
+    hazard_terms = {"fall", "collapse", "unstable", "edge", "trench", "cave", "sink", "break", "crack", "structural"}
+    if any(term in t for term in hazard_terms):
+        return "hazard", "critical", 0.88
+    # Equipment failures
+    equip_terms = {"equipment", "failure", "malfunction", "broken", "leak", "fire", "smoke", "paver", "roller", "compactor"}
+    if any(term in t for term in equip_terms):
+        return "equipment_failure", "high", 0.85
+    # Near-miss general
+    nearmiss_terms = {"near miss", "near-miss", "close call", "almost", "narrowly"}
+    if any(term in t for term in nearmiss_terms):
+        return "near_miss", "medium", 0.80
+    return "general", "low", 0.70
+
+
+def _alert_dict(a: SafetyAlert) -> dict:
+    return {
+        "id": a.id,
+        "job_site": a.job_site,
+        "source": a.source,
+        "source_device_id": a.source_device_id,
+        "raw_observation": a.raw_observation,
+        "alert_type": a.alert_type,
+        "severity": a.severity,
+        "status": a.status,
+        "ai_confidence": a.ai_confidence,
+        "notes": a.notes,
+        "resolved_at": a.resolved_at.isoformat() if a.resolved_at else None,
+        "created_at": a.created_at.isoformat(),
+        "updated_at": a.updated_at.isoformat(),
+    }
+
+
+class MonitorCreate(BaseModel):
+    job_site: str
+    source: str
+    source_device_id: Optional[str] = None
+    raw_observation: str
+
+
+class AlertUpdate(BaseModel):
+    status: str  # acknowledged | resolved
+    notes: Optional[str] = None
+
+
+@router.post("/monitor", summary="Create AI-classified field observation alert")
+@limiter.limit("60/minute")
+async def create_monitor_alert(
+    request: Request,
+    req: MonitorCreate,
+    db: Session = Depends(get_db),
+    _: dict = Depends(verify_premium_security),
+):
+    """
+    Accept a raw field observation and classify it using keyword-based AI rules.
+    Persists the alert and returns classification details.
+    """
+    if req.source not in _VALID_MONITOR_SOURCES:
+        raise HTTPException(
+            status_code=422,
+            detail=f"source must be one of: {sorted(_VALID_MONITOR_SOURCES)}",
+        )
+
+    alert_type, severity, confidence = _classify_observation(req.raw_observation)
+
+    alert = SafetyAlert(
+        job_site=req.job_site,
+        source=req.source,
+        source_device_id=req.source_device_id,
+        raw_observation=req.raw_observation,
+        alert_type=alert_type,
+        severity=severity,
+        status="open",
+        ai_confidence=confidence,
+    )
+    db.add(alert)
+    db.commit()
+    db.refresh(alert)
+    return {"status": "alert_created", "alert": _alert_dict(alert)}
+
+
+@router.get("/monitor/alerts", summary="List safety monitor alerts")
+@limiter.limit("60/minute")
+async def list_monitor_alerts(
+    request: Request,
+    status: Optional[str] = Query(default=None),
+    severity: Optional[str] = Query(default=None),
+    job_site: Optional[str] = Query(default=None),
+    limit: int = Query(default=50, ge=1, le=200),
+    db: Session = Depends(get_db),
+    _: dict = Depends(verify_premium_security),
+):
+    q = db.query(SafetyAlert).order_by(SafetyAlert.created_at.desc())
+    if status:
+        q = q.filter(SafetyAlert.status == status)
+    if severity:
+        q = q.filter(SafetyAlert.severity == severity)
+    if job_site:
+        q = q.filter(SafetyAlert.job_site.ilike(f"%{job_site}%"))
+    total = q.count()
+    alerts = q.limit(limit).all()
+    return {"total": total, "alerts": [_alert_dict(a) for a in alerts]}
+
+
+@router.put("/monitor/alerts/{alert_id}", summary="Acknowledge or resolve a safety alert")
+@limiter.limit("60/minute")
+async def update_monitor_alert(
+    request: Request,
+    alert_id: int,
+    req: AlertUpdate,
+    db: Session = Depends(get_db),
+    _: dict = Depends(verify_premium_security),
+):
+    valid_statuses = {"acknowledged", "resolved"}
+    if req.status not in valid_statuses:
+        raise HTTPException(status_code=422, detail=f"status must be one of: {sorted(valid_statuses)}")
+
+    alert = db.query(SafetyAlert).filter(SafetyAlert.id == alert_id).first()
+    if not alert:
+        raise HTTPException(status_code=404, detail="Alert not found")
+
+    alert.status = req.status
+    if req.notes:
+        alert.notes = req.notes
+    if req.status == "resolved":
+        alert.resolved_at = datetime.now(timezone.utc)
+
+    db.commit()
+    db.refresh(alert)
+    return {"alert": _alert_dict(alert)}

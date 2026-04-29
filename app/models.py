@@ -885,3 +885,26 @@ class GenerativeAIJob(Base):
 
     def __repr__(self) -> str:
         return f"<GenerativeAIJob id={self.id} type={self.job_type!r} status={self.status!r}>"
+
+
+class SafetyAlert(Base):
+    """AI-classified safety alert from a field observation or sensor reading."""
+
+    __tablename__ = "safety_alerts"
+
+    id              = Column(Integer, primary_key=True, index=True)
+    job_site        = Column(String(200), nullable=False, index=True)
+    source          = Column(String(50),  nullable=False)  # camera | drone | sensor | wearable | manual
+    source_device_id = Column(String(100), nullable=True)
+    raw_observation = Column(Text,         nullable=False)
+    alert_type      = Column(String(60),   nullable=False, index=True)  # ppe_violation | hazard | equipment_failure | near_miss | general
+    severity        = Column(String(20),   nullable=False, default="medium")  # low | medium | high | critical
+    status          = Column(String(20),   nullable=False, default="open", index=True)  # open | acknowledged | resolved
+    ai_confidence   = Column(Float,        nullable=False, default=0.80)
+    notes           = Column(Text,         nullable=True)
+    resolved_at     = Column(DateTime(timezone=True), nullable=True)
+    created_at      = Column(DateTime(timezone=True), default=_utcnow, nullable=False)
+    updated_at      = Column(DateTime(timezone=True), default=_utcnow, onupdate=_utcnow, nullable=False)
+
+    def __repr__(self) -> str:
+        return f"<SafetyAlert id={self.id} type={self.alert_type!r} severity={self.severity!r}>"

@@ -279,6 +279,46 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── Featured Project Photo — real verified company work ────────── */}
+      <section className="bg-brand-navy py-0">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+            <img
+              src="https://github.com/user-attachments/assets/52e9f487-8090-43d6-a3f8-ab9d18933545"
+              alt="Commercial asphalt access road completed by J. Worden &amp; Sons — fresh pavement with clean edge detail beside an active industrial facility"
+              className="w-full h-56 md:h-80 lg:h-96 object-cover"
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
+              width="1200"
+              height="600"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-brand-navy/85 via-transparent to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 p-5 md:p-8">
+              <div className="flex items-end justify-between gap-4">
+                <div>
+                  <span className="inline-block bg-brand-amber text-brand-navy text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-2">
+                    Verified Project Photo
+                  </span>
+                  <h3 className="font-display font-black text-white text-lg md:text-2xl leading-tight">
+                    Commercial Asphalt Access Road
+                  </h3>
+                  <p className="text-white/65 text-sm mt-1">
+                    Fresh pavement · Clean edge detail · Active commercial site coordination
+                  </p>
+                </div>
+                <Link
+                  to="/projects"
+                  className="flex-shrink-0 hidden sm:inline-flex items-center gap-2 bg-brand-amber/20 border border-brand-amber/40 text-brand-amber font-bold px-4 py-2 rounded-lg hover:bg-brand-amber/30 transition-colors text-sm whitespace-nowrap"
+                >
+                  View Portfolio →
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── Services overview ─────────────────────────────────────────── */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

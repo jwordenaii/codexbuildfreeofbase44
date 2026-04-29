@@ -1,0 +1,22 @@
+{
+  "name": "J. Worden & Sons Asphalt Paving",
+  "short_name": "JWordenAI",
+  "description": "Fourth-generation asphalt paving since 1984. Free AI driveway scanner. Powered by JWORDENAI™.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#161616",
+  "theme_color": "#F5A623",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "utilities"],
+  "lang": "en-US",
+  "dir": "ltr"
+}
