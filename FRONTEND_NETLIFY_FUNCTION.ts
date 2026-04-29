@@ -1,7 +1,7 @@
 /**
  * FRONTEND_NETLIFY_FUNCTION.ts
  * ─────────────────────────────────────────────────────────────────────────────
- * Server-side Netlify Function that exchanges the master key for a JWT.
+ * Server-side Netlify Function — thin auth-aware proxy to the FastAPI backend.
  *
  * DEPLOY LOCATION
  * ───────────────
@@ -11,52 +11,77 @@
  * Netlify will automatically deploy it as:
  *   POST /.netlify/functions/get-token
  *
- * REQUIRED NETLIFY ENVIRONMENT VARIABLES (set in Netlify UI → Site → Env vars)
- * ─────────────────────────────────────────────────────────────────────────────
- *   JWORDEN_MASTER_KEY   The long-lived master API key from the backend.
- *                        This is the same value set on the FastAPI backend.
- *                        NEVER add a VITE_ prefix to this variable.
+ * REQUIRED NETLIFY ENVIRONMENT VARIABLES
+ * ───────────────────────────────────────
+ * Set these in Netlify UI → Site → Environment variables.
+ * NEVER add a VITE_ prefix to any of these — they must stay server-side.
  *
- *   JWT_SECRET_KEY       The HS256 signing secret used by the FastAPI backend
- *                        (app/core/security.py).  Must match exactly.
- *                        NEVER add a VITE_ prefix to this variable.
+ *   JWORDEN_MASTER_KEY          The long-lived master API key from the backend.
+ *                               Same value as JWORDEN_MASTER_KEY on the FastAPI
+ *                               backend.  Used by Option A (recommended).
+ *
+ *   VITE_API_BASE_URL           The FastAPI backend base URL.
+ *                               e.g. https://api.jwordenasphaltpaving.com
+ *                               Used by Option A.
+ *
+ *   JWT_SECRET_KEY              The HS256 signing secret used by the FastAPI
+ *                               backend (app/core/security.py).  Must match
+ *                               exactly.  Used by Option B only.
+ *
+ *   USE_BACKEND_TOKEN_ENDPOINT  Set to "true" to activate Option A (proxy to
+ *                               FastAPI).  Omit or set to anything else to use
+ *                               Option B (local JWT generation, default).
  *
  * HOW IT WORKS
  * ────────────
- * Option A (recommended for most setups):
- *   The Netlify Function calls the FastAPI backend's token endpoint directly,
- *   passing the master key.  The backend generates and signs the JWT.
- *   The function forwards the JWT to the browser.
+ * Option A — Proxy to FastAPI (recommended):
+ *   The function calls POST /api/v1/auth/token on the FastAPI backend,
+ *   passing JWORDEN_MASTER_KEY as a Bearer token.  The backend validates the
+ *   key, signs a JWT (HS256, 24h), and returns it.  The function forwards
+ *   only the JWT to the browser.  The master key never leaves the server.
  *
- * Option B (self-contained, no backend round-trip):
- *   The Netlify Function generates the JWT itself using the `jose` library,
- *   signing it with JWT_SECRET_KEY.  The backend verifies it on every request.
- *   Use this if you want to avoid the extra network hop.
+ *   Activate: set USE_BACKEND_TOKEN_ENDPOINT=true in Netlify env vars.
+ *   Requires: JWORDEN_MASTER_KEY, VITE_API_BASE_URL
  *
- * This file implements BOTH options.  Option B is active by default because it
- * avoids a round-trip to the backend during auth.  Switch to Option A by
- * setting USE_BACKEND_TOKEN_ENDPOINT=true in Netlify env vars.
+ * Option B — Local JWT generation (default):
+ *   The function generates the JWT itself using the `jose` library, signing
+ *   it with JWT_SECRET_KEY.  The backend verifies it on every request using
+ *   the same secret.  No round-trip to the backend during auth.
  *
- * INSTALL DEPENDENCY (Option B only)
- * ────────────────────────────────────
- *   npm install jose
- *   # jose is a zero-dependency JWT library that works in Node.js and edge runtimes.
+ *   Activate: omit USE_BACKEND_TOKEN_ENDPOINT (or set it to anything but "true")
+ *   Requires: JWT_SECRET_KEY
  *
- * NETLIFY.TOML ADDITION
- * ─────────────────────
- * Add this to netlify.toml so Netlify knows where to find the functions:
+ * INSTALL DEPENDENCIES
+ * ────────────────────
+ *   npm install jose                    # Option B JWT signing
+ *   npm install --save-dev @netlify/functions
  *
+ * NETLIFY.TOML
+ * ────────────
  *   [functions]
  *     directory = "netlify/functions"
  *
  * SECURITY NOTES
  * ──────────────
- * • This function runs server-side only.  The browser never sees JWORDEN_MASTER_KEY
- *   or JWT_SECRET_KEY.
+ * • This function runs server-side only.  The browser never sees
+ *   JWORDEN_MASTER_KEY or JWT_SECRET_KEY.
  * • The JWT it returns is short-lived (24 hours, matching the backend default).
- * • Add rate limiting in Netlify (or via a WAF) if this endpoint is public.
- * • The CORS origin check below restricts token issuance to your own domain.
+ * • CORS origin validation restricts token issuance to your own domain.
  *   Update ALLOWED_ORIGINS to match your production and preview URLs.
+ * • Add Netlify rate limiting or a WAF rule on this path if you need
+ *   additional protection against token farming.
+ *
+ * LOCAL DEVELOPMENT
+ * ─────────────────
+ *   npm install -g netlify-cli
+ *   netlify dev
+ *
+ *   # Test the function:
+ *   curl -X POST http://localhost:8888/.netlify/functions/get-token
+ *   # Expected: { "token": "eyJ...", "expires_at": 1234567890 }
+ *
+ *   # Verify the JWT against the backend:
+ *   curl -H "Authorization: Bearer eyJ..." http://localhost:8000/api/v1/crm/leads
  */
 
 import type { Handler, HandlerEvent, HandlerContext } from "@netlify/functions";
@@ -66,13 +91,19 @@ import { SignJWT } from "jose";
 // Configuration
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** Token lifetime in seconds — must match the backend's expectation. */
+/**
+ * Token lifetime in seconds — must match the backend's _TOKEN_EXPIRE_SECONDS
+ * in app/routers/auth.py (currently 86400 = 24 hours).
+ */
 const TOKEN_TTL_SECONDS = 24 * 60 * 60; // 24 hours
 
 /**
  * Origins allowed to call this function.
+ *
  * Add your Netlify deploy preview pattern if needed:
  *   "https://deploy-preview-*--jworden.netlify.app"
+ *
+ * Must match the ALLOWED_ORIGINS list in app/main.py on the FastAPI backend.
  */
 const ALLOWED_ORIGINS = [
   "https://jwordenasphaltpaving.com",
@@ -82,13 +113,18 @@ const ALLOWED_ORIGINS = [
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Option A — Delegate token generation to the FastAPI backend
+// Option A — Proxy to FastAPI backend
 //
-// The backend already has a master-key → JWT exchange path in
-// app/core/security.py.  We call it here with the master key and forward
-// the resulting JWT to the browser.
+// Calls POST /api/v1/auth/token on the FastAPI backend with the master key.
+// The backend validates the key, signs a JWT, and returns it.
+// This function forwards only the JWT to the browser.
 //
-// Activate by setting USE_BACKEND_TOKEN_ENDPOINT=true in Netlify env vars.
+// Backend contract (app/routers/auth.py):
+//   POST /api/v1/auth/token
+//   Authorization: Bearer <JWORDEN_MASTER_KEY>
+//   → { access_token: string, token_type: "bearer", expires_in: 86400 }
+//
+// Activate: set USE_BACKEND_TOKEN_ENDPOINT=true in Netlify env vars.
 // ─────────────────────────────────────────────────────────────────────────────
 
 async function fetchTokenFromBackend(): Promise<{
@@ -110,7 +146,8 @@ async function fetchTokenFromBackend(): Promise<{
   }
 
   // POST /api/v1/auth/token — exchange master key for JWT.
-  // The backend accepts the master key as a Bearer token and returns a JWT.
+  // The backend (app/routers/auth.py) accepts the master key as a Bearer token
+  // and returns a signed JWT valid for 24 hours.
   const res = await fetch(`${apiBase}/api/v1/auth/token`, {
     method: "POST",
     headers: {
@@ -126,14 +163,29 @@ async function fetchTokenFromBackend(): Promise<{
     );
   }
 
-  return res.json();
+  // Backend returns: { access_token, token_type, expires_in }
+  // We normalise to { token, expires_at } for the browser client.
+  const data = await res.json();
+  const nowSeconds = Math.floor(Date.now() / 1000);
+  return {
+    token: data.access_token,
+    expires_at: nowSeconds + (data.expires_in ?? TOKEN_TTL_SECONDS),
+  };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Option B — Generate the JWT directly in the Netlify Function (default)
+// Option B — Generate JWT locally (default)
 //
 // Signs a JWT with JWT_SECRET_KEY using HS256, matching the algorithm and
 // claims expected by app/core/security.py.
+//
+// JWT claims (must match what verify_premium_security() expects):
+//   sub        — subject identifier (any string)
+//   tenant_id  — "JWORDEN_HQ"
+//   iat        — issued-at timestamp
+//   exp        — expiry timestamp
+//
+// Activate: omit USE_BACKEND_TOKEN_ENDPOINT (default behaviour).
 // ─────────────────────────────────────────────────────────────────────────────
 
 async function generateTokenLocally(): Promise<{
@@ -155,7 +207,7 @@ async function generateTokenLocally(): Promise<{
   const secretBytes = new TextEncoder().encode(secret);
 
   const token = await new SignJWT({
-    // Claims must match what app/core/security.py expects.
+    // Claims must match what app/core/security.py's verify_premium_security() expects.
     sub: "frontend-client",
     tenant_id: "JWORDEN_HQ",
   })
@@ -174,10 +226,13 @@ async function generateTokenLocally(): Promise<{
 function getCorsHeaders(
   requestOrigin: string | undefined
 ): Record<string, string> {
+  // Reflect the request origin if it is in the allowlist; otherwise fall back
+  // to the production origin.  This supports Netlify deploy previews if you
+  // add their pattern to ALLOWED_ORIGINS.
   const origin =
     requestOrigin && ALLOWED_ORIGINS.includes(requestOrigin)
       ? requestOrigin
-      : ALLOWED_ORIGINS[0]; // Fall back to production origin.
+      : ALLOWED_ORIGINS[0];
 
   return {
     "Access-Control-Allow-Origin": origin,
@@ -185,6 +240,7 @@ function getCorsHeaders(
     "Access-Control-Allow-Headers": "Content-Type",
     "Access-Control-Max-Age": "86400",
     // Prevent the response from being cached by CDNs or shared caches.
+    // Each browser tab must fetch its own token.
     "Cache-Control": "no-store",
     Vary: "Origin",
   };
@@ -200,7 +256,7 @@ export const handler: Handler = async (
 ) => {
   const corsHeaders = getCorsHeaders(event.headers["origin"]);
 
-  // ── Preflight ──────────────────────────────────────────────────────────────
+  // ── Preflight (CORS) ───────────────────────────────────────────────────────
   if (event.httpMethod === "OPTIONS") {
     return { statusCode: 204, headers: corsHeaders, body: "" };
   }
@@ -214,14 +270,14 @@ export const handler: Handler = async (
     };
   }
 
-  // ── Generate token ─────────────────────────────────────────────────────────
+  // ── Generate or proxy token ────────────────────────────────────────────────
   try {
     const useBackend =
       process.env.USE_BACKEND_TOKEN_ENDPOINT?.toLowerCase() === "true";
 
     const result = useBackend
-      ? await fetchTokenFromBackend()
-      : await generateTokenLocally();
+      ? await fetchTokenFromBackend()   // Option A — proxy to FastAPI
+      : await generateTokenLocally();   // Option B — local JWT generation
 
     return {
       statusCode: 200,
@@ -248,21 +304,3 @@ export const handler: Handler = async (
     };
   }
 };
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Local development testing
-//
-// Run this function locally with the Netlify CLI:
-//   npm install -g netlify-cli
-//   netlify dev
-//
-// Then test it:
-//   curl -X POST http://localhost:8888/.netlify/functions/get-token
-//
-// Expected response:
-//   { "token": "eyJ...", "expires_at": 1234567890 }
-//
-// Verify the token against the backend:
-//   curl -H "Authorization: Bearer eyJ..." \
-//        http://localhost:8000/api/v1/crm/leads
-// ─────────────────────────────────────────────────────────────────────────────

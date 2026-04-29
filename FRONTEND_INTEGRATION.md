@@ -1,141 +1,145 @@
-# Frontend Integration Guide — J. Worden & Sons
+# Frontend Integration Guide — J. Worden & Sons AI Backend
 
-This document explains how the React/Vite frontend authenticates with the FastAPI backend and provides links to the complete working examples.
-
----
-
-## Quick Links
-
-| File | Purpose |
-|---|---|
-| [`FRONTEND_AUTH_EXAMPLE.ts`](./FRONTEND_AUTH_EXAMPLE.ts) | Complete auth system: token fetch, in-memory storage, `apiFetch` wrapper, typed API helpers |
-| [`FRONTEND_REACT_HOOKS.ts`](./FRONTEND_REACT_HOOKS.ts) | React hooks: `useAuth`, `useCrmLeads`, `useAuthGuard`, `useTokenRefresh` |
-| [`FRONTEND_NETLIFY_FUNCTION.ts`](./FRONTEND_NETLIFY_FUNCTION.ts) | Server-side Netlify Function that generates JWTs without exposing secrets to the browser |
+> **Single source of truth** for connecting the React/Vite frontend to the FastAPI backend.
+> Start here. Everything else is linked from this document.
 
 ---
 
-## How Authentication Works
+## Table of Contents
+
+1. [Auth Flow Overview](#1-auth-flow-overview)
+2. [Environment Variables](#2-environment-variables)
+3. [Setup Steps](#3-setup-steps)
+4. [API Contract Reference](#4-api-contract-reference)
+5. [Error Handling Patterns](#5-error-handling-patterns)
+6. [Security Checklist](#6-security-checklist)
+
+---
+
+## 1. Auth Flow Overview
+
+The master key (`JWORDEN_MASTER_KEY`) **never touches the browser**. A Netlify Function acts as a secure intermediary that calls the FastAPI token endpoint and forwards only the resulting JWT to the browser.
 
 ```
-Browser                  Netlify Function           FastAPI Backend
-  │                           │                           │
-  │  POST /.netlify/functions/get-token                   │
-  │──────────────────────────►│                           │
-  │                           │  (reads JWORDEN_MASTER_KEY│
-  │                           │   from server env, signs  │
-  │                           │   JWT with JWT_SECRET_KEY)│
-  │  { token, expires_at }    │                           │
-  │◄──────────────────────────│                           │
-  │                           │                           │
-  │  GET /api/v1/crm/leads                                │
-  │  Authorization: Bearer <JWT>                          │
-  │───────────────────────────────────────────────────────►
-  │                           │                           │
-  │  { leads: [...] }         │                           │
-  │◄───────────────────────────────────────────────────────
+Browser                  Netlify Function              FastAPI Backend
+  │                           │                              │
+  │  POST /.netlify/functions/get-token                      │
+  │──────────────────────────►│                              │
+  │                           │  POST /api/v1/auth/token     │
+  │                           │  Authorization: Bearer <MASTER_KEY>
+  │                           │─────────────────────────────►│
+  │                           │                              │ validate master key
+  │                           │                              │ sign JWT (HS256, 24h)
+  │                           │◄─────────────────────────────│
+  │                           │  { access_token, expires_in }│
+  │◄──────────────────────────│                              │
+  │  { token, expires_at }    │                              │
+  │                           │                              │
+  │  GET /api/v1/crm/leads                                   │
+  │  Authorization: Bearer <JWT>                             │
+  │─────────────────────────────────────────────────────────►│
+  │                           │                              │ verify JWT (HS256)
+  │◄─────────────────────────────────────────────────────────│
+  │  { total, leads: [...] }  │                              │
 ```
 
-1. The browser calls a **Netlify Function** (server-side) to get a JWT.
-2. The Netlify Function reads `JWORDEN_MASTER_KEY` from its own environment — the browser never sees it.
-3. The JWT is stored **in memory only** (a module-level variable). It is never written to `localStorage`, `sessionStorage`, or a cookie.
-4. Every protected API call goes through `apiFetch`, which injects `Authorization: Bearer <token>` automatically.
-5. On a `401`/`403` response, `apiFetch` refreshes the token and retries once.
-6. A proactive refresh fires 5 minutes before expiry so users never hit an expired-token error mid-session.
-# Frontend Integration Guide
+**Key points:**
 
-How to authenticate the frontend with the JWordenAI backend and call protected endpoints.
-
----
-
-## Overview
-
-The backend supports two authentication methods:
-
-| Method | Use case | Expiry |
-|---|---|---|
-| **Master key** (`JWORDEN_MASTER_KEY`) | Server-to-server, internal tools | Never |
-| **JWT** (signed with `JWT_SECRET_KEY`) | Frontend apps, short-lived sessions | 24 hours |
-
-**The master key must never be exposed in browser JavaScript.** It is a server-side secret. The frontend should exchange it for a JWT at startup using a server-side function (e.g. a Netlify Function, Next.js API route, or Vite SSR handler), then store only the JWT in memory.
+- The Netlify Function calls `POST /api/v1/auth/token` on the FastAPI backend, passing the master key as a Bearer token.
+- The backend validates the master key, signs a JWT (HS256, 24-hour TTL), and returns it.
+- The Netlify Function forwards only the JWT to the browser — the master key stays server-side.
+- The browser stores the JWT **in memory only** (never `localStorage`, never a cookie without `HttpOnly`+`Secure`).
+- A proactive refresh fires 5 minutes before expiry so users never hit an expired-token error mid-session.
+- On any `401`/`403` response, `apiFetch` automatically refreshes the token and retries once.
+- Concurrent refresh calls are deduplicated — only one in-flight request is made at a time.
 
 ---
 
-## Environment Variables
+## 2. Environment Variables
 
-### Safe to expose (VITE_ prefix — bundled into browser JS)
+### Browser-safe (`VITE_` prefix — bundled into JS, visible to anyone)
 
-| Variable | Example value | Notes |
+| Variable | Example | Purpose |
 |---|---|---|
-| `VITE_API_BASE_URL` | `https://api.jwordenasphaltpaving.com` | Backend base URL |
+| `VITE_API_BASE_URL` | `https://api.jwordenasphaltpaving.com` | FastAPI backend base URL |
 | `VITE_SITE_URL` | `https://jwordenasphaltpaving.com` | Public site URL |
-| `VITE_GA4_ID` | `G-XXXXXXXXXX` | Google Analytics |
-| `VITE_GOOGLE_MAPS_API_KEY` | `AIza...` | Restrict to your domain in GCP |
-| `VITE_STRIPE_PUBLISHABLE_KEY` | `pk_live_...` | Publishable key only |
+| `VITE_GA4_ID` | `G-XXXXXXXXXX` | Google Analytics 4 measurement ID |
+| `VITE_GOOGLE_MAPS_API_KEY` | `AIza...` | Maps API key (restrict to your domain in GCP) |
+| `VITE_STRIPE_PUBLISHABLE_KEY` | `pk_live_...` | Stripe publishable key only |
 
-### Never expose (server-side only — no VITE_ prefix)
+### Server-side only (Netlify env — **NEVER** add a `VITE_` prefix)
 
-| Variable | Where it lives | Why |
+| Variable | Set In | Purpose |
 |---|---|---|
-| `JWORDEN_MASTER_KEY` | Netlify env + Railway/Render backend env | Long-lived master API key. Any `VITE_` var is bundled into browser JS and visible to anyone who opens DevTools. |
-| `JWT_SECRET_KEY` | Railway/Render backend env only | HS256 signing secret. If leaked, anyone can forge tokens. |
-| `ADMIN_PASSWORD` | Railway/Render backend env only | HTTP Basic auth for the `/admin` dashboard. |
+| `JWORDEN_MASTER_KEY` | Netlify UI → Site → Environment variables | Long-lived master API key — exchanged for JWT by the Netlify Function |
+| `JWT_SECRET_KEY` | Netlify UI (Option B only) | HS256 signing secret — must match backend exactly |
+| `USE_BACKEND_TOKEN_ENDPOINT` | Netlify UI | Set `true` to proxy to FastAPI (Option A); omit for local JWT generation (Option B, default) |
 
-> **Rule of thumb:** If a variable contains a secret, password, or private key, it must never have a `VITE_` prefix. Vite statically replaces `import.meta.env.VITE_*` at build time, embedding the value in the JavaScript bundle that ships to every visitor's browser.
+> ⚠️ **Never create `VITE_MASTER_API_KEY` or any `VITE_` variable containing a secret.** Vite statically inlines `VITE_*` values into the browser bundle at build time — they are visible to anyone who opens DevTools.
 
 ---
 
-## Setup Steps
+## 3. Setup Steps
 
-### 1. Add the Netlify Function
+### Step 1 — Copy the auth files
 
-Copy `FRONTEND_NETLIFY_FUNCTION.ts` to `netlify/functions/get-token.ts`.
+```
+FRONTEND_AUTH_CLIENT.ts       → src/lib/auth.ts
+FRONTEND_REACT_EXAMPLES.ts    → src/hooks/  (copy individual hooks as needed)
+FRONTEND_NETLIFY_FUNCTION.ts  → netlify/functions/get-token.ts
+```
 
-Install the `jose` JWT library (used by the function):
+### Step 2 — Install dependencies
 
 ```bash
+# Auth client + React hooks
+npm install @tanstack/react-query
+
+# Netlify Function (Option B — local JWT generation, default)
 npm install jose
+
+# Netlify Function runtime types
 npm install --save-dev @netlify/functions
 ```
 
-Add the functions directory to `netlify.toml`:
+### Step 3 — Configure `netlify.toml`
 
 ```toml
 [functions]
   directory = "netlify/functions"
+
+[build]
+  command = "npm run build"
+  publish = "dist"
 ```
 
-### 2. Set Netlify Environment Variables
+### Step 4 — Set environment variables
 
-In the Netlify UI → **Site configuration → Environment variables**, add:
-
-| Key | Value |
-|---|---|
-| `JWORDEN_MASTER_KEY` | The master API key from your backend `.env` |
-| `JWT_SECRET_KEY` | The JWT signing secret from your backend `.env` |
-| `VITE_API_BASE_URL` | Your deployed backend URL |
-
-### 3. Copy the Auth Files into Your Project
+In **Netlify UI → Site → Environment variables**, add:
 
 ```
-src/
-  auth/
-    authClient.ts        ← copy from FRONTEND_AUTH_EXAMPLE.ts
-  hooks/
-    useAuth.ts           ← copy from FRONTEND_REACT_HOOKS.ts (AuthProvider + useAuth)
-    useCrmLeads.ts       ← copy from FRONTEND_REACT_HOOKS.ts (useCrmLeads)
-    useAuthGuard.ts      ← copy from FRONTEND_REACT_HOOKS.ts (useAuthGuard)
-netlify/
-  functions/
-    get-token.ts         ← copy from FRONTEND_NETLIFY_FUNCTION.ts
+JWORDEN_MASTER_KEY   = <value from backend .env>
+JWT_SECRET_KEY       = <value from backend .env>   # Option B only
+VITE_API_BASE_URL    = https://api.jwordenasphaltpaving.com
 ```
 
-### 4. Wrap Your App Root
+For **local development**, create `.env.local` (gitignored by Vite):
+
+```bash
+# .env.local — read by Vite dev server
+VITE_API_BASE_URL=http://localhost:8000
+
+# .env — read by `netlify dev` for the Netlify Function runtime
+JWORDEN_MASTER_KEY=your-master-key-here
+JWT_SECRET_KEY=your-jwt-secret-here
+```
+
+### Step 5 — Wrap your app root
 
 ```tsx
 // src/main.tsx
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { AuthProvider } from './hooks/useAuth'
-import App from './App'
+import { AuthProvider } from './hooks/AuthProvider'
 
 const queryClient = new QueryClient()
 
@@ -148,457 +152,737 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 )
 ```
 
-### 5. Use in a Component
+### Step 6 — Test locally
 
-```tsx
-// src/components/commandCenter/CRMPanel.tsx
-import { useCrmLeads } from '../../hooks/useCrmLeads'
-import { useAuthGuard } from '../../hooks/useAuthGuard'
+```bash
+# Start Netlify dev (runs both Vite and Netlify Functions)
+npx netlify dev
 
-export default function CRMPanel() {
-  const guard = useAuthGuard()
-  if (guard) return guard  // renders spinner or error UI while auth initialises
+# Verify the token function works
+curl -X POST http://localhost:8888/.netlify/functions/get-token
+# Expected: { "token": "eyJ...", "expires_at": 1234567890 }
 
-  const { leads, funnel, isLoading, error, updateStage, isUpdating, refetch } =
-    useCrmLeads()
+# Verify the JWT works against the backend
+curl -H "Authorization: Bearer eyJ..." http://localhost:8000/api/v1/crm/leads
+```
 
-  if (isLoading) return <Spinner />
-  if (error) return <ErrorBanner message={error} onRetry={refetch} />
+---
 
-  return (
-    <table>
-      {leads.map(lead => (
-        <LeadRow
-          key={lead.id}
-          lead={lead}
-          onStageChange={(stage) => updateStage({ leadId: lead.id, stage })}
-          isUpdating={isUpdating}
-        />
-      ))}
-    </table>
-  )
+## 4. API Contract Reference
+
+### Auth
+
+#### `POST /api/v1/auth/token`
+
+Exchange the master key for a 24-hour JWT. **Called by the Netlify Function, not the browser directly.**
+
+**Request:**
+```http
+POST /api/v1/auth/token
+Authorization: Bearer <JWORDEN_MASTER_KEY>
+```
+
+**Response `200`:**
+```json
+{
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "token_type": "bearer",
+  "expires_in": 86400
+}
+```
+
+**JWT claims:** `sub: "Admin"`, `tenant_id: "JWORDEN_HQ"`, `iat`, `exp`
+
+**Errors:**
+- `401` — No `Authorization` header provided
+- `403` — Invalid master key
+- `500` — `JWORDEN_MASTER_KEY` or `JWT_SECRET_KEY` not configured on server
+
+---
+
+### Public Endpoints (no auth required)
+
+#### `POST /api/v1/leads/quote`
+
+Submit a customer quote request. Triggers lead scoring, DB persistence, email notification, and automatic follow-up scheduling.
+
+**Request body:**
+```json
+{
+  "name": "John Smith",
+  "email": "john@example.com",
+  "phone": "555-867-5309",
+  "service_type": "paving",
+  "property_type": "commercial",
+  "urgency": "within_1_week",
+  "project_size_sqft": 5000,
+  "address": "123 Main St, Columbus OH 43215",
+  "message": "Parking lot needs full replacement"
+}
+```
+
+**Field constraints:**
+- `service_type`: `paving | sealcoating | crackfill | parking_lot | driveway`
+- `property_type`: `residential | commercial`
+- `urgency`: `asap | within_1_week | within_1_month | flexible`
+- `project_size_sqft`: 0 – 10,000,000 (optional)
+- `message`: max 2,000 characters (optional)
+
+**Response `200`:**
+```json
+{
+  "status": "received",
+  "message": "Thank you! We will contact you within 24 hours.",
+  "lead_score": "HOT",
+  "priority": 1,
+  "follow_up_sla": "1 hour"
+}
+```
+
+**Rate limit:** 10 requests/minute per IP
+
+---
+
+#### `POST /api/v1/leads/contact`
+
+Submit a general contact form message.
+
+**Request body:**
+```json
+{
+  "name": "Jane Doe",
+  "email": "jane@example.com",
+  "phone": "555-123-4567",
+  "message": "Do you service the Dayton area?"
+}
+```
+
+**Response `200`:**
+```json
+{
+  "status": "received",
+  "message": "Thank you for reaching out! We will get back to you soon."
+}
+```
+
+**Rate limit:** 10 requests/minute per IP
+
+---
+
+#### `POST /api/v1/leads/estimate`
+
+Get a ballpark price estimate without submitting a lead. Helps prospects self-qualify.
+
+**Request body:**
+```json
+{
+  "service_type": "sealcoating",
+  "property_type": "residential",
+  "project_size_sqft": 2000
+}
+```
+
+**Response `200`:**
+```json
+{
+  "estimate_available": true,
+  "service_type": "sealcoating",
+  "low_usd": 400,
+  "high_usd": 800,
+  "unit": "per sqft range"
+}
+```
+
+**Rate limit:** 30 requests/minute per IP
+
+---
+
+#### `POST /api/v1/ai/chat`
+
+Natural language Q&A using the J. Worden AI persona. No auth required.
+
+**Request body:**
+```json
+{
+  "message": "How long does sealcoating take to cure?",
+  "session_id": "optional-session-id-for-context"
 }
 ```
 
 ---
 
-## Backend Auth Contract
+### Protected Endpoints (require `Authorization: Bearer <JWT>`)
 
-The FastAPI backend (`app/core/security.py`) accepts two auth methods on every protected endpoint:
-
-| Method | Header | When to use |
-|---|---|---|
-| Master key | `Authorization: Bearer <JWORDEN_MASTER_KEY>` | Internal tools, server-to-server only |
-| JWT | `Authorization: Bearer <signed-JWT>` | Frontend clients — token issued by Netlify Function |
-
-The JWT must be:
-- Algorithm: `HS256`
-- Signed with: `JWT_SECRET_KEY`
-- Claims: `sub` (any string), `tenant_id` (e.g. `"JWORDEN_HQ"`), `exp` (Unix timestamp)
-
-Protected endpoints return:
-- `403` — no token provided, or token is invalid/expired
-- `500` — `JWT_SECRET_KEY` is not configured on the backend
+All protected endpoints return `403` if the token is missing or invalid. The `apiFetch` wrapper in `FRONTEND_AUTH_CLIENT.ts` handles token injection and automatic retry on auth failures.
 
 ---
 
-## Token Refresh Behaviour
+#### CRM — Lead Pipeline
+
+##### `GET /api/v1/crm/leads`
+
+List leads with optional pipeline stage and score label filters.
+
+**Query parameters:**
+
+| Param | Type | Default | Description |
+|---|---|---|---|
+| `pipeline_stage` | string | — | `new \| contacted \| proposal_sent \| negotiating \| won \| lost` |
+| `score_label` | string | — | `HOT \| WARM \| COOL` |
+| `limit` | int | 50 | Max results (1–200) |
+| `offset` | int | 0 | Pagination offset |
+
+**Response `200`:**
+```json
+{
+  "total": 142,
+  "offset": 0,
+  "limit": 50,
+  "leads": [
+    {
+      "id": 1,
+      "name": "John Smith",
+      "email": "john@example.com",
+      "phone": "555-867-5309",
+      "service_type": "paving",
+      "urgency": "asap",
+      "score_label": "HOT",
+      "pipeline_stage": "new",
+      "contacted_at": null,
+      "proposal_sent_at": null,
+      "closed_at": null,
+      "closed_reason": null,
+      "created_at": "2024-01-15T10:30:00+00:00"
+    }
+  ]
+}
+```
+
+**Rate limit:** 60 requests/minute
+
+---
+
+##### `PATCH /api/v1/crm/leads/{lead_id}/stage`
+
+Move a lead to a new pipeline stage. Automatically sets stage timestamps (`contacted_at`, `proposal_sent_at`, `closed_at`).
+
+**Request body:**
+```json
+{
+  "pipeline_stage": "contacted",
+  "closed_reason": null
+}
+```
+
+**Valid stages:** `new | contacted | proposal_sent | negotiating | won | lost`
+
+**Response `200`:**
+```json
+{
+  "id": 1,
+  "pipeline_stage": "contacted",
+  "status": "updated"
+}
+```
+
+**Errors:**
+- `404` — Lead not found
+- `422` — Invalid pipeline stage value
+
+---
+
+##### `GET /api/v1/crm/funnel`
+
+Aggregate lead counts by pipeline stage for funnel visualization.
+
+**Response `200`:**
+```json
+{
+  "funnel": [
+    { "stage": "new",           "count": 45 },
+    { "stage": "contacted",     "count": 32 },
+    { "stage": "proposal_sent", "count": 18 },
+    { "stage": "negotiating",   "count": 12 },
+    { "stage": "won",           "count": 28 },
+    { "stage": "lost",          "count": 7  }
+  ],
+  "total": 142,
+  "won": 28,
+  "win_rate_pct": 19.7
+}
+```
+
+---
+
+#### Analytics — Business Intelligence
+
+##### `GET /api/v1/analytics/dashboard`
+
+Full BI dashboard — all metrics in a single payload. Use for the Command Center overview.
+
+**Rate limit:** 30 requests/minute
+
+---
+
+##### `GET /api/v1/analytics/funnel`
+
+Lead conversion funnel broken down by stage, score label, service type, and urgency.
+
+**Rate limit:** 60 requests/minute
+
+---
+
+##### `GET /api/v1/analytics/revenue-forecast`
+
+Revenue projection from HOT leads × win rate × average job value by service type.
+
+**Rate limit:** 30 requests/minute
+
+---
+
+##### `GET /api/v1/analytics/monthly-volume`
+
+Monthly lead counts and HOT lead breakdown for the last 12 months.
+
+**Response `200`:**
+```json
+{
+  "monthly_volume": [
+    { "month": "2024-01", "total": 18, "hot": 5 },
+    { "month": "2024-02", "total": 22, "hot": 7 }
+  ]
+}
+```
+
+---
+
+#### KPI Wall
+
+##### `GET /api/v1/kpi-wall`
+
+Aggregate KPIs from all modules — bid win rate, on-time delivery, safety TRIR, 13-week cash projection, certification currency, and client NPS.
+
+**Response `200`:**
+```json
+{
+  "generated_at": "2024-01-15T10:30:00+00:00",
+  "kpis": {
+    "bid_win_rate": {
+      "label": "Bid Win Rate",
+      "value": 42.5,
+      "unit": "%",
+      "target": 40.0,
+      "total_bids": 80,
+      "total_won": 34,
+      "status": "green"
+    },
+    "on_time_delivery": {
+      "label": "On-Time Delivery",
+      "value": 88.0,
+      "unit": "%",
+      "target": 90.0,
+      "total_projects": 25,
+      "on_time_projects": 22,
+      "status": "yellow"
+    },
+    "safety_trir":     { "label": "Safety TRIR",      "value": 2.1,  "unit": "per 100 workers", "target": 3.4,  "status": "green"  },
+    "projected_cash":  { "label": "13-Week Cash",     "value": 45000,"unit": "$",               "target": 10000,"status": "green"  },
+    "cert_current_pct":{ "label": "Cert Currency",    "value": 96.0, "unit": "%",               "target": 95.0, "status": "green"  },
+    "client_nps":      { "label": "Avg Client NPS",   "value": 8.4,  "unit": "/10",             "target": 8.0,  "status": "green"  }
+  },
+  "monthly_lead_trend": [
+    { "month": "2024-01", "count": 18 },
+    { "month": "2024-02", "count": 22 }
+  ]
+}
+```
+
+**KPI `status` values:** `green | yellow | red | gray` (gray = no data yet)
+
+**Rate limit:** 30 requests/minute
+
+---
+
+#### Proposals
+
+##### `POST /api/v1/proposals/generate`
+
+Generate a text + PDF proposal for a lead. Also advances the lead to `proposal_sent` stage if currently `new` or `contacted`.
+
+**Request body:**
+```json
+{
+  "lead_id": 42,
+  "include_pdf": true
+}
+```
+
+**Response `200`:**
+```json
+{
+  "proposal_id": 42,
+  "lead_id": 42,
+  "lead_name": "John Smith",
+  "proposal_text": "Dear John Smith,\n\nThank you for...",
+  "pdf_b64": "JVBERi0xLjQ...",
+  "pdf_base64": "JVBERi0xLjQ...",
+  "pdf_size_bytes": 48320
+}
+```
+
+**Errors:** `404` — Lead not found
+
+**Rate limit:** 10 requests/minute
+
+---
+
+##### `POST /api/v1/proposals/{lead_id}/send`
+
+Generate and email a proposal directly to the lead's email address (background task).
+
+**Response `200`:**
+```json
+{
+  "status": "queued",
+  "message": "Proposal will be emailed to john@example.com",
+  "lead_id": 42,
+  "lead_name": "John Smith"
+}
+```
+
+**Errors:** `404` — Lead not found; `422` — Lead has no valid email address
+
+**Rate limit:** 5 requests/minute
+
+---
+
+#### Customers
+
+##### `POST /api/v1/customers`
+
+Create a customer record.
+
+**Request body:** `CustomerCreate` — `name` (required), plus optional `email`, `phone`, `company`, `address`, `city`, `state_code` (2-letter), `zip_code`, `customer_type`, `is_franchise` (0/1), `brand`, `notes`, `tags`, `external_id`, `source`.
+
+---
+
+##### `GET /api/v1/customers`
+
+List customers with optional filters.
+
+**Query parameters:** `state_code`, `customer_type`, `is_franchise` (0/1), `search` (name/email/company), `limit`, `offset`
+
+**Response `200`:**
+```json
+{
+  "total": 380,
+  "offset": 0,
+  "limit": 50,
+  "items": [
+    {
+      "id": 1,
+      "name": "Acme Corp",
+      "email": "ops@acme.com",
+      "phone": "555-000-1234",
+      "company": "Acme Corporation",
+      "state_code": "OH",
+      "city": "Columbus",
+      "customer_type": "commercial",
+      "is_franchise": 0,
+      "brand": null,
+      "total_jobs": 4,
+      "total_revenue": 28500.00,
+      "ltv_score": null,
+      "churn_risk": null,
+      "created_at": "2023-06-01T00:00:00+00:00"
+    }
+  ]
+}
+```
+
+---
+
+##### `GET /api/v1/customers/stats/overview`
+
+Overall CRM statistics.
+
+**Response `200`:**
+```json
+{
+  "total_customers": 380,
+  "franchise_accounts": 12,
+  "states_represented": 8,
+  "total_jobs_on_record": 1420,
+  "total_revenue_on_record": 2850000.00
+}
+```
+
+---
+
+##### `GET /api/v1/customers/{id}/history`
+
+Service history for a specific customer.
+
+**Response `200`:**
+```json
+{
+  "customer_id": 1,
+  "jobs": 4,
+  "history": [
+    {
+      "id": 10,
+      "job_date": "2023-09-15T00:00:00+00:00",
+      "service_type": "paving",
+      "scope_summary": "Full parking lot replacement",
+      "sqft": 8000,
+      "revenue": 12000.00
+    }
+  ]
+}
+```
+
+---
+
+#### Payments
+
+##### `POST /api/v1/payments/checkout-session`
+
+Create a Stripe checkout session for a lead deposit (20% of low estimate, minimum $100).
+
+**Request body:**
+```json
+{
+  "lead_id": 42,
+  "success_url": "https://jwordenasphaltpaving.com/quote?payment=success",
+  "cancel_url": "https://jwordenasphaltpaving.com/quote?payment=cancel"
+}
+```
+
+**Response `200`:**
+```json
+{
+  "payment_id": 7,
+  "lead_id": 42,
+  "amount_usd": 240.00,
+  "checkout_session_id": "cs_live_...",
+  "checkout_url": "https://checkout.stripe.com/pay/cs_live_...",
+  "status": "pending"
+}
+```
+
+**Rate limit:** 20 requests/minute
+
+---
+
+##### `GET /api/v1/payments/status/{lead_id}`
+
+Get the latest payment status for a lead.
+
+**Response `200`:**
+```json
+{
+  "lead_id": 42,
+  "has_payment": true,
+  "status": "paid",
+  "amount_usd": 240.00,
+  "paid_at": "2024-01-15T14:22:00+00:00"
+}
+```
+
+**Rate limit:** 60 requests/minute
+
+---
+
+#### Follow-ups
+
+##### `GET /api/v1/followups`
+
+List follow-up tasks with optional filters.
+
+**Query parameters:** `status` (`pending | sent | cancelled`), `lead_id`, `task_type` (`hot_1h | warm_3d | cool_7d`), `limit`, `offset`
+
+**Response `200`:**
+```json
+{
+  "total": 28,
+  "tasks": [
+    {
+      "id": 5,
+      "lead_id": 42,
+      "task_type": "hot_1h",
+      "scheduled_at": "2024-01-15T11:30:00+00:00",
+      "sent_at": null,
+      "status": "pending",
+      "created_at": "2024-01-15T10:30:00+00:00"
+    }
+  ]
+}
+```
+
+---
+
+##### `POST /api/v1/followups/{task_id}/cancel`
+
+Cancel a pending follow-up task.
+
+**Response `200`:**
+```json
+{ "id": 5, "status": "cancelled" }
+```
+
+**Errors:** `404` — Task not found; `400` — Task already sent or cancelled
+
+---
+
+#### Documents
+
+##### `POST /api/v1/documents/parse-contract`
+
+Upload a contract PDF or image for AI extraction of key terms, deadlines, payment milestones, and risk flags.
+
+**Request:** `multipart/form-data` with `file` field.
+Accepted types: `application/pdf`, `image/jpeg`, `image/png`, `image/webp`. Max 20 MB.
+
+**Response `200`:**
+```json
+{
+  "status": "ok",
+  "filename": "contract.pdf",
+  "parties": ["J. Worden & Sons", "Acme Corp"],
+  "scope_of_work": "Full parking lot resurfacing...",
+  "payment_milestones": [],
+  "risk_flags": []
+}
+```
+
+**Rate limit:** 10 requests/minute
+
+---
+
+##### `POST /api/v1/documents/parse-blueprint`
+
+Upload a blueprint or site plan image for AI square footage estimation.
+
+**Request:** `multipart/form-data` with `file` field. Accepted types: `image/jpeg`, `image/png`, `image/webp`, `image/gif`. Max 20 MB.
+
+---
+
+##### `POST /api/v1/documents/parse-permit`
+
+Upload a permit PDF for AI extraction of permit number, address, expiry date, and approved scope.
+
+**Request:** `multipart/form-data` with `file` field. Accepted type: `application/pdf`. Max 20 MB.
+
+---
+
+#### AI — Photo Inspection (protected)
+
+##### `POST /api/v1/ai/photo-inspect`
+
+GPT-4 Vision asphalt damage assessment. Upload a photo for AI analysis of damage type, severity, and recommended service.
+
+**Request:** `multipart/form-data` with `file` field (JPEG/PNG/WebP, max 20 MB).
+
+---
+
+#### Operational Metrics (protected)
+
+| Endpoint | Description | Rate limit |
+|---|---|---|
+| `GET /api/v1/metrics/celery` | Celery queue depth, active tasks, worker status | 30/min |
+| `GET /api/v1/metrics/redis` | Redis memory, key count, connected clients | 30/min |
+| `GET /api/v1/metrics/database` | Postgres pool stats and `SELECT 1` latency | 30/min |
+| `GET /api/v1/metrics/ai` | OpenAI call counts, latency, error rate | 30/min |
+| `GET /health` | Health check — **public**, no auth required | — |
+
+---
+
+## 5. Error Handling Patterns
+
+### Standard error response shape
+
+All FastAPI errors follow this shape:
+
+```json
+{ "detail": "Human-readable error message" }
+```
+
+Validation errors (422) return an array:
+
+```json
+{
+  "detail": [
+    {
+      "loc": ["body", "pipeline_stage"],
+      "msg": "Invalid stage. Must be one of: contacted, lost, negotiating, new, proposal_sent, won",
+      "type": "value_error"
+    }
+  ]
+}
+```
+
+### HTTP status code reference
+
+| Code | Meaning | Frontend action |
+|---|---|---|
+| `200` | Success | Render data |
+| `400` | Bad request (e.g. cancel already-sent task) | Show validation message |
+| `401` | Token expired or missing | `apiFetch` auto-refreshes and retries once |
+| `403` | Invalid token or master key | `apiFetch` auto-refreshes and retries once; show auth error if retry fails |
+| `404` | Resource not found | Show "not found" UI |
+| `413` | File too large (>20 MB) | Show file size error |
+| `415` | Unsupported file type | Show accepted types list |
+| `422` | Validation error (invalid field value) | Show field-level error from `detail` array |
+| `429` | Rate limit exceeded | Back off and retry after 60 seconds |
+| `500` | Server error | Show generic error, log to Sentry |
+| `503` | Dependency unavailable (Redis/DB down) | Show "service unavailable" |
+
+### Token refresh behaviour
 
 | Scenario | What happens |
 |---|---|
-| App loads | `AuthProvider` calls `initAuth()`, which fetches a fresh token |
-| Token is 5+ minutes from expiry | Proactive refresh fires automatically in the background |
+| App loads | `AuthProvider` calls `initAuth()`, fetches a fresh token from the Netlify Function |
+| Token is within 5 minutes of expiry | Proactive refresh fires automatically in the background |
 | API call returns `401` or `403` | `apiFetch` refreshes the token and retries the request once |
 | Multiple concurrent `401`s | Only one refresh request is made (deduplicated via promise cache) |
 | Refresh fails | `AuthProvider` sets `error` state; `useAuthGuard` renders an error UI with a Retry button |
 | Page reload | Token is cleared from memory; `AuthProvider` fetches a new one on mount |
 
----
-
-## Local Development
-
-Run the Netlify dev server to test the function locally:
-
-```bash
-npm install -g netlify-cli
-netlify dev
-```
-
-This starts both the Vite dev server and the Netlify Functions runtime. The function is available at:
-
-```
-POST http://localhost:8888/.netlify/functions/get-token
-```
-
-Test it with curl:
-
-```bash
-curl -X POST http://localhost:8888/.netlify/functions/get-token
-# → { "token": "eyJ...", "expires_at": 1234567890 }
-```
-
-Verify the token works against the backend:
-
-```bash
-TOKEN=$(curl -s -X POST http://localhost:8888/.netlify/functions/get-token | python3 -c "import sys,json; print(json.load(sys.stdin)['token'])")
-curl -H "Authorization: Bearer $TOKEN" http://localhost:8000/api/v1/crm/leads
-```
-
----
-
-## Security Checklist
-
-- [ ] `JWORDEN_MASTER_KEY` is set in Netlify env vars (not in any `VITE_` variable)
-- [ ] `JWT_SECRET_KEY` is set in Netlify env vars (not in any `VITE_` variable)
-- [ ] `ALLOWED_ORIGINS` in `get-token.ts` matches your production and preview domains
-- [ ] The Netlify Function is not publicly documented or linked (security through obscurity is not sufficient, but no need to advertise it)
-- [ ] JWT is stored in memory only — no `localStorage.setItem('token', ...)` anywhere
-- [ ] `apiFetch` is used for all protected API calls — no raw `fetch` with manual auth headers
-- [ ] Backend `JWT_SECRET_KEY` is a long random string (at least 32 characters): `openssl rand -hex 32`
-### Backend (Railway)
-
-These are already set in Railway and are never sent to the browser:
-
-```
-JWORDEN_MASTER_KEY=<long-lived secret>
-JWT_SECRET_KEY=<signing secret>
-```
-
-### Frontend (Netlify / Vite)
-
-Only these variables should have a `VITE_` prefix — they are safe to expose in browser JavaScript:
-
-```
-VITE_API_BASE_URL=https://<your-railway-domain>
-VITE_SITE_URL=https://jwordenasphaltpaving.com
-VITE_GA4_ID=G-XXXXXXXXXX
-VITE_GOOGLE_MAPS_API_KEY=AIza...
-VITE_STRIPE_PUBLISHABLE_KEY=pk_live_...
-```
-
-**Never set `VITE_MASTER_API_KEY` or `VITE_JWT_SECRET_KEY`.** Vite embeds `VITE_*` variables into the compiled JavaScript bundle, making them visible to anyone who inspects the page source.
-
----
-
-## Authentication Flow
-
-```
-Frontend startup
-      │
-      ▼
-Server-side function (Netlify Function / API route)
-  reads JWORDEN_MASTER_KEY from env
-  POST /api/v1/auth/token  ← not yet implemented; use JWT library directly
-      │
-      ▼
-JWT returned to frontend (stored in memory only)
-      │
-      ▼
-All protected API calls include:
-  Authorization: Bearer <jwt>
-      │
-      ▼
-Token expires after 24 hours → repeat from top
-```
-
-> **Note:** A dedicated `/auth/token` endpoint is not yet implemented. Until it is, generate the JWT in a server-side function using the `jose` library (Node.js) or equivalent, signing with `JWT_SECRET_KEY`. See the example below.
-
----
-
-## Generating a JWT (Server-Side Only)
-
-### Node.js / TypeScript (Netlify Function or Next.js API Route)
-
-Install the dependency:
-
-```bash
-npm install jose
-```
+### Rate limit handling
 
 ```typescript
-// netlify/functions/get-token.ts  (or pages/api/token.ts for Next.js)
-import { SignJWT } from "jose";
-
-const SECRET = new TextEncoder().encode(process.env.JWT_SECRET_KEY!);
-
-export async function handler() {
-  const token = await new SignJWT({
-    sub: "frontend-app",
-    tenant_id: "JWORDEN_HQ",
-  })
-    .setProtectedHeader({ alg: "HS256" })
-    .setIssuedAt()
-    .setExpirationTime("24h")
-    .sign(SECRET);
-
-  return {
-    statusCode: 200,
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ token, expires_in: 86400 }),
-  };
-}
-```
-
-**This function runs on the server.** `JWT_SECRET_KEY` is never sent to the browser.
-
----
-
-## Storing the JWT Securely
-
-Store the JWT in a JavaScript module-level variable (in-memory). Do not store it in `localStorage` or `sessionStorage` — those are accessible to any script on the page and vulnerable to XSS.
-
-```typescript
-// src/lib/auth.ts
-
-let _token: string | null = null;
-let _expiresAt: number = 0;
-
-export async function getToken(): Promise<string> {
-  const now = Date.now();
-
-  // Return cached token if it has more than 5 minutes remaining
-  if (_token && _expiresAt - now > 5 * 60 * 1000) {
-    return _token;
+try {
+  const data = await getCrmLeads()
+} catch (err) {
+  if (err instanceof Error && err.message.includes('429')) {
+    showToast('Too many requests — please wait a moment and try again.')
   }
-
-  // Fetch a fresh token from the server-side function
-  const res = await fetch("/.netlify/functions/get-token");
-  if (!res.ok) {
-    throw new Error(`Failed to obtain auth token: ${res.status}`);
-  }
-
-  const { token, expires_in } = await res.json();
-  _token = token;
-  _expiresAt = now + expires_in * 1000;
-
-  return _token;
-}
-
-export function clearToken(): void {
-  _token = null;
-  _expiresAt = 0;
 }
 ```
 
 ---
 
-## Sending the JWT in Request Headers
+## 6. Security Checklist
 
-Wrap `fetch` so every protected API call automatically includes the token:
-
-```typescript
-// src/lib/api.ts
-import { getToken } from "./auth";
-
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
-export async function apiFetch(
-  path: string,
-  options: RequestInit = {}
-): Promise<Response> {
-  const token = await getToken();
-
-  const headers = new Headers(options.headers);
-  headers.set("Authorization", `Bearer ${token}`);
-  headers.set("Content-Type", "application/json");
-
-  return fetch(`${BASE_URL}${path}`, {
-    ...options,
-    headers,
-  });
-}
-```
-
-Usage:
-
-```typescript
-// Fetch CRM leads
-const res = await apiFetch("/api/v1/crm/leads?pipeline_stage=new");
-const data = await res.json();
-
-// Update a lead stage
-const res = await apiFetch("/api/v1/crm/leads/42/stage", {
-  method: "PATCH",
-  body: JSON.stringify({ pipeline_stage: "contacted" }),
-});
-```
+- [ ] `JWORDEN_MASTER_KEY` is set **only** in Netlify environment variables — never in any `VITE_` variable, never committed to git
+- [ ] `JWT_SECRET_KEY` is set **only** in Netlify environment variables (Option B) or backend environment — never in frontend code
+- [ ] The Netlify Function (`netlify/functions/get-token.ts`) is the **only** place that reads `JWORDEN_MASTER_KEY`
+- [ ] JWT is stored **in memory only** — not in `localStorage`, `sessionStorage`, or an unprotected cookie
+- [ ] `ALLOWED_ORIGINS` in the Netlify Function matches your production and preview URLs exactly
+- [ ] `ALLOWED_ORIGINS` in the FastAPI backend (`app/main.py`) matches your Netlify domain
+- [ ] File uploads are validated for type and size client-side before sending (reduces wasted requests)
+- [ ] `VITE_STRIPE_PUBLISHABLE_KEY` is the **publishable** key only — the Stripe secret key stays on the backend
+- [ ] Rate limits are respected — implement exponential backoff for `429` responses
+- [ ] `JWT_SECRET_KEY` is a long random string (minimum 32 characters): `openssl rand -hex 32`
+- [ ] Sentry is configured on both frontend and backend for error visibility
 
 ---
 
-## Calling Public Endpoints
+## File Map
 
-Public endpoints (quote, contact, chat, estimate) do not require a token. Call them directly:
-
-```typescript
-// src/lib/api.ts
-export async function publicFetch(
-  path: string,
-  options: RequestInit = {}
-): Promise<Response> {
-  const headers = new Headers(options.headers);
-  headers.set("Content-Type", "application/json");
-
-  return fetch(`${BASE_URL}${path}`, { ...options, headers });
-}
-```
-
-```typescript
-// Submit a quote
-const res = await publicFetch("/api/v1/leads/quote", {
-  method: "POST",
-  body: JSON.stringify({
-    name: "Jane Smith",
-    email: "jane@example.com",
-    phone: "804-555-0100",
-    service_type: "sealcoating",
-    property_type: "residential",
-    urgency: "within_1_month",
-    project_size_sqft: 2000,
-  }),
-});
-
-// AI chat
-const res = await publicFetch("/api/v1/ai/chat", {
-  method: "POST",
-  body: JSON.stringify({
-    question: userMessage,
-    session_id: sessionId,
-    state_code: "VA",
-  }),
-});
-```
-
----
-
-## Handling Token Expiry (24-Hour Refresh)
-
-The `getToken()` function above automatically refreshes the token when it has less than 5 minutes remaining. No additional logic is needed in most cases.
-
-For long-running single-page sessions (e.g. a dashboard left open overnight), add a proactive refresh on a timer:
-
-```typescript
-// src/lib/auth.ts — add to module initialization
-const REFRESH_INTERVAL_MS = 23 * 60 * 60 * 1000; // 23 hours
-
-export function startTokenRefresh(): () => void {
-  const id = setInterval(async () => {
-    try {
-      await getToken(); // forces a refresh if near expiry
-    } catch (err) {
-      console.error("Token refresh failed:", err);
-    }
-  }, REFRESH_INTERVAL_MS);
-
-  return () => clearInterval(id); // call this on component unmount
-}
-```
-
----
-
-## Error Handling for 401 / 403 Responses
-
-```typescript
-// src/lib/api.ts
-import { clearToken, getToken } from "./auth";
-
-export async function apiFetch(
-  path: string,
-  options: RequestInit = {},
-  retried = false
-): Promise<Response> {
-  const token = await getToken();
-
-  const headers = new Headers(options.headers);
-  headers.set("Authorization", `Bearer ${token}`);
-  headers.set("Content-Type", "application/json");
-
-  const res = await fetch(`${BASE_URL}${path}`, { ...options, headers });
-
-  if ((res.status === 401 || res.status === 403) && !retried) {
-    // Token may have been invalidated server-side — clear cache and retry once
-    clearToken();
-    return apiFetch(path, options, true);
-  }
-
-  if (res.status === 403) {
-    // Second failure — surface the error to the user
-    throw new Error("Access denied. Please contact your administrator.");
-  }
-
-  if (res.status === 429) {
-    throw new Error("Too many requests. Please wait a moment and try again.");
-  }
-
-  return res;
-}
-```
-
----
-
-## React Hook Example
-
-```typescript
-// src/hooks/useCrmLeads.ts
-import { useState, useEffect } from "react";
-import { apiFetch } from "../lib/api";
-
-interface Lead {
-  id: number;
-  name: string;
-  email: string;
-  pipeline_stage: string;
-  score_label: string;
-}
-
-export function useCrmLeads(stage?: string) {
-  const [leads, setLeads] = useState<Lead[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const params = stage ? `?pipeline_stage=${stage}` : "";
-
-    apiFetch(`/api/v1/crm/leads${params}`)
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json();
-      })
-      .then((data) => setLeads(data.leads))
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  }, [stage]);
-
-  return { leads, loading, error };
-}
-```
-
----
-
-## CORS Configuration
-
-The backend allows requests from these origins by default:
-
-- `https://jworden.netlify.app`
-- `https://jwordenasphaltpaving.com`
-- `http://localhost:5173` (Vite dev server)
-- `http://localhost:3000`
-
-To add a new origin (e.g. a staging domain), set `EXTRA_CORS_ORIGINS` in the Railway API service variables:
-
-```
-EXTRA_CORS_ORIGINS=https://staging.jwordenasphaltpaving.com,https://preview--jworden.netlify.app
-```
-
-Redeploy the API service after saving.
-
----
-
-## Summary Checklist
-
-- [ ] `JWT_SECRET_KEY` is set in Railway (never in Netlify with a `VITE_` prefix)
-- [ ] `JWORDEN_MASTER_KEY` is set in Railway (never exposed to the browser)
-- [ ] Server-side function generates JWTs and returns them to the frontend
-- [ ] Frontend stores the JWT in memory only (not `localStorage`)
-- [ ] `apiFetch` wrapper adds `Authorization: Bearer <token>` to all protected calls
-- [ ] 401/403 responses trigger a token refresh and single retry
-- [ ] Frontend origin is listed in `EXTRA_CORS_ORIGINS` if not already in the default list
+| File | Purpose | Deploy to |
+|---|---|---|
+| `FRONTEND_INTEGRATION.md` | This document — start here | — |
+| `FRONTEND_AUTH_CLIENT.ts` | Auth token lifecycle + `apiFetch` + typed API helpers | `src/lib/auth.ts` |
+| `FRONTEND_REACT_EXAMPLES.ts` | React hooks: `AuthProvider`, `useAuth`, `useCrmLeads`, `useAuthGuard` | `src/hooks/` (individual hooks) |
+| `FRONTEND_NETLIFY_FUNCTION.ts` | Server-side token proxy (master key → JWT via FastAPI) | `netlify/functions/get-token.ts` |
