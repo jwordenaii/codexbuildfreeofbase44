@@ -821,3 +821,114 @@ class Tenant(Base):
 
     def __repr__(self) -> str:
         return f"<Tenant tenant_id={self.tenant_id!r} company={self.company_name!r}>"
+
+
+# ── IoT Devices & Telemetry ───────────────────────────────────────────────────
+
+class IoTDevice(Base):
+    """
+    Registered IoT device in the JWORDENAI construction network.
+
+    Supports construction-specific hardware categories:
+      drone | wearable | mixer | sensor | camera | other
+    """
+
+    __tablename__ = "iot_devices"
+
+    id              = Column(Integer, primary_key=True, index=True)
+    device_id       = Column(String(100), nullable=False, index=True, unique=True)
+    device_name     = Column(String(200), nullable=True)
+    device_type     = Column(String(60),  nullable=False)   # drone | wearable | mixer | sensor | camera | other
+    manufacturer    = Column(String(120), nullable=True)
+    firmware_version= Column(String(60),  nullable=True)
+    job_site        = Column(String(300), nullable=True)
+    status          = Column(String(30),  nullable=False, default="active")  # active | inactive | maintenance
+    last_seen_at    = Column(DateTime(timezone=True), nullable=True)
+    meta_json       = Column(Text,        nullable=True)    # extra device-specific config
+    tenant_id       = Column(String(60),  nullable=True, index=True, default="default")
+    created_at      = Column(DateTime(timezone=True), default=_utcnow, nullable=False)
+    updated_at      = Column(DateTime(timezone=True), default=_utcnow, onupdate=_utcnow, nullable=False)
+
+    def __repr__(self) -> str:
+        return f"<IoTDevice device_id={self.device_id!r} type={self.device_type!r} status={self.status!r}>"
+
+
+class IoTDataPoint(Base):
+    """
+    Telemetry reading ingested from a JWORDENAI IoT device.
+
+    Stores a generic numeric value alongside a string label so a single
+    table can accommodate heterogeneous sensor payloads (temperature,
+    battery, GPS, vibration, etc.).
+    """
+
+    __tablename__ = "iot_data_points"
+
+    id              = Column(Integer, primary_key=True, index=True)
+    device_id       = Column(String(100), nullable=False, index=True)
+    metric          = Column(String(100), nullable=False)   # e.g. "battery_pct", "temp_f", "lat"
+    value_numeric   = Column(Float,       nullable=True)
+    value_text      = Column(String(500), nullable=True)    # for non-numeric payloads
+    unit            = Column(String(30),  nullable=True)
+    recorded_at     = Column(DateTime(timezone=True), nullable=False, default=_utcnow, index=True)
+    tenant_id       = Column(String(60),  nullable=True, index=True, default="default")
+
+    def __repr__(self) -> str:
+        return f"<IoTDataPoint device={self.device_id!r} metric={self.metric!r} value={self.value_numeric}>"
+
+
+# ── Generative AI Jobs ────────────────────────────────────────────────────────
+
+class GenerativeAIJob(Base):
+    """
+    Tracks a JWORDENAI generative AI task such as layout generation or
+    4D construction sequence simulation.
+
+    job_type values: layout_generation | sequence_simulation
+    status values:   pending | running | completed | failed
+    """
+
+    __tablename__ = "generative_ai_jobs"
+
+    id              = Column(Integer, primary_key=True, index=True)
+    job_type        = Column(String(60),  nullable=False, index=True)  # layout_generation | sequence_simulation
+    status          = Column(String(30),  nullable=False, default="pending")
+    input_json      = Column(Text,        nullable=True)    # serialised request parameters
+    output_json     = Column(Text,        nullable=True)    # serialised result / artefacts
+    error_message   = Column(Text,        nullable=True)
+    duration_ms     = Column(Integer,     nullable=True)
+    tenant_id       = Column(String(60),  nullable=True, index=True, default="default")
+    created_at      = Column(DateTime(timezone=True), default=_utcnow, nullable=False)
+    updated_at      = Column(DateTime(timezone=True), default=_utcnow, onupdate=_utcnow, nullable=False)
+
+    def __repr__(self) -> str:
+        return f"<GenerativeAIJob id={self.id} type={self.job_type!r} status={self.status!r}>"
+
+
+# ── AI Safety Monitor Alerts ──────────────────────────────────────────────────
+
+class SafetyMonitorAlert(Base):
+    """
+    Real-time AI-generated safety alert produced from site observation data.
+
+    severity values: low | medium | high | critical
+    status values:   open | acknowledged | resolved
+    """
+
+    __tablename__ = "safety_monitor_alerts"
+
+    id              = Column(Integer, primary_key=True, index=True)
+    job_site        = Column(String(300), nullable=False, index=True)
+    alert_type      = Column(String(100), nullable=False)   # ppe_violation | hazard | crowd | equipment
+    severity        = Column(String(20),  nullable=False, default="medium")
+    description     = Column(Text,        nullable=True)
+    source          = Column(String(60),  nullable=True)    # camera | drone | wearable | manual
+    source_device_id= Column(String(100), nullable=True)
+    ai_confidence   = Column(Float,       nullable=True)    # 0.0 – 1.0
+    status          = Column(String(30),  nullable=False, default="open")
+    resolved_at     = Column(DateTime(timezone=True), nullable=True)
+    tenant_id       = Column(String(60),  nullable=True, index=True, default="default")
+    created_at      = Column(DateTime(timezone=True), default=_utcnow, nullable=False)
+
+    def __repr__(self) -> str:
+        return f"<SafetyMonitorAlert id={self.id} site={self.job_site!r} severity={self.severity!r}>"

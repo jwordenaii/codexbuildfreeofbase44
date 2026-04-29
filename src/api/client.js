@@ -80,6 +80,28 @@ export const api = {
   askForeman: (data) => request('POST', '/api/v1/foreman/chat', data),
   getForemanStatus: () => request('GET', '/api/v1/foreman/status'),
   getVisionResult: (jobId) => request('GET', `/api/v1/ai/vision-result/${jobId}`),
+  // ── Generative AI (JWORDENAI) ──────────────────────────────────────────────
+  generateLayout: (data) => request('POST', '/api/v1/gen-ai/layout', data),
+  getLayoutJob: (jobId) => request('GET', `/api/v1/gen-ai/layout/${jobId}`),
+  runSimulation: (data) => request('POST', '/api/v1/gen-ai/simulate', data),
+  getSimulationJob: (jobId) => request('GET', `/api/v1/gen-ai/simulate/${jobId}`),
+  listGenAIJobs: (params = {}) => request('GET', `/api/v1/gen-ai/jobs${buildQS(params)}`),
+  // ── IoT Integration (JWORDENAI) ────────────────────────────────────────────
+  listIoTDevices: (params = {}) => request('GET', `/api/v1/iot/devices${buildQS(params)}`),
+  registerIoTDevice: (data) => request('POST', '/api/v1/iot/devices', data),
+  updateIoTDevice: (id, data) => request('PUT', `/api/v1/iot/devices/${id}`, data),
+  deleteIoTDevice: (id) => request('DELETE', `/api/v1/iot/devices/${id}`),
+  ingestTelemetry: (data) => request('POST', '/api/v1/iot/ingest', data),
+  getDeviceStream: (deviceId, params = {}) =>
+    request('GET', `/api/v1/iot/stream/${deviceId}${buildQS(params)}`),
+  getIoTFleetHealth: () => request('GET', '/api/v1/iot/health'),
+  // ── Safety AI Monitor (JWORDENAI) ──────────────────────────────────────────
+  submitSafetyObservation: (data) => request('POST', '/api/v1/safety/monitor', data),
+  listSafetyAlerts: (params = {}) =>
+    request('GET', `/api/v1/safety/monitor/alerts${buildQS(params)}`),
+  updateSafetyAlert: (id, data) => request('PUT', `/api/v1/safety/monitor/alerts/${id}`, data),
+  // ── Workforce Optimisation (JWORDENAI) ─────────────────────────────────────
+  optimiseStaffing: (data) => request('POST', '/api/v1/workforce/optimize', data),
 }
 
 // ── GA4 event helpers ─────────────────────────────────────────────────────────

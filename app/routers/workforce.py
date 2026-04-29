@@ -8,6 +8,9 @@ Routes:
   DELETE /api/v1/workforce/{id}              — remove member
   GET    /api/v1/workforce/available         — query available + qualified members
   GET    /api/v1/workforce/expiring-certs    — members with expiring certifications
+
+  Predictive staffing (JWORDENAI):
+  POST   /api/v1/workforce/optimize          — run predictive staffing optimisation for a project
 """
 
 from __future__ import annotations
@@ -18,7 +21,7 @@ from datetime import datetime, timedelta, timezone
 from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request
-from pydantic import BaseModel
+from pydantic import BaseModel, ValidationError
 from sqlalchemy.orm import Session
 
 from ..core.limiter import limiter
@@ -243,3 +246,99 @@ async def expiring_certs(
 
     alerts.sort(key=lambda x: x["days_left"])
     return {"count": len(alerts), "days_ahead": days_ahead, "alerts": alerts}
+
+
+# ── Predictive staffing optimisation (JWORDENAI) ──────────────────────────────
+
+class StaffingOptimiseRequest(BaseModel):
+    project_name: str
+    project_size_sqft: float
+    service_type: str                       # paving | concrete | civil | mixed
+    start_date: Optional[str] = None        # ISO date string
+    duration_days: int = 5
+    required_trades: Optional[list[str]] = None   # e.g. ["paving", "flagging", "operator"]
+    target_productivity_sqft_per_day: Optional[float] = None
+
+
+def _optimise_staffing(req: StaffingOptimiseRequest, available_members: list) -> dict:
+    """
+    Deterministic staffing optimiser.
+
+    Calculates optimal crew size based on project scope, then matches
+    available workforce members by trade skill.  In production this
+    would use a trained scheduling model.
+    """
+    # Estimate daily throughput target
+    target_rate = req.target_productivity_sqft_per_day or 1200.0   # sqft / day default
+    raw_crew_needed = max(1, round(req.project_size_sqft / (target_rate * req.duration_days)))
+
+    # Match available members by required trades
+    required = {t.lower() for t in (req.required_trades or [])}
+    matched: list[dict] = []
+    unmatched_trades: list[str] = list(required)
+
+    for member in available_members:
+        trade = (member.get("trade") or "").lower()
+        ratings = member.get("skill_ratings", {})
+        if required and trade not in required:
+            # Allow a member if their trade is in skill_ratings too
+            rated_trades = {t.lower() for t in ratings}
+            if not (required & rated_trades):
+                continue
+        matched.append({
+            "member_id": member["id"],
+            "name": member["name"],
+            "trade": member.get("trade"),
+            "skill_ratings": ratings,
+        })
+        unmatched_trades = [t for t in unmatched_trades if t != trade]
+
+    utilisation_pct = round(min(100.0, (len(matched) / max(1, raw_crew_needed)) * 100), 1)
+    fatigue_risk = "high" if req.duration_days > 10 else "medium" if req.duration_days > 5 else "low"
+
+    return {
+        "project_name": req.project_name,
+        "recommended_crew_size": raw_crew_needed,
+        "matched_members": matched[:raw_crew_needed],
+        "unmatched_trades": list(set(unmatched_trades)),
+        "utilisation_pct": utilisation_pct,
+        "estimated_days": req.duration_days,
+        "fatigue_risk": fatigue_risk,
+        "recommendations": [
+            f"Assign {raw_crew_needed} crew members for optimal productivity.",
+            ("Consider cross-training on missing trades: " + ", ".join(set(unmatched_trades)))
+            if unmatched_trades else "All required trades are covered.",
+            "Schedule mandatory rest days every 6 consecutive working days to reduce fatigue."
+            if fatigue_risk != "low" else "Crew fatigue risk is low for this project duration.",
+        ],
+    }
+
+
+@router.post("/optimize", summary="Run predictive staffing optimisation for a project")
+@limiter.limit("20/minute")
+async def optimise_staffing(
+    request: Request,
+    db: Session = Depends(get_db),
+    _: dict = Depends(verify_premium_security),
+):
+    """
+    Analyse project requirements against the available workforce pool and
+    return an AI-recommended crew assignment with utilisation metrics and
+    fatigue-risk analysis.
+    """
+    try:
+        body = await request.json()
+        req = StaffingOptimiseRequest.model_validate(body)
+    except ValidationError as exc:
+        raise HTTPException(status_code=422, detail=exc.errors()) from exc
+
+    if req.duration_days < 1:
+        raise HTTPException(status_code=422, detail="duration_days must be >= 1")
+    if req.project_size_sqft <= 0:
+        raise HTTPException(status_code=422, detail="project_size_sqft must be > 0")
+
+    available = db.query(WorkforceMember).filter(WorkforceMember.available == 1).all()
+    available_dicts = [_member_dict(m) for m in available]
+
+    result = _optimise_staffing(req, available_dicts)
+    return {"status": "ok", **result}
