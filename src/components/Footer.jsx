@@ -3,6 +3,7 @@ import SocialLinks from './SocialLinks'
 
 const LINKS = [
   { to: '/', label: 'Home' },
+  { to: '/jwordenai', label: 'JWORDENAI™' },
   { to: '/services', label: 'Services' },
   { to: '/projects', label: 'Projects' },
   { to: '/service-areas', label: 'Service Areas' },

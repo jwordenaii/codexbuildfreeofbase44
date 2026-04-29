@@ -37,6 +37,9 @@ const CategoryHub = lazy(() => import('./pages/advisory/CategoryHub'))
 const LegalStrategyAdvisor = lazy(() => import('./pages/advisory/LegalStrategyAdvisor'))
 const ContractorRanker = lazy(() => import('./pages/advisory/ContractorRanker'))
 
+// JWORDENAI — proprietary AI brand introductory page
+const JwordenAI = lazy(() => import('./pages/JwordenAI'))
+
 function PageLoader() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-brand-navy">
@@ -81,6 +84,8 @@ export default function App() {
                 <Route path="/advisory/compare" element={<StateCompare />} />
                 <Route path="/advisory/legal-strategy" element={<LegalStrategyAdvisor />} />
                 <Route path="/advisory/contractor-ranker" element={<ContractorRanker />} />
+                {/* JWORDENAI — proprietary AI brand intro */}
+                <Route path="/jwordenai" element={<JwordenAI />} />
                 {/* Generic category hub — handles licensing, construction-law, safety, etc. */}
                 <Route path="/advisory/:category" element={<CategoryHub />} />
                 <Route path="*" element={<NotFound />} />
