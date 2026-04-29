@@ -28,6 +28,9 @@ const StatePavingPage = lazy(() => import('./pages/StatePavingPage'))
 const Blog = lazy(() => import('./pages/Blog'))
 const BlogPost = lazy(() => import('./pages/BlogPost'))
 
+// Job photo gallery
+const Gallery = lazy(() => import('./pages/Gallery'))
+
 // Advisory pages — lazy-loaded so the 512KB legal dataset never hits the main bundle
 const AdvisoryHub = lazy(() => import('./pages/advisory/AdvisoryHub'))
 const StateDetail = lazy(() => import('./pages/advisory/StateDetail'))
@@ -68,6 +71,8 @@ export default function App() {
                 {/* Blog / Knowledge Center */}
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/blog/:slug" element={<BlogPost />} />
+                {/* Job photo gallery */}
+                <Route path="/gallery" element={<Gallery />} />
                 {/* Command Center — operations dashboard */}
                 <Route path="/command-center" element={<CommandCenter />} />
                 {/* Projects / Portfolio */}

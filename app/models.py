@@ -793,6 +793,31 @@ class AICorrection(Base):
         return f"<AICorrection id={self.id} type={self.decision_type!r}>"
 
 
+# ── Job Photo Gallery ─────────────────────────────────────────────────────────
+
+class GalleryImage(Base):
+    """
+    Public job photo uploaded by J. Worden for the site gallery.
+
+    Images are stored as base64 data URIs (data_uri column) so no external
+    object-storage dependency is required.  For large-scale use, swap
+    data_uri for a storage_url pointing to S3/R2/Cloudinary.
+    """
+
+    __tablename__ = "gallery_images"
+
+    id          = Column(String(36),  primary_key=True, index=True)   # UUID
+    filename    = Column(String(300), nullable=False)
+    job_name    = Column(String(200), nullable=False)
+    description = Column(Text,        nullable=True)
+    mime_type   = Column(String(100), nullable=True, default="image/jpeg")
+    data_uri    = Column(Text,        nullable=False)   # base64 data URI
+    uploaded_at = Column(DateTime(timezone=True), default=_utcnow, nullable=False)
+
+    def __repr__(self) -> str:
+        return f"<GalleryImage id={self.id!r} job={self.job_name!r}>"
+
+
 # ── Tenants (multi-tenant SaaS) ───────────────────────────────────────────────
 
 class Tenant(Base):
