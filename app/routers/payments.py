@@ -32,6 +32,7 @@ async def create_checkout_session(
     request: Request,
     body: CheckoutRequest,
     db: Session = Depends(get_db),
+    _: dict = Depends(verify_premium_security),
 ):
     lead = db.get(Lead, body.lead_id)
     if not lead:
@@ -142,6 +143,7 @@ async def payment_status(
     request: Request,
     lead_id: int,
     db: Session = Depends(get_db),
+    _: dict = Depends(verify_premium_security),
 ):
     tx = (
         db.query(PaymentTransaction)

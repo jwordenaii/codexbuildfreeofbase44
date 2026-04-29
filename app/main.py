@@ -1,3 +1,64 @@
+# ── SECURITY AUDIT ────────────────────────────────────────────────────────────
+# PUBLIC ENDPOINTS (no auth required):
+#   POST /api/v1/leads/quote           — customer quote submission
+#   POST /api/v1/leads/contact         — customer contact form
+#   POST /api/v1/leads/estimate        — ballpark pricing (self-serve)
+#   POST /api/v1/ai/chat               — public chatbot (J. Worden persona)
+#   POST /api/v1/ai/contact-suggest    — form field suggestions
+#   GET  /health                       — health check
+#   GET  /api/v1/blog/*                — public blog content
+#   GET  /api/v1/advisor/*             — public advisory content
+#   GET  /api/v1/reviews               — public reviews
+#   GET  /api/v1/schema/*              — public SEO schema
+#   GET  /api/v1/content/*             — public CMS content blocks
+#   POST /api/v1/visualizer/proposal   — customer 3D build quote submission
+#   POST /api/v1/voice/twilio-webhook  — Twilio TwiML (validated by Twilio)
+#   POST /api/v1/voice/twilio-recording-callback — Twilio recording (validated by Twilio)
+#   POST /api/v1/payments/webhook      — Stripe webhook (validated by Stripe signature)
+#
+# PROTECTED ENDPOINTS (require bearer token via verify_premium_security):
+#   POST /api/v1/ai/photo-inspect      — GPT-4 Vision analysis
+#   GET  /api/v1/crm/*                 — lead pipeline management
+#   GET  /api/v1/analytics/*           — business intelligence
+#   GET  /api/v1/bid-intelligence/*    — bid analysis
+#   GET  /api/v1/human-review/*        — AI decision review queue
+#   GET  /api/v1/kpi-wall/*            — KPI dashboard
+#   GET  /api/v1/market/*              — market data
+#   GET  /api/v1/workforce/*           — workforce management
+#   GET  /api/v1/foreman/*             — job site management
+#   GET  /api/v1/retrospectives/*      — project retrospectives
+#   GET  /api/v1/innovations/*         — innovation tracking
+#   GET  /api/v1/visualizer/parcel     — parcel lookup (internal)
+#   GET  /api/v1/visualizer/ai-suggestions — AI design suggestions (internal)
+#   GET  /api/v1/payments/*            — payment tracking
+#   GET  /api/v1/project-metrics/*     — project metrics
+#   GET  /api/v1/cashflow/*            — cash flow analysis
+#   GET  /api/v1/safety/*              — safety tracking
+#   GET  /api/v1/followups/*           — follow-up management
+#   GET  /api/v1/proposals/*           — proposal management
+#   GET  /api/v1/documents/*           — document management
+#   GET  /api/v1/voice/transcribe      — voice/call transcription
+#   GET  /api/v1/liens/*               — lien deadline tracking
+#   GET  /api/v1/subcontractors/*      — subcontractor management
+#   GET  /api/v1/materials/*           — material pricing (internal)
+#   GET  /api/v1/tenants/*             — tenant management
+#   GET  /api/v1/permits/*             — permit tracking
+#   GET  /api/v1/takeoff/*             — project takeoff
+#   GET  /api/v1/weather/*             — weather scheduling (internal)
+#   GET  /api/v1/geo/*                 — geospatial data
+#   GET  /api/v1/igrade/*              — grading/inspection
+#   GET  /api/v1/customers/*           — customer management
+#   GET  /api/v1/seo/*                 — SEO content generation
+#   POST /api/v1/reviews/respond       — AI review response drafting
+#   POST /api/v1/blog/draft            — AI blog draft generation
+#   POST /api/v1/blog                  — create/publish blog post
+#   PUT  /api/v1/blog/{slug}           — update blog post
+#   POST /api/v1/blog/{slug}/publish   — publish blog post
+#
+# ADMIN ENDPOINTS (require HTTP Basic auth):
+#   GET  /admin/*                      — admin dashboard (HTTP Basic)
+# ─────────────────────────────────────────────────────────────────────────────
+
 import os
 import logging
 from contextlib import asynccontextmanager
@@ -64,6 +125,7 @@ from .routers import payments as payments_router
 from .routers import foreman as foreman_router
 from .routers import geo as geo_router
 from .routers import igrade as igrade_router
+from .routers import customers as customers_router
 
 logger = logging.getLogger(__name__)
 
@@ -154,6 +216,7 @@ app.include_router(payments_router.router)
 app.include_router(foreman_router.router)
 app.include_router(geo_router.router)
 app.include_router(igrade_router.router)
+app.include_router(customers_router.router)
 
 
 # ── Legacy endpoints (kept for backward compatibility) ────────────────────────

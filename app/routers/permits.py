@@ -43,6 +43,7 @@ async def vpt_permits(
     request: Request,
     keyword: str = Query(default="paving", max_length=100, description="Search term (e.g. paving, asphalt, parking)"),
     limit: int = Query(default=50, ge=1, le=200, description="Max number of permits to return"),
+    _: dict = Depends(verify_premium_security),
 ):
     """
     Poll the Virginia Permit Transparency portal for permits matching *keyword*.
@@ -68,6 +69,7 @@ async def vpt_permits(
 async def deq_permits(
     request: Request,
     limit: int = Query(default=50, ge=1, le=200, description="Max number of permits to return"),
+    _: dict = Depends(verify_premium_security),
 ):
     """
     Query Virginia DEQ PEEP for active Stormwater Construction General Permits
@@ -95,7 +97,7 @@ class DporRequest(BaseModel):
     summary="DPOR license lookup — validate or enrich contractor / prospect intel",
 )
 @limiter.limit("10/minute")
-async def dpor_lookup(request: Request, req: DporRequest):
+async def dpor_lookup(request: Request, req: DporRequest, _: dict = Depends(verify_premium_security)):
     """
     Look up a Virginia DPOR license by number or address via the Apify scraper.
     Useful for validating competitor intel or enriching inbound leads with
