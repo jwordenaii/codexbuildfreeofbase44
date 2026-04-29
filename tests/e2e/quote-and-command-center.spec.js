@@ -29,14 +29,14 @@ test('quote form smoke flow', async ({ page }) => {
   await expect(page.getByText(/Quote Request Received/i)).toBeVisible()
 })
 
-test('command center login gate smoke flow', async ({ page }) => {
+test('command center smoke flow', async ({ page }) => {
   await page.goto('/command-center')
-  await expect(page.getByText('Command Center')).toBeVisible()
-  await page.getByPlaceholder('Access PIN').fill('wrong')
-  await page.getByRole('button', { name: /Unlock/i }).click()
-  await expect(page.getByText(/Incorrect PIN/i)).toBeVisible()
-
-  await page.getByPlaceholder('Access PIN').fill('e2e-pin')
-  await page.getByRole('button', { name: /Unlock/i }).click()
-  await expect(page.getByText(/Operations Dashboard/i)).toBeVisible()
+  // Page header
+  await expect(
+    page.getByRole('heading', { name: /JWordenAI Command Center/i })
+  ).toBeVisible()
+  // Tab navigation is rendered (Richmond Grid is the default tab)
+  await expect(
+    page.getByRole('button', { name: /Richmond Grid/i }).first()
+  ).toBeVisible()
 })

@@ -54,6 +54,14 @@ function ssSet(key, value) {
   }
 }
 
+// Southern-gentleman, time-of-day aware salutation prefix.
+function timeOfDayGreeting(date = new Date()) {
+  const h = date.getHours()
+  if (h < 12) return "Mornin'"
+  if (h < 17) return 'Afternoon'
+  return "Evenin'"
+}
+
 // ── Page-aware content ────────────────────────────────────────────────────────
 
 const PAGE_CONTEXT = {
@@ -242,14 +250,18 @@ const CONTACT_INITIAL = { name: '', email: '', phone: '', service_type: '', mess
 // ── Main component ────────────────────────────────────────────────────────────
 
 const GREETING_DELAY_MS = 6000
+const MESSAGES_SS_KEY = 'mrw_messages'
+const MESSAGES_PERSIST_LIMIT = 40
 
-const INITIAL_MESSAGES = [
-  {
-    id: 0,
-    role: 'bot',
-    text: "Welcome — I'm a digital tribute to J. Worden Sr., founder of J. Worden & Sons Paving since 1984. I'm here to answer your questions, give you a ballpark, and get you on our schedule. What are you working on today?",
-  },
-]
+function buildInitialMessages() {
+  return [
+    {
+      id: 0,
+      role: 'bot',
+      text: `${timeOfDayGreeting()}, folks — pleasure to have y'all here. I'm a digital tribute to J. Worden Sr., founder of J. Worden & Sons Paving since 1984. Pull up a chair: ask me anything, get a ballpark, or let me get you on our schedule. What are you working on today?`,
+    },
+  ]
+}
 
 const SUGGESTIONS = [
   'How much does a new driveway cost?',
@@ -258,15 +270,32 @@ const SUGGESTIONS = [
   'What areas do you serve?',
 ]
 
+// Pull page-aware quick-suggestion chips from the same FAQ data the Help tab
+// uses, so the conversation starters always match the page the visitor is on.
+function suggestionsForPath(pathname) {
+  const help = PAGE_HELP[pathname]
+  if (help && Array.isArray(help.faqs) && help.faqs.length > 0) {
+    return help.faqs.slice(0, 4).map((f) => f.q)
+  }
+  return SUGGESTIONS
+}
+
 export default function ChatWidget() {
   const { pathname } = useLocation()
 
   const [open, setOpen] = useState(() => ssGet('mrw_open', false))
   const [activeTab, setActiveTab] = useState(() => ssGet('mrw_tab', 'chat'))
-  const [messages, setMessages] = useState(INITIAL_MESSAGES)
+  const [messages, setMessages] = useState(() => {
+    const saved = ssGet(MESSAGES_SS_KEY, null)
+    if (Array.isArray(saved) && saved.length > 0) return saved
+    return buildInitialMessages()
+  })
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [unread, setUnread] = useState(0)
+  // Transient flag — the avatar plays a short "wave/peek" animation when the
+  // visitor lands on a new route, communicating that the persona followed them.
+  const [justArrived, setJustArrived] = useState(false)
   const sessionIdRef = useRef(getOrCreateSessionId())
   const bottomRef = useRef(null)
   const inputRef = useRef(null)
@@ -277,7 +306,65 @@ export default function ChatWidget() {
   const [aiSuggestion, setAiSuggestion] = useState(null)
   const suggestTimerRef = useRef(null)
 
-  const avatarState = loading ? 'talking' : open ? 'listening' : 'idle'
+  // ── Premium voice — Web Speech API (native, zero deps) ───────────────────
+  // Mr. Worden can speak his replies out loud using the browser's built-in
+  // speechSynthesis. Persists per-visitor preference; defaults OFF so we
+  // never auto-play audio unexpectedly, and never speaks while the panel is
+  // closed or while the user is mid-conversation typing.
+  const [voiceOn, setVoiceOn] = useState(() => ssGet('mrw_voice_on', false))
+  useEffect(() => {
+    ssSet('mrw_voice_on', voiceOn)
+    if (!voiceOn && typeof window !== 'undefined' && window.speechSynthesis) {
+      window.speechSynthesis.cancel()
+    }
+  }, [voiceOn])
+  const speak = useCallback(
+    (text) => {
+      if (!voiceOn || !text) return
+      if (typeof window === 'undefined' || !window.speechSynthesis || !window.SpeechSynthesisUtterance) return
+      try {
+        window.speechSynthesis.cancel()
+        const u = new window.SpeechSynthesisUtterance(text)
+        // Pick a warm, US English voice when available (closer to Southern gentleman feel).
+        const voices = window.speechSynthesis.getVoices() || []
+        const preferred =
+          voices.find((v) => /en[-_]US/i.test(v.lang) && /male|daniel|fred|alex/i.test(v.name)) ||
+          voices.find((v) => /en[-_]US/i.test(v.lang)) ||
+          voices.find((v) => /^en/i.test(v.lang)) ||
+          null
+        if (preferred) u.voice = preferred
+        u.rate = 0.96
+        u.pitch = 0.92
+        u.volume = 1
+        u.lang = preferred?.lang || 'en-US'
+        window.speechSynthesis.speak(u)
+      } catch {
+        /* speech synthesis unavailable / blocked */
+      }
+    },
+    [voiceOn]
+  )
+  // Stop any in-flight speech when the panel closes or the component unmounts.
+  useEffect(() => {
+    if (!open && typeof window !== 'undefined' && window.speechSynthesis) {
+      window.speechSynthesis.cancel()
+    }
+  }, [open])
+  useEffect(() => {
+    return () => {
+      if (typeof window !== 'undefined' && window.speechSynthesis) {
+        window.speechSynthesis.cancel()
+      }
+    }
+  }, [])
+
+  const avatarState = loading
+    ? 'talking'
+    : justArrived
+      ? 'wave'
+      : open
+        ? 'listening'
+        : 'idle'
 
   useEffect(() => {
     ssSet('mrw_open', open)
@@ -285,6 +372,25 @@ export default function ChatWidget() {
   useEffect(() => {
     ssSet('mrw_tab', activeTab)
   }, [activeTab])
+  // Persist the conversation so Mr. Worden's memory survives full page reloads
+  // and tab restores — capped to keep sessionStorage well under quota.
+  useEffect(() => {
+    const trimmed =
+      messages.length > MESSAGES_PERSIST_LIMIT
+        ? messages.slice(messages.length - MESSAGES_PERSIST_LIMIT)
+        : messages
+    ssSet(MESSAGES_SS_KEY, trimmed)
+  }, [messages])
+
+  // ESC closes the panel when it's open — basic accessibility.
+  useEffect(() => {
+    if (!open) return undefined
+    const onKey = (e) => {
+      if (e.key === 'Escape') setOpen(false)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [open])
 
   useEffect(() => {
     const greeted = sessionStorage.getItem('jworden_greeted')
@@ -303,12 +409,20 @@ export default function ChatWidget() {
     if (!open) return
     const pageLabel = PAGE_CONTEXT[pathname]
     if (!pageLabel || messages.length < 2) return
-    const hintText = `Just so you know — you're now on our ${pageLabel}. Feel free to keep chatting or browse the quick help below.`
+    const hintText = `Just so y'all know — you're now on our ${pageLabel}. Keep on chattin' or take a peek at the quick help below, much obliged.`
     setMessages((prev) => {
       if (prev.some((msg) => msg.isHint && msg.text === hintText)) return prev
       return [...prev, { id: Date.now(), role: 'bot', text: hintText, isHint: true }]
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname])
+
+  // Trigger a brief "peek/wave" animation whenever the route changes — gives
+  // the visitor a felt cue that the persona has followed them to the new page.
+  useEffect(() => {
+    setJustArrived(true)
+    const t = setTimeout(() => setJustArrived(false), 1500)
+    return () => clearTimeout(t)
   }, [pathname])
 
   useEffect(() => {
@@ -337,6 +451,10 @@ export default function ChatWidget() {
     async (text) => {
       const question = text.trim()
       if (!question || loading) return
+      // Subtle haptic feedback on supporting devices (mobile) when sending.
+      if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') {
+        try { navigator.vibrate(12) } catch { /* not supported */ }
+      }
       setMessages((prev) => [...prev, { id: Date.now(), role: 'user', text: question }])
       setInput('')
       setLoading(true)
@@ -348,20 +466,20 @@ export default function ChatWidget() {
         })
         if (data.session_id) sessionIdRef.current = data.session_id
         setMessages((prev) => [...prev, { id: Date.now() + 1, role: 'bot', text: data.answer }])
+        speak(data.answer)
       } catch {
+        const fallback =
+          "Well now — looks like our line's a little crackly right this minute. Give us a holler at (804) 446-1296 or stop by /contact and we'll be right back with y'all, much obliged."
         setMessages((prev) => [
           ...prev,
-          {
-            id: Date.now() + 1,
-            role: 'bot',
-            text: "Sorry — we're having a little trouble connecting right now. Give us a call at (804) 446-1296 or head to /contact and we'll get right back to you.",
-          },
+          { id: Date.now() + 1, role: 'bot', text: fallback },
         ])
+        speak(fallback)
       } finally {
         setLoading(false)
       }
     },
-    [loading, pathname]
+    [loading, pathname, speak]
   )
 
   const handleKeyDown = (e) => {
@@ -465,14 +583,26 @@ export default function ChatWidget() {
                   </div>
                 </div>
               </div>
-              <button
-                type="button"
-                onClick={() => setOpen(false)}
-                className="text-white/60 hover:text-white transition-colors text-lg leading-none"
-                aria-label="Close assistant"
-              >
-                ✕
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setVoiceOn((v) => !v)}
+                  className="text-white/60 hover:text-white transition-colors text-sm leading-none"
+                  aria-label={voiceOn ? 'Mute Mr. Worden' : 'Unmute Mr. Worden'}
+                  aria-pressed={voiceOn}
+                  title={voiceOn ? 'Voice on — click to mute' : 'Voice off — click to hear Mr. Worden'}
+                >
+                  {voiceOn ? '🔊' : '🔇'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setOpen(false)}
+                  className="text-white/60 hover:text-white transition-colors text-lg leading-none"
+                  aria-label="Close assistant"
+                >
+                  ✕
+                </button>
+              </div>
             </div>
 
             {/* Tabs */}
@@ -512,7 +642,7 @@ export default function ChatWidget() {
 
                   {messages.length === 1 && !loading && (
                     <div className="px-4 pb-2 flex flex-wrap gap-1.5 flex-shrink-0">
-                      {SUGGESTIONS.map((s) => (
+                      {suggestionsForPath(pathname).map((s) => (
                         <button
                           key={s}
                           type="button"

@@ -1,21 +1,30 @@
 /**
  * MrWordenAvatar — Animated SVG persona of Mr. J. Worden Sr.
  *
- * Renders a layered SVG caricature of the company founder with three
+ * Renders a layered SVG caricature of the company founder with four
  * behavioral states driven by framer-motion animations:
  *
  *   idle     — gentle up/down float with ambient amber glow pulse
  *   talking  — rhythmic head nod + open-mouth; glow intensifies
  *   listening — slight head tilt, attentive expression
+ *   wave     — transient peek/wave animation triggered when arriving on a new page
+ *
+ * Adds a true "4D" effect: the head subtly tilts and parallaxes toward the
+ * user's cursor when it is near, giving the persona the felt presence of
+ * watching the visitor wherever they go on the page.
  *
  * The component is deliberately lightweight (pure SVG + CSS transforms,
  * no WebGL/canvas) so it renders instantly on every page without blocking
  * the main thread or requiring a GPU context.
  */
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
 
 /** The SVG character art for Mr. J. Worden Sr. */
-function JWordenSVG({ talking = false }) {
+function JWordenSVG({ talking = false, eyeDx = 0, eyeDy = 0 }) {
+  // Clamp eye pupil offset so it stays inside the lens.
+  const ex = Math.max(-2.2, Math.min(2.2, eyeDx))
+  const ey = Math.max(-1.8, Math.min(1.8, eyeDy))
   return (
     <svg
       viewBox="0 0 80 88"
@@ -69,12 +78,12 @@ function JWordenSVG({ talking = false }) {
       <path d="M25.5 44 H20" stroke="#4a4a4a" strokeWidth="1.6" />
       <path d="M54.5 44 H60" stroke="#4a4a4a" strokeWidth="1.6" />
 
-      {/* ── Eyes ─────────────────────────────────────────────────────── */}
-      <circle cx="32" cy="44" r="2.8" fill="#2a1505" />
-      <circle cx="48" cy="44" r="2.8" fill="#2a1505" />
-      {/* Catchlight */}
-      <circle cx="33" cy="43" r="0.9" fill="white" />
-      <circle cx="49" cy="43" r="0.9" fill="white" />
+      {/* ── Eyes (pupils + catchlight track the cursor for true alive feel) ── */}
+      <circle cx={32 + ex} cy={44 + ey} r="2.8" fill="#2a1505" />
+      <circle cx={48 + ex} cy={44 + ey} r="2.8" fill="#2a1505" />
+      {/* Catchlight — same offset, smaller magnitude for parallax depth */}
+      <circle cx={33 + ex * 0.6} cy={43 + ey * 0.6} r="0.9" fill="white" />
+      <circle cx={49 + ex * 0.6} cy={43 + ey * 0.6} r="0.9" fill="white" />
 
       {/* ── Nose ─────────────────────────────────────────────────────── */}
       <path
@@ -163,21 +172,104 @@ export default function MrWordenAvatar({
       ? { y: [0, -6, 0] }
       : state === 'talking'
         ? { y: [0, -3, 0], scaleX: [1, 1.03, 1] }
-        : { rotate: [-2, 2, -2] }
+        : state === 'wave'
+          ? { y: [0, -10, 0, -4, 0], rotate: [0, -8, 0, -4, 0] }
+          : { rotate: [-2, 2, -2] }
 
   const floatTransition =
     state === 'idle'
       ? { repeat: Infinity, duration: 3.2, ease: 'easeInOut' }
       : state === 'talking'
         ? { repeat: Infinity, duration: 0.65, ease: 'easeInOut' }
-        : { repeat: Infinity, duration: 2.2, ease: 'easeInOut' }
+        : state === 'wave'
+          ? { duration: 1.4, ease: 'easeInOut', repeat: 0 }
+          : { repeat: Infinity, duration: 2.2, ease: 'easeInOut' }
 
-  const glowColor = state === 'talking' ? 'rgba(245,166,35,0.5)' : 'rgba(245,166,35,0.25)'
+  const glowColor =
+    state === 'talking' || state === 'wave'
+      ? 'rgba(245,166,35,0.5)'
+      : 'rgba(245,166,35,0.25)'
   const glowScale = state === 'talking' ? [1, 1.4, 1] : [1, 1.25, 1]
   const glowDuration = state === 'talking' ? 0.65 : 2.8
 
+  // ── 4D mouse-parallax — head tilts toward cursor when it's near ──────────
+  // We track the cursor in window coords and compute a normalized offset
+  // from the avatar's center, then apply gentle rotateY/rotateX/translate
+  // springs so the persona "watches" the visitor across the page. The pupils
+  // track the cursor across a wider radius for a true "alive eye" effect.
+  const buttonRef = useRef(null)
+  const mx = useMotionValue(0)
+  const my = useMotionValue(0)
+  const sx = useSpring(mx, { stiffness: 120, damping: 18, mass: 0.4 })
+  const sy = useSpring(my, { stiffness: 120, damping: 18, mass: 0.4 })
+  const rotateY = useTransform(sx, [-1, 1], [-14, 14])
+  const rotateX = useTransform(sy, [-1, 1], [10, -10])
+  const tx = useTransform(sx, [-1, 1], [-3, 3])
+  const ty = useTransform(sy, [-1, 1], [-2, 2])
+  // Pupils — independent eye-tracking with a wider radius so eyes glance
+  // even when the head hasn't started tilting yet. Throttled via rAF.
+  const [eye, setEye] = useState({ x: 0, y: 0 })
+
+  useEffect(() => {
+    // Respect user preference: skip parallax entirely if reduced motion requested.
+    if (typeof window === 'undefined') return undefined
+    const reduce =
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduce) return undefined
+
+    const PARALLAX_RADIUS = 320 // px — beyond this the head returns to neutral
+    const EYE_RADIUS = 600 // px — eyes glance from further away than the head tilts
+    let rafId = 0
+    let pendingEye = null
+    const flushEye = () => {
+      rafId = 0
+      if (pendingEye) {
+        setEye(pendingEye)
+        pendingEye = null
+      }
+    }
+    const onMove = (e) => {
+      const node = buttonRef.current
+      if (!node) return
+      const rect = node.getBoundingClientRect()
+      const cx = rect.left + rect.width / 2
+      const cy = rect.top + rect.height / 2
+      const dx = e.clientX - cx
+      const dy = e.clientY - cy
+      const dist = Math.hypot(dx, dy)
+      // Head tilt parallax (motion-value path — never re-renders React).
+      if (dist > PARALLAX_RADIUS) {
+        mx.set(0)
+        my.set(0)
+      } else {
+        mx.set(Math.max(-1, Math.min(1, dx / PARALLAX_RADIUS)))
+        my.set(Math.max(-1, Math.min(1, dy / PARALLAX_RADIUS)))
+      }
+      // Eye glance — wider radius, smaller magnitude (rAF-throttled state).
+      const enx = Math.max(-1, Math.min(1, dx / EYE_RADIUS))
+      const eny = Math.max(-1, Math.min(1, dy / EYE_RADIUS))
+      pendingEye = { x: enx * 2.2, y: eny * 1.8 }
+      if (!rafId) rafId = requestAnimationFrame(flushEye)
+    }
+    const onLeave = () => {
+      mx.set(0)
+      my.set(0)
+      pendingEye = { x: 0, y: 0 }
+      if (!rafId) rafId = requestAnimationFrame(flushEye)
+    }
+    window.addEventListener('mousemove', onMove, { passive: true })
+    window.addEventListener('mouseleave', onLeave)
+    return () => {
+      window.removeEventListener('mousemove', onMove)
+      window.removeEventListener('mouseleave', onLeave)
+      if (rafId) cancelAnimationFrame(rafId)
+    }
+  }, [mx, my])
+
   return (
     <button
+      ref={buttonRef}
       type="button"
       onClick={onClick}
       aria-label={isOpen ? 'Close assistant panel' : 'Open Mr. J. Worden assistant'}
@@ -201,7 +293,8 @@ export default function MrWordenAvatar({
         className="absolute rounded-full border-2 pointer-events-none"
         style={{
           inset: 0,
-          borderColor: state === 'talking' ? '#f5a623' : 'rgba(245,166,35,0.4)',
+          borderColor:
+            state === 'talking' || state === 'wave' ? '#f5a623' : 'rgba(245,166,35,0.4)',
         }}
         animate={{ scale: [1, 1.08, 1], opacity: [0.8, 0.3, 0.8] }}
         transition={{ repeat: Infinity, duration: 2.5, ease: 'easeInOut' }}
@@ -215,17 +308,21 @@ export default function MrWordenAvatar({
         style={{
           width: size,
           height: size + 8,
-          perspective: 400,
+          perspective: 600,
           transformStyle: 'preserve-3d',
           marginLeft: 8,
         }}
       >
         <motion.div
-          whileHover={{ rotateY: 8, rotateX: -4 }}
-          transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-          style={{ transformStyle: 'preserve-3d' }}
+          style={{
+            transformStyle: 'preserve-3d',
+            rotateX,
+            rotateY,
+            x: tx,
+            y: ty,
+          }}
         >
-          <JWordenSVG talking={state === 'talking'} />
+          <JWordenSVG talking={state === 'talking'} eyeDx={eye.x} eyeDy={eye.y} />
         </motion.div>
       </motion.div>
 
