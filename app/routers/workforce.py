@@ -259,7 +259,7 @@ async def predictive_staffing(
     _: dict = Depends(verify_premium_security),
 ):
     """
-    Analyse available workforce and recommend an optimal crew composition for
+    Analyze available workforce and recommend an optimal crew composition for
     a project of the given size, ensuring target completion within `target_days`.
 
     Returns:
@@ -298,7 +298,7 @@ async def predictive_staffing(
     if shortfall > 0:
         tips.append(f"You need {shortfall} additional worker(s). Consider subcontractors or overtime.")
     if schedule_risk == "moderate":
-        tips.append("Estimated duration exceeds target by >20%. Pre-stage materials to minimise idle time.")
+        tips.append("Estimated duration exceeds target by >20%. Pre-stage materials to minimize idle time.")
     if not trade:
         tips.append("Specify a trade filter to narrow the match to qualified crew only.")
     if not tips:
