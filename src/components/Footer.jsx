@@ -80,13 +80,15 @@ export default function Footer() {
   const year = new Date().getFullYear()
   return (
     <footer className="bg-brand-navy text-white/80">
-      {/* ── Social bar ─────────────────────────────────────────────────── */}
-      <div className="border-b border-white/10 bg-white/5">
+      {/* ── Social bar ──────────────────────────────────────────────── */}
+      <div className="border-b border-white/8 bg-white/[0.03]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div>
-              <p className="font-display font-black text-white text-lg mb-1">Follow Our Work</p>
-              <p className="text-white/50 text-sm">
+              <p className="font-display font-black text-white text-base tracking-tight mb-1">
+                Follow Our Work
+              </p>
+              <p className="text-white/45 text-sm">
                 Before &amp; afters, crew in the field, and local paving tips.
               </p>
             </div>
@@ -99,29 +101,29 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* ── Main footer ────────────────────────────────────────────────── */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      {/* ── Main footer ─────────────────────────────────────────────── */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {/* Brand */}
           <div>
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-brand-amber rounded-md flex items-center justify-center font-display font-black text-brand-navy text-sm">
+            <div className="flex items-center gap-2.5 mb-4">
+              <div className="w-9 h-9 bg-brand-amber rounded-lg flex items-center justify-center font-display font-black text-brand-navy text-sm shadow-amber">
                 JW
               </div>
-              <span className="font-display font-black text-white text-lg">
+              <span className="font-display font-black text-white text-[17px] tracking-tight">
                 J. Worden <span className="text-brand-amber">&amp; Sons</span>
               </span>
             </div>
-            <p className="text-sm leading-relaxed text-white/60">
+            <p className="text-sm leading-relaxed text-white/55">
               Fourth-generation asphalt paving since 1984. Trusted by KFC, Arby&apos;s, Taco Bell,
               and hundreds of homeowners across the region.
             </p>
-            <div className="mt-4 flex gap-2 text-xs text-white/40">
-              <span>⭐ 4.9/5</span>
-              <span>·</span>
+            <div className="mt-4 flex items-center gap-2 text-xs text-white/35">
+              <span className="text-brand-amber">★</span>
+              <span>4.9 / 5</span>
+              <span className="text-white/20">·</span>
               <span>87 Google Reviews</span>
             </div>
-            {/* Social links */}
             <div className="mt-5 flex flex-wrap gap-3">
               {SOCIAL_LINKS.map(({ label, href, icon }) => (
                 <a
@@ -130,7 +132,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="flex items-center gap-1.5 text-xs text-white/50 hover:text-brand-amber transition-colors"
+                  className="flex items-center gap-1.5 text-xs text-white/45 hover:text-brand-amber transition-colors duration-200"
                 >
                   {icon}
                   <span>{label}</span>
@@ -141,15 +143,15 @@ export default function Footer() {
 
           {/* Quick links */}
           <div>
-            <h3 className="font-bold text-white mb-4 text-sm uppercase tracking-widest">
+            <h3 className="text-xs font-bold text-white/40 uppercase tracking-[0.14em] mb-4">
               Quick Links
             </h3>
-            <ul className="space-y-2">
+            <ul className="space-y-2.5">
               {LINKS.map(({ to, label }) => (
                 <li key={to}>
                   <Link
                     to={to}
-                    className="text-sm text-white/60 hover:text-brand-amber transition-colors"
+                    className="text-sm text-white/55 hover:text-brand-amber transition-colors duration-200 link-underline"
                   >
                     {label}
                   </Link>
@@ -160,20 +162,20 @@ export default function Footer() {
 
           {/* Services + Contact */}
           <div>
-            <h3 className="font-bold text-white mb-4 text-sm uppercase tracking-widest">
+            <h3 className="text-xs font-bold text-white/40 uppercase tracking-[0.14em] mb-4">
               Services
             </h3>
-            <ul className="space-y-2 mb-6">
+            <ul className="space-y-2.5 mb-7">
               {SERVICES.map((s) => (
-                <li key={s} className="text-sm text-white/60">
-                  {s}
-                </li>
+                <li key={s} className="text-sm text-white/55">{s}</li>
               ))}
             </ul>
-            <h3 className="font-bold text-white mb-2 text-sm uppercase tracking-widest">Contact</h3>
+            <h3 className="text-xs font-bold text-white/40 uppercase tracking-[0.14em] mb-3">
+              Contact
+            </h3>
             <a
               href="tel:+18044461296"
-              className="text-brand-amber font-bold text-sm hover:underline"
+              className="text-brand-amber font-bold text-base hover:text-brand-amber-dark transition-colors duration-200"
               onClick={() => {
                 if (typeof window.gtag === 'function')
                   window.gtag('event', 'phone_click', { location: 'footer' })
@@ -181,18 +183,24 @@ export default function Footer() {
             >
               (804) 446-1296
             </a>
-            <p className="text-xs text-white/40 mt-1">Mon–Fri 7am–5pm</p>
-            <p className="text-xs text-white/40 mt-2 leading-relaxed">
-              1601 Ware Bottom Springs Rd
-              <br />
+            <p className="text-xs text-white/35 mt-1">Mon–Fri 7 am – 5 pm</p>
+            <p className="text-xs text-white/35 mt-2.5 leading-relaxed">
+              1601 Ware Bottom Springs Rd<br />
               Suite 214, Chester VA 23836
             </p>
           </div>
         </div>
 
-        <div className="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-white/30">
+        {/* ── Bottom bar ─────────────────────────────────────────────── */}
+        <div className="mt-12 pt-6 border-t border-white/8 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-white/28">
           <p>© {year} J. Worden &amp; Sons Asphalt Paving. All rights reserved.</p>
-          <p>Licensed &amp; Insured · Est. 1984 · 4th Generation</p>
+          <p className="flex items-center gap-2">
+            <span>Licensed &amp; Insured</span>
+            <span className="text-white/15">·</span>
+            <span>Est. 1984</span>
+            <span className="text-white/15">·</span>
+            <span>Powered by <span className="text-brand-amber/70">JWORDENAI™</span></span>
+          </p>
         </div>
       </div>
     </footer>

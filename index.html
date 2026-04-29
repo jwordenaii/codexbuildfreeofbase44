@@ -1,23 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#1a1a2e" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+    <!-- ── Identity ──────────────────────────────────────────────── -->
+    <meta name="theme-color" content="#161616" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#161616" />
+    <meta name="color-scheme" content="light" />
+    <meta name="application-name" content="J. Worden & Sons Asphalt Paving" />
+    <meta name="author" content="J. Worden & Sons Asphalt Paving" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="format-detection" content="telephone=yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="JWordenAI" />
+
+    <!-- ── SEO defaults (overridden per-page) ────────────────────── -->
+    <meta name="description" content="J. Worden & Sons — fourth-generation asphalt paving since 1984. Driveways, parking lots, sealcoating & crack filling across Chester, VA and the Mid-Atlantic. Powered by JWORDENAI™." />
+
+    <!-- ── Open Graph ────────────────────────────────────────────── -->
+    <meta property="og:type"        content="website" />
+    <meta property="og:site_name"   content="J. Worden & Sons Asphalt Paving" />
+    <meta property="og:title"       content="J. Worden & Sons Asphalt Paving | 4th-Generation Since 1984" />
+    <meta property="og:description" content="Expert asphalt paving, sealcoating & crack filling in Chester, VA. Free estimates. Powered by JWORDENAI™ — scan your driveway free with AI." />
+    <meta property="og:url"         content="https://jwordenasphaltpaving.com/" />
+
+    <!-- ── Twitter Card ──────────────────────────────────────────── -->
+    <meta name="twitter:card"        content="summary_large_image" />
+    <meta name="twitter:title"       content="J. Worden & Sons Asphalt Paving" />
+    <meta name="twitter:description" content="Expert asphalt paving since 1984. Free AI driveway scan powered by JWORDENAI™." />
+
+    <!-- ── Favicon / PWA icons ───────────────────────────────────── -->
+    <link rel="icon"             type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon"             type="image/x-icon"  href="/favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon"                       href="/apple-touch-icon.png" />
+    <link rel="manifest"                               href="/manifest.json" />
+
+    <!-- ── Font preconnect (critical for LCP) ────────────────────── -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <!-- Load Google Fonts asynchronously to eliminate render-blocking -->
+
+    <!-- ── Load fonts asynchronously — eliminates render-blocking ── -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@700;800;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,400&family=Montserrat:wght@700;800;900&display=swap"
       rel="stylesheet"
       media="print"
       onload="this.media='all'"
     />
     <noscript>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,400&family=Montserrat:wght@700;800;900&display=swap" />
     </noscript>
-    <!-- Google Analytics 4 — set VITE_GA4_ID in .env.local -->
+
+    <!-- ── Google Analytics 4 ────────────────────────────────────── -->
     <script>
       var _ga4Id = '%VITE_GA4_ID%'
       if (_ga4Id && _ga4Id !== '%VITE_GA4_ID%') {
@@ -31,9 +67,12 @@
         gtag('config', _ga4Id, { send_page_view: false })
       }
     </script>
+
     <title>J. Worden &amp; Sons Asphalt Paving | 4th-Generation Since 1984</title>
   </head>
   <body>
+    <!-- Skip to main content — accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

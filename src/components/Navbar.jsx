@@ -39,28 +39,31 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-brand-navy shadow-lg' : 'bg-brand-navy/90 backdrop-blur-sm'
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-350 ${
+        scrolled
+          ? 'bg-brand-navy shadow-xl border-b border-white/5'
+          : 'bg-brand-navy/92 backdrop-blur-xl border-b border-white/8'
       }`}
+      style={{ backdropFilter: scrolled ? 'none' : 'blur(20px) saturate(180%)' }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-[62px]">
           {/* Logo */}
           <Link
             to="/"
-            className="flex items-center gap-2 group"
+            className="flex items-center gap-2.5 group"
             aria-label="J. Worden & Sons — Home"
           >
-            <div className="w-8 h-8 bg-brand-amber rounded-md flex items-center justify-center font-display font-black text-brand-navy text-sm">
+            <div className="w-9 h-9 bg-brand-amber rounded-lg flex items-center justify-center font-display font-black text-brand-navy text-sm shadow-amber group-hover:scale-105 transition-transform duration-250">
               JW
             </div>
-            <span className="font-display font-black text-white text-lg leading-tight">
+            <span className="font-display font-black text-white text-[17px] leading-tight tracking-tight">
               J. Worden <span className="text-brand-amber">&amp; Sons</span>
             </span>
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-1" aria-label="Primary navigation">
+          <nav className="hidden md:flex items-center gap-0.5" aria-label="Primary navigation">
             {NAV_LINKS.map(({ to, label, highlight }) => (
               <NavLink
                 key={to}
@@ -68,15 +71,15 @@ export default function Navbar() {
                 end={to === '/'}
                 className={({ isActive }) =>
                   highlight
-                    ? `px-4 py-2 rounded-md text-sm font-bold transition-colors border ${
+                    ? `px-3 py-1.5 rounded-lg text-sm font-bold transition-all duration-200 border ${
                         isActive
-                          ? 'bg-brand-amber text-brand-navy border-brand-amber'
-                          : 'text-brand-amber border-brand-amber/60 hover:bg-brand-amber/10'
+                          ? 'bg-brand-amber text-brand-navy border-brand-amber shadow-amber'
+                          : 'text-brand-amber border-brand-amber/50 hover:bg-brand-amber/12 hover:border-brand-amber/80'
                       }`
-                    : `px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                    : `px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
                         isActive
-                          ? 'bg-brand-amber text-brand-navy'
-                          : 'text-white/80 hover:text-white hover:bg-white/10'
+                          ? 'bg-brand-amber text-brand-navy font-bold'
+                          : 'text-white/75 hover:text-white hover:bg-white/8'
                       }`
                 }
               >
@@ -85,7 +88,7 @@ export default function Navbar() {
             ))}
             <Link
               to="/quote"
-              className="ml-4 btn-primary text-sm !py-2"
+              className="ml-3 btn-primary text-sm !py-2 !px-5 !rounded-lg"
               onClick={() => {
                 if (typeof window.gtag === 'function')
                   window.gtag('event', 'cta_click', { location: 'navbar' })
@@ -145,42 +148,46 @@ export default function Navbar() {
           id="mobile-menu"
           role="navigation"
           aria-label="Mobile navigation"
-          className={`md:hidden overflow-hidden transition-all duration-300 ${
-            open ? 'max-h-96 pb-4 border-t border-white/10' : 'max-h-0'
+          className={`md:hidden overflow-hidden transition-all duration-350 ${
+            open ? 'max-h-[520px] pb-4 border-t border-white/8' : 'max-h-0'
           }`}
         >
-          {NAV_LINKS.map(({ to, label, highlight }) => (
-            <NavLink
-              key={to}
-              to={to}
-              end={to === '/'}
-              className={({ isActive }) =>
-                highlight
-                  ? `block px-4 py-3 text-sm font-bold rounded-md transition-colors border ${
-                      isActive
-                        ? 'bg-brand-amber text-brand-navy border-brand-amber'
-                        : 'text-brand-amber border-brand-amber/40 hover:bg-brand-amber/10'
-                    }`
-                  : `block px-4 py-3 text-sm font-medium rounded-md transition-colors ${
-                      isActive
-                        ? 'bg-brand-amber text-brand-navy'
-                        : 'text-white/80 hover:text-white hover:bg-white/10'
-                    }`
-              }
+          <div className="pt-2 space-y-0.5">
+            {NAV_LINKS.map(({ to, label, highlight }) => (
+              <NavLink
+                key={to}
+                to={to}
+                end={to === '/'}
+                className={({ isActive }) =>
+                  highlight
+                    ? `flex items-center px-4 py-3 text-sm font-bold rounded-xl mx-1 transition-all border ${
+                        isActive
+                          ? 'bg-brand-amber text-brand-navy border-brand-amber'
+                          : 'text-brand-amber border-brand-amber/30 hover:bg-brand-amber/10'
+                      }`
+                    : `flex items-center px-4 py-3 text-sm font-medium rounded-xl mx-1 transition-all ${
+                        isActive
+                          ? 'bg-brand-amber text-brand-navy font-bold'
+                          : 'text-white/75 hover:text-white hover:bg-white/8'
+                      }`
+                }
+              >
+                {label}
+              </NavLink>
+            ))}
+          </div>
+          <div className="mx-3 mt-3">
+            <Link
+              to="/quote"
+              className="btn-primary w-full text-sm justify-center py-3"
+              onClick={() => {
+                if (typeof window.gtag === 'function')
+                  window.gtag('event', 'cta_click', { location: 'navbar_mobile' })
+              }}
             >
-              {label}
-            </NavLink>
-          ))}
-          <Link
-            to="/quote"
-            className="mt-3 mx-4 btn-primary text-sm justify-center"
-            onClick={() => {
-              if (typeof window.gtag === 'function')
-                window.gtag('event', 'cta_click', { location: 'navbar_mobile' })
-            }}
-          >
-            Get a Free Quote
-          </Link>
+              Get a Free Quote
+            </Link>
+          </div>
         </div>
       </div>
     </header>

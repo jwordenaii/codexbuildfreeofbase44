@@ -56,7 +56,7 @@ export default function App() {
       <ErrorBoundary>
         <div className="flex flex-col min-h-screen">
           <Navbar />
-          <main className="flex-1">
+          <main id="main-content" className="flex-1">
             <Suspense fallback={<PageLoader />}>
               <Routes>
                 <Route path="/" element={<Home />} />

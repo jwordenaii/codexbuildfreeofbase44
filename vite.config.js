@@ -68,6 +68,9 @@ export default defineConfig(({ mode }) => {
         '/advisory/environmental',
         '/advisory/building-codes',
         '/advisory/roads-paving',
+        // JWORDENAI™ public tech + customer tools
+        '/jwordenai',
+        '/jwordenai/scan',
       ],
     }),
   ],
