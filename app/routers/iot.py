@@ -167,16 +167,16 @@ async def register_device(
     return {"status": "registered", **_device_dict(d)}
 
 
-@router.put("/devices/{device_id}", summary="Update IoT device metadata or status")
+@router.put("/devices/{id}", summary="Update IoT device metadata or status")
 @limiter.limit("30/minute")
 async def update_device(
     request: Request,
-    device_id: int,
+    id: int,
     req: DeviceUpdate,
     db: Session = Depends(get_db),
     _: dict = Depends(verify_premium_security),
 ):
-    d = db.get(IoTDevice, device_id)
+    d = db.get(IoTDevice, id)
     if not d:
         raise HTTPException(status_code=404, detail="Device not found")
     data = req.model_dump(exclude_none=True)
@@ -191,20 +191,20 @@ async def update_device(
     return {"status": "updated", **_device_dict(d)}
 
 
-@router.delete("/devices/{device_id}", summary="Deregister an IoT device")
+@router.delete("/devices/{id}", summary="Deregister an IoT device")
 @limiter.limit("20/minute")
 async def delete_device(
     request: Request,
-    device_id: int,
+    id: int,
     db: Session = Depends(get_db),
     _: dict = Depends(verify_premium_security),
 ):
-    d = db.get(IoTDevice, device_id)
+    d = db.get(IoTDevice, id)
     if not d:
         raise HTTPException(status_code=404, detail="Device not found")
     db.delete(d)
     db.commit()
-    return {"status": "deleted", "id": device_id}
+    return {"status": "deleted", "id": id}
 
 
 # ── Reading endpoints ─────────────────────────────────────────────────────────

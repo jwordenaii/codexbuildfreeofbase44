@@ -293,7 +293,7 @@ async def predictive_staffing(
             rating_match = any(trade.lower() in k.lower() for k in ratings)
             if trade_match or rating_match:
                 certs = json.loads(m.certifications) if m.certifications else []
-                # Penalise members with expired certs
+                # Penalize members with expired certs
                 has_expired = any(_cert_expiry_status(c, now) == "expired" for c in certs)
                 ratings_vals = [v for k, v in ratings.items() if trade.lower() in k.lower()]
                 skill_score = max(ratings_vals) if ratings_vals else 3  # default mid-range
