@@ -126,8 +126,8 @@ export default function Contact() {
                 {
                   icon: '📧',
                   label: 'Email',
-                  value: 'contact@jwordenasphaltpaving.com',
-                  href: 'mailto:contact@jwordenasphaltpaving.com',
+                  value: 'j.wordenandsonspaving@gmail.com',
+                  href: 'mailto:j.wordenandsonspaving@gmail.com',
                 },
                 {
                   icon: '📍',

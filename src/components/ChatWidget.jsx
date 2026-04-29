@@ -878,6 +878,16 @@ export default function ChatWidget() {
                           (804) 446-1296
                         </a>
                       </p>
+                      <p className="text-xs text-center text-brand-navy/40 mt-1">
+                        Or email:{' '}
+                        <a
+                          href="mailto:j.wordenandsonspaving@gmail.com"
+                          className="text-brand-amber font-semibold hover:underline"
+                        >
+                          j.wordenandsonspaving@gmail.com
+                        </a>
+                      </p>
+
                     </form>
                   )}
                 </div>

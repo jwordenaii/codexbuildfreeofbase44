@@ -181,6 +181,19 @@ export default function Footer() {
               (804) 446-1296
             </a>
             <p className="text-xs text-white/40 mt-1">Mon–Fri 7am–5pm</p>
+            <p className="text-xs text-white/50 mt-2">
+              Email:{' '}
+              <a
+                href="mailto:j.wordenandsonspaving@gmail.com"
+                className="text-brand-amber hover:underline"
+                onClick={() => {
+                  if (typeof window.gtag === 'function')
+                    window.gtag('event', 'email_click', { location: 'footer' })
+                }}
+              >
+                j.wordenandsonspaving@gmail.com
+              </a>
+            </p>
             <p className="text-xs text-white/40 mt-2 leading-relaxed">
               1601 Ware Bottom Springs Rd
               <br />
