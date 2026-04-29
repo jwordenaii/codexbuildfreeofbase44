@@ -6,6 +6,7 @@
 [build.environment]
   NODE_VERSION = "20"
   PYTHON_VERSION = "3.11"
+  VITE_API_BASE_URL = "https://codexbuildfreeofbase44.up.railway.app"
 
 # SPA fallback — all routes serve index.html
 [[redirects]]
