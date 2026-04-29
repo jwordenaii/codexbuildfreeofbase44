@@ -325,7 +325,11 @@ export default function ChatWidget() {
       try {
         window.speechSynthesis.cancel()
         const u = new window.SpeechSynthesisUtterance(text)
-        // Pick a warm, US English voice when available (closer to Southern gentleman feel).
+        // Pick a warm US English voice when one is available — closer to a
+        // Southern-gentleman tone. The name patterns below are common labels
+        // exposed by Chrome/Edge/Safari/Firefox on macOS, Windows and Linux;
+        // any of them is "good enough" and we always fall back to the first
+        // available US English voice (then any English voice) when none match.
         const voices = window.speechSynthesis.getVoices() || []
         const preferred =
           voices.find((v) => /en[-_]US/i.test(v.lang) && /male|daniel|fred|alex/i.test(v.name)) ||

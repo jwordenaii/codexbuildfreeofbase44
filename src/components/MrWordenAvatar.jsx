@@ -20,6 +20,16 @@
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 
+// ── Tunable parallax constants ───────────────────────────────────────────────
+// Beyond PARALLAX_RADIUS the head returns to neutral. Eyes glance from
+// further away (EYE_RADIUS) so the pupils start tracking before the head
+// noticeably tilts — this is what produces the "alive" feeling.
+const PARALLAX_RADIUS = 320 // px
+const EYE_RADIUS = 600 // px
+// Maximum pupil travel inside the lens (in SVG units).
+const EYE_MAX_X = 2.2
+const EYE_MAX_Y = 1.8
+
 /** The SVG character art for Mr. J. Worden Sr. */
 function JWordenSVG({ talking = false, eyeDx = 0, eyeDy = 0 }) {
   // Clamp eye pupil offset so it stays inside the lens.
@@ -218,8 +228,6 @@ export default function MrWordenAvatar({
       window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reduce) return undefined
 
-    const PARALLAX_RADIUS = 320 // px — beyond this the head returns to neutral
-    const EYE_RADIUS = 600 // px — eyes glance from further away than the head tilts
     let rafId = 0
     let pendingEye = null
     const flushEye = () => {
@@ -249,7 +257,7 @@ export default function MrWordenAvatar({
       // Eye glance — wider radius, smaller magnitude (rAF-throttled state).
       const enx = Math.max(-1, Math.min(1, dx / EYE_RADIUS))
       const eny = Math.max(-1, Math.min(1, dy / EYE_RADIUS))
-      pendingEye = { x: enx * 2.2, y: eny * 1.8 }
+      pendingEye = { x: enx * EYE_MAX_X, y: eny * EYE_MAX_Y }
       if (!rafId) rafId = requestAnimationFrame(flushEye)
     }
     const onLeave = () => {

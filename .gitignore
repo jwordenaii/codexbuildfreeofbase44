@@ -103,6 +103,10 @@ dist
 # Sveltekit cache directory
 .svelte-kit/
 
+# Playwright artifacts
+test-results/
+playwright-report/
+
 # vitepress build output
 **/.vitepress/dist
 
