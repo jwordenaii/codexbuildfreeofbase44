@@ -1,5 +1,7 @@
 import os
+import time
 import logging
+import logging.config
 from contextlib import asynccontextmanager
 
 from dotenv import load_dotenv  # noqa: E402 — must run before other imports
@@ -7,6 +9,51 @@ from dotenv import load_dotenv  # noqa: E402 — must run before other imports
 # Load .env / .env.local for local development.
 # In production (Railway/Render) env vars are injected directly.
 load_dotenv()
+
+# ── Structured logging ────────────────────────────────────────────────────────
+# Use JSON formatter in production (LOG_FORMAT=json) for log aggregation.
+# Falls back to a human-readable format for local development.
+
+_LOG_FORMAT = os.getenv("LOG_FORMAT", "text").lower()
+_LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO").upper()
+
+_LOGGING_CONFIG: dict = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "json": {
+            "()": "logging.Formatter",
+            "fmt": (
+                '{"time":"%(asctime)s","level":"%(levelname)s",'
+                '"logger":"%(name)s","message":"%(message)s"}'
+            ),
+            "datefmt": "%Y-%m-%dT%H:%M:%S",
+        },
+        "text": {
+            "format": "%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+            "datefmt": "%Y-%m-%d %H:%M:%S",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "json" if _LOG_FORMAT == "json" else "text",
+            "stream": "ext://sys.stdout",
+        },
+    },
+    "root": {
+        "level": _LOG_LEVEL,
+        "handlers": ["console"],
+    },
+    # Silence noisy third-party loggers
+    "loggers": {
+        "uvicorn.access": {"level": "WARNING", "propagate": True},
+        "sqlalchemy.engine": {"level": "WARNING", "propagate": True},
+        "celery": {"level": "INFO", "propagate": True},
+    },
+}
+
+logging.config.dictConfig(_LOGGING_CONFIG)
 
 # ── Sentry (Feature: observability) ──────────────────────────────────────────
 _SENTRY_DSN = os.getenv("SENTRY_DSN", "")
@@ -64,6 +111,9 @@ from .routers import payments as payments_router
 from .routers import foreman as foreman_router
 from .routers import geo as geo_router
 from .routers import igrade as igrade_router
+from .routers import auth as auth_router
+from .routers import health as health_router
+from .routers import metrics as metrics_router
 
 logger = logging.getLogger(__name__)
 
@@ -115,6 +165,42 @@ app.add_middleware(
     allow_headers=["Authorization", "Content-Type"],
 )
 
+
+# ── Request logging middleware ────────────────────────────────────────────────
+
+@app.middleware("http")
+async def log_requests(request, call_next):
+    """
+    Log every HTTP request with method, path, status code, and latency.
+    Errors (5xx) are logged at ERROR level with full detail.
+    """
+    start = time.monotonic()
+    response = None
+    try:
+        response = await call_next(request)
+        return response
+    except Exception as exc:  # noqa: BLE001
+        logger.error(
+            "Unhandled exception: method=%s path=%s error=%s",
+            request.method,
+            request.url.path,
+            exc,
+            exc_info=True,
+        )
+        raise
+    finally:
+        latency_ms = round((time.monotonic() - start) * 1000, 2)
+        status = response.status_code if response is not None else 500
+        log_fn = logger.error if status >= 500 else logger.info
+        log_fn(
+            "request: method=%s path=%s status=%d latency_ms=%.2f",
+            request.method,
+            request.url.path,
+            status,
+            latency_ms,
+        )
+
+
 # ── Routers ───────────────────────────────────────────────────────────────────
 app.include_router(leads.router)
 app.include_router(reviews.router)
@@ -154,6 +240,11 @@ app.include_router(payments_router.router)
 app.include_router(foreman_router.router)
 app.include_router(geo_router.router)
 app.include_router(igrade_router.router)
+
+# Ops / infrastructure routers
+app.include_router(auth_router.router)
+app.include_router(health_router.router)
+app.include_router(metrics_router.router)
 
 
 # ── Legacy endpoints (kept for backward compatibility) ────────────────────────
