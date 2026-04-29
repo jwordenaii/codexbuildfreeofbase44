@@ -472,6 +472,50 @@ export default function About() {
         </div>
       </section>
 
+      {/* JWORDENAI teaser */}
+      <section className="py-20 bg-brand-navy text-white">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row items-center gap-10">
+            <div className="flex-1">
+              <span className="text-brand-amber text-xs font-bold uppercase tracking-widest">
+                Powered by
+              </span>
+              <h2 className="font-display font-black text-4xl mt-2 mb-4">
+                JWORDENAI<sup className="text-brand-amber text-2xl">™</sup>
+              </h2>
+              <p className="text-white/70 leading-relaxed mb-6">
+                Every estimate we build, every project we manage, and every maintenance program we
+                design is now enhanced by JWORDENAI — our proprietary AI technology platform.
+                Smarter takeoffs. Predictive fleet maintenance. Real-time risk monitoring. Built
+                exclusively for the trades by the people who live in them.
+              </p>
+              <Link
+                to="/jwordenai"
+                className="bg-brand-amber text-brand-navy font-black px-6 py-3 rounded-lg hover:bg-brand-amber/90 transition-colors inline-block"
+              >
+                Explore the JWORDENAI Tech Stack →
+              </Link>
+            </div>
+            <div className="flex-shrink-0 grid grid-cols-2 gap-4 w-full md:w-auto">
+              {[
+                { icon: '🧠', label: 'Smart Advisory' },
+                { icon: '⚙️', label: 'Predictive Maintenance' },
+                { icon: '📐', label: 'Automated Takeoffs' },
+                { icon: '🛰️', label: 'Real-Time Risk Analysis' },
+              ].map(({ icon, label }) => (
+                <div
+                  key={label}
+                  className="bg-white/5 border border-white/10 rounded-xl p-4 text-center"
+                >
+                  <div className="text-3xl mb-2">{icon}</div>
+                  <div className="text-xs font-semibold text-white/80">{label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="py-16 bg-brand-amber text-center">
         <div className="max-w-2xl mx-auto px-4">

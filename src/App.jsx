@@ -16,6 +16,7 @@ const Quote = lazy(() => import('./pages/Quote'))
 const Reviews = lazy(() => import('./pages/Reviews'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 const CommandCenter = lazy(() => import('./pages/CommandCenter'))
+const JWordenAI = lazy(() => import('./pages/JWordenAI'))
 const Projects = lazy(() => import('./pages/Projects'))
 const Visualizer = lazy(() => import('./pages/Visualizer'))
 
@@ -70,6 +71,8 @@ export default function App() {
                 <Route path="/blog/:slug" element={<BlogPost />} />
                 {/* Command Center — operations dashboard */}
                 <Route path="/command-center" element={<CommandCenter />} />
+                {/* JWORDENAI Tech Stack — public AI showcase */}
+                <Route path="/jwordenai" element={<JWordenAI />} />
                 {/* Projects / Portfolio */}
                 <Route path="/projects" element={<Projects />} />
                 {/* 3-D Property Visualizer */}
