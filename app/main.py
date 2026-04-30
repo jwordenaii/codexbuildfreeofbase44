@@ -214,6 +214,7 @@ from .routers import customers as customers_router
 from .routers import auth as auth_router
 from .routers import health as health_router
 from .routers import metrics as metrics_router
+from .routers import monitoring as monitoring_router
 from .routers import gallery as gallery_router
 from .routers import chat as chat_router
 from .routers import email as email_router
