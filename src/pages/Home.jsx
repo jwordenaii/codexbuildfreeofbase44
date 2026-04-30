@@ -7,10 +7,7 @@ import FAQAccordion from '../components/FAQAccordion'
 import SocialLinks from '../components/SocialLinks'
 import EstimateWidget from '../components/EstimateWidget'
 import InspirationGallery from '../components/InspirationGallery'
-import {
-  COMPETITOR_INSPIRED_SITE_LOGIC,
-  COMPETITOR_STRATEGY_REFERENCES,
-} from '../lib/competitorSeoStrategy'
+
 
 const SERVICES = [
   {
@@ -375,42 +372,137 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Competitor-informed strategy logic ─────────────────────────── */}
-      <section className="py-20 bg-white">
+      {/* ── Industry Authority: Legacy + Innovation ─────────────────────── */}
+      <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
+
+          {/* Section header */}
+          <div className="text-center mb-16">
             <span className="text-brand-amber text-xs font-bold uppercase tracking-widest">
-              Studied from national leaders, written as J Worden &amp; Sons-only strategy
+              Asphalt &amp; construction industry trends
             </span>
             <h2 className="section-heading mt-2 mb-4">
-              How We Use Competitor Examples the Right Way
+              The State of Asphalt &amp; Construction: How J Worden &amp; Sons Leads with Legacy + Innovation
             </h2>
-            <p className="text-brand-navy/60 max-w-3xl mx-auto">
-              Rose Paving shows national commercial authority. Sunland shows sector-specific
-              positioning. Asphalt Paving Systems shows preservation-first technical depth. We use
-              those as strategy signals, then rewrite the logic around our own service proof,
-              Virginia roots, QSR experience, and pavement intelligence.
+            <p className="text-brand-navy/60 max-w-3xl mx-auto text-lg leading-relaxed">
+              <strong className="text-brand-navy">40+ Years of Tradition. Embracing Tomorrow&apos;s Technology.</strong>
+            </p>
+            <p className="text-brand-navy/60 max-w-3xl mx-auto mt-4 leading-relaxed">
+              The asphalt and construction industry is undergoing a fundamental transformation. AI, drones, ground-penetrating radar, and thermal imaging are reshaping how contractors plan, execute, and maintain projects — raising the bar for every serious operator. J Worden &amp; Sons has spent 40+ years building trust through quality work and deep Virginia roots. We&apos;re not stopping innovation now.
             </p>
           </div>
-          <div className="grid lg:grid-cols-[0.8fr_1.2fr] gap-8">
-            <div className="space-y-4">
-              {COMPETITOR_STRATEGY_REFERENCES.map((ref) => (
-                <div key={ref.name} className="rounded-2xl bg-brand-navy text-white p-5">
-                  <h3 className="font-display font-bold text-brand-amber">{ref.name}</h3>
-                  <p className="text-white/70 text-sm mt-1">{ref.pattern}</p>
-                  <p className="text-white/50 text-xs leading-relaxed mt-3">{ref.useFor}</p>
-                </div>
-              ))}
+
+          {/* 4 subsections */}
+          <div className="space-y-12">
+
+            {/* 1 — The Industry Challenge */}
+            <div className="rounded-3xl bg-gray-50 border border-gray-100 p-8 md:p-10 grid md:grid-cols-[auto_1fr] gap-6 items-start">
+              <div className="text-5xl leading-none">🏗️</div>
+              <div>
+                <h3 className="font-display font-black text-brand-navy text-2xl mb-4">
+                  The Industry Challenge: Pavement Failure is Expensive
+                </h3>
+                <p className="text-brand-navy/70 leading-relaxed mb-4">
+                  Most pavement fails not because of poor materials, but because of poor planning. Freeze-thaw cycles crack and heave asphalt from below. Water intrusion through unsealed cracks destroys the base layer — the most expensive part of any pavement system to repair. Inadequate base preparation and underestimated traffic loads compound the problem, turning a 25-year pavement into a 10-year liability.
+                </p>
+                <p className="text-brand-navy/70 leading-relaxed mb-4">
+                  Virginia&apos;s climate is particularly unforgiving: clay soils shift with moisture, coastal salt air accelerates oxidation, and summer heat softens asphalt that wasn&apos;t mixed or compacted correctly. These aren&apos;t edge cases — they&apos;re the everyday reality of modern pavement management in this region.
+                </p>
+                <p className="text-brand-amber font-semibold">
+                  That&apos;s why we invest in planning before we pour.
+                </p>
+              </div>
             </div>
-            <div className="grid sm:grid-cols-2 gap-4">
-              {COMPETITOR_INSPIRED_SITE_LOGIC.map((item) => (
-                <div key={item.title} className="card p-5">
-                  <h3 className="font-display font-bold text-brand-navy">{item.title}</h3>
-                  <p className="text-sm text-brand-navy/60 leading-relaxed mt-3">{item.logic}</p>
-                </div>
-              ))}
+
+            {/* 2 — Technology Revolution */}
+            <div className="rounded-3xl bg-brand-navy p-8 md:p-10 grid md:grid-cols-[auto_1fr] gap-6 items-start">
+              <div className="text-5xl leading-none">🤖</div>
+              <div>
+                <h3 className="font-display font-black text-white text-2xl mb-4">
+                  The Technology Revolution: AI, Drones, and Predictive Analytics
+                </h3>
+                <p className="text-white/70 leading-relaxed mb-4">
+                  A new generation of tools is changing how serious contractors assess, plan, and execute. Drone imagery replaces slow manual site surveys with precise aerial mapping — catching drainage problems, grade issues, and access constraints before a single machine rolls on site. Ground-penetrating radar (GPR) and electromagnetic locating eliminate the guesswork around buried utilities, protecting your property and our crews.
+                </p>
+                <p className="text-white/70 leading-relaxed mb-4">
+                  Thermal imaging cameras verify asphalt temperature during placement — the difference between a mat that bonds correctly and one that fails in year three. AI-powered pavement condition scoring replaces subjective eyeballing with data-driven distress analysis, and predictive analytics shift maintenance from reactive (fix it when it breaks) to proactive (preserve it before it fails). These aren&apos;t futuristic concepts — they&apos;re tools that leading contractors are deploying today across the asphalt paving industry.
+                </p>
+                <p className="text-brand-amber font-semibold">
+                  We&apos;re adopting these tools because they make your project safer and longer-lasting.
+                </p>
+              </div>
             </div>
+
+            {/* 3 — Sustainability Shift */}
+            <div className="rounded-3xl bg-gray-50 border border-gray-100 p-8 md:p-10 grid md:grid-cols-[auto_1fr] gap-6 items-start">
+              <div className="text-5xl leading-none">🌱</div>
+              <div>
+                <h3 className="font-display font-black text-brand-navy text-2xl mb-4">
+                  The Sustainability Shift: Recycling, Preservation, and Lifecycle Thinking
+                </h3>
+                <p className="text-brand-navy/70 leading-relaxed mb-4">
+                  The sustainable asphalt recycling movement is reshaping how the industry thinks about cost and waste. Reclaimed asphalt pavement (RAP) — milled from old surfaces and reprocessed into new mix — reduces landfill waste and lowers material costs without sacrificing performance. Modern preservation-first maintenance strategies extend pavement life by 10–15 years through timely sealcoating, crack filling, and micro-surfacing, deferring the far more expensive full-depth reconstruction.
+                </p>
+                <p className="text-brand-navy/70 leading-relaxed mb-4">
+                  Lifecycle costing is the framework that ties it all together: instead of comparing only upfront bids, sophisticated property owners and managers now evaluate the true 20-year cost of ownership — factoring in maintenance intervals, failure risk, and replacement timing. This is how DOT agencies, HOAs, and commercial property managers are making smarter pavement decisions across Virginia and beyond.
+                </p>
+                <p className="text-brand-amber font-semibold">
+                  We&apos;ve been preservation-first for decades. Now the whole industry is catching up.
+                </p>
+              </div>
+            </div>
+
+            {/* 4 — J Worden & Sons Difference */}
+            <div className="rounded-3xl bg-brand-amber p-8 md:p-10 grid md:grid-cols-[auto_1fr] gap-6 items-start">
+              <div className="text-5xl leading-none">🏆</div>
+              <div>
+                <h3 className="font-display font-black text-brand-navy text-2xl mb-4">
+                  The J Worden &amp; Sons Difference: Legacy Meets Innovation
+                </h3>
+                <p className="text-brand-navy/80 leading-relaxed mb-4">
+                  We&apos;re not a startup chasing trends. We&apos;re a 40-year-old legacy construction company in Virginia that earned trust through quality work, honest pricing, and showing up when we say we will. That foundation is what makes our investment in new technology meaningful — we&apos;re not adopting tools to look modern, we&apos;re adopting them because they produce better outcomes for our clients.
+                </p>
+                <div className="grid sm:grid-cols-2 gap-3 mb-6">
+                  {[
+                    ['Est. 1984', '4th-generation family ownership'],
+                    ['VA Class A GC', 'Meets Virginia\'s highest licensing standard'],
+                    ['KFC · Arby\'s · Taco Bell', 'National QSR franchise experience'],
+                    ['4.9★ · 87+ Reviews', 'Verified Google reputation'],
+                    ['AI · Drones · GPR · Thermal', 'Cutting-edge field technology'],
+                    ['Preservation-first', 'Lifecycle planning on every project'],
+                  ].map(([bold, detail]) => (
+                    <div key={bold} className="flex items-start gap-3 bg-white/40 rounded-xl p-3">
+                      <span className="w-5 h-5 rounded-full bg-brand-navy flex-shrink-0 flex items-center justify-center text-white font-bold text-xs mt-0.5">
+                        ✓
+                      </span>
+                      <span className="text-brand-navy/90 text-sm">
+                        <strong className="text-brand-navy">{bold}</strong> — {detail}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-brand-navy font-semibold">
+                  We honor our legacy by embracing the future. That&apos;s how we deliver pavement that lasts.
+                </p>
+              </div>
+            </div>
+
           </div>
+
+          {/* Closing CTA */}
+          <div className="mt-16 text-center">
+            <p className="text-brand-navy/70 text-lg mb-6 max-w-2xl mx-auto">
+              Ready to work with an innovative paving contractor who combines 40 years of experience with tomorrow&apos;s technology?
+            </p>
+            <Link
+              to="/quote"
+              className="btn-primary text-lg px-8 py-4"
+              onClick={() => trackEvent('cta_click', { location: 'industry_authority_section' })}
+            >
+              Get a Free Quote
+            </Link>
+          </div>
+
         </div>
       </section>
 
