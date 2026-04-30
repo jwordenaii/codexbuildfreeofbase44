@@ -9,7 +9,6 @@ const NAV_LINKS = [
   { to: '/gallery', label: 'Gallery' },
   { to: '/reviews', label: 'Reviews' },
   { to: '/advisory', label: 'Advisory' },
-  { to: '/command-center', label: 'Command Center' },
   { to: '/contact', label: 'Contact' },
 ]
 
