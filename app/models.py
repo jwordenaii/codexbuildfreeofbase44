@@ -840,3 +840,29 @@ class Tenant(Base):
 
     def __repr__(self) -> str:
         return f"<Tenant tenant_id={self.tenant_id!r} company={self.company_name!r}>"
+
+
+# ── Real-time chat messages ───────────────────────────────────────────────────
+
+class ChatMessage(Base):
+    """
+    Individual message record for the real-time WebSocket chat system.
+
+    Messages are also stored in serialised form inside ChatSession.messages_json
+    for fast retrieval.  This table provides a normalised, queryable view of
+    every message — useful for admin dashboards, analytics, and audit trails.
+
+    role values: "customer" | "admin"
+    """
+
+    __tablename__ = "chat_messages"
+
+    id           = Column(Integer, primary_key=True, index=True)
+    session_id   = Column(String(100), nullable=False, index=True)   # FK to chat_sessions.session_id
+    role         = Column(String(20),  nullable=False)               # customer | admin
+    sender_name  = Column(String(120), nullable=True)
+    content      = Column(Text,        nullable=False)
+    created_at   = Column(DateTime(timezone=True), default=_utcnow, nullable=False)
+
+    def __repr__(self) -> str:
+        return f"<ChatMessage id={self.id} session={self.session_id!r} role={self.role!r}>"

@@ -209,6 +209,8 @@ from .routers import auth as auth_router
 from .routers import health as health_router
 from .routers import metrics as metrics_router
 from .routers import gallery as gallery_router
+from .routers import chat as chat_router
+from .routers.websocket_events import sio
 
 logger = logging.getLogger(__name__)
 
@@ -351,6 +353,18 @@ app.include_router(metrics_router.router)
 
 # Gallery
 app.include_router(gallery_router.router)
+
+# Real-time chat (WebSocket + HTTP history/session endpoints)
+app.include_router(chat_router.router)
+
+
+# ── Socket.IO ASGI mount ──────────────────────────────────────────────────────
+# Mount the Socket.IO server at /sio so it doesn't conflict with FastAPI routes.
+# Clients connect via:  io("https://host", {path: "/sio/socket.io"})
+import socketio as _socketio  # noqa: E402 — imported after app is configured
+
+_sio_app = _socketio.ASGIApp(sio, socketio_path="/sio/socket.io")
+app.mount("/sio", _sio_app)
 
 
 # ── Legacy endpoints (kept for backward compatibility) ────────────────────────

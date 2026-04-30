@@ -1,4 +1,6 @@
 fastapi==0.115.12
+python-socketio==5.11.0
+python-engineio==4.9.0
 uvicorn[standard]==0.34.3
 pydantic[email]==2.11.4
 openai==1.78.1
