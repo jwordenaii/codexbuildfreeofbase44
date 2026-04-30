@@ -5,6 +5,9 @@ import { SITE_URL } from '../lib/schemas'
 // Re-export schema helpers so existing page imports still work via this path.
 export {
   LOCAL_BUSINESS_SCHEMA,
+  ORGANIZATION_SCHEMA,
+  WEBSITE_SCHEMA,
+  FOUNDER_PERSON_SCHEMA,
   serviceSchema,
   faqSchema,
   reviewsSchema,

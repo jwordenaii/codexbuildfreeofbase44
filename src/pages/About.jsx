@@ -1,6 +1,9 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import SchemaMarkup, { LOCAL_BUSINESS_SCHEMA } from '../components/SchemaMarkup'
+import SchemaMarkup, {
+  LOCAL_BUSINESS_SCHEMA,
+  FOUNDER_PERSON_SCHEMA,
+} from '../components/SchemaMarkup'
 import SocialLinks from '../components/SocialLinks'
 import SocialShare from '../components/SocialShare'
 
@@ -189,7 +192,7 @@ export default function About() {
         title="About J. Worden & Sons — Family-Owned Asphalt Paving Since 1984"
         description="The real story of J. Worden & Sons — founded by Mr. Worden's grandfather after 30 years in roofing. From Virginia Beach to KFC national builds across 10+ states. Pavement Magazine Top 75. Best of Houzz. 2026 Top Contractor Nominee."
         canonical="/about"
-        schema={LOCAL_BUSINESS_SCHEMA}
+        schema={[LOCAL_BUSINESS_SCHEMA, FOUNDER_PERSON_SCHEMA]}
         breadcrumb={[
           { name: 'Home', path: '/' },
           { name: 'About', path: '/about' },
@@ -393,7 +396,8 @@ export default function About() {
 
             {/* Mr. Worden */}
             <motion.div
-              className="bg-white/5 border border-white/10 rounded-2xl p-6 text-center"
+              id="founder"
+              className="bg-white/5 border border-white/10 rounded-2xl p-6 text-center scroll-mt-24"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}

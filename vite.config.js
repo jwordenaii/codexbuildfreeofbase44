@@ -2,27 +2,15 @@ import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
 import sitemap from 'vite-plugin-sitemap'
 import { STATE_PAGE_ROUTES, WORDEN_ACTIVE_STATES } from './src/lib/states50.js'
+import { SERVICE_AREAS } from './src/data/serviceAreas.js'
+import { BLOG_POSTS } from './src/data/blogPosts.js'
 
 const DEFAULT_SITE_URL = 'https://jworden.netlify.app'
 
-// City slugs for service area pages — keep in sync with src/data/serviceAreas.js
-const CITY_SLUGS = [
-  'chester-va', 'richmond-va', 'chesterfield-va', 'colonial-heights-va',
-  'hopewell-va', 'petersburg-va', 'henrico-va', 'midlothian-va',
-  'mechanicsville-va', 'glen-allen-va', 'ashland-va', 'powhatan-va',
-  'prince-george-va', 'dinwiddie-va', 'fredericksburg-va', 'williamsburg-va',
-  'suffolk-va', 'virginia-beach-va', 'norfolk-va', 'charlottesville-va',
-]
-
-// Blog slugs — keep in sync with src/data/blogPosts.js
-const BLOG_SLUGS = [
-  'how-long-does-asphalt-paving-last',
-  'when-to-sealcoat-virginia-guide',
-  'commercial-parking-lot-maintenance-guide',
-  'asphalt-crack-types-guide',
-  'kfc-franchise-paving-standards',
-  'best-time-pave-driveway-virginia',
-]
+// City and blog slugs are derived from the same data the React pages render
+// from, so the sitemap can never drift out of sync with the actual routes.
+const CITY_SLUGS = SERVICE_AREAS.map((a) => a.slug)
+const BLOG_SLUGS = BLOG_POSTS.map((p) => p.slug)
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
@@ -37,7 +25,7 @@ export default defineConfig(({ mode }) => {
     sitemap({
       hostname: siteUrl,
       generateRobotsTxt: false,
-      routes: [
+      dynamicRoutes: [
         // Core pages
         '/',
         '/services',
@@ -46,6 +34,9 @@ export default defineConfig(({ mode }) => {
         '/quote',
         '/reviews',
         '/projects',
+        '/visualizer',
+        '/gallery',
+        '/jwordenai',
         // Service areas
          '/service-areas',
          ...CITY_SLUGS.map((s) => `/service-areas/${s}`),

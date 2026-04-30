@@ -1,6 +1,11 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import SchemaMarkup, { LOCAL_BUSINESS_SCHEMA, faqSchema } from '../components/SchemaMarkup'
+import SchemaMarkup, {
+  LOCAL_BUSINESS_SCHEMA,
+  ORGANIZATION_SCHEMA,
+  WEBSITE_SCHEMA,
+  faqSchema,
+} from '../components/SchemaMarkup'
 import { trackEvent } from '../api/client'
 import CountUp from '../components/CountUp'
 import FAQAccordion from '../components/FAQAccordion'
@@ -183,7 +188,7 @@ export default function Home() {
         title="4th-Generation Asphalt Paving Since 1984"
         description="J. Worden & Sons — trusted asphalt paving, sealcoating, crack filling, and parking lot construction. Serving residential and commercial clients since 1984. Free estimates."
         canonical="/"
-        schema={[LOCAL_BUSINESS_SCHEMA, faqSchema(HOME_FAQS)]}
+        schema={[ORGANIZATION_SCHEMA, WEBSITE_SCHEMA, LOCAL_BUSINESS_SCHEMA, faqSchema(HOME_FAQS)]}
       />
 
       {/* ── Hero ──────────────────────────────────────────────────────── */}

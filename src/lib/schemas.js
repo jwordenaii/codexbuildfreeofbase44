@@ -10,8 +10,24 @@
 
 import { SAME_AS_URLS } from './social'
 import STATES, { WORDEN_ACTIVE_STATES } from './states50'
+import {
+  ADDRESS,
+  AGGREGATE_RATING,
+  BUSINESS_DESCRIPTION,
+  BUSINESS_FOUNDING_YEAR,
+  BUSINESS_LEGAL_NAME,
+  BUSINESS_NAME,
+  EMAIL,
+  FOUNDER,
+  GEO,
+  OPENING_HOURS,
+  PHONE_E164,
+  PHONE_SCHEMA,
+  SCHEMA_IDS,
+  SITE_URL as BUSINESS_SITE_URL,
+} from './businessInfo'
 
-export const SITE_URL = import.meta.env.VITE_SITE_URL || 'https://www.jwordenasphaltpaving.com'
+export const SITE_URL = BUSINESS_SITE_URL
 
 // National area served — all 50 states + DC via Schema.org State objects.
 // Google uses this to understand the contractor's service geography.
@@ -27,46 +43,115 @@ const NATIONAL_AREA_SERVED = _sortedStates.map((s) => ({
   containedInPlace: { '@type': 'Country', name: 'United States' },
 }))
 
+const POSTAL_ADDRESS = {
+  '@type': 'PostalAddress',
+  ...ADDRESS,
+}
+
+const OPENING_HOURS_SPEC = OPENING_HOURS.map((h) => ({
+  '@type': 'OpeningHoursSpecification',
+  ...h,
+}))
+
+const AGGREGATE_RATING_SCHEMA = {
+  '@type': 'AggregateRating',
+  ...AGGREGATE_RATING,
+}
+
 export const LOCAL_BUSINESS_SCHEMA = {
   '@context': 'https://schema.org',
   '@type': ['PavingContractor', 'LocalBusiness'],
-  name: 'J. Worden & Sons Asphalt Paving',
-  description:
-    'Family-owned asphalt paving contractor est. 1984. KFC national QSR new-build and remodel program across 12+ states. ' +
-    'Pavement Magazine Top 75 (4 categories). Best of Houzz. 2026 Top Contractor Nominee.',
-  foundingDate: '1984',
-  telephone: '+1-804-446-1296',
-  email: 'j.wordenandsonspaving@gmail.com',
+  '@id': SCHEMA_IDS.localBusiness,
+  name: BUSINESS_NAME,
+  legalName: BUSINESS_LEGAL_NAME,
+  description: BUSINESS_DESCRIPTION,
+  foundingDate: BUSINESS_FOUNDING_YEAR,
+  telephone: PHONE_SCHEMA,
+  email: EMAIL,
   url: SITE_URL,
   logo: `${SITE_URL}/logo.png`,
+  image: `${SITE_URL}/logo.png`,
   sameAs: SAME_AS_URLS,
-  address: {
-    '@type': 'PostalAddress',
-    addressLocality: 'Chester',
-    addressRegion: 'VA',
-    addressCountry: 'US',
-  },
+  parentOrganization: { '@id': SCHEMA_IDS.organization },
+  founder: { '@id': SCHEMA_IDS.founder },
+  address: POSTAL_ADDRESS,
   geo: {
     '@type': 'GeoCoordinates',
-    latitude: 37.3529,
-    longitude: -77.4326,
+    latitude: GEO.latitude,
+    longitude: GEO.longitude,
   },
   areaServed: NATIONAL_AREA_SERVED,
-  openingHoursSpecification: [
+  openingHoursSpecification: OPENING_HOURS_SPEC,
+  aggregateRating: AGGREGATE_RATING_SCHEMA,
+}
+
+/**
+ * Brand-level Organization entity. Carries the canonical sameAs list and
+ * acts as the parent of the LocalBusiness. Inject once on the homepage
+ * (and only there) so Google has a single, stable brand node to bind the
+ * Knowledge Panel to.
+ */
+export const ORGANIZATION_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': SCHEMA_IDS.organization,
+  name: BUSINESS_NAME,
+  legalName: BUSINESS_LEGAL_NAME,
+  url: SITE_URL,
+  logo: `${SITE_URL}/logo.png`,
+  description: BUSINESS_DESCRIPTION,
+  foundingDate: BUSINESS_FOUNDING_YEAR,
+  sameAs: SAME_AS_URLS,
+  contactPoint: [
     {
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-      opens: '07:00',
-      closes: '17:00',
+      '@type': 'ContactPoint',
+      telephone: PHONE_SCHEMA,
+      contactType: 'customer service',
+      email: EMAIL,
+      areaServed: 'US',
+      availableLanguage: ['English', 'Spanish'],
     },
   ],
-  aggregateRating: {
-    '@type': 'AggregateRating',
-    ratingValue: '4.9',
-    bestRating: '5',
-    worstRating: '1',
-    reviewCount: '87',
+  subOrganization: { '@id': SCHEMA_IDS.localBusiness },
+  founder: { '@id': SCHEMA_IDS.founder },
+}
+
+/**
+ * WebSite entity with SearchAction — qualifies the homepage for Google's
+ * Sitelinks Search Box. The {search_term_string} placeholder must match
+ * the query parameter the site uses for in-site search results.
+ */
+export const WEBSITE_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': SCHEMA_IDS.website,
+  url: SITE_URL,
+  name: BUSINESS_NAME,
+  publisher: { '@id': SCHEMA_IDS.organization },
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: {
+      '@type': 'EntryPoint',
+      urlTemplate: `${SITE_URL}/blog?q={search_term_string}`,
+    },
+    'query-input': 'required name=search_term_string',
   },
+}
+
+/**
+ * Person schema for the founder. Inject on /about so Google has a stable
+ * author/owner entity for E-E-A-T signals. Keep the displayed name on the
+ * page and `FOUNDER.name` here in lockstep.
+ */
+export const FOUNDER_PERSON_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': SCHEMA_IDS.founder,
+  name: FOUNDER.name,
+  jobTitle: FOUNDER.jobTitle,
+  description: FOUNDER.description,
+  worksFor: { '@id': SCHEMA_IDS.localBusiness },
+  url: `${SITE_URL}/about`,
 }
 
 export function serviceSchema(name, description, url, priceRange) {
@@ -77,8 +162,9 @@ export function serviceSchema(name, description, url, priceRange) {
     description,
     provider: {
       '@type': 'LocalBusiness',
-      name: 'J. Worden & Sons Asphalt Paving',
-      telephone: '+18044461296',
+      '@id': SCHEMA_IDS.localBusiness,
+      name: BUSINESS_NAME,
+      telephone: PHONE_E164,
       url: SITE_URL,
     },
     areaServed: NATIONAL_AREA_SERVED,
@@ -124,7 +210,8 @@ export function videoObjectSchema({ name, description, thumbnailUrl, uploadDate,
     ...(contentUrl ? { contentUrl } : {}),
     publisher: {
       '@type': 'Organization',
-      name: 'J. Worden & Sons Asphalt Paving',
+      '@id': SCHEMA_IDS.organization,
+      name: BUSINESS_NAME,
       url: SITE_URL,
     },
   }
@@ -146,7 +233,8 @@ export function reviewsSchema(reviews, aggregateRating) {
   return {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
-    name: 'J. Worden & Sons Asphalt Paving',
+    '@id': SCHEMA_IDS.localBusiness,
+    name: BUSINESS_NAME,
     aggregateRating: {
       '@type': 'AggregateRating',
       ratingValue: String(aggregateRating),

@@ -8,9 +8,9 @@
 
 export const SOCIAL_PROFILES = {
   facebook: {
-    url: import.meta.env.VITE_FACEBOOK_URL || 'https://www.facebook.com/JWordenSons',
+    url: import.meta.env.VITE_FACEBOOK_URL || 'https://www.facebook.com/jwordenpaving/',
     label: 'Facebook',
-    handle: 'JWordenSons',
+    handle: 'jwordenpaving',
     color: '#1877F2',
   },
   instagram: {
@@ -26,7 +26,9 @@ export const SOCIAL_PROFILES = {
     color: '#FF0000',
   },
   linkedin: {
-    url: import.meta.env.VITE_LINKEDIN_URL || 'https://www.linkedin.com/company/jworden-sons',
+    url:
+      import.meta.env.VITE_LINKEDIN_URL ||
+      'https://www.linkedin.com/showcase/j.-worden-%26-sons-paving-l.l.c./',
     label: 'LinkedIn',
     handle: 'J. Worden & Sons',
     color: '#0A66C2',
@@ -38,14 +40,32 @@ export const SOCIAL_PROFILES = {
     color: '#000000',
   },
   nextdoor: {
-    url: import.meta.env.VITE_NEXTDOOR_URL || 'https://nextdoor.com/pages/jworden-sons-chester-va',
+    url:
+      import.meta.env.VITE_NEXTDOOR_URL ||
+      'https://nextdoor.com/pages/nashville-asphalt-paving-pros-chester-va/',
     label: 'Nextdoor',
     handle: 'J. Worden & Sons',
     color: '#8DB600',
   },
+  alignable: {
+    url:
+      import.meta.env.VITE_ALIGNABLE_URL ||
+      'https://www.alignable.com/chester-va/j-worden-sons-paving',
+    label: 'Alignable',
+    handle: 'J. Worden & Sons',
+    color: '#1F2D5A',
+  },
+  houzz: {
+    url:
+      import.meta.env.VITE_HOUZZ_URL ||
+      'https://www.houzz.com/professionals/stone-pavers-and-concrete/j-worden-and-sons-paving-l-l-c-pfvwus-pf~663227484',
+    label: 'Houzz',
+    handle: 'J. Worden & Sons',
+    color: '#7AC142',
+  },
 }
 
-/** Ordered list for display — most impactful platforms first. */
+/** Ordered list for display in icon strips — only platforms with icon assets in SocialLinks.jsx. */
 export const SOCIAL_DISPLAY_ORDER = [
   'facebook',
   'instagram',
@@ -56,10 +76,16 @@ export const SOCIAL_DISPLAY_ORDER = [
 ]
 
 /**
+ * All keys in SOCIAL_PROFILES — used for Schema.org `sameAs` so Google
+ * sees every profile, even ones we don't render an icon for.
+ */
+export const SOCIAL_ALL_KEYS = Object.keys(SOCIAL_PROFILES)
+
+/**
  * Flat array of all profile URLs — injected into Schema.org `sameAs`
  * to tell Google which social accounts belong to this business.
  */
-export const SAME_AS_URLS = SOCIAL_DISPLAY_ORDER.map((k) => SOCIAL_PROFILES[k].url)
+export const SAME_AS_URLS = SOCIAL_ALL_KEYS.map((k) => SOCIAL_PROFILES[k].url)
 
 /**
  * Build a UTM-tagged canonical share URL for a given path.
