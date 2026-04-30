@@ -3,6 +3,12 @@ kpi_wall.py — Continuous Improvement KPI Wall aggregate endpoint for JWordenAI
 
 Routes:
   GET /api/v1/kpi-wall    — aggregate KPIs from all modules
+
+Caching:
+  Results are cached for 5 minutes (KPI_WALL_TTL).  The cache_warmer Celery
+  task pre-populates this key every 5 minutes so the endpoint is always fast.
+  The internal ``_compute_kpi_wall`` function is exported for use by the
+  cache warmer without going through the HTTP layer.
 """
 
 from __future__ import annotations
@@ -13,7 +19,8 @@ from datetime import datetime, timedelta, timezone
 from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
 
-from ..core.limiter import limiter
+from ..core.cache import KPI_WALL_TTL, KEY_KPI_WALL, cache_get, cache_set
+from ..core.limiter import ANALYTICS_LIMIT, limiter
 from ..core.security import verify_premium_security
 from ..database import get_db
 from ..models import (
@@ -30,16 +37,12 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v1/kpi-wall", tags=["kpi-wall"])
 
 
-@router.get("", summary="Aggregate KPI wall data")
-@limiter.limit("30/minute")
-async def kpi_wall(
-    request: Request,
-    db: Session = Depends(get_db),
-    _: dict = Depends(verify_premium_security),
-):
+def _compute_kpi_wall(db: Session) -> dict:
     """
-    Pull live KPIs from all modules and return a single dashboard payload.
-    Each KPI includes current value, trend direction, and rolling 12-month data.
+    Compute all KPI wall metrics from the database.
+
+    Extracted from the route handler so the cache warmer can call it
+    directly without going through the HTTP layer.
     """
     now = datetime.now(timezone.utc)
     twelve_months_ago = now - timedelta(days=365)
@@ -172,6 +175,26 @@ async def kpi_wall(
             for k, v in sorted(monthly_leads.items())
         ],
     }
+
+
+@router.get("", summary="Aggregate KPI wall data")
+@limiter.limit(ANALYTICS_LIMIT)
+async def kpi_wall(
+    request: Request,
+    db: Session = Depends(get_db),
+    _: dict = Depends(verify_premium_security),
+):
+    """
+    Pull live KPIs from all modules and return a single dashboard payload.
+    Each KPI includes current value, trend direction, and rolling 12-month data.
+    Results are cached for 5 minutes to avoid repeated expensive aggregations.
+    """
+    cached = cache_get(KEY_KPI_WALL)
+    if cached is not None:
+        return cached
+    result = _compute_kpi_wall(db)
+    cache_set(KEY_KPI_WALL, result, KPI_WALL_TTL)
+    return result
 
 
 def _status(value, target: float, higher_is_better: bool) -> str:

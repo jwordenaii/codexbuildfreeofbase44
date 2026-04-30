@@ -15,7 +15,6 @@ const Contact = lazy(() => import('./pages/Contact'))
 const Quote = lazy(() => import('./pages/Quote'))
 const Reviews = lazy(() => import('./pages/Reviews'))
 const NotFound = lazy(() => import('./pages/NotFound'))
-const CommandCenter = lazy(() => import('./pages/CommandCenter'))
 const Projects = lazy(() => import('./pages/Projects'))
 const Visualizer = lazy(() => import('./pages/Visualizer'))
 
@@ -27,6 +26,12 @@ const StatePavingPage = lazy(() => import('./pages/StatePavingPage'))
 // Blog / knowledge center
 const Blog = lazy(() => import('./pages/Blog'))
 const BlogPost = lazy(() => import('./pages/BlogPost'))
+
+// Gallery
+const Gallery = lazy(() => import('./pages/Gallery'))
+
+// JWORDENAI™ — proprietary AI brand page
+const JwordenAI = lazy(() => import('./pages/JwordenAI'))
 
 // Advisory pages — lazy-loaded so the 512KB legal dataset never hits the main bundle
 const AdvisoryHub = lazy(() => import('./pages/advisory/AdvisoryHub'))
@@ -68,8 +73,10 @@ export default function App() {
                 {/* Blog / Knowledge Center */}
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/blog/:slug" element={<BlogPost />} />
-                {/* Command Center — operations dashboard */}
-                <Route path="/command-center" element={<CommandCenter />} />
+                {/* Gallery */}
+                <Route path="/gallery" element={<Gallery />} />
+                {/* JWORDENAI™ — proprietary AI brand */}
+                <Route path="/jwordenai" element={<JwordenAI />} />
                 {/* Projects / Portfolio */}
                 <Route path="/projects" element={<Projects />} />
                 {/* 3-D Property Visualizer */}

@@ -23,7 +23,7 @@ export const COMPETITOR_INSPIRED_SITE_LOGIC = [
   {
     title: 'Map every competitor strength to our own proof',
     logic:
-      'Use competitor examples only as strategy prompts. Every page must convert the pattern into J. Worden-specific proof: family history, VA Class A GC licensing, QSR work, pavement intelligence, service-area detail, and real project results.',
+      'Use competitor examples only as strategy prompts. Every page must convert the pattern into J Worden & Sons-specific proof: family history, VA Class A GC licensing, QSR work, pavement intelligence, service-area detail, and real project results.',
   },
   {
     title: 'Build pages around buyer type, not generic keywords',
@@ -55,7 +55,7 @@ export const COMPETITOR_INSPIRED_SITE_LOGIC = [
 export const COMPETITOR_CONTENT_QUALITY_GATE = [
   'Original wording only; never copy competitor copy, claims, photos, testimonials, or brand phrasing.',
   'Each page needs a clear buyer, service, location, problem, proof, and CTA.',
-  'Claims must be supported by J. Worden facts, real capabilities, or clearly framed future-ready logic.',
+  'Claims must be supported by J Worden & Sons facts, real capabilities, or clearly framed future-ready logic.',
   'Preservation guidance must compare options and explain tradeoffs, not push every buyer to replacement.',
   'Local/state pages must avoid doorway-page behavior by adding unique, helpful local content before broad indexing.',
 ]

@@ -175,12 +175,17 @@ def _send_twilio_sms(message: str, to_numbers: list[str]) -> None:
         logger.error('Failed to send SMS: %s', exc)
 
 
+COMPANY_EMAIL = 'j.wordenandsonspaving@gmail.com'
+
+
 def send_lead_notification(data: dict) -> None:
     """Fire-and-forget notification for a new lead or contact form submission."""
 
     logger.info('NEW LEAD: %s', json.dumps(data, default=str))
 
-    to_emails = [e.strip() for e in os.getenv('NOTIFY_TO_EMAIL', '').split(',') if e.strip()]
+    # Always include the company email; merge with any additional addresses from env.
+    env_emails = [e.strip() for e in os.getenv('NOTIFY_TO_EMAIL', '').split(',') if e.strip()]
+    to_emails = list(dict.fromkeys([COMPANY_EMAIL] + env_emails))  # deduplicated, company first
     to_phones = [p.strip() for p in os.getenv('NOTIFY_TO_PHONE', '').split(',') if p.strip()]
 
     subject, html_body = _build_email_body(data)

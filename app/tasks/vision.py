@@ -81,6 +81,11 @@ try:
                 processed += 1
             except Exception as exc:  # noqa: BLE001
                 logger.error("Failed to process vision job: %s", exc)
+                try:
+                    import sentry_sdk  # noqa: PLC0415
+                    sentry_sdk.capture_exception(exc)
+                except Exception:  # noqa: BLE001
+                    pass
 
         return {"processed": processed}
 

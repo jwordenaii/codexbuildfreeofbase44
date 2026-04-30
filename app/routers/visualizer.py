@@ -18,10 +18,11 @@ import logging
 import os
 from typing import Optional
 
-from fastapi import APIRouter, BackgroundTasks, HTTPException, Request
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Request
 from pydantic import BaseModel
 
 from ..core.limiter import limiter
+from ..core.security import verify_premium_security
 from ..services.pricing import estimate_price
 
 logger = logging.getLogger(__name__)
@@ -149,7 +150,7 @@ def _estimate_parcel_sqft(address: str) -> dict:
 
 @router.post("/parcel", summary="Look up parcel data for an address")
 @limiter.limit("30/minute")
-async def scan_parcel(request: Request, req: ParcelRequest):
+async def scan_parcel(request: Request, req: ParcelRequest, _: dict = Depends(verify_premium_security)):
     """
     Given a street address, return:
       - Geocoded lat/lng
@@ -353,7 +354,7 @@ async def submit_visual_proposal(
 
 @router.post("/ai-suggestions", summary="Get AI design suggestions for a build configuration")
 @limiter.limit("20/minute")
-async def ai_design_suggestions(request: Request, req: AIDesignRequest):
+async def ai_design_suggestions(request: Request, req: AIDesignRequest, _: dict = Depends(verify_premium_security)):
     """
     Return design recommendations and upgrade suggestions for a given build
     configuration.  Falls back to curated static suggestions when OpenAI is

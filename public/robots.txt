@@ -11,4 +11,4 @@ Disallow: /command-center
 User-agent: Googlebot
 Allow: /
 
-Sitemap: https://jworden.netlify.app/sitemap.xml
+Sitemap: https://www.jwordenasphaltpaving.com/sitemap.xml

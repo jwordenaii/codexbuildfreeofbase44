@@ -1,0 +1,184 @@
+name: Deploy
+
+# Runs automatically on every push to main.
+# Can also be triggered manually from the Actions tab with optional environment override.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Target environment (production | preview)"
+        required: false
+        default: "production"
+
+# Only one deployment per branch runs at a time; newer run cancels the previous one.
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ── Front-end: build & deploy to Netlify ─────────────────────────────────────
+  deploy-frontend:
+    name: Deploy Front-End → Netlify
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      # ── Set up environment variables ───────────────────────────────────────
+      - name: Bootstrap .env from .env.example
+        run: cp .env.example .env
+
+      # ── Install dependencies ───────────────────────────────────────────────
+      - name: Install Node dependencies
+        run: npm ci
+
+      # ── Build ──────────────────────────────────────────────────────────────
+      - name: Build front-end
+        run: npm run build
+        env:
+          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
+          VITE_SITE_URL: ${{ secrets.VITE_SITE_URL }}
+          VITE_GA4_ID: ${{ secrets.VITE_GA4_ID }}
+          VITE_GOOGLE_MAPS_API_KEY: ${{ secrets.VITE_GOOGLE_MAPS_API_KEY }}
+          VITE_STRIPE_PUBLISHABLE_KEY: ${{ secrets.VITE_STRIPE_PUBLISHABLE_KEY }}
+          VITE_GOOGLE_PLACE_ID: ${{ secrets.VITE_GOOGLE_PLACE_ID }}
+
+      # ── Validate build output ──────────────────────────────────────────────
+      - name: Validate dist/
+        run: |
+          [ -d dist ] || (echo "dist/ not found" && exit 1)
+          [ -f dist/index.html ] || (echo "dist/index.html missing" && exit 1)
+          echo "dist/ looks good:"
+          ls -lh dist/
+
+      # ── Upload build artifact ──────────────────────────────────────────────
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: dist/
+          retention-days: 7
+
+      # ── Deploy to Netlify ──────────────────────────────────────────────────
+      - name: Deploy to Netlify (production)
+        if: github.event.inputs.environment != 'preview'
+        run: npx netlify-cli deploy --dir=dist --prod
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+
+      - name: Deploy to Netlify (preview)
+        if: github.event.inputs.environment == 'preview'
+        run: npx netlify-cli deploy --dir=dist
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+
+  # ── Back-end: validate, test, build Docker ────────────────────────────────────
+  deploy-backend:
+    name: Deploy Back-End
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      # ── Bootstrap environment ──────────────────────────────────────────────
+      - name: Bootstrap .env from .env.example
+        run: cp .env.example .env
+
+      # ── Install dependencies ───────────────────────────────────────────────
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      # ── Verify app loads ───────────────────────────────────────────────────
+      - name: Smoke-test app import
+        run: python -c "from app.main import app; print('FastAPI app loaded OK')"
+        env:
+          JWORDEN_MASTER_KEY: ${{ secrets.JWORDEN_MASTER_KEY }}
+          JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+          AUTO_CREATE_TABLES: "true"
+
+      # ── Database migrations ────────────────────────────────────────────────
+      - name: Run Alembic migrations
+        run: alembic upgrade head
+        env:
+          DATABASE_URL: sqlite:///./jworden_leads.db
+
+      # ── Run pytest ────────────────────────────────────────────────────────
+      - name: Run backend tests
+        run: pytest -q tests/backend
+        env:
+          JWORDEN_MASTER_KEY: ${{ secrets.JWORDEN_MASTER_KEY }}
+          JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+          AUTO_CREATE_TABLES: "true"
+
+      # ── Build production Docker image ─────────────────────────────────────
+      - name: Build production Docker image
+        run: docker build --target production -t jworden-backend:${{ github.sha }} .
+
+      - name: Verify Gunicorn is installed in image
+        run: |
+          docker run --rm jworden-backend:${{ github.sha }} \
+            gunicorn --version
+
+  # ── Integration: start both services and run E2E tests ───────────────────────
+  integration-tests:
+    name: Integration & E2E Tests
+    needs: [deploy-frontend]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Install backend dependencies
+        run: pip install -r requirements.txt
+
+      - name: Frontend unit tests
+        run: npm test
+
+      - name: Backend API tests
+        run: pytest -q tests/backend
+        env:
+          JWORDEN_MASTER_KEY: ${{ secrets.JWORDEN_MASTER_KEY }}
+          JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+          AUTO_CREATE_TABLES: "true"
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: E2E smoke tests (frontend ↔ mock backend)
+        run: npm run test:e2e
+        env:
+          VITE_API_BASE_URL: http://127.0.0.1:9999
+          VITE_CC_PASSWORD: e2e-pin

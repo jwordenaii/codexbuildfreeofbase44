@@ -36,7 +36,7 @@ export const LOCAL_BUSINESS_SCHEMA = {
     'Pavement Magazine Top 75 (4 categories). Best of Houzz. 2026 Top Contractor Nominee.',
   foundingDate: '1984',
   telephone: '+1-804-446-1296',
-  email: 'contact@jworden.com',
+  email: 'j.wordenandsonspaving@gmail.com',
   url: SITE_URL,
   logo: `${SITE_URL}/logo.png`,
   sameAs: SAME_AS_URLS,

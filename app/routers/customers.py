@@ -20,6 +20,7 @@ use the /import endpoint with CSV or JSON — field mapping is flexible.
 """
 
 import csv
+import hashlib
 import io
 import json
 import logging
@@ -30,7 +31,15 @@ from fastapi import APIRouter, Depends, HTTPException, Query, Request, UploadFil
 from pydantic import BaseModel, EmailStr, Field
 from sqlalchemy.orm import Session
 
-from ..core.limiter import limiter
+from ..core.cache import (
+    CUSTOMERS_TTL,
+    KEY_CUSTOMER_DETAIL,
+    KEY_CUSTOMERS_STATS,
+    cache_get,
+    cache_set,
+    invalidate_customer_caches,
+)
+from ..core.limiter import CRM_LIMIT, limiter
 from ..core.security import verify_premium_security
 from ..database import get_db
 from ..models import Customer, ServiceHistory
@@ -132,11 +141,13 @@ async def create_customer(
     db.add(c)
     db.commit()
     db.refresh(c)
+    # New customer invalidates list and stats caches
+    invalidate_customer_caches()
     return c
 
 
 @router.get("", summary="List customers")
-@limiter.limit("60/minute")
+@limiter.limit(CRM_LIMIT)
 async def list_customers(
     request:       Request,
     state_code:    Optional[str] = Query(default=None),
@@ -148,6 +159,23 @@ async def list_customers(
     db: Session = Depends(get_db),
     _: dict = Depends(verify_premium_security),
 ):
+    # Build a stable cache key from all filter parameters
+    params = json.dumps(
+        {
+            "state": state_code,
+            "type": customer_type,
+            "franchise": is_franchise,
+            "search": search,
+            "limit": limit,
+            "offset": offset,
+        },
+        sort_keys=True,
+    )
+    cache_key = f"customers:list:{hashlib.md5(params.encode()).hexdigest()}"  # noqa: S324
+    cached = cache_get(cache_key)
+    if cached is not None:
+        return cached
+
     q = db.query(Customer)
     if state_code:
         q = q.filter(Customer.state_code == state_code.upper())
@@ -164,7 +192,33 @@ async def list_customers(
         )
     total = q.count()
     items = q.order_by(Customer.created_at.desc()).offset(offset).limit(limit).all()
-    return {"total": total, "offset": offset, "limit": limit, "items": items}
+
+    # Serialise to plain dicts so the result is JSON-safe for Redis
+    result = {
+        "total": total,
+        "offset": offset,
+        "limit": limit,
+        "items": [
+            {
+                "id": c.id,
+                "name": c.name,
+                "email": c.email,
+                "phone": c.phone,
+                "company": c.company,
+                "state_code": c.state_code,
+                "city": c.city,
+                "customer_type": c.customer_type,
+                "is_franchise": c.is_franchise,
+                "brand": c.brand,
+                "total_jobs": c.total_jobs,
+                "total_revenue": c.total_revenue,
+                "created_at": c.created_at.isoformat(),
+            }
+            for c in items
+        ],
+    }
+    cache_set(cache_key, result, CUSTOMERS_TTL)
+    return result
 
 
 @router.get("/stats/overview", summary="CRM statistics overview")
@@ -172,6 +226,10 @@ async def customer_stats(
     db: Session = Depends(get_db),
     _: dict = Depends(verify_premium_security),
 ):
+    cached = cache_get(KEY_CUSTOMERS_STATS)
+    if cached is not None:
+        return cached
+
     total      = db.query(Customer).count()
     franchise  = db.query(Customer).filter(Customer.is_franchise == 1).count()
     states     = db.query(Customer.state_code).distinct().count()
@@ -179,13 +237,15 @@ async def customer_stats(
     rev_total  = db.query(Customer).with_entities(
         __import__("sqlalchemy", fromlist=["func"]).func.sum(Customer.total_revenue)
     ).scalar() or 0.0
-    return {
+    result = {
         "total_customers": total,
         "franchise_accounts": franchise,
         "states_represented": states,
         "total_jobs_on_record": jobs_total,
         "total_revenue_on_record": round(float(rev_total), 2),
     }
+    cache_set(KEY_CUSTOMERS_STATS, result, CUSTOMERS_TTL)
+    return result
 
 
 @router.get("/{customer_id}", summary="Get a customer", response_model=CustomerOut)
@@ -217,6 +277,8 @@ async def update_customer(
     c.updated_at = datetime.now(timezone.utc)
     db.commit()
     db.refresh(c)
+    # Invalidate list, stats, and this customer's detail cache
+    invalidate_customer_caches(customer_id)
     return c
 
 
@@ -267,6 +329,8 @@ async def add_service_history(
 
     db.commit()
     db.refresh(entry)
+    # Service history changes affect customer stats and detail caches
+    invalidate_customer_caches(customer_id)
     return entry
 
 

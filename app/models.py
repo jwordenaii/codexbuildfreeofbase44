@@ -793,6 +793,25 @@ class AICorrection(Base):
         return f"<AICorrection id={self.id} type={self.decision_type!r}>"
 
 
+# ── Gallery ───────────────────────────────────────────────────────────────────
+
+class GalleryImage(Base):
+    """Job photo uploaded via the public gallery — stored as a base64 data URI."""
+
+    __tablename__ = "gallery_images"
+
+    id          = Column(String(36),  primary_key=True, index=True)   # UUID
+    filename    = Column(String(300), nullable=False)
+    job_name    = Column(String(200), nullable=False)
+    description = Column(Text,        nullable=True)
+    mime_type   = Column(String(100), nullable=False, default="image/jpeg")
+    data_uri    = Column(Text,        nullable=False)
+    uploaded_at = Column(DateTime(timezone=True), default=_utcnow, nullable=False)
+
+    def __repr__(self) -> str:
+        return f"<GalleryImage id={self.id} job={self.job_name!r}>"
+
+
 # ── Tenants (multi-tenant SaaS) ───────────────────────────────────────────────
 
 class Tenant(Base):
@@ -821,3 +840,78 @@ class Tenant(Base):
 
     def __repr__(self) -> str:
         return f"<Tenant tenant_id={self.tenant_id!r} company={self.company_name!r}>"
+
+
+# ── Real-time chat messages ───────────────────────────────────────────────────
+
+class ChatMessage(Base):
+    """
+    Individual message record for the real-time WebSocket chat system.
+
+    Messages are also stored in serialised form inside ChatSession.messages_json
+    for fast retrieval.  This table provides a normalised, queryable view of
+    every message — useful for admin dashboards, analytics, and audit trails.
+
+    role values: "customer" | "admin"
+    """
+
+    __tablename__ = "chat_messages"
+
+    id           = Column(Integer, primary_key=True, index=True)
+    session_id   = Column(String(100), nullable=False, index=True)   # FK to chat_sessions.session_id
+    role         = Column(String(20),  nullable=False)               # customer | admin
+    sender_name  = Column(String(120), nullable=True)
+    content      = Column(Text,        nullable=False)
+    created_at   = Column(DateTime(timezone=True), default=_utcnow, nullable=False)
+
+    def __repr__(self) -> str:
+        return f"<ChatMessage id={self.id} session={self.session_id!r} role={self.role!r}>"
+
+
+# ── Email log ─────────────────────────────────────────────────────────────────
+
+class EmailLog(Base):
+    """
+    Audit log for every outgoing transactional email sent via SendGrid.
+
+    status values: "sent" | "failed"
+    """
+
+    __tablename__ = "email_logs"
+
+    id              = Column(Integer, primary_key=True, index=True)
+    recipient_email = Column(String(254), nullable=False, index=True)
+    subject         = Column(String(500), nullable=False)
+    status          = Column(String(20),  nullable=False, default="sent")  # sent | failed
+    created_at      = Column(DateTime(timezone=True), default=_utcnow, nullable=False)
+
+    def __repr__(self) -> str:
+        return f"<EmailLog id={self.id} to={self.recipient_email!r} status={self.status!r}>"
+
+
+# ── Two-Factor Authentication ─────────────────────────────────────────────────
+
+class TwoFactorSecret(Base):
+    """
+    TOTP secret and backup codes for admin two-factor authentication.
+
+    One record per admin user_id.  The secret is a base32-encoded TOTP seed
+    compatible with RFC 6238 authenticator apps (Google Authenticator, Authy,
+    1Password, etc.).  backup_codes stores a JSON array of one-time recovery
+    codes; each code is removed from the array after use.
+
+    enabled=False means setup has been initiated but the first TOTP token has
+    not yet been verified — the secret is not enforced at login until enabled=True.
+    """
+
+    __tablename__ = "two_factor_secrets"
+
+    id           = Column(Integer, primary_key=True, index=True)
+    user_id      = Column(String(60), nullable=False, unique=True, index=True)
+    secret       = Column(String(64), nullable=False)
+    backup_codes = Column(Text, nullable=True)   # JSON array of remaining one-time codes
+    enabled      = Column(Boolean, nullable=False, default=False)
+    created_at   = Column(DateTime(timezone=True), default=_utcnow, nullable=False)
+
+    def __repr__(self) -> str:
+        return f"<TwoFactorSecret user_id={self.user_id!r} enabled={self.enabled}>"

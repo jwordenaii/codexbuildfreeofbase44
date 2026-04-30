@@ -204,7 +204,7 @@ export default function CityPage() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="font-display font-black text-2xl text-brand-navy mb-4">
-                Why {area.city} Homeowners &amp; Businesses Choose Worden &amp; Sons
+                Why {area.city} Homeowners &amp; Businesses Choose J Worden &amp; Sons
               </h2>
               <p className="text-brand-navy/70 leading-relaxed mb-6">{area.description}</p>
               <ul className="space-y-3">

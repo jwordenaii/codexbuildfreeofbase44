@@ -3,11 +3,12 @@ import { Link, NavLink, useLocation } from 'react-router-dom'
 
 const NAV_LINKS = [
   { to: '/', label: 'Home' },
+  { to: '/jwordenai', label: 'JWORDENAI™' },
   { to: '/services', label: 'Services' },
   { to: '/about', label: 'About' },
+  { to: '/gallery', label: 'Gallery' },
   { to: '/reviews', label: 'Reviews' },
   { to: '/advisory', label: 'Advisory' },
-  { to: '/command-center', label: 'Command Center' },
   { to: '/contact', label: 'Contact' },
 ]
 

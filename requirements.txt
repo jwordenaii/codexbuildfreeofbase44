@@ -1,7 +1,12 @@
 fastapi==0.115.12
+datadog==0.50.0
+sendgrid==6.12.5
+python-socketio==5.11.0
+python-engineio==4.9.0
 uvicorn[standard]==0.34.3
 pydantic[email]==2.11.4
 openai==1.78.1
+sentry-sdk[fastapi]==2.22.0
 python-jose[cryptography]==3.3.0
 psycopg2-binary==2.9.9
 sqlalchemy==2.0.40
@@ -11,6 +16,8 @@ slowapi==0.1.9
 python-dotenv==1.0.1
 httpx==0.28.1
 jinja2==3.1.6
+pyotp==2.9.0
+qrcode==7.4.2
 
 # ── Geospatial (PostGIS) ─────────────────────────────────────────────────────
 # GeoAlchemy2 adds native PostGIS GEOMETRY column types and spatial index
@@ -18,6 +25,9 @@ jinja2==3.1.6
 # Install separately when running with PostgreSQL:
 #   pip install geoalchemy2==0.15.2
 # geoalchemy2==0.15.2   # uncomment for production PostGIS support
+
+# ── Vector search: Pinecone ───────────────────────────────────────────────────
+pinecone-client==3.2.0
 
 # ── Background tasks: Celery + Redis ────────────────────────────────────────
 celery[redis]==5.4.0
@@ -28,6 +38,12 @@ langchain==0.3.27
 langchain-openai==0.3.16
 langchain-community==0.3.27
 chromadb==0.6.3
+
+# ── Production server ────────────────────────────────────────────────────────
+gunicorn==23.0.0
+
+# ── Elasticsearch full-text search ──────────────────────────────────────────
+elasticsearch==8.13.0
 
 # ── Testing ──────────────────────────────────────────────────────────────────
 pytest==8.3.5

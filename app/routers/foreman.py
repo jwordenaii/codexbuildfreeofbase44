@@ -32,10 +32,12 @@ import uuid
 from datetime import datetime, timezone
 from typing import Set
 
-from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, Depends, File, HTTPException, Request, UploadFile, WebSocket, WebSocketDisconnect
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
+from ..core.limiter import limiter
+from ..core.security import verify_premium_security
 from ..database import get_db
 from ..models import Lead, PermitLead, ProjectSite, TruckPosition
 
@@ -297,7 +299,7 @@ def _rag_foreman_chat(question: str, context: str | None) -> tuple[str, list[str
     response_model=ForemanChatResponse,
     summary="4D Virtual Foreman — RAG-powered Q&A",
 )
-async def foreman_chat(req: ForemanChatRequest):
+async def foreman_chat(req: ForemanChatRequest, _: dict = Depends(verify_premium_security)):
     """
     Natural language Q&A about active sites, leads, trucks, and field operations.
 
@@ -319,7 +321,7 @@ async def foreman_chat(req: ForemanChatRequest):
 # ── Executive Dashboard Status ────────────────────────────────────────────────
 
 @router.get("/api/v1/foreman/status", summary="Executive dashboard summary")
-def foreman_status(db: Session = Depends(get_db)):
+def foreman_status(db: Session = Depends(get_db), _: dict = Depends(verify_premium_security)):
     """
     Returns a high-level snapshot of the JWordenAI command center:
       - Active site count and statuses
@@ -382,6 +384,7 @@ _MAX_IMAGE_BYTES = 20 * 1024 * 1024   # 20 MB
 async def vision_measure(
     file: UploadFile = File(...),
     site_id: int | None = None,
+    _: dict = Depends(verify_premium_security),
 ):
     """
     Upload a project photo and enqueue it for AI lot-measurement inference.
@@ -434,7 +437,7 @@ async def vision_measure(
     "/api/v1/ai/vision-result/{job_id}",
     summary="Poll for vision inference result",
 )
-def vision_result(job_id: str):
+def vision_result(job_id: str, _: dict = Depends(verify_premium_security)):
     """
     Poll for the result of a vision inference job.
     Results are stored in Redis with a 24-hour TTL.

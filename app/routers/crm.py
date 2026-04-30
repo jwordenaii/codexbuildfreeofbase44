@@ -9,10 +9,17 @@ Routes:
   GET   /api/v1/crm/funnel                — stage funnel counts
 
 All endpoints require premium security and are rate-limited.
+
+Caching:
+  GET /leads  — 30 s TTL, keyed by filter params
+  GET /funnel — 30 s TTL, single key
+  PATCH stage — invalidates crm:leads:*, crm:funnel, and analytics caches
 """
 
 from __future__ import annotations
 
+import hashlib
+import json
 import logging
 from datetime import datetime, timezone
 from typing import Optional
@@ -21,7 +28,14 @@ from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
-from ..core.limiter import limiter
+from ..core.cache import (
+    CRM_LEADS_TTL,
+    KEY_CRM_FUNNEL,
+    cache_get,
+    cache_set,
+    invalidate_crm_caches,
+)
+from ..core.limiter import CRM_LIMIT, limiter
 from ..core.security import verify_premium_security
 from ..database import get_db
 from ..models import Lead
@@ -47,7 +61,7 @@ class StageUpdate(BaseModel):
 
 
 @router.get("/leads", summary="List leads with pipeline stage filter")
-@limiter.limit("60/minute")
+@limiter.limit(CRM_LIMIT)
 async def list_crm_leads(
     request: Request,
     pipeline_stage: Optional[str] = Query(default=None, max_length=30),
@@ -58,6 +72,17 @@ async def list_crm_leads(
     _: dict = Depends(verify_premium_security),
 ):
     """Return paginated leads, optionally filtered by pipeline_stage and score_label."""
+    # Build a stable cache key from the query parameters
+    params = json.dumps(
+        {"stage": pipeline_stage, "label": score_label, "limit": limit, "offset": offset},
+        sort_keys=True,
+    )
+    cache_key = f"crm:leads:{hashlib.md5(params.encode()).hexdigest()}"  # noqa: S324
+
+    cached = cache_get(cache_key)
+    if cached is not None:
+        return cached
+
     q = db.query(Lead)
     if pipeline_stage:
         q = q.filter(Lead.pipeline_stage == pipeline_stage)
@@ -67,7 +92,7 @@ async def list_crm_leads(
     total = q.count()
     leads = q.order_by(Lead.created_at.desc()).offset(offset).limit(limit).all()
 
-    return {
+    result = {
         "total": total,
         "offset": offset,
         "limit": limit,
@@ -90,10 +115,12 @@ async def list_crm_leads(
             for l in leads
         ],
     }
+    cache_set(cache_key, result, CRM_LEADS_TTL)
+    return result
 
 
 @router.patch("/leads/{lead_id}/stage", summary="Update lead pipeline stage")
-@limiter.limit("60/minute")
+@limiter.limit(CRM_LIMIT)
 async def update_stage(
     request: Request,
     lead_id: int,
@@ -124,17 +151,26 @@ async def update_stage(
 
     db.commit()
     logger.info("Lead %d moved to stage '%s'", lead_id, body.pipeline_stage)
+
+    # Invalidate CRM and analytics caches — stage change affects funnel counts,
+    # KPI win rate, and the analytics dashboard.
+    invalidate_crm_caches()
+
     return {"id": lead_id, "pipeline_stage": lead.pipeline_stage, "status": "updated"}
 
 
 @router.get("/funnel", summary="Lead conversion funnel counts by stage")
-@limiter.limit("60/minute")
+@limiter.limit(CRM_LIMIT)
 async def get_funnel(
     request: Request,
     db: Session = Depends(get_db),
     _: dict = Depends(verify_premium_security),
 ):
     """Return aggregate lead counts by pipeline stage for funnel visualization."""
+    cached = cache_get(KEY_CRM_FUNNEL)
+    if cached is not None:
+        return cached
+
     from sqlalchemy import func  # noqa: PLC0415
 
     rows = (
@@ -152,9 +188,11 @@ async def get_funnel(
     won = by_stage.get("won", 0)
     win_rate = round(won / total * 100, 1) if total > 0 else 0.0
 
-    return {
+    result = {
         "funnel": funnel,
         "total": total,
         "won": won,
         "win_rate_pct": win_rate,
     }
+    cache_set(KEY_CRM_FUNNEL, result, CRM_LEADS_TTL)
+    return result
