@@ -30,6 +30,11 @@ langchain-openai==0.3.16
 langchain-community==0.3.27
 chromadb==0.6.3
 
+# ── Google APIs (GSC + GA4) ──────────────────────────────────────────────────
+google-auth==2.38.0
+google-api-python-client==2.166.0
+google-analytics-data==0.18.14
+
 # ── Testing ──────────────────────────────────────────────────────────────────
 pytest==8.3.5
 pytest-asyncio==0.26.0
