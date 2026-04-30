@@ -15,7 +15,6 @@ const Contact = lazy(() => import('./pages/Contact'))
 const Quote = lazy(() => import('./pages/Quote'))
 const Reviews = lazy(() => import('./pages/Reviews'))
 const NotFound = lazy(() => import('./pages/NotFound'))
-const CommandCenter = lazy(() => import('./pages/CommandCenter'))
 const Projects = lazy(() => import('./pages/Projects'))
 const Visualizer = lazy(() => import('./pages/Visualizer'))
 
@@ -74,8 +73,6 @@ export default function App() {
                 {/* Blog / Knowledge Center */}
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/blog/:slug" element={<BlogPost />} />
-                {/* Command Center — operations dashboard */}
-                <Route path="/command-center" element={<CommandCenter />} />
                 {/* Gallery */}
                 <Route path="/gallery" element={<Gallery />} />
                 {/* JWORDENAI™ — proprietary AI brand */}

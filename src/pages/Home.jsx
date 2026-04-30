@@ -104,7 +104,7 @@ const ASPHALT_RANKING_CLUSTERS = [
     title: 'Pavement Intelligence & Utility-Safe Production',
     keywords: '811, GPR, utility locating, pavement decay, thermal asphalt checks',
     copy: 'For commercial buyers who want premium planning: 811 response checks, GPR/EM locating, pavement age-decay review, drainage risk, and asphalt temperature logic.',
-    href: '/command-center',
+    href: '/services',
   },
 ]
 

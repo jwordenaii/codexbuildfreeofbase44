@@ -58,7 +58,11 @@ services:
     restart: unless-stopped
     ports:
       - "8000:8000"
-    env_file: .env.local
+    env_file:
+      - path: .env.local
+        required: false
+      - path: .env
+        required: false
     environment:
       DATABASE_URL: postgresql://jworden:jworden_dev_pass@db:5432/jworden_db
       REDIS_URL: redis://redis:6379/0
@@ -86,7 +90,11 @@ services:
       context: .
       target: builder
     restart: unless-stopped
-    env_file: .env.local
+    env_file:
+      - path: .env.local
+        required: false
+      - path: .env
+        required: false
     environment:
       DATABASE_URL: postgresql://jworden:jworden_dev_pass@db:5432/jworden_db
       REDIS_URL: redis://redis:6379/0
@@ -109,7 +117,11 @@ services:
       context: .
       target: builder
     restart: unless-stopped
-    env_file: .env.local
+    env_file:
+      - path: .env.local
+        required: false
+      - path: .env
+        required: false
     environment:
       DATABASE_URL: postgresql://jworden:jworden_dev_pass@db:5432/jworden_db
       REDIS_URL: redis://redis:6379/0
