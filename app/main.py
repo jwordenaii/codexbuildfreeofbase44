@@ -15,6 +15,9 @@
 #   POST /api/v1/voice/twilio-webhook  — Twilio TwiML (validated by Twilio)
 #   POST /api/v1/voice/twilio-recording-callback — Twilio recording (validated by Twilio)
 #   POST /api/v1/payments/webhook      — Stripe webhook (validated by Stripe signature)
+#   POST /api/v1/math-ai/pavement-score      — PCI pavement condition scoring
+#   POST /api/v1/math-ai/cost-estimate       — project cost estimation
+#   POST /api/v1/math-ai/maintenance-forecast — maintenance schedule forecasting
 #
 # PROTECTED ENDPOINTS (require bearer token via verify_premium_security):
 #   POST /api/v1/ai/photo-inspect      — GPT-4 Vision analysis
@@ -49,6 +52,7 @@
 #   GET  /api/v1/igrade/*              — grading/inspection
 #   GET  /api/v1/customers/*           — customer management
 #   GET  /api/v1/seo/*                 — SEO content generation
+#   POST /api/v1/math-ai/lead-quality        — lead quality prediction (GBM model)
 #   POST /api/v1/reviews/respond       — AI review response drafting
 #   POST /api/v1/blog/draft            — AI blog draft generation
 #   POST /api/v1/blog                  — create/publish blog post
@@ -211,6 +215,7 @@ from .routers import metrics as metrics_router
 from .routers import gallery as gallery_router
 from .routers import chat as chat_router
 from .routers import email as email_router
+from .routers import math_ai as math_ai_router
 from .routers.websocket_events import sio
 
 logger = logging.getLogger(__name__)
@@ -372,6 +377,9 @@ app.include_router(chat_router.router)
 
 # Email management (SendGrid transactional + follow-up)
 app.include_router(email_router.router)
+
+# Mathematical AI (pavement scoring, cost estimation, lead quality, maintenance)
+app.include_router(math_ai_router.router)
 
 
 # ── Socket.IO ASGI mount ──────────────────────────────────────────────────────
