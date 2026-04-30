@@ -31,6 +31,7 @@ from ..core.limiter import limiter
 from ..core.security import verify_premium_security
 from ..database import get_db
 from ..models import BlogPost
+from ..services.search_service import search_service
 
 logger = logging.getLogger(__name__)
 
@@ -315,6 +316,21 @@ async def generate_draft(
     db.refresh(post)
 
     logger.info("Blog draft created: slug=%s status=%s engine=%s", slug, status, engine)
+
+    # Index immediately if auto-published
+    if post.status == "published":
+        search_service.index_blog_post(
+            post_id=post.id,
+            title=post.title,
+            body=post.body or "",
+            excerpt=post.excerpt or "",
+            tags=post.tags,
+            slug=post.slug,
+            category=post.category,
+            status=post.status,
+            published_at=post.published_at.isoformat() if post.published_at else None,
+        )
+
     return {
         "status":   "created",
         "engine":   engine,
@@ -354,6 +370,21 @@ async def create_post(
     db.add(post)
     db.commit()
     db.refresh(post)
+
+    # Index published posts immediately; drafts are indexed when published
+    if post.status == "published":
+        search_service.index_blog_post(
+            post_id=post.id,
+            title=post.title,
+            body=post.body or "",
+            excerpt=post.excerpt or "",
+            tags=post.tags,
+            slug=post.slug,
+            category=post.category,
+            status=post.status,
+            published_at=post.published_at.isoformat() if post.published_at else None,
+        )
+
     return {"status": "created", "post": _serialize_post(post, full_body=True)}
 
 
@@ -389,6 +420,23 @@ async def update_post(
 
     db.commit()
     db.refresh(post)
+
+    # Keep the index in sync — update if published, remove if archived/draft
+    if post.status == "published":
+        search_service.index_blog_post(
+            post_id=post.id,
+            title=post.title,
+            body=post.body or "",
+            excerpt=post.excerpt or "",
+            tags=post.tags,
+            slug=post.slug,
+            category=post.category,
+            status=post.status,
+            published_at=post.published_at.isoformat() if post.published_at else None,
+        )
+    else:
+        search_service.delete_blog_post(post.id)
+
     return {"status": "updated", "post": _serialize_post(post, full_body=True)}
 
 
@@ -411,4 +459,18 @@ async def publish_post(
     db.commit()
     db.refresh(post)
     logger.info("Blog post published: slug=%s", slug)
+
+    # Index the newly published post
+    search_service.index_blog_post(
+        post_id=post.id,
+        title=post.title,
+        body=post.body or "",
+        excerpt=post.excerpt or "",
+        tags=post.tags,
+        slug=post.slug,
+        category=post.category,
+        status=post.status,
+        published_at=post.published_at.isoformat() if post.published_at else None,
+    )
+
     return {"status": "published", "post": _serialize_post(post)}
