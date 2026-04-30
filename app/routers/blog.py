@@ -32,6 +32,7 @@ from ..core.security import verify_premium_security
 from ..database import get_db
 from ..models import BlogPost
 from ..services.vector_search_service import vector_search_service
+from ..services import search_service
 
 logger = logging.getLogger(__name__)
 
@@ -315,6 +316,9 @@ async def generate_draft(
     db.commit()
     db.refresh(post)
 
+    # Index in Elasticsearch (non-blocking — failure is logged, not raised)
+    search_service.index_blog_post(post)
+
     logger.info("Blog draft created: slug=%s status=%s engine=%s", slug, status, engine)
 
     # Index in Pinecone for semantic search (non-blocking; failures are logged, not raised)
@@ -378,6 +382,8 @@ async def create_post(
         slug=post.slug,
         status=post.status,
     )
+    # Index in Elasticsearch (non-blocking — failure is logged, not raised)
+    search_service.index_blog_post(post)
 
     return {"status": "created", "post": _serialize_post(post, full_body=True)}
 
@@ -426,6 +432,8 @@ async def update_post(
         slug=post.slug,
         status=post.status,
     )
+    # Re-index in Elasticsearch to reflect the updated content
+    search_service.index_blog_post(post)
 
     return {"status": "updated", "post": _serialize_post(post, full_body=True)}
 
@@ -448,6 +456,10 @@ async def publish_post(
     post.published_at = datetime.now(timezone.utc)
     db.commit()
     db.refresh(post)
+
+    # Re-index in Elasticsearch now that the post is published
+    search_service.index_blog_post(post)
+
     logger.info("Blog post published: slug=%s", slug)
 
     # Re-index with updated status so it appears in public semantic search
@@ -485,4 +497,9 @@ async def delete_post(
     # Remove from Pinecone vector index
     vector_search_service.delete_blog_post(post_id)
 
+
+    # Remove from Elasticsearch index
+    search_service.delete_index(f"blog_{post_id}", search_service.INDEX_BLOG)
+
+    logger.info("Blog post deleted: slug=%s id=%s", slug, post_id)
     return {"status": "deleted", "slug": slug}

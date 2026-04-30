@@ -887,3 +887,31 @@ class EmailLog(Base):
 
     def __repr__(self) -> str:
         return f"<EmailLog id={self.id} to={self.recipient_email!r} status={self.status!r}>"
+
+
+# ── Two-Factor Authentication ─────────────────────────────────────────────────
+
+class TwoFactorSecret(Base):
+    """
+    TOTP secret and backup codes for admin two-factor authentication.
+
+    One record per admin user_id.  The secret is a base32-encoded TOTP seed
+    compatible with RFC 6238 authenticator apps (Google Authenticator, Authy,
+    1Password, etc.).  backup_codes stores a JSON array of one-time recovery
+    codes; each code is removed from the array after use.
+
+    enabled=False means setup has been initiated but the first TOTP token has
+    not yet been verified — the secret is not enforced at login until enabled=True.
+    """
+
+    __tablename__ = "two_factor_secrets"
+
+    id           = Column(Integer, primary_key=True, index=True)
+    user_id      = Column(String(60), nullable=False, unique=True, index=True)
+    secret       = Column(String(64), nullable=False)
+    backup_codes = Column(Text, nullable=True)   # JSON array of remaining one-time codes
+    enabled      = Column(Boolean, nullable=False, default=False)
+    created_at   = Column(DateTime(timezone=True), default=_utcnow, nullable=False)
+
+    def __repr__(self) -> str:
+        return f"<TwoFactorSecret user_id={self.user_id!r} enabled={self.enabled}>"
