@@ -33,6 +33,9 @@ const Gallery = lazy(() => import('./pages/Gallery'))
 // JWORDENAI™ — proprietary AI brand page
 const JwordenAI = lazy(() => import('./pages/JwordenAI'))
 
+// Internal operations dashboard (password-gated via VITE_CC_PASSWORD)
+const CommandCenter = lazy(() => import('./pages/CommandCenter'))
+
 // Advisory pages — lazy-loaded so the 512KB legal dataset never hits the main bundle
 const AdvisoryHub = lazy(() => import('./pages/advisory/AdvisoryHub'))
 const StateDetail = lazy(() => import('./pages/advisory/StateDetail'))
@@ -77,6 +80,8 @@ export default function App() {
                 <Route path="/gallery" element={<Gallery />} />
                 {/* JWORDENAI™ — proprietary AI brand */}
                 <Route path="/jwordenai" element={<JwordenAI />} />
+                {/* Internal operations dashboard */}
+                <Route path="/command-center" element={<CommandCenter />} />
                 {/* Projects / Portfolio */}
                 <Route path="/projects" element={<Projects />} />
                 {/* 3-D Property Visualizer */}
