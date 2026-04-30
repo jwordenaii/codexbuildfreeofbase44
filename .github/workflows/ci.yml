@@ -67,7 +67,7 @@ jobs:
           JWT_SECRET_KEY: ci-test-secret
 
       - name: Validate Alembic migrations (upgrade to head on SQLite)
-        run: alembic upgrade head
+        run: python -m alembic upgrade head
         env:
           DATABASE_URL: sqlite:///./ci_migration_check.db
           JWORDEN_MASTER_KEY: ci-test-key
