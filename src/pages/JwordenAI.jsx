@@ -103,7 +103,7 @@ export default function JwordenAI() {
             custom={2}
             className="text-white/70 text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed mb-4"
           >
-            J's proprietary AI platform for the paving industry — built from decades of field
+            J&#39;s proprietary AI platform for the paving industry — built from decades of field
             experience and engineered to give operators an unfair advantage.
           </motion.p>
 
