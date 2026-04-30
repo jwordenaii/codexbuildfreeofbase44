@@ -211,6 +211,7 @@ from .routers import metrics as metrics_router
 from .routers import gallery as gallery_router
 from .routers import chat as chat_router
 from .routers import email as email_router
+from .routers import search as search_router
 from .routers.websocket_events import sio
 
 logger = logging.getLogger(__name__)
@@ -234,6 +235,23 @@ async def lifespan(app: FastAPI):
         logger.warning(
             "SendGrid not fully configured — transactional emails will be skipped. "
             "Set SENDGRID_API_KEY and SENDGRID_FROM_EMAIL to enable email delivery."
+        )
+
+    # ── Elasticsearch initialisation check ────────────────────────────────────
+    from .services import search_service as _search_service  # noqa: PLC0415
+    _es_status = _search_service.health()
+    if _es_status.get("ok"):
+        logger.info(
+            "Elasticsearch connected: host=%s status=%s nodes=%d",
+            _es_status.get("host"),
+            _es_status.get("status"),
+            _es_status.get("number_of_nodes", 0),
+        )
+    else:
+        logger.warning(
+            "Elasticsearch unavailable at startup — search features will be disabled. "
+            "Set ELASTICSEARCH_HOST to enable full-text search. error=%s",
+            _es_status.get("error", "unknown"),
         )
 
     yield
@@ -372,6 +390,9 @@ app.include_router(chat_router.router)
 
 # Email management (SendGrid transactional + follow-up)
 app.include_router(email_router.router)
+
+# Full-text search (Elasticsearch)
+app.include_router(search_router.router)
 
 
 # ── Socket.IO ASGI mount ──────────────────────────────────────────────────────
