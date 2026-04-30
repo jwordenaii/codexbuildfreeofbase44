@@ -3,7 +3,6 @@ import { motion } from 'framer-motion'
 import SchemaMarkup, { serviceSchema, faqSchema, howToSchema } from '../components/SchemaMarkup'
 import FAQAccordion from '../components/FAQAccordion'
 import InspirationGallery from '../components/InspirationGallery'
-import { COMPETITOR_CONTENT_QUALITY_GATE } from '../lib/competitorSeoStrategy'
 
 const SERVICES = [
   {
@@ -480,31 +479,151 @@ export default function Services() {
         </div>
       </section>
 
-      {/* Competitor-informed quality gate */}
+      {/* Why J Worden & Sons Wins on Every Service */}
       <section className="py-20 bg-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-10">
+          <div className="text-center mb-14">
             <span className="text-brand-amber text-xs font-bold uppercase tracking-widest">
-              Quality gate before we publish or expand
+              Why choose J Worden &amp; Sons
             </span>
             <h2 className="section-heading mt-2 mb-4">
-              How Competitor Research Becomes Better J Worden &amp; Sons Content
+              Why J Worden &amp; Sons Wins on Every Service
             </h2>
-            <p className="text-brand-navy/60 max-w-2xl mx-auto">
-              We do not copy competitor pages. We convert their strongest ranking patterns into
-              original service logic, clearer buyer guidance, better proof, stronger internal links,
-              and more useful calls to action.
+            <p className="text-brand-navy/60 max-w-2xl mx-auto text-lg leading-relaxed">
+              The Difference Between Good Paving and Great Paving
+            </p>
+            <p className="text-brand-navy/60 max-w-2xl mx-auto mt-4 leading-relaxed">
+              Most paving companies show up, lay asphalt, and move on. J Worden &amp; Sons does
+              something different: we treat every project — residential or commercial, $2,500 or
+              $250,000 — as a long-term investment in your property. That means better materials,
+              smarter planning, honest pricing, and the kind of local knowledge that only comes from
+              decades of working Virginia soil, weather, and roads.
             </p>
           </div>
-          <div className="grid md:grid-cols-2 gap-4">
-            {COMPETITOR_CONTENT_QUALITY_GATE.map((rule) => (
-              <div key={rule} className="rounded-xl border border-brand-navy/10 p-5 flex gap-3">
-                <span className="w-6 h-6 rounded-full bg-brand-amber text-brand-navy font-bold text-xs flex items-center justify-center flex-shrink-0">
-                  ✓
-                </span>
-                <p className="text-sm text-brand-navy/70 leading-relaxed">{rule}</p>
+
+          <div className="space-y-10">
+            {/* Subsection 1: Preservation-First Thinking */}
+            <div className="rounded-2xl border border-brand-navy/10 p-8 bg-gray-50">
+              <div className="flex items-start gap-5">
+                <span className="text-4xl flex-shrink-0">🛡️</span>
+                <div>
+                  <h3 className="font-display font-black text-2xl text-brand-navy mb-3">
+                    Preservation-First Thinking
+                  </h3>
+                  <p className="text-brand-navy/70 leading-relaxed mb-4">
+                    The most expensive pavement decision you can make is waiting too long. Once
+                    water penetrates cracks and destroys the base, you are no longer looking at a
+                    sealcoat — you are looking at full-depth reconstruction. J Worden &amp; Sons
+                    approaches every project with a preservation-first mindset: we assess your
+                    pavement&rsquo;s current condition and recommend the lowest-cost intervention
+                    that extends its life, whether that&rsquo;s crack filling, sealcoating, a
+                    targeted patch, or a planned overlay.
+                  </p>
+                  <p className="text-brand-navy/70 leading-relaxed">
+                    Our maintenance plans for commercial property managers are built around this
+                    philosophy — annual inspections, proactive crack sealing, and phased budgeting
+                    so you never face a surprise six-figure parking lot replacement. Preventing
+                    failure is always cheaper than fixing it. That&rsquo;s not a sales pitch;
+                    it&rsquo;s pavement science.
+                  </p>
+                </div>
               </div>
-            ))}
+            </div>
+
+            {/* Subsection 2: Commercial-Grade Equipment on Every Job */}
+            <div className="rounded-2xl border border-brand-navy/10 p-8 bg-gray-50">
+              <div className="flex items-start gap-5">
+                <span className="text-4xl flex-shrink-0">⚙️</span>
+                <div>
+                  <h3 className="font-display font-black text-2xl text-brand-navy mb-3">
+                    Commercial-Grade Equipment on Every Job
+                  </h3>
+                  <p className="text-brand-navy/70 leading-relaxed mb-4">
+                    A residential driveway deserves the same compaction quality as a commercial
+                    parking lot. We use the same professional-grade rollers, pavers, and
+                    temperature-monitoring equipment on a 1,200 sq ft driveway as we do on a
+                    50,000 sq ft commercial lot. Why does this matter? Proper compaction is the
+                    single biggest factor in how long asphalt lasts. Under-compacted asphalt
+                    develops ruts, cracks, and soft spots within years — sometimes months.
+                  </p>
+                  <p className="text-brand-navy/70 leading-relaxed">
+                    We also monitor asphalt temperature from the plant to the mat. Hot-mix asphalt
+                    must be placed and compacted within a specific temperature window — too cold and
+                    it won&rsquo;t compact properly; too hot and it can burn off the binder. Our
+                    crews are trained to work fast and precise, and our drainage planning ensures
+                    water sheds away from your surface from day one.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Subsection 3: Transparent Pricing & No Surprises */}
+            <div className="rounded-2xl border border-brand-navy/10 p-8 bg-gray-50">
+              <div className="flex items-start gap-5">
+                <span className="text-4xl flex-shrink-0">📋</span>
+                <div>
+                  <h3 className="font-display font-black text-2xl text-brand-navy mb-3">
+                    Transparent Pricing &amp; No Surprises
+                  </h3>
+                  <p className="text-brand-navy/70 leading-relaxed mb-4">
+                    Hidden costs and vague estimates are the #1 complaint homeowners and property
+                    managers have about paving contractors. We fix that with detailed, itemized
+                    quotes that spell out exactly what is included: base preparation, material
+                    specs, drainage work, cleanup, and any subcontractor coordination. You know
+                    what you are paying for before a single machine rolls onto your property.
+                  </p>
+                  <p className="text-brand-navy/70 leading-relaxed">
+                    Our estimates are accurate because we do the homework upfront — we assess base
+                    conditions, measure drainage grades, and identify any utility conflicts before
+                    quoting. Change orders happen in construction, but they should never be a
+                    surprise. When scope changes, we communicate immediately, explain why, and get
+                    your approval before proceeding. That&rsquo;s the standard we hold ourselves
+                    to on every project, from a $3,000 driveway to a $300,000 commercial build.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Subsection 4: Local Expertise + National Standards */}
+            <div className="rounded-2xl border border-brand-navy/10 p-8 bg-gray-50">
+              <div className="flex items-start gap-5">
+                <span className="text-4xl flex-shrink-0">📍</span>
+                <div>
+                  <h3 className="font-display font-black text-2xl text-brand-navy mb-3">
+                    Local Expertise + National Standards
+                  </h3>
+                  <p className="text-brand-navy/70 leading-relaxed mb-4">
+                    Virginia&rsquo;s climate is uniquely punishing on asphalt. Freeze-thaw cycles
+                    in the Piedmont and Northern Virginia regions crack pavement from the inside
+                    out. High summer humidity slows curing. Heavy clay soils shift and settle in
+                    ways that sandy or rocky substrates don&rsquo;t. A contractor who doesn&rsquo;t
+                    understand these conditions will spec the wrong base depth, apply sealcoat at
+                    the wrong time of year, or miss drainage problems that guarantee early failure.
+                  </p>
+                  <p className="text-brand-navy/70 leading-relaxed">
+                    J Worden &amp; Sons has spent decades working Virginia&rsquo;s roads,
+                    driveways, and commercial lots. We know the soil. We know the seasons. And as a
+                    licensed Virginia Class A General Contractor, we operate to the same rigorous
+                    standards required for the most demanding commercial and institutional projects
+                    in the state — the same licensing that national QSR chains like KFC, Arby&rsquo;s,
+                    and Taco Bell trusted us to build their sites. That combination of local
+                    knowledge and national-caliber credentials is what separates a contractor who
+                    gets the job done from one who gets it done right.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Closing CTA */}
+          <div className="mt-14 text-center">
+            <p className="text-brand-navy/70 text-lg mb-6">
+              Ready to see the difference? Get a free quote from Virginia&rsquo;s
+              preservation-first paving contractor.
+            </p>
+            <Link to="/quote" className="btn-primary">
+              Get Your Free Quote
+            </Link>
           </div>
         </div>
       </section>
