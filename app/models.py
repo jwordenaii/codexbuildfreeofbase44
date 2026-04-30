@@ -866,3 +866,24 @@ class ChatMessage(Base):
 
     def __repr__(self) -> str:
         return f"<ChatMessage id={self.id} session={self.session_id!r} role={self.role!r}>"
+
+
+# ── Email log ─────────────────────────────────────────────────────────────────
+
+class EmailLog(Base):
+    """
+    Audit log for every outgoing transactional email sent via SendGrid.
+
+    status values: "sent" | "failed"
+    """
+
+    __tablename__ = "email_logs"
+
+    id              = Column(Integer, primary_key=True, index=True)
+    recipient_email = Column(String(254), nullable=False, index=True)
+    subject         = Column(String(500), nullable=False)
+    status          = Column(String(20),  nullable=False, default="sent")  # sent | failed
+    created_at      = Column(DateTime(timezone=True), default=_utcnow, nullable=False)
+
+    def __repr__(self) -> str:
+        return f"<EmailLog id={self.id} to={self.recipient_email!r} status={self.status!r}>"
