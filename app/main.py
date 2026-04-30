@@ -190,6 +190,8 @@ from .routers import market_intelligence as market_intelligence_router
 from .routers import materials as materials_router
 from .routers import tenants as tenants_router
 from .routers import blog as blog_router
+from .routers import vector_search as vector_search_router
+from .routers import admin_vector as admin_vector_router
 from .routers import seo as seo_router
 from .routers import retrospectives as retrospectives_router
 from .routers import safety as safety_router
@@ -343,6 +345,8 @@ app.include_router(market_intelligence_router.router)
 app.include_router(materials_router.router)
 app.include_router(tenants_router.router)
 app.include_router(blog_router.router)
+app.include_router(vector_search_router.router)
+app.include_router(admin_vector_router.router)
 app.include_router(seo_router.router)
 app.include_router(retrospectives_router.router)
 app.include_router(safety_router.router)
