@@ -218,11 +218,6 @@ export default function Contact() {
                     className="block text-sm font-semibold text-brand-navy mb-1.5"
                   >
                     Service Type
-                    {aiSuggestion?.service_type && (
-                      <span className="ml-1 text-brand-amber text-xs font-normal">
-                        (AI-suggested)
-                      </span>
-                    )}
                   </label>
                   <select
                     id="service_type"

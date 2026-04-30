@@ -810,11 +810,6 @@ export default function ChatWidget() {
                           className="block text-xs font-semibold text-brand-navy mb-1"
                         >
                           Service Type
-                          {aiSuggestion?.service_type && (
-                            <span className="ml-1 text-brand-amber font-normal">
-                              (AI-suggested)
-                            </span>
-                          )}
                         </label>
                         <select
                           id="cw-service"

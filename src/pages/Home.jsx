@@ -388,7 +388,7 @@ export default function Home() {
               <strong className="text-brand-navy">40+ Years of Tradition. Embracing Tomorrow&apos;s Technology.</strong>
             </p>
             <p className="text-brand-navy/60 max-w-3xl mx-auto mt-4 leading-relaxed">
-              The asphalt and construction industry is undergoing a fundamental transformation. AI, drones, ground-penetrating radar, and thermal imaging are reshaping how contractors plan, execute, and maintain projects — raising the bar for every serious operator. J Worden &amp; Sons has spent 40+ years building trust through quality work and deep Virginia roots. We&apos;re not stopping innovation now.
+              The asphalt and construction industry is undergoing a fundamental transformation. New tools — drones, ground-penetrating radar, thermal imaging, and modern field measurement — are reshaping how contractors plan, execute, and maintain projects, raising the bar for every serious operator. J Worden &amp; Sons has spent 40+ years building trust through quality work and deep Virginia roots. We&apos;re not stopping innovation now.
             </p>
           </div>
 
@@ -414,22 +414,36 @@ export default function Home() {
               </div>
             </div>
 
-            {/* 2 — Technology Revolution */}
+            {/* 2 — Modern Field Tools (JWORDENAI™ teaser) */}
             <div className="rounded-3xl bg-brand-navy p-8 md:p-10 grid md:grid-cols-[auto_1fr] gap-6 items-start">
-              <div className="text-5xl leading-none">🤖</div>
+              <div className="text-5xl leading-none">🛰️</div>
               <div>
                 <h3 className="font-display font-black text-white text-2xl mb-4">
-                  The Technology Revolution: AI, Drones, and Predictive Analytics
+                  Modern Field Tools: Drones, GPR, and Thermal Imaging
                 </h3>
                 <p className="text-white/70 leading-relaxed mb-4">
-                  A new generation of tools is changing how serious contractors assess, plan, and execute. Drone imagery replaces slow manual site surveys with precise aerial mapping — catching drainage problems, grade issues, and access constraints before a single machine rolls on site. Ground-penetrating radar (GPR) and electromagnetic locating eliminate the guesswork around buried utilities, protecting your property and our crews.
+                  A new generation of field equipment is changing how serious contractors assess, plan, and execute. Drone imagery replaces slow manual site surveys with precise aerial mapping — catching drainage problems, grade issues, and access constraints before a single machine rolls on site. Ground-penetrating radar (GPR) and electromagnetic locating eliminate the guesswork around buried utilities, protecting your property and our crews.
                 </p>
                 <p className="text-white/70 leading-relaxed mb-4">
-                  Thermal imaging cameras verify asphalt temperature during placement — the difference between a mat that bonds correctly and one that fails in year three. AI-powered pavement condition scoring replaces subjective eyeballing with data-driven distress analysis, and predictive analytics shift maintenance from reactive (fix it when it breaks) to proactive (preserve it before it fails). These aren&apos;t futuristic concepts — they&apos;re tools that leading contractors are deploying today across the asphalt paving industry.
+                  Thermal imaging cameras verify asphalt temperature during placement — the difference between a mat that bonds correctly and one that fails in year three. We invest in this equipment because it produces measurably better results in the field.
                 </p>
-                <p className="text-brand-amber font-semibold">
-                  We&apos;re adopting these tools because they make your project safer and longer-lasting.
-                </p>
+                <div className="rounded-2xl border border-brand-amber/30 bg-white/5 p-5 mt-6">
+                  <span className="text-brand-amber text-xs font-bold uppercase tracking-widest">
+                    Proprietary platform
+                  </span>
+                  <h4 className="font-display font-black text-white text-xl mt-2 mb-2">
+                    Powered behind the scenes by JWORDENAI<span className="align-super text-sm">™</span>
+                  </h4>
+                  <p className="text-white/60 text-sm leading-relaxed mb-4">
+                    Our proprietary advisory, automation, and predictive-maintenance platform is in active development and reserved for qualified operators and partners. The public site shows what we deliver in the field — the platform itself stays under the hood.
+                  </p>
+                  <Link
+                    to="/jwordenai"
+                    className="inline-flex items-center gap-2 text-brand-amber font-semibold text-sm hover:underline"
+                  >
+                    See JWORDENAI<span className="align-super text-xs">™</span> capabilities &amp; roadmap →
+                  </Link>
+                </div>
               </div>
             </div>
 
@@ -468,7 +482,7 @@ export default function Home() {
                     ['VA Class A GC', 'Meets Virginia\'s highest licensing standard'],
                     ['KFC · Arby\'s · Taco Bell', 'National QSR franchise experience'],
                     ['4.9★ · 87+ Reviews', 'Verified Google reputation'],
-                    ['AI · Drones · GPR · Thermal', 'Cutting-edge field technology'],
+                    ['Drones · GPR · Thermal', 'Cutting-edge field equipment'],
                     ['Preservation-first', 'Lifecycle planning on every project'],
                   ].map(([bold, detail]) => (
                     <div key={bold} className="flex items-start gap-3 bg-white/40 rounded-xl p-3">

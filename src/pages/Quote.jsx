@@ -264,8 +264,8 @@ export default function Quote() {
                   📄 Generate a Proposal
                 </h3>
                 <p className="text-brand-navy/50 text-sm mb-5">
-                  Use JWordenAI to instantly draft a professional proposal for this project, then
-                  download as PDF or email it directly to the client.
+                  Instantly draft a professional proposal for this project, then download as PDF or
+                  email it directly to the client.
                 </p>
 
                 {proposalStatus === 'idle' && (

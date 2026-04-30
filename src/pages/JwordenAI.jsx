@@ -240,6 +240,130 @@ export default function JwordenAI() {
         </div>
       </section>
 
+      {/* ── Roadmap & Commitment to Development ─────────────────────────── */}
+      <section className="py-24 bg-white border-t border-brand-navy/5">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-14">
+            <span className="text-brand-amber text-xs font-bold uppercase tracking-widest">
+              Roadmap &amp; commitment
+            </span>
+            <h2 className="font-display font-black text-4xl md:text-5xl text-brand-navy mt-3 mb-4">
+              Live Today. Building Tomorrow.
+            </h2>
+            <p className="text-brand-navy/60 max-w-2xl mx-auto text-lg">
+              JWORDENAI™ is in active development. Here&apos;s a teaser of what&apos;s working
+              right now — and where we&apos;re heading next.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Current abilities */}
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+              custom={0}
+              className="rounded-2xl border border-brand-navy/10 bg-brand-navy/[0.02] p-8"
+            >
+              <div className="flex items-center gap-3 mb-5">
+                <span className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-full">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  Live today
+                </span>
+              </div>
+              <h3 className="font-display font-black text-2xl text-brand-navy mb-2">
+                Current Abilities
+              </h3>
+              <p className="text-brand-navy/60 text-sm mb-6">
+                Capabilities running in production for J. Worden &amp; Sons operations
+                and qualified premium partners.
+              </p>
+              <ul className="space-y-3">
+                {[
+                  'Advisory chat trained on 50-state construction law & permitting',
+                  'AI-assisted quote & proposal drafting from a single intake form',
+                  'Site-condition analysis with thermal, drone, and GPR data inputs',
+                  'Pavement-condition decay modeling & maintenance-window forecasting',
+                  'Real-time field telemetry & truck/crew coordination',
+                  'Automated takeoff, scheduling, and document generation',
+                ].map((item) => (
+                  <li
+                    key={item}
+                    className="flex items-start gap-2.5 text-sm text-brand-navy/75"
+                  >
+                    <span className="text-emerald-600 mt-0.5 shrink-0">✓</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+
+            {/* Future tech / in development */}
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+              custom={1}
+              className="rounded-2xl border border-brand-amber/30 bg-brand-amber/5 p-8"
+            >
+              <div className="flex items-center gap-3 mb-5">
+                <span className="inline-flex items-center gap-2 bg-brand-amber/20 text-brand-navy text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-full">
+                  <span className="w-1.5 h-1.5 rounded-full bg-brand-amber animate-pulse" />
+                  In development
+                </span>
+              </div>
+              <h3 className="font-display font-black text-2xl text-brand-navy mb-2">
+                Future Tech
+              </h3>
+              <p className="text-brand-navy/60 text-sm mb-6">
+                Where we&apos;re investing next — engineered in the field, not
+                a marketing roadmap.
+              </p>
+              <ul className="space-y-3">
+                {[
+                  'Autonomous go/no-go foreman with real-time weather & thermal gating',
+                  '4-D project visualizer with live crew, truck, and material overlays',
+                  'Predictive cash-flow & lien-calendar agents for every active job',
+                  'Vector-search knowledge base across 40+ years of project records',
+                  'Computer-vision pavement scoring from phone, drone, and truck cameras',
+                  'Subcontractor & material-supplier intelligence with bid scoring',
+                ].map((item) => (
+                  <li
+                    key={item}
+                    className="flex items-start gap-2.5 text-sm text-brand-navy/75"
+                  >
+                    <span className="text-brand-amber mt-0.5 shrink-0">◆</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          </div>
+
+          {/* Commitment statement */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            custom={2}
+            className="mt-14 max-w-3xl mx-auto text-center"
+          >
+            <h3 className="font-display font-black text-2xl text-brand-navy mb-3">
+              Our Commitment to Development
+            </h3>
+            <p className="text-brand-navy/65 leading-relaxed">
+              We ship to production every week. Every capability above came out of a
+              real problem on a real job — not a slide deck. JWORDENAI™ will keep
+              evolving as long as there are slow processes, manual bottlenecks, and
+              avoidable failures left to remove from this industry.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
       {/* ── Proprietary notice ───────────────────────────────────────────── */}
       <section className="py-20 bg-brand-navy/5">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
