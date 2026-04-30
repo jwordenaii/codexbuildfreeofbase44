@@ -72,6 +72,15 @@ def health_ready():
         logger.warning("DB readiness check failed: %s", exc)
         db_status = {"ok": False, "error": str(exc)}
 
+    # Elasticsearch connectivity — optional, does not affect readiness
+    es_status: dict = {"ok": False, "status": "not checked"}
+    try:
+        from ..services import search_service  # noqa: PLC0415
+        es_status = search_service.health()
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("ES readiness check failed: %s", exc)
+        es_status = {"ok": False, "error": str(exc)}
+
     all_ok = redis_status["ok"] and db_status["ok"]
     # Celery workers are optional — warn but don't fail readiness if no workers
     # are running (e.g. during initial deploy before worker pod starts).
@@ -86,6 +95,7 @@ def health_ready():
             "database": db_status,
             "celery": celery_status,
             "queue": queue_status,
+            "elasticsearch": es_status,
         },
         "elapsed_ms": elapsed_ms,
     }

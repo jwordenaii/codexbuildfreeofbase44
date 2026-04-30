@@ -4,6 +4,160 @@ How to monitor the JWordenAI backend in production.
 
 ---
 
+## Datadog + Slack Alerting
+
+The API ships metrics and error events to Datadog and fires Slack alerts whenever something breaks. This section covers setup, alert types, and how to view metrics in the Datadog dashboard.
+
+### Setup
+
+#### 1. Datadog API Key
+
+1. Log in to [app.datadoghq.com](https://app.datadoghq.com) → **Organization Settings** → **API Keys**
+2. Create a new key named `jworden-api-production`
+3. Copy the key value
+
+#### 2. Slack Incoming Webhook
+
+1. Go to [api.slack.com/apps](https://api.slack.com/apps) → **Create New App** → **From scratch**
+2. Name it `JWordenAI Alerts`, select your workspace
+3. Under **Features** → **Incoming Webhooks**, toggle **Activate Incoming Webhooks** on
+4. Click **Add New Webhook to Workspace**, choose the `#alerts` channel (or create one)
+5. Copy the webhook URL (starts with `https://hooks.slack.com/services/...`)
+
+#### 3. Add Environment Variables to Railway
+
+In the Railway dashboard → API service → **Variables**, add:
+
+| Variable | Value |
+|---|---|
+| `DATADOG_API_KEY` | Your Datadog API key |
+| `SLACK_WEBHOOK_URL` | Your Slack incoming webhook URL |
+| `DD_ENV` | `production` (or `staging`) |
+| `DD_SERVICE` | `jworden-api` |
+
+Redeploy the API service after adding the variables.
+
+---
+
+### Alert Types and Thresholds
+
+| Alert | Trigger | Severity | Channel |
+|---|---|---|---|
+| **API 5xx Error** | Any HTTP 500–599 response | ❌ Error | Slack + Datadog event |
+| **High Error Rate** | >5% of requests fail over 5 min | 🚨 Critical | Slack + Datadog event |
+| **High Latency** | p95 response time >1000ms | ⚠️ Warning | Slack + Datadog event |
+| **Database Failure** | PostgreSQL connection refused | 🚨 Critical | Slack + Datadog event |
+| **Elasticsearch Down** | ES cluster unreachable | ⚠️ Warning | Slack + Datadog event |
+
+All alerts include the service name, environment, and git version so you can immediately identify which deployment is affected.
+
+---
+
+### Monitoring Endpoints
+
+#### Public Health Check
+
+```
+GET /api/v1/monitoring/health
+```
+
+No authentication required. Checks database and Redis connectivity. Returns HTTP 200 when healthy, HTTP 503 when degraded. Use this URL for Datadog Synthetic monitors and external uptime checkers.
+
+```json
+{
+  "status": "healthy",
+  "service": "jworden-api",
+  "checks": {
+    "database": {"ok": true, "latency_ms": 2.1},
+    "redis": {"ok": true, "latency_ms": 0.8}
+  },
+  "elapsed_ms": 3.4
+}
+```
+
+#### Admin Monitoring Status
+
+```bash
+curl -s "$BASE/api/v1/admin/monitoring/status" \
+  -H "Authorization: Bearer $MASTER_KEY"
+```
+
+Returns the full monitoring configuration: which integrations are active, alert thresholds, and the list of tracked metrics.
+
+---
+
+### Datadog Dashboard
+
+Once `DATADOG_API_KEY` is set and the API is receiving traffic, metrics appear in Datadog automatically.
+
+#### Key Metrics to Watch
+
+| Metric | Description | Alert threshold |
+|---|---|---|
+| `api.request.latency_ms` | Per-request latency tagged by path/method/status | p95 > 1000ms |
+| `api.errors.5xx` | Count of 5xx responses | Any occurrence |
+| `api.health_check.latency_ms` | Health check probe latency | > 500ms |
+| `api.health_check.status` | 1 = healthy, 0 = degraded | 0 for >2 checks |
+| `api.db.connection_failures` | Database connection failure count | Any occurrence |
+| `api.elasticsearch.unavailable` | Elasticsearch unavailability count | Any occurrence |
+
+#### Creating a Dashboard
+
+1. Datadog → **Dashboards** → **New Dashboard** → name it `JWordenAI API`
+2. Add a **Timeseries** widget: metric `api.request.latency_ms`, group by `path`
+3. Add a **Query Value** widget: metric `api.errors.5xx`, aggregation `sum`
+4. Add a **Monitor** → **New Monitor** → **Metric** → alert when `api.errors.5xx > 0`
+
+#### Setting Up Datadog Monitors
+
+1. Datadog → **Monitors** → **New Monitor** → **Metric**
+2. Define the metric: `sum:api.errors.5xx{service:jworden-api}.as_count()`
+3. Set alert condition: `> 0` over the last 5 minutes
+4. Add notification: `@slack-alerts` (connect Datadog ↔ Slack via the Slack integration)
+
+---
+
+### Testing Alerts
+
+#### Trigger a Slack Alert (5xx test)
+
+```bash
+# Hit a non-existent endpoint to generate a 404 (won't alert — only 5xx triggers)
+curl -s "$BASE/api/v1/does-not-exist"
+
+# To test a real 5xx, temporarily break a dependency (e.g. wrong DATABASE_URL)
+# and watch for the Slack message in #alerts
+```
+
+#### Verify Datadog Metrics
+
+```bash
+# Check the monitoring status endpoint
+curl -s "$BASE/api/v1/admin/monitoring/status" \
+  -H "Authorization: Bearer $MASTER_KEY" | python3 -m json.tool
+```
+
+Look for `"datadog_enabled": true` and `"slack_enabled": true` in the response.
+
+#### Check Datadog Events Stream
+
+Datadog → **Events** → **Explorer** → filter by `service:jworden-api` to see all error events.
+
+---
+
+### Troubleshooting
+
+| Symptom | Cause | Fix |
+|---|---|---|
+| No Slack alerts | `SLACK_WEBHOOK_URL` not set | Add the env var and redeploy |
+| No Datadog metrics | `DATADOG_API_KEY` not set | Add the env var and redeploy |
+| `"datadog_enabled": false` | API key missing or empty | Check Railway variable spelling |
+| Slack webhook returns 403 | Webhook URL revoked | Regenerate in Slack app settings |
+| Alerts firing for every request | Middleware bug | Check `app/main.py` middleware logic |
+| Health check always 503 | DB or Redis down | Check `DATABASE_URL` and `REDIS_URL` |
+
+---
+
 ## Health Check Endpoints
 
 ### Primary Health Check

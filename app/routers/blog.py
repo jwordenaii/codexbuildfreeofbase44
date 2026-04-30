@@ -31,6 +31,7 @@ from ..core.limiter import limiter
 from ..core.security import verify_premium_security
 from ..database import get_db
 from ..models import BlogPost
+from ..services import search_service
 
 logger = logging.getLogger(__name__)
 
@@ -314,6 +315,9 @@ async def generate_draft(
     db.commit()
     db.refresh(post)
 
+    # Index in Elasticsearch (non-blocking — failure is logged, not raised)
+    search_service.index_blog_post(post)
+
     logger.info("Blog draft created: slug=%s status=%s engine=%s", slug, status, engine)
     return {
         "status":   "created",
@@ -354,6 +358,10 @@ async def create_post(
     db.add(post)
     db.commit()
     db.refresh(post)
+
+    # Index in Elasticsearch (non-blocking — failure is logged, not raised)
+    search_service.index_blog_post(post)
+
     return {"status": "created", "post": _serialize_post(post, full_body=True)}
 
 
@@ -389,6 +397,10 @@ async def update_post(
 
     db.commit()
     db.refresh(post)
+
+    # Re-index in Elasticsearch to reflect the updated content
+    search_service.index_blog_post(post)
+
     return {"status": "updated", "post": _serialize_post(post, full_body=True)}
 
 
@@ -410,5 +422,32 @@ async def publish_post(
     post.published_at = datetime.now(timezone.utc)
     db.commit()
     db.refresh(post)
+
+    # Re-index in Elasticsearch now that the post is published
+    search_service.index_blog_post(post)
+
     logger.info("Blog post published: slug=%s", slug)
     return {"status": "published", "post": _serialize_post(post)}
+
+
+@router.delete("/{slug}", summary="Delete a blog post")
+@limiter.limit("20/minute")
+async def delete_post(
+    slug: str,
+    request: Request,
+    db: Session = Depends(get_db),
+    security: dict = Depends(verify_premium_security),
+):
+    post = db.query(BlogPost).filter(BlogPost.slug == slug).first()
+    if not post:
+        raise HTTPException(status_code=404, detail="Post not found")
+
+    post_id = post.id
+    db.delete(post)
+    db.commit()
+
+    # Remove from Elasticsearch index
+    search_service.delete_index(f"blog_{post_id}", search_service.INDEX_BLOG)
+
+    logger.info("Blog post deleted: slug=%s id=%s", slug, post_id)
+    return {"status": "deleted", "slug": slug}
