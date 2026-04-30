@@ -211,7 +211,9 @@ from .routers import metrics as metrics_router
 from .routers import gallery as gallery_router
 from .routers import chat as chat_router
 from .routers import email as email_router
+from .routers import monitoring as monitoring_router
 from .routers.websocket_events import sio
+from .services.monitoring_service import monitoring
 
 logger = logging.getLogger(__name__)
 
@@ -289,14 +291,17 @@ app.add_middleware(GZipMiddleware, minimum_size=500)
 async def log_requests(request, call_next):
     """
     Log every HTTP request with method, path, status code, and latency.
-    Errors (5xx) are logged at ERROR level with full detail.
+    Errors (5xx) are logged at ERROR level, sent to Datadog, and trigger
+    a Slack alert so J is notified immediately when the API breaks.
     """
     start = time.monotonic()
     response = None
+    unhandled_exc: Exception | None = None
     try:
         response = await call_next(request)
         return response
     except Exception as exc:  # noqa: BLE001
+        unhandled_exc = exc
         logger.error(
             "Unhandled exception: method=%s path=%s error=%s",
             request.method,
@@ -316,6 +321,27 @@ async def log_requests(request, call_next):
             status,
             latency_ms,
         )
+
+        # ── Datadog: record request latency for every call ────────────────────
+        monitoring.log_metric(
+            "api.request.latency_ms",
+            latency_ms,
+            tags=[
+                f"method:{request.method}",
+                f"status:{status}",
+                f"path:{request.url.path}",
+            ],
+        )
+
+        # ── Slack + Datadog: alert on 5xx errors ──────────────────────────────
+        if status >= 500:
+            error_detail = str(unhandled_exc) if unhandled_exc else f"HTTP {status}"
+            monitoring.alert_5xx(
+                method=request.method,
+                path=request.url.path,
+                status_code=status,
+                error=error_detail,
+            )
 
 
 # ── Routers ───────────────────────────────────────────────────────────────────
@@ -363,6 +389,7 @@ app.include_router(customers_router.router)
 app.include_router(auth_router.router)
 app.include_router(health_router.router)
 app.include_router(metrics_router.router)
+app.include_router(monitoring_router.router)
 
 # Gallery
 app.include_router(gallery_router.router)
