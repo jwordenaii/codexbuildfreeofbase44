@@ -10,6 +10,7 @@ from ..models import Lead, ContactMessage
 from ..services.lead_scorer import score_lead
 from ..services.notifications import send_lead_notification
 from ..services.pricing import estimate_price
+from ..services.email_service import send_quote_confirmation, send_admin_notification, send_contact_response
 
 router = APIRouter(prefix="/api/v1/leads", tags=["leads"])
 
@@ -79,10 +80,14 @@ async def submit_quote(
 
     background_tasks.add_task(send_lead_notification, lead_data)
 
+    # SendGrid: send confirmation to customer + admin notification
+    background_tasks.add_task(send_quote_confirmation, db_lead)
+    background_tasks.add_task(send_admin_notification, db_lead)
+
     # Feature 4: Schedule follow-up based on lead score
+    label = scoring.get("label", "COOL")
     try:
         from ..services.follow_up_tasks import schedule_follow_up  # noqa: PLC0415
-        label = scoring.get("label", "COOL")
         if label == "HOT":
             schedule_follow_up(db_lead.id, "hot_1h", delay_seconds=3600, db=db)
         elif label == "WARM":
@@ -91,6 +96,29 @@ async def submit_quote(
             schedule_follow_up(db_lead.id, "cool_7d", delay_seconds=7 * 86400, db=db)
     except Exception as exc:  # noqa: BLE001
         logger.warning("Could not schedule follow-up: %s", exc)
+
+    # Celery: dispatch scheduled follow-up email task
+    try:
+        from ..tasks.email_tasks import send_follow_up_email  # noqa: PLC0415
+        task_type_map = {"HOT": "hot_1h", "WARM": "warm_3d", "COOL": "cool_7d"}
+        task_type = task_type_map.get(label, "cool_7d")
+        delay_map = {"hot_1h": 3600, "warm_3d": 3 * 86400, "cool_7d": 7 * 86400}
+        countdown = delay_map[task_type]
+        if hasattr(send_follow_up_email, "apply_async"):
+            send_follow_up_email.apply_async(
+                kwargs={"lead_id": db_lead.id, "task_type": task_type},
+                countdown=countdown,
+            )
+            logger.info(
+                "Scheduled %s follow-up email for lead #%d (countdown=%ds)",
+                task_type,
+                db_lead.id,
+                countdown,
+            )
+        else:
+            logger.info("Celery unavailable — follow-up email will not be scheduled")
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("Could not dispatch follow-up email task: %s", exc)
 
     return {
         "status": "received",
@@ -118,9 +146,14 @@ async def submit_contact(
     )
     db.add(db_msg)
     db.commit()
+    db.refresh(db_msg)
 
     lead_data = {**req.model_dump(), "type": "contact"}
     background_tasks.add_task(send_lead_notification, lead_data)
+
+    # SendGrid: send auto-reply to customer
+    background_tasks.add_task(send_contact_response, db_msg)
+
     return {
         "status": "received",
         "message": "Thank you for reaching out! We will get back to you soon.",

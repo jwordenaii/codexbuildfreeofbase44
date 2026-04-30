@@ -31,6 +31,7 @@ celery_app = Celery(
         "app.tasks.scraper",
         "app.tasks.vision",
         "app.tasks.cache_warmer",
+        "app.tasks.email_tasks",
     ],
 )
 

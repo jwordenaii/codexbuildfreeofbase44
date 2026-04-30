@@ -210,6 +210,7 @@ from .routers import health as health_router
 from .routers import metrics as metrics_router
 from .routers import gallery as gallery_router
 from .routers import chat as chat_router
+from .routers import email as email_router
 from .routers.websocket_events import sio
 
 logger = logging.getLogger(__name__)
@@ -223,6 +224,18 @@ async def lifespan(app: FastAPI):
         create_all_tables()
     else:
         logger.info("AUTO_CREATE_TABLES disabled; expecting Alembic migrations to manage schema")
+
+    # ── SendGrid initialisation check ─────────────────────────────────────────
+    _sg_key = os.getenv("SENDGRID_API_KEY", "").strip()
+    _sg_from = os.getenv("SENDGRID_FROM_EMAIL", "").strip()
+    if _sg_key and _sg_from:
+        logger.info("SendGrid configured: from=%s", _sg_from)
+    else:
+        logger.warning(
+            "SendGrid not fully configured — transactional emails will be skipped. "
+            "Set SENDGRID_API_KEY and SENDGRID_FROM_EMAIL to enable email delivery."
+        )
+
     yield
     logger.info("JWordenAI backend shutting down")
 
@@ -356,6 +369,9 @@ app.include_router(gallery_router.router)
 
 # Real-time chat (WebSocket + HTTP history/session endpoints)
 app.include_router(chat_router.router)
+
+# Email management (SendGrid transactional + follow-up)
+app.include_router(email_router.router)
 
 
 # ── Socket.IO ASGI mount ──────────────────────────────────────────────────────
