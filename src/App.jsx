@@ -17,6 +17,7 @@ import ChatWidget from '@/components/ChatWidget';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { publicAIPages, internalAIPages } from '@/generated/aiPageRegistry';
+import { FEATURES } from '@/lib/featureFlags';
 
 // Home is eagerly loaded (it's the landing page — we want zero TTI delay).
 import Home from './pages/Home';
@@ -78,6 +79,9 @@ const FredericksburgPaving = lazy(() => import('./pages/FredericksburgPaving'));
 const NorthernVirginiaPaving = lazy(() => import('./pages/NorthernVirginiaPaving'));
 const ShenandoahValleyPaving = lazy(() => import('./pages/ShenandoahValleyPaving'));
 const AdvisoryHub = lazy(() => import('./pages/advisory/AdvisoryHub'));
+
+// AI workspace (gated behind feature flags — see src/lib/featureFlags.js)
+const DispatchBoard = lazy(() => import('./ai/dispatch/DispatchBoard'));
 const AdvisoryCategoryHub = lazy(() => import('./pages/advisory/CategoryHub'));
 const AdvisoryStateDetail = lazy(() => import('./pages/advisory/StateDetail'));
 const AdvisoryStateCompare = lazy(() => import('./pages/advisory/StateCompare'));
@@ -240,6 +244,9 @@ const AuthenticatedApp = () => {
         <Route path="/blog/:slug" element={<BlogPost />} />
         <Route path="/crew-eta" element={<RequireAuth><CrewEta /></RequireAuth>} />
         <Route path="/crew-mode" element={<RequireAuth><CrewFieldApp /></RequireAuth>} />
+        {FEATURES.DISPATCH && (
+          <Route path="/dispatch" element={<RequireAuth><DispatchBoard /></RequireAuth>} />
+        )}
         {publicAIPages.map(({ path, Component }) => (
           <Route key={path} path={path} element={<Component />} />
         ))}
