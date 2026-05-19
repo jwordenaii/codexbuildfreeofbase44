@@ -9,6 +9,7 @@ const root = path.resolve(__dirname, '..')
 const addSiteScript = path.join(root, 'scripts', 'add-site-to-factory.mjs')
 const seoKitScript = path.join(root, 'scripts', 'create-seo-growth-kit.mjs')
 const blogWriterScript = path.join(root, 'scripts', 'factory-blog-writer.mjs')
+const standaloneRepoScript = path.join(root, 'scripts', 'create-standalone-site-repo.mjs')
 
 function parseArgs(argv) {
   const args = {}
@@ -67,6 +68,7 @@ try {
   const createSite = toBool(args['create-site'], true)
   const buildSeoKit = toBool(args['seo-kit'], true)
   const buildBlogs = toBool(args['blog-writer'], true)
+  const buildStandaloneRepo = toBool(args['standalone-repo'], false)
   const isDryRun = toBool(args['dry-run'], false)
 
   console.log('Factory Launch Pack starting...')
@@ -80,6 +82,7 @@ try {
     console.log(` - create-site: ${createSite}`)
     console.log(` - seo-kit: ${buildSeoKit}`)
     console.log(` - blog-writer: ${buildBlogs}`)
+    console.log(` - standalone-repo: ${buildStandaloneRepo}`)
     process.exit(0)
   }
 
@@ -114,8 +117,29 @@ try {
     runNodeScript(blogWriterScript, blogArgs)
   }
 
+  if (buildStandaloneRepo) {
+    const repoArgs = [
+      `--site-key=${siteKey}`,
+      `--domain=${domain}`,
+      `--label=${label}`,
+      `--brand=${brand}`,
+      `--city=${city}`,
+      `--region=${region}`,
+      `--metro=${args.metro || city}`,
+      `--phone=${args.phone || '804-446-1296'}`,
+    ]
+    if (args['primary-color']) repoArgs.push(`--primary-color=${args['primary-color']}`)
+    if (args['accent-color']) repoArgs.push(`--accent-color=${args['accent-color']}`)
+    if (args['api-base-url']) repoArgs.push(`--api-base-url=${args['api-base-url']}`)
+    if (args['ga-id']) repoArgs.push(`--ga-id=${args['ga-id']}`)
+    if (args['out-dir']) repoArgs.push(`--out-dir=${args['out-dir']}`)
+    runNodeScript(standaloneRepoScript, repoArgs)
+  }
+
   console.log('Factory Launch Pack complete.')
-  console.log('Next recommended command: npm run guard:public-core && npm run guard:site-isolation && npm run build && npm run guard:seo-readiness')
+  if (!buildStandaloneRepo) {
+    console.log('Next recommended command: npm run guard:public-core && npm run guard:site-isolation && npm run build && npm run guard:seo-readiness')
+  }
 } catch (error) {
   console.error(`factory-launch-pack failed: ${error.message}`)
   process.exit(1)
