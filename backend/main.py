@@ -14,13 +14,15 @@ The Worden Standard — FastAPI backend
 In production: FastAPI also serves the Vite dist/ build as static files.
 """
 
+from __future__ import annotations
+
 import hashlib
 import hmac
-import json
 import os
 import secrets
 import time
 from pathlib import Path
+from typing import Optional
 
 import httpx
 from dotenv import load_dotenv
@@ -110,7 +112,7 @@ async def login(payload: PinPayload, response: Response):
 
 
 @app.get("/api/auth/session")
-async def session(ws_session: str | None = Cookie(default=None)):
+async def session(ws_session: Optional[str] = Cookie(default=None)):
     if ws_session and _verify(ws_session):
         return {"ok": True}
     raise HTTPException(401, "No valid session")
