@@ -1,0 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Google Fonts loaded via <link> in index.html ─── */
+
+@layer base {
+  :root {
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-body: 'Inter', system-ui, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background-color: #F8F7F5;
+    color: #1E2833;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: #C8973A;
+    color: #0B1D35;
+  }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #F8F7F5; }
+  ::-webkit-scrollbar-thumb { background: #1666A8; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #0B1D35; }
+}
+
+@layer components {
+  /* ─── Display / Heading ─── */
+  .font-display { font-family: var(--font-display); }
+
+  /* ─── Section helpers ─── */
+  .section-padding { @apply py-16 md:py-24 lg:py-28; }
+  .container-tight { @apply max-w-6xl mx-auto px-5 sm:px-6 lg:px-8; }
+  .container-wide  { @apply max-w-7xl mx-auto px-5 sm:px-6 lg:px-8; }
+
+  /* ─── Cards ─── */
+  .card-base {
+    @apply rounded-2xl border border-white/10 bg-white shadow-[0_4px_24px_-8px_rgba(11,29,53,0.12)]
+      transition-all duration-300;
+  }
+  .card-hover {
+    @apply hover:shadow-[0_12px_40px_-12px_rgba(11,29,53,0.22)]
+      hover:-translate-y-0.5 hover:border-ocean/20;
+  }
+
+  /* ─── Buttons ─── */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg font-body font-semibold
+      text-sm tracking-wide transition-all duration-200 focus-visible:outline-none
+      focus-visible:ring-2 focus-visible:ring-ocean/60 active:scale-[0.97];
+  }
+  .btn-primary {
+    @apply btn bg-sand text-navy px-7 py-3.5 shadow-[0_4px_16px_-4px_rgba(200,151,58,0.5)]
+      hover:bg-sand-light hover:shadow-[0_6px_20px_-4px_rgba(200,151,58,0.6)];
+  }
+  .btn-primary-lg {
+    @apply btn bg-sand text-navy px-9 py-4 text-base shadow-[0_6px_24px_-6px_rgba(200,151,58,0.55)]
+      hover:bg-sand-light hover:shadow-[0_8px_28px_-6px_rgba(200,151,58,0.65)];
+  }
+  .btn-outline {
+    @apply btn border-2 border-white/70 text-white px-7 py-3.5
+      hover:bg-white hover:text-navy hover:border-white;
+  }
+  .btn-outline-dark {
+    @apply btn border-2 border-navy text-navy px-7 py-3.5
+      hover:bg-navy hover:text-white;
+  }
+  .btn-ghost {
+    @apply btn text-ocean px-4 py-2 hover:bg-ocean/10 rounded-lg;
+  }
+
+  /* ─── Section labels ─── */
+  .section-label {
+    @apply inline-flex items-center gap-2 text-xs font-semibold tracking-[0.2em]
+      uppercase text-ocean;
+  }
+
+  /* ─── Wave divider (inline SVG via clip-path) ─── */
+  .wave-bottom {
+    clip-path: ellipse(100% 60% at 50% 40%);
+  }
+
+  /* ─── Form elements ─── */
+  .form-input {
+    @apply w-full rounded-lg border border-slate-200 bg-white px-4 py-3
+      text-charcoal placeholder:text-slate-400 text-sm
+      focus:outline-none focus:ring-2 focus:ring-ocean/50 focus:border-ocean
+      transition-colors duration-150;
+  }
+  .form-label {
+    @apply block text-sm font-medium text-charcoal mb-1.5;
+  }
+  .form-error {
+    @apply text-red-500 text-xs mt-1;
+  }
+}
+
+@layer utilities {
+  /* Gradient text */
+  .text-gradient-ocean {
+    background: linear-gradient(135deg, #1666A8 0%, #0E8F7E 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .text-gradient-sand {
+    background: linear-gradient(135deg, #C8973A 0%, #E8C87A 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Animated underline */
+  .link-underline {
+    @apply relative after:absolute after:bottom-0 after:left-0 after:h-0.5
+      after:w-0 after:bg-sand after:transition-all after:duration-300
+      hover:after:w-full;
+  }
+}
