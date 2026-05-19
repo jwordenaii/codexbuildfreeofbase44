@@ -1,0 +1,205 @@
+/* TheWordenStandard.css */
+/* src/components/TheWordenStandard.css */
+/* prefix: tws- (layout only — tokens come from ws-tokens.css via design system) */
+/* ─────────────────────────────────────────────────────────────────────────────
+   IMPORTANT: Do NOT redeclare colors, fonts, or animations.
+   All brand tokens are in ws-tokens.css (PR #4 design system).
+   This file is ONLY for TheWordenStandard structural layout.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* ── App shell ─────────────────────────────────────────────────────────────── */
+.tws-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--ws-bg-0, #030810);
+  color: var(--ws-text-primary, #c8d8f0);
+  font-family: var(--ws-font-mono, 'JetBrains Mono', monospace);
+}
+
+/* ── Top bar ───────────────────────────────────────────────────────────────── */
+.tws-topbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 24px;
+  background: var(--ws-bg-1, #04070f);
+  border-bottom: 1px solid var(--ws-border, rgba(245,166,35,0.12));
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+.tws-topbar-brand { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.tws-topbar-icon {
+  width: 32px; height: 32px;
+  background: linear-gradient(135deg, var(--ws-gold, #f5a623), #e08800);
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; flex-shrink: 0;
+}
+.tws-topbar-search { flex: 1; max-width: 360px; min-width: 180px; }
+.tws-topbar-tenant {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 10px; color: var(--ws-text-dim, #6b7fa3);
+  letter-spacing: 0.08em;
+  margin-left: auto;
+}
+.tws-tenant-badge {
+  background: rgba(245,166,35,0.1);
+  border: 1px solid rgba(245,166,35,0.25);
+  color: var(--ws-gold, #f5a623);
+  font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 2px 8px; border-radius: 3px;
+}
+.tws-db-badge {
+  font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 2px 7px; border-radius: 3px; border: 1px solid;
+}
+.tws-db-badge.online  { color: #10b981; border-color: rgba(16,185,129,0.3); background: rgba(16,185,129,0.08); }
+.tws-db-badge.offline { color: #f59e0b; border-color: rgba(245,158,11,0.3); background: rgba(245,158,11,0.08); }
+
+/* ── Body: sidebar + main ──────────────────────────────────────────────────── */
+.tws-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ── Sidebar ───────────────────────────────────────────────────────────────── */
+.tws-sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  background: var(--ws-bg-1, #04070f);
+  border-right: 1px solid var(--ws-border, rgba(245,166,35,0.1));
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 12px 0;
+}
+@media (max-width: 768px) {
+  .tws-sidebar { width: 100%; border-right: none; border-bottom: 1px solid rgba(245,166,35,0.1); }
+  .tws-body    { flex-direction: column; }
+}
+.tws-sidebar-label {
+  font-size: 8px; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--ws-text-dim, #6b7fa3); padding: 6px 16px 8px;
+}
+.tws-sidebar-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 16px;
+  font-size: 11px; font-family: inherit;
+  background: transparent; border: none; width: 100%;
+  text-align: left; cursor: pointer;
+  color: var(--ws-text-dim, #6b7fa3);
+  transition: background 0.15s, color 0.15s;
+  border-left: 2px solid transparent;
+}
+.tws-sidebar-item:hover { background: rgba(245,166,35,0.04); color: var(--ws-text-primary, #c8d8f0); }
+.tws-sidebar-item.active {
+  background: rgba(245,166,35,0.07);
+  color: var(--ws-gold, #f5a623);
+  border-left-color: var(--ws-gold, #f5a623);
+}
+.tws-sidebar-icon { font-size: 14px; flex-shrink: 0; }
+.tws-sidebar-name { flex: 1; }
+.tws-sidebar-pill { flex-shrink: 0; }
+
+/* ── Main content area ─────────────────────────────────────────────────────── */
+.tws-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  background: var(--ws-bg-0, #030810);
+}
+
+/* ── localStorage fallback banner ─────────────────────────────────────────── */
+.tws-localstorage-banner {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 24px;
+  background: rgba(245,158,11,0.08);
+  border-bottom: 1px solid rgba(245,158,11,0.2);
+  font-size: 10px; color: #fbbf24; letter-spacing: 0.05em;
+}
+.tws-localstorage-banner a { color: var(--ws-gold, #f5a623); text-decoration: underline; }
+
+/* ── Module header ─────────────────────────────────────────────────────────── */
+.tws-module-header {
+  padding: 20px 28px 14px;
+  border-bottom: 1px solid rgba(245,166,35,0.08);
+  background: var(--ws-bg-1, #04070f);
+}
+.tws-module-meta {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 6px;
+}
+.tws-module-icon { font-size: 20px; }
+.tws-module-compliance {
+  display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px;
+}
+.tws-compliance-tag {
+  font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 2px 6px; border-radius: 3px;
+  background: rgba(200,216,240,0.06); border: 1px solid rgba(200,216,240,0.1);
+  color: var(--ws-text-dim, #6b7fa3);
+}
+
+/* ── Blueprint form ────────────────────────────────────────────────────────── */
+.tws-form { padding: 24px 28px; display: flex; flex-direction: column; gap: 28px; }
+
+.tws-section { display: flex; flex-direction: column; gap: 16px; }
+.tws-section-header {
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(245,166,35,0.1);
+}
+.tws-section-num {
+  font-size: 8px; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--ws-gold, #f5a623); margin-bottom: 3px;
+}
+
+.tws-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 680px) { .tws-fields { grid-template-columns: 1fr; } }
+.tws-field-full { grid-column: 1 / -1; }
+
+.tws-field { display: flex; flex-direction: column; gap: 5px; }
+.tws-field-label {
+  font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--ws-text-dim, #6b7fa3);
+}
+.tws-field-label span.req { color: #ef4444; margin-left: 2px; }
+.tws-field-hint { font-size: 9px; color: rgba(107,127,163,0.7); line-height: 1.5; }
+
+/* Form submit row */
+.tws-form-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 28px;
+  border-top: 1px solid rgba(245,166,35,0.1);
+  background: var(--ws-bg-1, #04070f);
+  gap: 12px; flex-wrap: wrap;
+  position: sticky; bottom: 0;
+}
+.tws-audit-sig {
+  font-size: 9px; color: rgba(107,127,163,0.6);
+  font-family: monospace; letter-spacing: 0.04em;
+}
+.tws-submit-row { display: flex; gap: 10px; }
+
+/* Checkbox/radio groups */
+.tws-check-group { display: flex; flex-direction: column; gap: 6px; }
+.tws-check-item { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--ws-text-primary, #c8d8f0); cursor: pointer; }
+.tws-check-item input { accent-color: var(--ws-gold, #f5a623); cursor: pointer; width: 14px; height: 14px; }
+
+/* Success toast */
+.tws-toast {
+  position: fixed; bottom: 24px; right: 24px;
+  padding: 12px 18px;
+  background: rgba(16,185,129,0.12);
+  border: 1px solid rgba(16,185,129,0.3);
+  border-radius: 8px;
+  font-size: 11px; color: #10b981;
+  display: flex; align-items: center; gap: 8px;
+  animation: tws-fadein 0.2s ease;
+  z-index: 100;
+}
+@keyframes tws-fadein { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* Search results highlight */
+.tws-search-highlight { background: rgba(245,166,35,0.2); border-radius: 2px; padding: 0 1px; }

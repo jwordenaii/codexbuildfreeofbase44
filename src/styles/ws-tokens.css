@@ -1,0 +1,56 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   ws-tokens.css  ·  J. Worden & Sons  ·  The Worden Standard Design System
+   ───────────────────────────────────────────────────────────────────────
+   Single source of truth for the wordenstandard brand layer.
+   Every station consumes these tokens — never re-declares colors,
+   fonts, or radii in component CSS.
+   ───────────────────────────────────────────────────────────────────────
+   To rebrand the entire platform: edit this file. Nothing else.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Brand accent ─────────────────────────────────────────────────── */
+  --ws-gold:        #f5a623;
+  --ws-gold-dim:    #3a2200;
+  --ws-gold-glow:   rgba(245, 166, 35, 0.35);
+
+  /* ── 4-tier dark surface stack ────────────────────────────────────── */
+  --ws-bg-0:        #030810;   /* page / scrim                          */
+  --ws-bg-1:        #060e1a;   /* topbar, ticker, panel base            */
+  --ws-bg-2:        #0a1525;   /* card / module                         */
+  --ws-bg-3:        #0f1e30;   /* nested card / input                   */
+
+  /* ── Borders ──────────────────────────────────────────────────────── */
+  --ws-border-1:    #0f2035;   /* default hairline                      */
+  --ws-border-2:    #1a3550;   /* emphasized                            */
+
+  /* ── 4-tier text stack (high → low contrast) ──────────────────────── */
+  --ws-text-0:      #e0f0ff;   /* primary — headings, values            */
+  --ws-text-1:      #8aaabb;   /* secondary — body, captions            */
+  --ws-text-2:      #2a5a7a;   /* tertiary — labels, timestamps         */
+  --ws-text-3:      #1a3a5a;   /* quaternary — disabled, hints          */
+
+  /* ── Semantic status palette ──────────────────────────────────────── */
+  --ws-status-live:    #34d399;
+  --ws-status-warn:    #f5a623;   /* aliased to gold by design          */
+  --ws-status-error:   #f87171;
+  --ws-status-error-bg: #1a0e00;
+  --ws-status-error-border: #92400e;
+  --ws-status-ok-bg:   #031a10;
+  --ws-status-ok-border: #065f46;
+
+  /* ── Typography ───────────────────────────────────────────────────── */
+  --ws-font-mono:     'JetBrains Mono', 'IBM Plex Mono', 'Courier New', monospace;
+  --ws-font-display:  'Inter Tight', 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* ── Spatial system ───────────────────────────────────────────────── */
+  --ws-radius:        2px;     /* signature sharp-corner aesthetic      */
+  --ws-radius-pill:   999px;
+  --ws-elevation-1:   0 1px 2px rgba(0, 0, 0, 0.4);
+  --ws-elevation-glow: 0 0 28px var(--ws-gold-glow);
+
+  /* ── Motion ───────────────────────────────────────────────────────── */
+  --ws-ease:          cubic-bezier(0.16, 1, 0.3, 1);
+  --ws-duration-fast: 0.2s;
+  --ws-duration-med:  0.4s;
+}

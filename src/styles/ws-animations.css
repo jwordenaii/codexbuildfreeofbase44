@@ -1,0 +1,33 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   ws-animations.css  ·  Shared keyframes (declared ONCE, used everywhere)
+   ───────────────────────────────────────────────────────────────────────
+   Every station that needs a pulsing dot, blinking cursor, or scrolling
+   ticker imports these — instead of redeclaring 15 copies with prefixed
+   names like pco-pulse, roi-pulse, sov-pulse.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@keyframes ws-pulse {
+  0%, 100% { opacity: 1;   transform: scale(1);    }
+  50%      { opacity: 0.6; transform: scale(1.15); }
+}
+
+@keyframes ws-blink {
+  0%, 100% { opacity: 1;   }
+  50%      { opacity: 0.3; }
+}
+
+@keyframes ws-ticker {
+  from { transform: translateX(0);     }
+  to   { transform: translateX(-50%);  }
+}
+
+@keyframes ws-scan {
+  0%   { transform: translateY(-100%); opacity: 0; }
+  50%  { opacity: 1; }
+  100% { transform: translateY(100%);  opacity: 0; }
+}
+
+@keyframes ws-fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0);   }
+}

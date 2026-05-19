@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Worden Standard</title>
+    <meta name="description" content="Worden Enterprise OS — Contractor Operations Platform" />
+    <!-- Prevent all crawlers: this is an internal operations app -->
+    <meta id="robots-meta" name="robots" content="noindex, nofollow, noarchive" />
+    <script>
+      (function () {
+        const h = window.location.hostname;
+        if (!h.includes("localhost") && !h.includes("127.0.0.1")) {
+          document.getElementById("robots-meta").setAttribute("content", "noindex, nofollow, noarchive");
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

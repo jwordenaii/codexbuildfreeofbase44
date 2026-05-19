@@ -1,0 +1,487 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   ws-primitives.css  ·  Reusable composable building blocks
+   ───────────────────────────────────────────────────────────────────────
+   Every station composes these — so we never reinvent a topbar, status
+   dot, ticker, hero, stat tile, or alert pill again.
+   ───────────────────────────────────────────────────────────────────────
+   Naming: BEM-ish. .ws-thing for the block, .ws-thing__part for elements,
+   .ws-thing--variant for modifiers. Keep specificity flat (no nesting).
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ─── 1. ROOT CONTAINER ──────────────────────────────────────────────── */
+/* Drop on the outermost <div> of any station to opt into the brand layer */
+.ws-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--ws-bg-0);
+  color: var(--ws-text-0);
+  font-family: var(--ws-font-mono);
+}
+
+/* ─── 2. TOPBAR ──────────────────────────────────────────────────────── */
+.ws-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 20px;
+  background: var(--ws-bg-1);
+  border-bottom: 1px solid var(--ws-border-1);
+  flex-shrink: 0;
+}
+.ws-topbar__left,
+.ws-topbar__right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.ws-topbar__center {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  justify-content: center;
+}
+.ws-wordmark {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 3.5px;
+  color: var(--ws-text-0);
+}
+.ws-station-tag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  color: var(--ws-gold);
+  text-transform: uppercase;
+}
+.ws-divider {
+  color: var(--ws-border-2);
+  user-select: none;
+}
+
+/* ─── 3. STATUS DOT (live / scanning / idle / error) ─────────────────── */
+.ws-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: var(--ws-radius-pill);
+  flex-shrink: 0;
+  box-shadow: 0 0 6px currentColor;
+}
+.ws-dot--live {
+  background: var(--ws-status-live);
+  color: var(--ws-status-live);
+  animation: ws-pulse 2s infinite;
+}
+.ws-dot--scanning {
+  background: var(--ws-gold);
+  color: var(--ws-gold);
+  animation: ws-blink 0.6s infinite;
+}
+.ws-dot--idle {
+  background: var(--ws-border-2);
+  color: var(--ws-border-2);
+}
+.ws-dot--error {
+  background: var(--ws-status-error);
+  color: var(--ws-status-error);
+  animation: ws-blink 1s infinite;
+}
+.ws-status-text {
+  font-size: 8px;
+  letter-spacing: 2.5px;
+  color: var(--ws-text-1);
+  text-transform: uppercase;
+}
+.ws-meta {
+  font-size: 8px;
+  letter-spacing: 1.5px;
+  color: var(--ws-text-2);
+  white-space: nowrap;
+}
+
+/* ─── 4. TICKER (scrolling marquee with edge fade masks) ─────────────── */
+.ws-ticker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 26px;
+  padding: 4px 16px;
+  background: var(--ws-bg-1);
+  border-bottom: 1px solid var(--ws-border-1);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.ws-ticker__label {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  color: var(--ws-gold);
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding-right: 12px;
+  border-right: 1px solid var(--ws-border-2);
+}
+.ws-ticker__track {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+.ws-ticker__track::before,
+.ws-ticker__track::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 32px;
+  z-index: 2;
+  pointer-events: none;
+}
+.ws-ticker__track::before {
+  left: 0;
+  background: linear-gradient(to right, var(--ws-bg-1), transparent);
+}
+.ws-ticker__track::after {
+  right: 0;
+  background: linear-gradient(to left, var(--ws-bg-1), transparent);
+}
+.ws-ticker__inner {
+  display: flex;
+  white-space: nowrap;
+  animation: ws-ticker 55s linear infinite;
+}
+.ws-ticker__item {
+  font-size: 8px;
+  letter-spacing: 1px;
+  color: var(--ws-text-1);
+  padding: 0 24px;
+  border-right: 1px solid var(--ws-border-1);
+}
+.ws-ticker__item:nth-child(odd) {
+  color: var(--ws-text-0);
+}
+
+/* ─── 5. HERO BAND ───────────────────────────────────────────────────── */
+.ws-hero {
+  padding: 32px 24px 24px;
+  background: linear-gradient(to bottom, #000, var(--ws-bg-0));
+  border-bottom: 1px solid var(--ws-gold-dim);
+  flex-shrink: 0;
+}
+.ws-hero__badge {
+  display: inline-block;
+  background: var(--ws-gold);
+  color: #000;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 4px 14px;
+  margin-bottom: 14px;
+  box-shadow: var(--ws-elevation-glow);
+}
+.ws-hero__title {
+  font-size: clamp(34px, 6vw, 66px);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--ws-gold);
+  margin: 0 0 8px;
+}
+.ws-hero__title-alt {
+  color: var(--ws-text-0);
+}
+.ws-hero__sub {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ws-text-1);
+  max-width: 720px;
+  margin: 0;
+}
+
+/* ─── 6. INPUT ROW ───────────────────────────────────────────────────── */
+.ws-input-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.ws-input-wrap {
+  flex: 1;
+  min-width: 260px;
+}
+.ws-input-label {
+  display: block;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--ws-text-2);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+.ws-input {
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--ws-bg-3);
+  border: 1px solid var(--ws-border-2);
+  border-radius: var(--ws-radius);
+  color: var(--ws-text-0);
+  font-family: var(--ws-font-mono);
+  font-size: 12px;
+  transition: border-color var(--ws-duration-fast) var(--ws-ease);
+}
+.ws-input:focus {
+  outline: none;
+  border-color: var(--ws-gold);
+}
+
+/* ─── 7. BUTTONS ─────────────────────────────────────────────────────── */
+.ws-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: transparent;
+  border: 1px solid var(--ws-border-2);
+  border-radius: var(--ws-radius);
+  color: var(--ws-text-1);
+  font-family: var(--ws-font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--ws-duration-fast) var(--ws-ease);
+}
+.ws-btn:hover:not(:disabled) {
+  border-color: var(--ws-gold);
+  color: var(--ws-gold);
+}
+.ws-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.ws-btn--primary {
+  background: var(--ws-gold);
+  border-color: var(--ws-gold);
+  color: #000;
+}
+.ws-btn--primary:hover:not(:disabled) {
+  background: transparent;
+  color: var(--ws-gold);
+}
+.ws-btn--icon {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  font-size: 14px;
+}
+
+/* ─── 8. STAT TILE ───────────────────────────────────────────────────── */
+.ws-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 8px;
+}
+.ws-stat {
+  padding: 14px 16px;
+  background: var(--ws-bg-2);
+  border: 1px solid var(--ws-border-1);
+  border-radius: var(--ws-radius);
+}
+.ws-stat__value {
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--ws-text-0);
+}
+.ws-stat__label {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--ws-text-2);
+  margin-top: 4px;
+  text-transform: uppercase;
+}
+.ws-stat__sub {
+  font-size: 7px;
+  color: var(--ws-text-3);
+  margin-top: 2px;
+}
+
+/* ─── 9. PANEL / MODULE CARD ─────────────────────────────────────────── */
+.ws-panel {
+  background: var(--ws-bg-2);
+  border: 1px solid var(--ws-border-1);
+  border-radius: var(--ws-radius);
+  padding: 16px;
+}
+.ws-panel__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.ws-panel__icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ws-bg-3);
+  border-radius: var(--ws-radius);
+  color: var(--ws-gold);
+  flex-shrink: 0;
+}
+.ws-panel__title {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--ws-text-0);
+  text-transform: uppercase;
+  margin: 0;
+}
+.ws-panel__sub {
+  font-size: 7.5px;
+  color: var(--ws-text-2);
+  letter-spacing: 0.8px;
+  margin-top: 2px;
+}
+
+/* ─── 10. ALERT PILLS (warn / ok / critical) ─────────────────────────── */
+.ws-alert {
+  padding: 12px;
+  border-radius: var(--ws-radius);
+  border: 1px solid var(--ws-border-1);
+}
+.ws-alert--warn {
+  background: var(--ws-status-error-bg);
+  border-color: var(--ws-status-error-border);
+  color: #fbbf77;
+}
+.ws-alert--ok {
+  background: var(--ws-status-ok-bg);
+  border-color: var(--ws-status-ok-border);
+  color: #6ee7b7;
+}
+.ws-alert--error {
+  background: var(--ws-status-error-bg);
+  border-color: var(--ws-status-error);
+  color: #fca5a5;
+}
+.ws-alert__header {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+/* ─── 11. TABS ───────────────────────────────────────────────────────── */
+.ws-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--ws-border-1);
+  margin-bottom: 16px;
+}
+.ws-tab {
+  padding: 10px 18px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--ws-text-1);
+  font-family: var(--ws-font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--ws-duration-fast) var(--ws-ease);
+}
+.ws-tab:hover {
+  color: var(--ws-text-0);
+}
+.ws-tab--active {
+  border-bottom-color: var(--ws-gold);
+  color: var(--ws-gold);
+}
+
+/* ─── 12. KEY/VALUE LIST ─────────────────────────────────────────────── */
+.ws-kv {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.ws-kv__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--ws-border-1);
+  font-size: 10px;
+}
+.ws-kv__row:last-child {
+  border-bottom: none;
+}
+.ws-kv__key {
+  color: var(--ws-text-2);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: 8px;
+  font-weight: 700;
+}
+.ws-kv__value {
+  color: var(--ws-text-0);
+  font-weight: 600;
+}
+
+/* ─── 13. PILL TAG ───────────────────────────────────────────────────── */
+.ws-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border: 1px solid currentColor;
+  border-radius: var(--ws-radius-pill);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.ws-pill--gold     { color: var(--ws-gold);          }
+.ws-pill--live     { color: var(--ws-status-live);   }
+.ws-pill--warn     { color: var(--ws-status-warn);   }
+.ws-pill--error    { color: var(--ws-status-error);  }
+.ws-pill--muted    { color: var(--ws-text-2);        }
+
+/* ─── 14. RECENT-CHIP ROW ────────────────────────────────────────────── */
+.ws-recent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.ws-recent__label {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--ws-text-3);
+  text-transform: uppercase;
+}
+.ws-recent__chip {
+  padding: 4px 10px;
+  background: var(--ws-bg-2);
+  border: 1px solid var(--ws-border-1);
+  border-radius: var(--ws-radius);
+  color: var(--ws-text-1);
+  font-size: 9px;
+  cursor: pointer;
+  transition: all var(--ws-duration-fast) var(--ws-ease);
+}
+.ws-recent__chip:hover {
+  border-color: var(--ws-gold);
+  color: var(--ws-gold);
+}

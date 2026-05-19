@@ -1,0 +1,123 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   InvestorROINode.css  ·  J. Worden & Sons  ·  Investor ROI Station
+   roi- prefix · JetBrains Mono · Gold #f5a623 · Deep space palette
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.roi-root{
+  --gold:#f5a623;--gold-dim:#3a2200;
+  --bg0:#030810;--bg1:#060e1a;--bg2:#0a1525;--bg3:#0f1e30;
+  --border:#0f2035;--border2:#1a3550;
+  --text0:#e0f0ff;--text1:#8aaabb;--text2:#2a5a7a;--text3:#1a3a5a;
+  --font:'JetBrains Mono','Courier New',monospace;--r:2px;
+  display:flex;flex-direction:column;background:var(--bg0);
+  color:var(--text0);font-family:var(--font);min-height:100vh;box-sizing:border-box;
+}
+*,.roi-root *{box-sizing:border-box;}
+
+/* ── TICKER ── */
+.roi-ticker{display:flex;align-items:center;gap:12px;background:var(--bg1);border-bottom:1px solid var(--border);padding:4px 16px;height:26px;overflow:hidden;flex-shrink:0;}
+.roi-ticker-label{font-size:8px;letter-spacing:2.5px;color:var(--gold);white-space:nowrap;font-weight:700;flex-shrink:0;padding-right:12px;border-right:1px solid var(--border2);}
+.roi-ticker-track{flex:1;overflow:hidden;position:relative;}
+.roi-ticker-track::before,.roi-ticker-track::after{content:'';position:absolute;top:0;bottom:0;width:32px;z-index:2;}
+.roi-ticker-track::before{left:0;background:linear-gradient(to right,var(--bg1),transparent);}
+.roi-ticker-track::after{right:0;background:linear-gradient(to left,var(--bg1),transparent);}
+.roi-ticker-inner{display:flex;white-space:nowrap;animation:roi-ticker 55s linear infinite;}
+.roi-ticker-item{font-size:8px;letter-spacing:1px;color:var(--text1);padding:0 24px;border-right:1px solid var(--border);}
+.roi-ticker-item:nth-child(odd){color:var(--text0);}
+
+/* ── TOP BAR ── */
+.roi-topbar{display:flex;justify-content:space-between;align-items:center;padding:10px 20px;border-bottom:1px solid var(--border);background:var(--bg1);flex-shrink:0;gap:12px;}
+.roi-topbar-left,.roi-topbar-right{display:flex;align-items:center;gap:10px;}
+.roi-topbar-center{display:flex;align-items:center;gap:8px;flex:1;justify-content:center;}
+.roi-wordmark{font-size:13px;font-weight:700;letter-spacing:3.5px;}
+.roi-div{color:var(--border2);}
+.roi-station{font-size:10px;letter-spacing:2.5px;font-weight:700;}
+.roi-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;box-shadow:0 0 6px currentColor;}
+.roi-dot-live{background:#34d399;color:#34d399;animation:roi-pulse 2s infinite;}
+.roi-dot-loading{background:var(--gold);color:var(--gold);animation:roi-blink 0.6s infinite;}
+.roi-status{font-size:8px;letter-spacing:2.5px;color:var(--text1);}
+.roi-ts{font-size:8px;color:var(--text2);}
+.roi-coverage{font-size:8px;letter-spacing:1.5px;color:var(--text2);white-space:nowrap;}
+.roi-refresh{width:28px;height:28px;background:transparent;border:1px solid var(--border2);color:var(--text1);font-size:14px;cursor:pointer;border-radius:var(--r);display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+.roi-refresh:hover:not(:disabled){border-color:var(--gold);color:var(--gold);}
+.roi-refresh:disabled{opacity:0.4;cursor:not-allowed;}
+
+/* ── HERO ── */
+.roi-hero{background:linear-gradient(to bottom,#000,var(--bg0));border-bottom:1px solid var(--gold-dim);padding:32px 24px 24px;flex-shrink:0;}
+.roi-hero-badge{display:inline-block;background:var(--gold);color:#000;font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:4px 14px;box-shadow:0 0 28px rgba(245,166,35,.35);margin-bottom:14px;}
+.roi-hero-title{font-size:clamp(36px,6vw,68px);font-weight:900;text-transform:uppercase;letter-spacing:-0.02em;color:var(--gold);line-height:1;margin:0 0 8px;}
+.roi-hero-white{color:var(--text0);}
+.roi-hero-sub{font-size:13px;color:var(--text1);font-weight:600;max-width:720px;margin-bottom:0;}
+.roi-bench-note{margin-top:12px;font-size:9px;color:var(--text2);border:1px solid var(--border2);padding:6px 12px;display:inline-block;border-radius:var(--r);}
+.roi-bench-note code{color:var(--gold);}
+
+/* ── MODULES ── */
+.roi-modules{display:flex;flex-direction:column;gap:0;padding:0;}
+.roi-module{padding:28px 24px;border-bottom:1px solid var(--border);}
+.roi-module:nth-child(odd){background:var(--bg0);}
+.roi-module:nth-child(even){background:var(--bg1);}
+.roi-module-hdr{display:flex;align-items:flex-start;gap:14px;margin-bottom:20px;}
+.roi-module-num{font-size:11px;font-weight:700;letter-spacing:2px;padding:4px 10px;border:1px solid;border-radius:var(--r);white-space:nowrap;color:var(--gold);border-color:var(--gold-dim);}
+.roi-module-title{font-size:16px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:var(--text0);}
+.roi-module-sub{font-size:8px;color:var(--text2);margin-top:3px;letter-spacing:0.8px;}
+
+/* ── TWO-COL LAYOUT ── */
+.roi-two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+@media(max-width:860px){.roi-two-col{grid-template-columns:1fr;}}
+.roi-inputs{display:flex;flex-direction:column;gap:16px;}
+.roi-results{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-content:start;}
+@media(max-width:500px){.roi-results{grid-template-columns:1fr;}}
+
+/* ── SLIDER ── */
+.roi-slider-wrap{display:flex;flex-direction:column;gap:4px;}
+.roi-slider-header{display:flex;justify-content:space-between;align-items:baseline;}
+.roi-slider-label{font-size:8px;font-weight:700;letter-spacing:1.5px;color:var(--text2);text-transform:uppercase;}
+.roi-slider-val{font-size:11px;font-weight:700;color:var(--text0);}
+.roi-slider{width:100%;height:3px;background:var(--bg3);border-radius:2px;appearance:none;cursor:pointer;accent-color:var(--gold);outline:none;}
+.roi-slider::-webkit-slider-thumb{appearance:none;width:14px;height:14px;border-radius:50%;background:var(--gold);border:2px solid var(--bg0);cursor:pointer;box-shadow:0 0 8px rgba(245,166,35,.5);}
+.roi-slider-range{display:flex;justify-content:space-between;font-size:7px;color:var(--text3);}
+
+/* ── MARKET SELECT ── */
+.roi-market-select-wrap{display:flex;flex-direction:column;gap:6px;}
+.roi-select{background:var(--bg2);border:1px solid var(--border2);color:var(--text0);padding:8px 12px;font-family:var(--font);font-size:9px;letter-spacing:0.5px;border-radius:var(--r);outline:none;cursor:pointer;}
+.roi-select:focus{border-color:var(--gold);}
+.roi-cap-live{font-size:8px;color:var(--text2);letter-spacing:0.5px;}
+
+/* ── STAT CARD ── */
+.roi-stat{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px;}
+.roi-stat-hi{border-color:var(--gold-dim);background:rgba(245,166,35,.05);}
+.roi-stat-label{font-size:7.5px;font-weight:700;letter-spacing:1.5px;color:var(--text2);text-transform:uppercase;margin-bottom:4px;}
+.roi-stat-value{font-size:18px;font-weight:900;color:var(--text0);line-height:1;}
+.roi-stat-sub{font-size:7px;color:var(--text3);margin-top:3px;}
+
+/* ── INSIGHT BAR ── */
+.roi-insight{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--r);padding:12px 16px;font-size:9px;color:var(--text1);line-height:1.7;margin-top:16px;display:flex;gap:10px;align-items:flex-start;}
+.roi-insight-icon{font-size:12px;color:var(--gold);flex-shrink:0;margin-top:1px;}
+
+/* ── 1031 TIMELINE ── */
+.roi-timeline{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-top:16px;}
+.roi-timeline-hdr{font-size:8px;font-weight:700;letter-spacing:3px;color:var(--text2);margin-bottom:28px;}
+.roi-timeline-track{position:relative;height:48px;}
+.roi-tl-line{position:absolute;left:0;right:0;top:8px;height:2px;background:var(--border2);}
+.roi-tl-node{position:absolute;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:2px;}
+.roi-tl-dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--bg0);z-index:1;}
+.roi-tl-day{font-size:8px;font-weight:700;letter-spacing:1px;margin-top:4px;}
+.roi-tl-lbl{font-size:7px;color:var(--text2);white-space:nowrap;}
+
+/* ── WATERFALL ── */
+.roi-waterfall{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-top:16px;}
+.roi-wf-hdr{font-size:8px;font-weight:700;letter-spacing:3px;color:var(--text2);margin-bottom:12px;}
+.roi-wf-row{display:grid;grid-template-columns:160px 1fr 80px;gap:10px;align-items:center;padding:4px 0;border-bottom:1px solid var(--border);}
+.roi-wf-row:last-child{border:none;}
+.roi-wf-label{font-size:8px;color:var(--text1);letter-spacing:0.5px;}
+.roi-wf-bar-wrap{height:8px;background:var(--bg3);border-radius:2px;overflow:hidden;}
+.roi-wf-bar{height:100%;border-radius:2px;transition:width 0.6s ease;}
+.roi-wf-val{font-size:9px;font-weight:700;text-align:right;}
+
+/* ── FOOTER ── */
+.roi-footer{text-align:center;font-size:7.5px;color:var(--text3);letter-spacing:1.5px;text-transform:uppercase;padding:16px 24px;border-top:1px solid var(--border);}
+
+/* ── ANIMATIONS ── */
+@keyframes roi-ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes roi-pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
+@keyframes roi-blink{0%,100%{opacity:1}50%{opacity:0}}

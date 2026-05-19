@@ -1,0 +1,13 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   ws.css  ·  The Worden Standard Design System — barrel import
+   ───────────────────────────────────────────────────────────────────────
+   Import this ONE file from src/main.jsx and the entire brand layer is
+   live across every station that uses .ws-* classes.
+   ───────────────────────────────────────────────────────────────────────
+   Order matters: tokens → base reset → animations → primitives.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@import './ws-tokens.css';
+@import './ws-base.css';
+@import './ws-animations.css';
+@import './ws-primitives.css';

@@ -1,0 +1,43 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   ws-base.css  ·  Worden Standard Reset
+   Conservative — only what every station needs. No opinionated overrides.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  background: var(--ws-bg-0);
+  color: var(--ws-text-0);
+  font-family: var(--ws-font-mono);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+input,
+select,
+textarea {
+  font-family: inherit;
+  color: inherit;
+}
+
+a {
+  color: var(--ws-gold);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
