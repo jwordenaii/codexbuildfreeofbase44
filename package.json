@@ -27,6 +27,7 @@
     "ai:site-studio": "node scripts/site-blueprint-studio.mjs",
     "factory:add-site": "node scripts/add-site-to-factory.mjs",
     "factory:launch-pack": "node scripts/factory-launch-pack.mjs",
+    "factory:create-standalone-repo": "node scripts/create-standalone-site-repo.mjs",
     "factory:generate": "powershell -ExecutionPolicy Bypass -File scripts/generate-client.ps1",
     "ops:preflight": "powershell -ExecutionPolicy Bypass -File scripts/repo-preflight.ps1",
     "ops:secrets": "powershell -ExecutionPolicy Bypass -File scripts/set-operational-secrets.ps1",

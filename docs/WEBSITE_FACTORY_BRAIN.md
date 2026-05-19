@@ -64,6 +64,76 @@ Dry-run keyword plan:
 
 npm run content:blog-writer -- --site-key=texas --dry-run=true
 
+## Standalone Repo Mode
+
+Each created site can live in this monorepo *or* be scaffolded as its own independent git
+repository — useful when a market site needs its own deployment pipeline, separate Netlify
+project, or distinct GitHub team access.
+
+### Create a site as its own repo
+
+```bash
+npm run factory:create-standalone-repo -- \
+  --site-key=texas \
+  --domain=texasasphaltpaving.com \
+  --label="Texas Asphalt Paving" \
+  --brand="Texas Asphalt Paving" \
+  --city=Dallas \
+  --region=Texas \
+  --metro="Dallas-Fort Worth"
+```
+
+This outputs a complete React + Vite project to `../texas-market-site/` (sibling of this repo)
+with:
+
+- Its own `package.json`, `vite.config.js`, `tailwind.config.js`, `netlify.toml`
+- `src/config/siteConfig.js` — all branding/copy baked in from CLI args
+- `src/pages/MarketLanding.jsx` — standalone, no monorepo imports
+- `src/components/SEO.jsx` — standalone SEO head manager
+- `README.md` with Netlify deploy instructions
+- `git init` + initial commit already applied
+
+Optional flags:
+
+```
+--primary-color=#13283a   hex primary brand color
+--accent-color=#f0b429    hex accent/CTA color
+--phone=8044461296        contact phone number
+--api-base-url=https://…  shared backend URL for lead capture
+--ga-id=G-XXXXXXXXXX      Google Analytics 4 measurement ID
+--out-dir=../my-dir       custom output directory (default: ../sitekey-market-site)
+--dry-run=true            preview without writing files
+```
+
+After generation, push to a new GitHub repo and connect to Netlify:
+
+```bash
+cd ../texas-market-site
+npm install
+git remote add origin https://github.com/YOUR_ORG/texas-market-site.git
+git push -u origin main
+```
+
+### One-command launch pack with standalone repo
+
+Pass `--standalone-repo=true` to `factory:launch-pack` to combine site profile creation, SEO
+kit generation, blog writing, *and* standalone repo scaffolding in one command:
+
+```bash
+npm run factory:launch-pack -- \
+  --site-key=texas \
+  --domain=texasasphaltpaving.com \
+  --label="Texas Asphalt Paving" \
+  --brand="Texas Asphalt Paving" \
+  --city=Dallas \
+  --region=Texas \
+  --standalone-repo=true
+```
+
+Note: when `--standalone-repo=true`, the site profile is still added to the monorepo manifest
+(for the shared backend and ops tooling). The standalone repo is an *additional* output —
+a deployable, independent copy of the market-landing page.
+
 ## SEO + GBP + Backlink Operating System
 
 For each launched domain, generate a growth kit under docs/seo-growth-kits/<domain> containing:
