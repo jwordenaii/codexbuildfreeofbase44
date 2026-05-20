@@ -45,6 +45,7 @@ staging-compare.txt
 
 __pycache__/
 *.pyc
+.venv/
 
 # media URL mapping artifact
 .media-url-map.json
