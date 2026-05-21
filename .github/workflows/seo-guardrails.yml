@@ -5,24 +5,42 @@ on:
     branches: [main]
     paths:
       - "public/sitemap.xml"
+      - "public/sitemap.txt"
+      - "public/image-sitemap.xml"
+      - "public/sitemap-thewordenstandard.xml"
       - "public/robots.txt"
+      - "public/_redirects"
+      - "obx-paving/public/sitemap.xml"
+      - "obx-paving/public/robots.txt"
+      - "obx-paving/netlify.toml"
       - "src/lib/landingPages.js"
       - "src/components/SEO.jsx"
+      - "scripts/verify-sitemap-safety.mjs"
       - "scripts/repo-preflight.ps1"
       - "scripts/seo-guardrails.ps1"
       - "scripts/seo-self-heal.ps1"
       - "netlify.toml"
+      - "package.json"
   pull_request:
     branches: [main]
     paths:
       - "public/sitemap.xml"
+      - "public/sitemap.txt"
+      - "public/image-sitemap.xml"
+      - "public/sitemap-thewordenstandard.xml"
       - "public/robots.txt"
+      - "public/_redirects"
+      - "obx-paving/public/sitemap.xml"
+      - "obx-paving/public/robots.txt"
+      - "obx-paving/netlify.toml"
       - "src/lib/landingPages.js"
       - "src/components/SEO.jsx"
+      - "scripts/verify-sitemap-safety.mjs"
       - "scripts/repo-preflight.ps1"
       - "scripts/seo-guardrails.ps1"
       - "scripts/seo-self-heal.ps1"
       - "netlify.toml"
+      - "package.json"
   workflow_dispatch:
 
 permissions:
@@ -39,6 +57,14 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Run sitemap safety guard
+        shell: bash
+        run: node scripts/verify-sitemap-safety.mjs
 
       - name: Run SEO guardrails
         shell: powershell
