@@ -31,6 +31,12 @@
   force = true
 
 [[redirects]]
+  from = "/image-sitemap.xml"
+  to = "/image-sitemap.xml"
+  status = 200
+  force = true
+
+[[redirects]]
   from = "/3ef8a81ce186414ca3235bebb5072f22.txt"
   to = "/3ef8a81ce186414ca3235bebb5072f22.txt"
   status = 200
@@ -200,6 +206,18 @@
 
 [[headers]]
   for = "/sitemap.xml"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+    Content-Type  = "application/xml; charset=utf-8"
+
+[[headers]]
+  for = "/sitemap.txt"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+    Content-Type  = "text/plain; charset=utf-8"
+
+[[headers]]
+  for = "/image-sitemap.xml"
   [headers.values]
     Cache-Control = "public, max-age=3600"
     Content-Type  = "application/xml; charset=utf-8"

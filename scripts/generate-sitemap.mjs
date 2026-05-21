@@ -29,6 +29,53 @@ const INCLUDE_ALL_STATES =
   process.argv.includes('--all-states') ||
   /^(1|true|yes)$/i.test(String(process.env.SITEMAP_INCLUDE_ALL_STATES || '').trim());
 
+const VALID_CHANGEFREQ = new Set(['always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never']);
+const DATE_ONLY = /^\d{4}-\d{2}-\d{2}$/;
+
+function escapeXml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
+function assertValidSitemapEntries(entries) {
+  const seenLocs = new Set();
+
+  for (const entry of entries) {
+    if (!entry?.loc) throw new Error('[sitemap] missing <loc> value');
+    if (seenLocs.has(entry.loc)) throw new Error(`[sitemap] duplicate URL: ${entry.loc}`);
+    seenLocs.add(entry.loc);
+
+    let parsed;
+    try {
+      parsed = new URL(entry.loc);
+    } catch {
+      throw new Error(`[sitemap] invalid URL: ${entry.loc}`);
+    }
+
+    if (!['http:', 'https:'].includes(parsed.protocol)) {
+      throw new Error(`[sitemap] unsupported URL protocol: ${entry.loc}`);
+    }
+    if (entry.loc.length > 2048) {
+      throw new Error(`[sitemap] URL exceeds 2048 characters: ${entry.loc}`);
+    }
+    if (!DATE_ONLY.test(String(entry.lastmod || ''))) {
+      throw new Error(`[sitemap] invalid lastmod for ${entry.loc}: ${entry.lastmod}`);
+    }
+    if (!VALID_CHANGEFREQ.has(entry.changefreq)) {
+      throw new Error(`[sitemap] invalid changefreq for ${entry.loc}: ${entry.changefreq}`);
+    }
+
+    const priority = Number(entry.priority);
+    if (!Number.isFinite(priority) || priority < 0 || priority > 1) {
+      throw new Error(`[sitemap] invalid priority for ${entry.loc}: ${entry.priority}`);
+    }
+  }
+}
+
 // ── 1. Hand-curated public routes (priority + changefreq tuned for local-pack) ─
 const STATIC_ROUTES = [
   { path: '/',                              priority: '1.0', changefreq: 'weekly' },
@@ -178,15 +225,16 @@ const deduped = urls.filter((u) => {
   seen.add(u.loc);
   return true;
 });
+assertValidSitemapEntries(deduped);
 
 // ── 4. Emit sitemap.xml ───────────────────────────────────────────────────────
 const xmlBody = deduped
   .map(
     (u) => `  <url>
-    <loc>${u.loc}</loc>
-    <lastmod>${u.lastmod}</lastmod>
-    <changefreq>${u.changefreq}</changefreq>
-    <priority>${u.priority}</priority>
+    <loc>${escapeXml(u.loc)}</loc>
+    <lastmod>${escapeXml(u.lastmod)}</lastmod>
+    <changefreq>${escapeXml(u.changefreq)}</changefreq>
+    <priority>${escapeXml(u.priority)}</priority>
   </url>`
   )
   .join('\n');
