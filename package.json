@@ -36,6 +36,8 @@
     "guard:public-core": "node scripts/verify-public-core-boundary.mjs",
     "guard:site-isolation": "node scripts/verify-site-isolation.mjs",
     "guard:seo-readiness": "node scripts/verify-seo-readiness.mjs",
+    "guard:sitemaps": "node scripts/verify-sitemap-safety.mjs",
+    "guard:site-safety": "npm run guard:public-core && npm run guard:site-isolation && npm run guard:sitemaps",
     "ops:seo-kit": "node scripts/create-seo-growth-kit.mjs",
     "ops:pricing": "node scripts/calc-builder-pricing.mjs",
     "ops:state-reach": "node scripts/state-reach-report.mjs",
