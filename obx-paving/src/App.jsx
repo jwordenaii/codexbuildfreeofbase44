@@ -16,6 +16,10 @@ const Sealcoating    = lazy(() => import('@/pages/services/Sealcoating.jsx'))
 const CrackFilling   = lazy(() => import('@/pages/services/CrackFilling.jsx'))
 const AsphaltRepairs = lazy(() => import('@/pages/services/AsphaltRepairs.jsx'))
 const LineStriping   = lazy(() => import('@/pages/services/LineStriping.jsx'))
+const AsphaltPaving  = lazy(() => import('@/pages/services/AsphaltPaving.jsx'))
+const ParkingLots    = lazy(() => import('@/pages/services/ParkingLots.jsx'))
+const Resurfacing    = lazy(() => import('@/pages/services/Resurfacing.jsx'))
+const Maintenance    = lazy(() => import('@/pages/services/Maintenance.jsx'))
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -49,10 +53,14 @@ export default function App() {
             <Route path="/contact"       element={<Contact />} />
 
             {/* Individual service pages */}
-            <Route path="/services/sealcoating"    element={<Sealcoating />} />
-            <Route path="/services/crack-filling"  element={<CrackFilling />} />
-            <Route path="/services/asphalt-repairs" element={<AsphaltRepairs />} />
-            <Route path="/services/line-striping"  element={<LineStriping />} />
+            <Route path="/services/asphalt-paving"  element={<AsphaltPaving />} />
+            <Route path="/services/sealcoating"     element={<Sealcoating />} />
+            <Route path="/services/crack-filling"   element={<CrackFilling />} />
+            <Route path="/services/asphalt-repairs"  element={<AsphaltRepairs />} />
+            <Route path="/services/line-striping"   element={<LineStriping />} />
+            <Route path="/services/parking-lots"    element={<ParkingLots />} />
+            <Route path="/services/resurfacing"     element={<Resurfacing />} />
+            <Route path="/services/maintenance"     element={<Maintenance />} />
 
             {/* 404 */}
             <Route path="*" element={<NotFound />} />
