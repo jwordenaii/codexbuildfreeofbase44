@@ -20,6 +20,7 @@
 #   POST /api/v1/math-ai/maintenance-forecast — maintenance schedule forecasting
 #   POST /api/v1/global/*                    — universal service platform triage
 #   POST /api/v1/public/chat                  — Mr. Worden premium concierge chat (rate-limited)
+#   GET  /api/v1/authority/local-proof        — Gemini-powered Verified Proof content per city
 #
 # PROTECTED ENDPOINTS (require bearer token via verify_premium_security):
 #   POST /api/v1/ai/photo-inspect      — GPT-4 Vision analysis
@@ -283,6 +284,7 @@ from .routers import drone_capture_router
 from .routers import lidar_ingest_router
 from .routers import roller_telemetry_router
 from .routers import staff_router
+from .routers import authority as authority_router
 from .services.quantum_orchestrator import global_quantum_orchestrator
 from .routers import tts as tts_router
 from .routers import local_proof as local_proof_router
@@ -560,6 +562,9 @@ app.include_router(schedule_sim_router.router)
 
 # Autonomous Agentic Ads Intelligence: URL exclusions, CRM export, lead qualifier, anomaly detection
 app.include_router(ads_intelligence_router.router)
+
+# J. Worden | Authority — Gemini-powered Verified Proof content engine for city pages
+app.include_router(authority_router.router)
 
 # Spatial AI (as-built deviation check) + GC Cost Catalog & Estimates
 app.include_router(spatial_ai_router.router)

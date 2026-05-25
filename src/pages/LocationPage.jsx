@@ -10,6 +10,8 @@ import MarketCityList from '@/components/market/MarketCityList';
 import MarketClimate from '@/components/market/MarketClimate';
 import MarketFAQ from '@/components/market/MarketFAQ';
 import MarketCTA from '@/components/market/MarketCTA';
+import MarketAuthority from '@/components/market/MarketAuthority';
+import { getAuthorityFor } from '@/lib/authorityContent';
 import PageNotFound from '@/lib/PageNotFound';
 
 export default function LocationPage() {
@@ -17,6 +19,8 @@ export default function LocationPage() {
   const loc = getLocationBySlug(slug);
 
   if (!loc) return <PageNotFound />;
+
+  const authorityEntry = getAuthorityFor(loc.slug);
 
   const canonicalPath = `/locations/${loc.slug}`;
   const title = `Asphalt Paving in ${loc.city}, ${loc.stateAbbr} | J. Worden & Sons`;
@@ -47,13 +51,16 @@ export default function LocationPage() {
       latitude: loc.geo.lat,
       longitude: loc.geo.lng,
     },
-    aggregateRating: {
+    description: loc.intro,
+  };
+
+  if (typeof loc.rating === 'number' && typeof loc.reviews === 'number') {
+    businessSchema.aggregateRating = {
       '@type': 'AggregateRating',
       ratingValue: loc.rating,
       reviewCount: loc.reviews,
-    },
-    description: loc.intro,
-  };
+    };
+  }
 
   // Only bind the Virginia Headquarters address if this location is in VA and does not have a distinct GBP address. 
   // Otherwise, Google will suspend the out-of-state GBPs for pointing to a VA address.
@@ -83,30 +90,45 @@ export default function LocationPage() {
             contentUrl: `${PRIMARY_DOMAIN}${loc.video.url}`
         };
     }
+  const graph = [businessSchema];
+
+  if (Array.isArray(loc.faqs) && loc.faqs.length > 0) {
+    graph.push({
+      '@type': 'FAQPage',
+      mainEntity: loc.faqs.map((f) => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: f.a,
+        },
+      })),
+    });
+  }
+
+  if (authorityEntry && authorityEntry.verified_content) {
+    graph.push({
+      '@type': 'Service',
+      '@id': `${PRIMARY_DOMAIN}${canonicalPath}#authority-proof`,
+      name: `${loc.city} Asphalt Paving — Project Verification`,
+      description: authorityEntry.verified_content,
+      provider: { '@id': `${PRIMARY_DOMAIN}${canonicalPath}#business` },
+      areaServed: { '@type': 'City', name: loc.city, address: { '@type': 'PostalAddress', addressRegion: loc.stateAbbr } },
+    });
+  }
+
+  graph.push({
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: PRIMARY_DOMAIN },
+      { '@type': 'ListItem', position: 2, name: 'Service Areas', item: `${PRIMARY_DOMAIN}/locations` },
+      { '@type': 'ListItem', position: 3, name: `${loc.city}, ${loc.stateAbbr}`, item: `${PRIMARY_DOMAIN}${canonicalPath}` },
+    ],
+  });
+
   const jsonLd = {
     '@context': 'https://schema.org',
-    '@graph': [
-      businessSchema,
-      {
-        '@type': 'FAQPage',
-        mainEntity: loc.faqs.map((f) => ({
-          '@type': 'Question',
-          name: f.q,
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: f.a,
-          },
-        })),
-      },
-      {
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: PRIMARY_DOMAIN },
-          { '@type': 'ListItem', position: 2, name: 'Service Areas', item: `${PRIMARY_DOMAIN}/locations` },
-          { '@type': 'ListItem', position: 3, name: `${loc.city}, ${loc.stateAbbr}`, item: `${PRIMARY_DOMAIN}${canonicalPath}` },
-        ],
-      },
-    ],
+    '@graph': graph,
   };
 
   return (
@@ -221,6 +243,7 @@ export default function LocationPage() {
           </section>
         )}
 
+        <MarketAuthority entry={authorityEntry} city={loc.city} />
         <MarketClimate climate={loc.climate} city={loc.city} />
         <MarketFAQ faqs={loc.faqs} city={loc.city} />
         <MarketCTA city={loc.city} state={loc.stateAbbr} />

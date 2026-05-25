@@ -19,6 +19,71 @@ Professional asphalt paving and maintenance across Virginia. This repo is the fu
 
 ---
 
+## J. Worden | Authority — Per-city Verified Proof engine
+
+Tenant-aware content engine that produces equipment-specific, technically credible per-city copy for the 56-city Virginia grid (and any customer site the Website Factory spins up). Powered by Gemini 2.5 Flash with GPT-4o fallback, all routed through the unified [app/services/llm_client.py](app/services/llm_client.py). Designed to win the May 2026 Google Core Update by giving the algorithm prerendered, structurally-sound proof content instead of generic marketing fluff.
+
+**Architecture**
+
+```
+LOCATIONS (src/lib/locations.js)
+  → scripts/ai-authority-factory.mjs   (build-time, per tenant)
+    → GET /api/v1/authority/local-proof (FastAPI on Railway)
+      → app/services/ai_foreman.py
+        → llm_client.chat(task='city_authority', ...)
+          → Gemini 2.5 Flash  (primary)  or  GPT-4o  (fallback)
+  ← cache: src/generated/authorityContent.{tenant}.json (committed)
+  → Vite build + postbuild prerender → static HTML indexed by Google
+```
+
+Every successful generation logs a row to `audit_events` (existing table — no migration) with `event_type='authority_generation'`, enabling per-tenant cost ledger in the Command Center.
+
+**City grid**: 56 Virginia entries — 15 rich entries (original) + 41 skeletal entries ported from `genewgeorge76/spacexgeminijworden`. Skeletal entries render correctly because city-page components null-check optional rich fields (neighborhoods, climate, faqs). Backfill rich content per city in a future pass.
+
+**Regenerate content locally**
+
+```bash
+# Plan only — log what would happen, no API calls, no writes
+npm run ai:authority:dry-run
+
+# Generate just two cities (uses VITE_API_BASE_URL or --api-base)
+node scripts/ai-authority-factory.mjs --cities=chester-va,richmond-va
+
+# Force-regenerate all VA cities (ignore the TTL cache)
+npm run ai:authority:force
+
+# Tighten freshness window
+node scripts/ai-authority-factory.mjs --ttl-days=7
+
+# Different tenant (enterprise customer site)
+node scripts/ai-authority-factory.mjs --tenant=acme
+```
+
+**Build pipeline**: Netlify runs `npm run ai:authority && npm run build` automatically. Cache file is committed for build determinism; Railway-down builds degrade to the last cached content rather than failing.
+
+**Required env vars**
+- Railway: `GEMINI_API_KEY` (or `GOOGLE_API_KEY` — `llm_client.py` accepts either)
+- Netlify build: `VITE_API_BASE_URL` (set in [netlify.toml](netlify.toml))
+
+**Endpoint reference**
+
+```
+GET /api/v1/authority/local-proof
+  ?tenant=jworden              (site-factory profile key, default 'jworden')
+  &city=Richmond               (required)
+  &project_type=...            (default 'commercial parking lot repaving')
+  &equipment=Mauldin 690,LeeBoy
+  &state=VA                    (optional override, e.g. 'NC' for OBX)
+
+→ 200 ProofResponse  { tenant, city, verified_content, model, provider, fallback_used, latency_ms }
+→ 400 if tenant is not in siteFactoryManifest.json
+→ 502 if all providers in the city_authority chain fail
+```
+
+See [.env.example](.env.example) for the full variable list and [scripts/factory-launch-pack.mjs](scripts/factory-launch-pack.mjs) for how Authority generation slots into new-market launches.
+
+---
+
 ## Local Development
 
 ### Prerequisites

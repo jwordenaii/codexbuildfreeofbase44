@@ -2,6 +2,9 @@ import React from 'react';
 import { MapPin } from 'lucide-react';
 
 export default function MarketCityList({ city, state, neighborhoods, landmarks }) {
+  const hasNeighborhoods = Array.isArray(neighborhoods) && neighborhoods.length > 0;
+  const hasLandmarks = Array.isArray(landmarks) && landmarks.length > 0;
+  if (!hasNeighborhoods && !hasLandmarks) return null;
   return (
     <section className="border-t border-border py-16 md:py-20">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -13,6 +16,7 @@ export default function MarketCityList({ city, state, neighborhoods, landmarks }
           Neighborhoods We Pave In {city}
         </h2>
 
+        {hasNeighborhoods && (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mb-12">
           {neighborhoods.map((n) => (
             <div
@@ -24,8 +28,9 @@ export default function MarketCityList({ city, state, neighborhoods, landmarks }
             </div>
           ))}
         </div>
+        )}
 
-        {landmarks?.length > 0 && (
+        {hasLandmarks && (
           <div className="border-t border-border pt-8">
             <p className="font-display text-muted-foreground text-xs tracking-[0.2em] uppercase mb-4">
               Local Landmarks We've Worked Around

@@ -618,6 +618,63 @@ export const LOCATIONS = [
     rating: 4.9,
   },
 
+  // ──────── VIRGINIA — EXPANDED GRID (skeletal entries from spacexgeminijworden port) ────────
+  // Minimal-shape entries that drive the Authority engine + sitemap + factory.
+  // Rich fields (neighborhoods, climate, faqs, headline, intro, reviews) are
+  // populated by a future content pass. Components must degrade gracefully
+  // when these optional fields are undefined.
+
+  // Greater Richmond
+  { slug: 'tuckahoe-va',         city: 'Tuckahoe',         state: 'Virginia', stateAbbr: 'VA', region: 'Central Virginia',                county: 'Henrico',       geo: { lat: 37.5854, lng: -77.5772 } },
+  { slug: 'glen-allen-va',       city: 'Glen Allen',       state: 'Virginia', stateAbbr: 'VA', region: 'Central Virginia',                county: 'Henrico',       geo: { lat: 37.6657, lng: -77.5072 } },
+  { slug: 'mechanicsville-va',   city: 'Mechanicsville',   state: 'Virginia', stateAbbr: 'VA', region: 'Central Virginia',                county: 'Hanover',       geo: { lat: 37.6088, lng: -77.3733 } },
+  { slug: 'bon-air-va',          city: 'Bon Air',          state: 'Virginia', stateAbbr: 'VA', region: 'Central Virginia',                county: 'Chesterfield',  geo: { lat: 37.5246, lng: -77.5697 } },
+  { slug: 'lakeside-va',         city: 'Lakeside',         state: 'Virginia', stateAbbr: 'VA', region: 'Central Virginia',                county: 'Henrico',       geo: { lat: 37.6087, lng: -77.4783 } },
+  { slug: 'sandston-va',         city: 'Sandston',         state: 'Virginia', stateAbbr: 'VA', region: 'Central Virginia',                county: 'Henrico',       geo: { lat: 37.5251, lng: -77.3197 } },
+  { slug: 'stratford-hills-va',  city: 'Stratford Hills',  state: 'Virginia', stateAbbr: 'VA', region: 'Central Virginia',                county: 'Richmond City', geo: { lat: 37.5337, lng: -77.5447 } },
+  { slug: 'westham-va',          city: 'Westham',          state: 'Virginia', stateAbbr: 'VA', region: 'Central Virginia',                county: 'Henrico',       geo: { lat: 37.5851, lng: -77.5519 } },
+  { slug: 'windsor-farms-va',    city: 'Windsor Farms',    state: 'Virginia', stateAbbr: 'VA', region: 'Central Virginia',                county: 'Richmond City', geo: { lat: 37.5604, lng: -77.5119 } },
+
+  // Tri-Cities / Chesterfield
+  { slug: 'chesterfield-va',     city: 'Chesterfield',     state: 'Virginia', stateAbbr: 'VA', region: 'Tri-Cities / Central Virginia',   county: 'Chesterfield',  geo: { lat: 37.3777, lng: -77.5050 } },
+  { slug: 'petersburg-va',       city: 'Petersburg',       state: 'Virginia', stateAbbr: 'VA', region: 'Tri-Cities / Central Virginia',   county: 'Petersburg City', geo: { lat: 37.2279, lng: -77.4019 } },
+  { slug: 'hopewell-va',         city: 'Hopewell',         state: 'Virginia', stateAbbr: 'VA', region: 'Tri-Cities / Central Virginia',   county: 'Hopewell City', geo: { lat: 37.3043, lng: -77.2872 } },
+  { slug: 'colonial-heights-va', city: 'Colonial Heights', state: 'Virginia', stateAbbr: 'VA', region: 'Tri-Cities / Central Virginia',                            geo: { lat: 37.2654, lng: -77.3992 } },
+  { slug: 'moseley-va',          city: 'Moseley',          state: 'Virginia', stateAbbr: 'VA', region: 'Tri-Cities / Central Virginia',   county: 'Chesterfield',  geo: { lat: 37.4163, lng: -77.7758 } },
+  { slug: 'prince-george-va',    city: 'Prince George',    state: 'Virginia', stateAbbr: 'VA', region: 'Tri-Cities / Central Virginia',   county: 'Prince George', geo: { lat: 37.2235, lng: -77.2880 } },
+  { slug: 'sussex-va',           city: 'Sussex',           state: 'Virginia', stateAbbr: 'VA', region: 'Southside Virginia / I-85 Corridor', county: 'Sussex',     geo: { lat: 36.9135, lng: -77.2730 } },
+
+  // Hampton Roads
+  { slug: 'norfolk-va',          city: 'Norfolk',          state: 'Virginia', stateAbbr: 'VA', region: 'Hampton Roads',                                            geo: { lat: 36.8508, lng: -76.2859 } },
+  { slug: 'newport-news-va',     city: 'Newport News',     state: 'Virginia', stateAbbr: 'VA', region: 'Hampton Roads',                                            geo: { lat: 37.0871, lng: -76.4730 } },
+  { slug: 'hampton-va',          city: 'Hampton',          state: 'Virginia', stateAbbr: 'VA', region: 'Hampton Roads',                                            geo: { lat: 37.0299, lng: -76.3452 } },
+  { slug: 'suffolk-va',          city: 'Suffolk',          state: 'Virginia', stateAbbr: 'VA', region: 'Hampton Roads',                                            geo: { lat: 36.7282, lng: -76.5836 } },
+  { slug: 'portsmouth-va',       city: 'Portsmouth',       state: 'Virginia', stateAbbr: 'VA', region: 'Hampton Roads',                                            geo: { lat: 36.8354, lng: -76.2983 } },
+
+  // Northern Virginia
+  { slug: 'mclean-va',           city: 'McLean',           state: 'Virginia', stateAbbr: 'VA', region: 'Northern Virginia / DMV Fringe',  county: 'Fairfax',       geo: { lat: 38.9339, lng: -77.1773 } },
+  { slug: 'warrenton-va',        city: 'Warrenton',        state: 'Virginia', stateAbbr: 'VA', region: 'Northern Virginia / DMV Fringe',  county: 'Fauquier',      geo: { lat: 38.7137, lng: -77.7956 } },
+  { slug: 'culpeper-va',         city: 'Culpeper',         state: 'Virginia', stateAbbr: 'VA', region: 'Northern Virginia / DMV Fringe',  county: 'Culpeper',      geo: { lat: 38.4732, lng: -77.9967 } },
+  { slug: 'spotsylvania-va',     city: 'Spotsylvania',     state: 'Virginia', stateAbbr: 'VA', region: 'I-95 Corridor / Rappahannock',    county: 'Spotsylvania',  geo: { lat: 38.1985, lng: -77.5853 } },
+  { slug: 'stafford-va',         city: 'Stafford',         state: 'Virginia', stateAbbr: 'VA', region: 'I-95 Corridor / Rappahannock',    county: 'Stafford',      geo: { lat: 38.4221, lng: -77.4083 } },
+  { slug: 'caroline-va',         city: 'Caroline',         state: 'Virginia', stateAbbr: 'VA', region: 'I-95 Corridor / Rappahannock',    county: 'Caroline',      geo: { lat: 38.0334, lng: -77.3464 } },
+  { slug: 'king-george-va',      city: 'King George',      state: 'Virginia', stateAbbr: 'VA', region: 'I-95 Corridor / Rappahannock',    county: 'King George',   geo: { lat: 38.2682, lng: -77.1856 } },
+  { slug: 'orange-va',           city: 'Orange',           state: 'Virginia', stateAbbr: 'VA', region: 'Northern Virginia / DMV Fringe',  county: 'Orange',        geo: { lat: 38.2462, lng: -78.1109 } },
+  { slug: 'prince-william-va',   city: 'Prince William',   state: 'Virginia', stateAbbr: 'VA', region: 'Northern Virginia / DMV Fringe',  county: 'Prince William', geo: { lat: 38.7026, lng: -77.4789 } },
+
+  // Surrounding Counties
+  { slug: 'charlottesville-va',  city: 'Charlottesville',  state: 'Virginia', stateAbbr: 'VA', region: 'Central Virginia',                county: 'Albemarle',     geo: { lat: 38.0293, lng: -78.4767 } },
+  { slug: 'hanover-va',          city: 'Hanover',          state: 'Virginia', stateAbbr: 'VA', region: 'Central Virginia',                county: 'Hanover',       geo: { lat: 37.7613, lng: -77.3697 } },
+  { slug: 'powhatan-va',         city: 'Powhatan',         state: 'Virginia', stateAbbr: 'VA', region: 'Central Virginia',                county: 'Powhatan',      geo: { lat: 37.5435, lng: -77.9166 } },
+  { slug: 'goochland-va',        city: 'Goochland',        state: 'Virginia', stateAbbr: 'VA', region: 'Central Virginia',                county: 'Goochland',     geo: { lat: 37.6837, lng: -77.8836 } },
+  { slug: 'amelia-va',           city: 'Amelia',           state: 'Virginia', stateAbbr: 'VA', region: 'Central Virginia',                county: 'Amelia',        geo: { lat: 37.3438, lng: -77.9836 } },
+  { slug: 'ashland-va',          city: 'Ashland',          state: 'Virginia', stateAbbr: 'VA', region: 'Central Virginia',                county: 'Hanover',       geo: { lat: 37.7593, lng: -77.4791 } },
+  { slug: 'charles-city-va',     city: 'Charles City',     state: 'Virginia', stateAbbr: 'VA', region: 'Central Virginia',                county: 'Charles City',  geo: { lat: 37.3424, lng: -77.0758 } },
+  { slug: 'cumberland-va',       city: 'Cumberland',       state: 'Virginia', stateAbbr: 'VA', region: 'Central Virginia',                county: 'Cumberland',    geo: { lat: 37.5101, lng: -78.2422 } },
+  { slug: 'fluvanna-va',         city: 'Fluvanna',         state: 'Virginia', stateAbbr: 'VA', region: 'Central Virginia',                county: 'Fluvanna',      geo: { lat: 37.8412, lng: -78.2769 } },
+  { slug: 'louisa-va',           city: 'Louisa',           state: 'Virginia', stateAbbr: 'VA', region: 'Central Virginia',                county: 'Louisa',        geo: { lat: 37.9786, lng: -77.9961 } },
+  { slug: 'king-william-va',     city: 'King William',     state: 'Virginia', stateAbbr: 'VA', region: 'Central Virginia',                county: 'King William',  geo: { lat: 37.6826, lng: -77.1011 } },
+
   // ──────── OUTER BANKS / COASTAL NORTH CAROLINA ────────
   {
     slug: 'outer-banks-nc',

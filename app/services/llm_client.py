@@ -83,6 +83,7 @@ _ROUTES: dict[str, list[tuple[str, str]]] = {
     "fast":            [("openai", "gpt-4o-mini"),            ("anthropic", "claude-haiku-4-5-20251001")],
     "classification":  [("openai", "gpt-4o-mini"),            ("anthropic", "claude-haiku-4-5-20251001")],
     "analytics":       [("anthropic", "claude-sonnet-4-6"),   ("openai", "gpt-4o")],
+    "city_authority":  [("google", "gemini-2.5-flash"),       ("openai", "gpt-4o")],
 }
 
 _DEFAULT_TASK = "reasoning"

@@ -5,6 +5,8 @@ import { Plus, Minus } from 'lucide-react';
 export default function MarketFAQ({ faqs, city }) {
   const [openIdx, setOpenIdx] = useState(0);
 
+  if (!Array.isArray(faqs) || faqs.length === 0) return null;
+
   return (
     <section className="border-t border-border py-16 md:py-20">
       <div className="max-w-4xl mx-auto px-6 lg:px-8">

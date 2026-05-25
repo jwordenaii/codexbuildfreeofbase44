@@ -10,6 +10,7 @@ const addSiteScript = path.join(root, 'scripts', 'add-site-to-factory.mjs')
 const seoKitScript = path.join(root, 'scripts', 'create-seo-growth-kit.mjs')
 const blogWriterScript = path.join(root, 'scripts', 'factory-blog-writer.mjs')
 const standaloneRepoScript = path.join(root, 'scripts', 'create-standalone-site-repo.mjs')
+const authorityScript = path.join(root, 'scripts', 'ai-authority-factory.mjs')
 
 function parseArgs(argv) {
   const args = {}
@@ -69,6 +70,7 @@ try {
   const buildSeoKit = toBool(args['seo-kit'], true)
   const buildBlogs = toBool(args['blog-writer'], true)
   const buildStandaloneRepo = toBool(args['standalone-repo'], false)
+  const buildAuthority = toBool(args['authority'], true)
   const isDryRun = toBool(args['dry-run'], false)
 
   console.log('Factory Launch Pack starting...')
@@ -83,6 +85,7 @@ try {
     console.log(` - seo-kit: ${buildSeoKit}`)
     console.log(` - blog-writer: ${buildBlogs}`)
     console.log(` - standalone-repo: ${buildStandaloneRepo}`)
+    console.log(` - authority: ${buildAuthority}`)
     process.exit(0)
   }
 
@@ -134,6 +137,20 @@ try {
     if (args['ga-id']) repoArgs.push(`--ga-id=${args['ga-id']}`)
     if (args['out-dir']) repoArgs.push(`--out-dir=${args['out-dir']}`)
     runNodeScript(standaloneRepoScript, repoArgs)
+  }
+
+  if (buildAuthority) {
+    const authorityArgs = [`--tenant=${siteKey}`]
+    if (args.cities) authorityArgs.push(`--cities=${args.cities}`)
+    if (args['authority-equipment']) authorityArgs.push(`--equipment=${args['authority-equipment']}`)
+    if (args['authority-project-type']) authorityArgs.push(`--project-type=${args['authority-project-type']}`)
+    // Authority script is itself non-fatal (degrades to cached content on error),
+    // but the launch pack should keep going regardless.
+    try {
+      runNodeScript(authorityScript, authorityArgs)
+    } catch (err) {
+      console.warn(`authority generation step warned: ${err.message} — continuing launch.`)
+    }
   }
 
   console.log('Factory Launch Pack complete.')

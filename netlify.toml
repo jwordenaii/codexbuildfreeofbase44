@@ -1,27 +1,205 @@
 [build]
-  base    = "obx-paving"
-  command = "npm run build"
+  base    = "."
+  command = "npx puppeteer browsers install chrome && npm run ai:authority && npm run build"
   publish = "dist"
 
 [build.environment]
-  NODE_VERSION = "20"
+  NODE_VERSION        = "20"
+  VITE_SITE_URL       = "https://www.jwordenasphaltpaving.com"
+  PUPPETEER_CACHE_DIR = "/opt/buildhome/.cache/puppeteer"
+  # Authority engine reads this to call /api/v1/authority/local-proof at build time.
+  # Failures degrade to cached content — never block the build.
+  VITE_API_BASE_URL   = "https://codexbuildfreeofbase44-production.up.railway.app"
+
+[functions]
+  directory    = "netlify/functions"
+  node_bundler = "esbuild"
 
 [[redirects]]
-  from   = "/robots.txt"
-  to     = "/robots.txt"
+  from = "/robots.txt"
+  to = "/robots.txt"
   status = 200
-  force  = true
+  force = true
 
 [[redirects]]
-  from   = "/sitemap.xml"
-  to     = "/sitemap.xml"
+  from = "/sitemap.xml"
+  to = "/sitemap.xml"
   status = 200
-  force  = true
+  force = true
 
 [[redirects]]
-  from   = "/*"
-  to     = "/index.html"
+  from = "/sitemap.txt"
+  to = "/sitemap.txt"
   status = 200
+  force = true
+
+[[redirects]]
+  from = "/3ef8a81ce186414ca3235bebb5072f22.txt"
+  to = "/3ef8a81ce186414ca3235bebb5072f22.txt"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "https://jwordenasphaltpaving.com/*"
+  to = "https://www.jwordenasphaltpaving.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://jwordenasphaltpaving.com/*"
+  to = "https://www.jwordenasphaltpaving.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://www.jwordenasphaltpaving.com/*"
+  to = "https://www.jwordenasphaltpaving.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://jwordensons.com/*"
+  to = "https://www.jwordenasphaltpaving.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://jwordenpaving.com/*"
+  to = "https://www.jwordenasphaltpaving.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://jwordenandsonspaving.com/*"
+  to = "https://www.jwordenasphaltpaving.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://richmondvapaving.com/*"
+  to = "https://www.jwordenasphaltpaving.com/locations/richmond-va"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://www.richmondvapaving.com/*"
+  to = "https://www.jwordenasphaltpaving.com/locations/richmond-va"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://chestervapaving.com/*"
+  to = "https://www.jwordenasphaltpaving.com/locations/chester-va"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://www.chestervapaving.com/*"
+  to = "https://www.jwordenasphaltpaving.com/locations/chester-va"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://midlothianpaving.com/*"
+  to = "https://www.jwordenasphaltpaving.com/locations/midlothian-va"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://mechanicsvillepaving.com/*"
+  to = "https://www.jwordenasphaltpaving.com/locations/mechanicsville-va"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://richmondasphaltpaving.com/*"
+  to = "https://www.jwordenasphaltpaving.com/locations/richmond-va"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://savannahpaving.com/*"
+  to = "https://www.jwordenasphaltpaving.com/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://carolinaasphaltpaving.com/*"
+  to = "https://www.jwordenasphaltpaving.com/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://atlantapavingpros.com/*"
+  to = "https://www.jwordenasphaltpaving.com/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://kansascitypavingpros.com/*"
+  to = "https://www.jwordenasphaltpaving.com/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/api/*"
+  to = "https://codexbuildfreeofbase44-production.up.railway.app/api/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/owner"
+  to = "/leads"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/inbox"
+  to = "/leads"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/admin"
+  to = "/command-center"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/fredericksburg-va-paving"
+  to = "/locations/fredericksburg-va"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options           = "DENY"
+    X-Content-Type-Options    = "nosniff"
+    Referrer-Policy           = "strict-origin-when-cross-origin"
+    Permissions-Policy        = "geolocation=(), microphone=(self), camera=()"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+    # Content Security Policy — allows Google Ads/Analytics, Google Fonts,
+    # Railway backend API, optional Sentry. Inline scripts permitted because
+    # gtag init + the thewordenstandard robots-meta switch are inline in
+    # index.html. Tightening to nonces would require nonce injection at
+    # prerender time. data: + blob: kept for inline images / CSS-in-JS.
+    Content-Security-Policy   = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://www.google.com https://*.googletagmanager.com; script-src-elem 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://www.google.com https://*.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https: https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com https://googleads.g.doubleclick.net; connect-src 'self' https://codexbuildfreeofbase44-production.up.railway.app https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://*.googletagmanager.com https://stats.g.doubleclick.net https://*.ingest.sentry.io https://*.sentry.io; frame-src 'self' https://www.google.com https://td.doubleclick.net https://bid.g.doubleclick.net; frame-ancestors 'none'; form-action 'self'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
 
 [[headers]]
   for = "/sitemap.xml"
@@ -36,14 +214,66 @@
     Content-Type  = "text/plain; charset=utf-8"
 
 [[headers]]
-  for = "/*"
+  for = "/command-center"
   [headers.values]
-    X-Frame-Options          = "DENY"
-    X-Content-Type-Options   = "nosniff"
-    Referrer-Policy          = "strict-origin-when-cross-origin"
-    Permissions-Policy       = "camera=(), microphone=(), geolocation=()"
+    X-Robots-Tag  = "noindex, nofollow, noarchive"
+    Cache-Control = "no-store, no-cache, must-revalidate"
 
 [[headers]]
-  for = "/assets/*"
+  for = "/command-center/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    X-Robots-Tag  = "noindex, nofollow, noarchive"
+    Cache-Control = "no-store, no-cache, must-revalidate"
+
+[[headers]]
+  for = "/leads"
+  [headers.values]
+    X-Robots-Tag    = "noindex, nofollow, noarchive"
+    Cache-Control   = "no-store, no-cache, must-revalidate"
+    X-Frame-Options = "DENY"
+    Pragma          = "no-cache"
+
+[[headers]]
+  for = "/leads/*"
+  [headers.values]
+    X-Robots-Tag    = "noindex, nofollow, noarchive"
+    Cache-Control   = "no-store, no-cache, must-revalidate"
+    X-Frame-Options = "DENY"
+    Pragma          = "no-cache"
+
+[[headers]]
+  for = "/portal"
+  [headers.values]
+    X-Robots-Tag    = "noindex, nofollow, noarchive"
+    Cache-Control   = "no-store, no-cache, must-revalidate"
+    X-Frame-Options = "DENY"
+    Pragma          = "no-cache"
+
+[[headers]]
+  for = "/portal/*"
+  [headers.values]
+    X-Robots-Tag    = "noindex, nofollow, noarchive"
+    Cache-Control   = "no-store, no-cache, must-revalidate"
+    X-Frame-Options = "DENY"
+    Pragma          = "no-cache"
+
+[[headers]]
+  for = "/staff"
+  [headers.values]
+    X-Robots-Tag    = "noindex, nofollow, noarchive"
+    Cache-Control   = "no-store, no-cache, must-revalidate"
+    X-Frame-Options = "DENY"
+    Pragma          = "no-cache"
+
+[[headers]]
+  for = "/staff/*"
+  [headers.values]
+    X-Robots-Tag    = "noindex, nofollow, noarchive"
+    Cache-Control   = "no-store, no-cache, must-revalidate"
+    X-Frame-Options = "DENY"
+    Pragma          = "no-cache"
+
+[[headers]]
+  for = "/advisory/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow, noarchive"

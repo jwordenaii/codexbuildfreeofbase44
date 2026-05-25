@@ -2,6 +2,7 @@ import React from 'react';
 import { Thermometer } from 'lucide-react';
 
 export default function MarketClimate({ climate, city }) {
+  if (!climate || (!climate.title && !climate.body)) return null;
   return (
     <section className="border-t border-border py-16 md:py-20 bg-muted/10">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
