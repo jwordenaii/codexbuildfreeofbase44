@@ -285,6 +285,7 @@ from .routers import roller_telemetry_router
 from .routers import staff_router
 from .services.quantum_orchestrator import global_quantum_orchestrator
 from .routers import tts as tts_router
+from .routers import local_proof as local_proof_router
 from .routers.websocket_events import sio
 from .services.monitoring_service import monitoring
 
@@ -645,6 +646,7 @@ _rebuild_router_models()
 
 # Neural TTS for Jarvis / Mr. Worden voice (OpenAI / ElevenLabs)
 app.include_router(tts_router.router)
+app.include_router(local_proof_router.router)
 
 
 # ── Socket.IO ASGI mount ──────────────────────────────────────────────────────
