@@ -8,6 +8,7 @@ import PhotoScan  from './pages/PhotoScan'
 import TruckMap   from './pages/TruckMap'
 import Completion from './pages/Completion'
 import Profile    from './pages/Profile'
+import AdminUsers from './pages/AdminUsers'
 
 function RequireAuth({ children }) {
   const { user } = useAuth()
@@ -30,6 +31,7 @@ function AppRoutes() {
               <Route path="scan"           element={<PhotoScan />} />
               <Route path="trucks"         element={<TruckMap />} />
               <Route path="profile"        element={<Profile />} />
+              <Route path="admin/users"   element={<AdminUsers />} />
               <Route path="*"              element={<Navigate to="/" replace />} />
             </Routes>
           </AppShell>
