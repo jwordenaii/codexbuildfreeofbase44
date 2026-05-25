@@ -9,6 +9,7 @@ import TruckMap   from './pages/TruckMap'
 import Completion from './pages/Completion'
 import Profile    from './pages/Profile'
 import AdminUsers from './pages/AdminUsers'
+import FirstSetup from './pages/FirstSetup'
 
 function RequireAuth({ children }) {
   const { user } = useAuth()
@@ -21,6 +22,7 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/login" element={user ? <Navigate to="/" replace /> : <Login />} />
+      <Route path="/setup" element={<FirstSetup />} />
       <Route path="/*" element={
         <RequireAuth>
           <AppShell>
