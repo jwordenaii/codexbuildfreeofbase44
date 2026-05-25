@@ -27,7 +27,7 @@ export default function FirstSetup() {
         headers: { Authorization: basicAuth(adminUser, adminPass) },
       })
       if (res.status === 401) { setError('Wrong admin credentials — check Railway env vars'); return }
-      if (!res.ok) { setError('Server error — try again'); return }
+      if (!res.ok) { const d = await res.json().catch(() => ({})); setError(d.detail ?? `Server error ${res.status}`); return }
       setStep(2)
     } catch {
       setError('Cannot reach server — check VITE_API_BASE_URL')
