@@ -302,6 +302,30 @@ async def lifespan(app: FastAPI):
     else:
         logger.info("AUTO_CREATE_TABLES disabled; expecting Alembic migrations to manage schema")
 
+    # ── Seed first owner account if configured ────────────────────────────────
+    _seed_user = os.getenv("SEED_OWNER_USERNAME", "").strip()
+    _seed_pass = os.getenv("SEED_OWNER_PASSWORD", "").strip()
+    if _seed_user and _seed_pass:
+        try:
+            from .database import SessionLocal
+            from .models import StaffUser
+            from .services import staff_auth
+            db = SessionLocal()
+            try:
+                exists = db.query(StaffUser).filter(StaffUser.username == _seed_user).first()
+                if not exists:
+                    user = StaffUser(username=_seed_user, role="owner",
+                                     password_hash=staff_auth.hash_password(_seed_pass))
+                    db.add(user)
+                    db.commit()
+                    logger.info("Seeded owner account: %s", _seed_user)
+                else:
+                    logger.info("Seed account already exists: %s", _seed_user)
+            finally:
+                db.close()
+        except Exception as e:
+            logger.warning("Could not seed owner account: %s", e)
+
     # ── SendGrid initialisation check ─────────────────────────────────────────
     _sg_key = os.getenv("SENDGRID_API_KEY", "").strip()
     _sg_from = os.getenv("SENDGRID_FROM_EMAIL", "").strip()
