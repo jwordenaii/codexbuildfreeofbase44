@@ -350,6 +350,7 @@ _ALLOWED_ORIGINS = [
     "https://thewordenstandard.com",
     "https://www.thewordenstandard.com",
     "https://doooone.netlify.app",
+    "https://app.jwordenasphaltpaving.com",
     "http://localhost:5173",   # Vite dev server
     "http://localhost:3000",
 ] + _EXTRA_ORIGINS
