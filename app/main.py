@@ -66,15 +66,18 @@
 #   GET  /admin/*                      — admin dashboard (HTTP Basic)
 # ─────────────────────────────────────────────────────────────────────────────
 
-import os
-import time
 import logging
 import logging.config
-from typing import cast
-from pathlib import Path
+import os
+import time
 from contextlib import asynccontextmanager
+from pathlib import Path
+from typing import cast
 
-from dotenv import dotenv_values, load_dotenv  # noqa: E402 — must run before other imports
+from dotenv import (  # noqa: E402 — must run before other imports
+    dotenv_values,
+    load_dotenv,
+)
 
 # Load local env files from repo root in deterministic order.
 # In production (Railway/Render), environment variables are injected directly.
@@ -146,6 +149,7 @@ logging.config.dictConfig(_LOGGING_CONFIG)
 # Reject placeholder DSNs (e.g. "your-dsn-here") so we don't spam logs with
 # "Sentry init failed" warnings on dev/staging environments.
 import re as _re_dsn  # noqa: PLC0415
+
 _SENTRY_DSN = os.getenv("SENTRY_DSN", "").strip()
 _SENTRY_DSN_VALID = bool(
     _SENTRY_DSN
@@ -153,13 +157,18 @@ _SENTRY_DSN_VALID = bool(
 )
 if _SENTRY_DSN_VALID:
     try:
-        import sentry_sdk  # noqa: PLC0415
-        from sentry_sdk.integrations.fastapi import FastApiIntegration  # noqa: PLC0415
-        from sentry_sdk.integrations.starlette import StarletteIntegration  # noqa: PLC0415
-        from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration  # noqa: PLC0415
-        from sentry_sdk.integrations.celery import CeleryIntegration  # noqa: PLC0415
-        from sentry_sdk.integrations.logging import LoggingIntegration  # noqa: PLC0415
         import logging as _logging  # noqa: PLC0415
+
+        import sentry_sdk  # noqa: PLC0415
+        from sentry_sdk.integrations.celery import CeleryIntegration  # noqa: PLC0415
+        from sentry_sdk.integrations.fastapi import FastApiIntegration  # noqa: PLC0415
+        from sentry_sdk.integrations.logging import LoggingIntegration  # noqa: PLC0415
+        from sentry_sdk.integrations.sqlalchemy import (
+            SqlalchemyIntegration,  # noqa: PLC0415
+        )
+        from sentry_sdk.integrations.starlette import (
+            StarletteIntegration,  # noqa: PLC0415
+        )
 
         sentry_sdk.init(
             dsn=_SENTRY_DSN,
@@ -177,7 +186,7 @@ if _SENTRY_DSN_VALID:
                 # Promotes WARNING+ log records to Sentry breadcrumbs;
                 # ERROR+ log records are sent as Sentry events.
                 LoggingIntegration(
-                    level=_logging.WARNING,   # breadcrumb threshold
+                    level=_logging.WARNING,  # breadcrumb threshold
                     event_level=_logging.ERROR,  # event threshold
                 ),
             ],
@@ -187,123 +196,141 @@ if _SENTRY_DSN_VALID:
             # Send 100 % of error events (only traces are sampled).
             send_default_pii=False,
         )
-        logging.getLogger(__name__).info("Sentry initialised (env=%s)", os.getenv("RAILWAY_ENVIRONMENT_NAME", "production"))
+        logging.getLogger(__name__).info(
+            "Sentry initialised (env=%s)",
+            os.getenv("RAILWAY_ENVIRONMENT_NAME", "production"),
+        )
     except Exception as _se:  # noqa: BLE001
         logging.getLogger(__name__).warning("Sentry init failed: %s", _se)
 
-from fastapi import FastAPI, BackgroundTasks, Depends, Request, Response
+from fastapi import BackgroundTasks, Depends, FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from pydantic import BaseModel
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 
-from .core.security import verify_premium_security
-from .core.limiter import limiter
-from .database import create_all_tables, should_auto_create_tables
 from . import models  # noqa: F401 — registers ORM models with Base.metadata
-from .services.ai_brain import SupremeCourtAI
-from .services.state_data import verify_state_logic_integrity
-from .services.telemetry import FleetOperations
-from .routers import leads, reviews, schema_ld, ai as ai_router
-from .routers import admin as admin_router, content as content_router
+from .core.limiter import limiter
+from .core.security import verify_premium_security
+from .database import create_all_tables, should_auto_create_tables
+from .routers import admin as admin_router
+from .routers import admin_2fa as admin_2fa_router
+from .routers import admin_integrations as admin_integrations_router
+from .routers import admin_vector as admin_vector_router
+from .routers import ads_intelligence as ads_intelligence_router
 from .routers import advisor as advisor_router
-from .routers import permits as permits_router, takeoff as takeoff_router
-from .routers import crm as crm_router
-from .routers import follow_ups as follow_ups_router
-from .routers import proposals as proposals_router
-from .routers import weather as weather_router
-from .routers import documents as documents_router
-from .routers import plan_estimator as plan_estimator_router
+from .routers import ai as ai_router
 from .routers import analytics as analytics_router
-from .routers import voice as voice_router
+from .routers import (
+    asphalt_thermal_router,
+    dispatch_router,
+    drone_capture_router,
+    gbp_router,
+    leads,
+    lidar_ingest_router,
+    reviews,
+    roller_telemetry_router,
+    schema_ld,
+    search_pulse_router,
+    staff_router,
+)
+from .routers import audit_admin as audit_admin_router
+from .routers import auth as auth_router
+from .routers import authority as authority_router
+from .routers import autonomy as autonomy_router
+from .routers import bid_intelligence as bid_intelligence_router
+from .routers import blog as blog_router
+from .routers import cashflow as cashflow_router
+from .routers import chat as chat_router
+from .routers import compaction as compaction_router
+from .routers import compliance as compliance_router
+from .routers import content as content_router
+from .routers import crew_wearables as crew_wearables_router
+from .routers import crm as crm_router
+from .routers import customers as customers_router
+from .routers import documents as documents_router
+from .routers import driveway_growth as driveway_growth_router
+from .routers import drone_scan as drone_scan_router
+from .routers import email as email_router
+from .routers import features as features_router
+from .routers import follow_ups as follow_ups_router
+from .routers import foreman as foreman_router
+from .routers import gallery as gallery_router
+from .routers import geo as geo_router
+from .routers import global_platform as global_router
+from .routers import google_reporting as google_reporting_router
+from .routers import health as health_router
+from .routers import human_review as human_review_router
+from .routers import igrade as igrade_router
+from .routers import innovations as innovations_router
+from .routers import jarvis_router as jarvis_router
+from .routers import kickserv as kickserv_router
+from .routers import kpi_wall as kpi_wall_router
 from .routers import lien_calendar as lien_calendar_router
-from .routers import subcontractors as subcontractors_router
+from .routers import live_site as live_site_router
+from .routers import local_proof as local_proof_router
 from .routers import market_intelligence as market_intelligence_router
 from .routers import materials as materials_router
-from .routers import tenants as tenants_router
-from .routers import blog as blog_router
-from .routers import vector_search as vector_search_router
-from .routers import admin_vector as admin_vector_router
-from .routers import seo as seo_router
-from .routers import retrospectives as retrospectives_router
-from .routers import safety as safety_router
-from .routers import cashflow as cashflow_router
-from .routers import project_metrics as project_metrics_router
-from .routers import workforce as workforce_router
-from .routers import bid_intelligence as bid_intelligence_router
-from .routers import kpi_wall as kpi_wall_router
-from .routers import innovations as innovations_router
-from .routers import visualizer as visualizer_router
-from .routers import payments as payments_router
-from .routers import foreman as foreman_router
-from .routers import geo as geo_router
-from .routers import igrade as igrade_router
-from .routers import customers as customers_router
-from .routers import auth as auth_router
-from .routers import health as health_router
+from .routers import math_ai as math_ai_router
 from .routers import metrics as metrics_router
 from .routers import monitoring as monitoring_router
-from .routers import gallery as gallery_router
-from .routers import chat as chat_router
-from .routers import email as email_router
-from .routers import math_ai as math_ai_router
-from .routers import site_metrics as site_metrics_router
-from .routers import kickserv as kickserv_router
-from .routers import google_reporting as google_reporting_router
-from .routers import compaction as compaction_router
-from .routers import drone_scan as drone_scan_router
-from .routers import live_site as live_site_router
-from .routers import compliance as compliance_router
-from .routers import schedule_sim as schedule_sim_router
-from .routers import ads_intelligence as ads_intelligence_router
-from .routers import spatial_ai as spatial_ai_router
-from .routers import scc as scc_router
-from .routers import vdot_bids as vdot_bids_router
-from .routers import autonomy as autonomy_router
-from .routers import quotes as quotes_router
-from .routers import admin_2fa as admin_2fa_router
-from .routers import human_review as human_review_router
-from .routers import search as search_router
-from .routers import public_chat as public_chat_router
 from .routers import operations as operations_router
-from .routers import audit_admin as audit_admin_router
-from .routers import global_platform as global_router
-from .routers import scaling as scaling_router
+from .routers import payments as payments_router
+from .routers import permits as permits_router
+from .routers import plan_estimator as plan_estimator_router
+from .routers import predictive_capital as predictive_capital_router
+from .routers import project_metrics as project_metrics_router
+from .routers import proposals as proposals_router
+from .routers import public_chat as public_chat_router
+from .routers import quotes as quotes_router
+from .routers import retrospectives as retrospectives_router
 from .routers import revenue as revenue_router
-from .routers import jarvis_router as jarvis_router
-from .routers import twilio_verify_router as twilio_verify_router
-from .routers import admin_integrations as admin_integrations_router
-from .routers import features as features_router
-from .routers import crew_wearables as crew_wearables_router
-from .routers import search_pulse_router
-from .routers import gbp_router
-from .routers import dispatch_router
-from .routers import asphalt_thermal_router
-from .routers import drone_capture_router
-from .routers import lidar_ingest_router
-from .routers import roller_telemetry_router
-from .routers import staff_router
-from .routers import authority as authority_router
-from .services.quantum_orchestrator import global_quantum_orchestrator
+from .routers import safety as safety_router
+from .routers import scaling as scaling_router
+from .routers import scc as scc_router
+from .routers import schedule_sim as schedule_sim_router
+from .routers import search as search_router
+from .routers import seo as seo_router
+from .routers import site_metrics as site_metrics_router
+from .routers import spatial_ai as spatial_ai_router
+from .routers import subcontractors as subcontractors_router
+from .routers import takeoff as takeoff_router
+from .routers import tech_intelligence as tech_intelligence_router
+from .routers import tenants as tenants_router
 from .routers import tts as tts_router
-from .routers import local_proof as local_proof_router
+from .routers import twilio_verify_router as twilio_verify_router
+from .routers import vdot_bids as vdot_bids_router
+from .routers import vector_search as vector_search_router
+from .routers import visualizer as visualizer_router
+from .routers import voice as voice_router
+from .routers import weather as weather_router
+from .routers import workforce as workforce_router
 from .routers.websocket_events import sio
+from .services.ai_brain import SupremeCourtAI
 from .services.monitoring_service import monitoring
+from .services.quantum_orchestrator import global_quantum_orchestrator
+from .services.state_data import verify_state_logic_integrity
+from .services.telemetry import FleetOperations
 
 logger = logging.getLogger(__name__)
 
 # ── Lifespan ──────────────────────────────────────────────────────────────────
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    logger.info("JWordenAI backend starting up (FastAPI %s)", __import__("fastapi").__version__)
+    logger.info(
+        "JWordenAI backend starting up (FastAPI %s)", __import__("fastapi").__version__
+    )
     verify_state_logic_integrity(raise_on_error=True)
     logger.info("State logic integrity check passed (50 states + DC parity).")
     if should_auto_create_tables():
         create_all_tables()
     else:
-        logger.info("AUTO_CREATE_TABLES disabled; expecting Alembic migrations to manage schema")
+        logger.info(
+            "AUTO_CREATE_TABLES disabled; expecting Alembic migrations to manage schema"
+        )
 
     # ── Seed first owner account if configured ────────────────────────────────
     _seed_user = os.getenv("SEED_OWNER_USERNAME", "").strip()
@@ -313,12 +340,18 @@ async def lifespan(app: FastAPI):
             from .database import SessionLocal
             from .models import StaffUser
             from .services import staff_auth
+
             db = SessionLocal()
             try:
-                exists = db.query(StaffUser).filter(StaffUser.username == _seed_user).first()
+                exists = (
+                    db.query(StaffUser).filter(StaffUser.username == _seed_user).first()
+                )
                 if not exists:
-                    user = StaffUser(username=_seed_user, role="owner",
-                                     password_hash=staff_auth.hash_password(_seed_pass))
+                    user = StaffUser(
+                        username=_seed_user,
+                        role="owner",
+                        password_hash=staff_auth.hash_password(_seed_pass),
+                    )
                     db.add(user)
                     db.commit()
                     logger.info("Seeded owner account: %s", _seed_user)
@@ -361,14 +394,13 @@ def _rate_limit_exception_handler(request: Request, exc: Exception) -> Response:
     # This endpoint is registered only for RateLimitExceeded, so this cast is safe.
     return _rate_limit_exceeded_handler(request, cast(RateLimitExceeded, exc))
 
+
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exception_handler)
 
 # ── CORS ──────────────────────────────────────────────────────────────────────
 _EXTRA_ORIGINS = [
-    o.strip()
-    for o in os.getenv("EXTRA_CORS_ORIGINS", "").split(",")
-    if o.strip()
+    o.strip() for o in os.getenv("EXTRA_CORS_ORIGINS", "").split(",") if o.strip()
 ]
 _ALLOWED_ORIGINS = [
     "https://jworden.netlify.app",
@@ -378,7 +410,7 @@ _ALLOWED_ORIGINS = [
     "https://www.thewordenstandard.com",
     "https://doooone.netlify.app",
     "https://app.jwordenasphaltpaving.com",
-    "http://localhost:5173",   # Vite dev server
+    "http://localhost:5173",  # Vite dev server
     "http://localhost:3000",
 ] + _EXTRA_ORIGINS
 
@@ -406,6 +438,7 @@ app.add_middleware(GZipMiddleware, minimum_size=500)
 
 # ── Request logging middleware ────────────────────────────────────────────────
 
+
 @app.middleware("http")
 async def log_requests(request, call_next):
     """
@@ -416,6 +449,7 @@ async def log_requests(request, call_next):
     start = time.monotonic()
     # simple request trace id for correlating logs
     import uuid
+
     trace_id = uuid.uuid4().hex
     response = None
     unhandled_exc: Exception | None = None
@@ -610,6 +644,9 @@ app.include_router(search_router.router)
 app.include_router(public_chat_router.router)
 app.include_router(operations_router.router)
 app.include_router(audit_admin_router.router)
+app.include_router(tech_intelligence_router.router)
+app.include_router(predictive_capital_router.router)
+app.include_router(driveway_growth_router.router)
 
 
 # ── Resolve Pydantic forward references ──────────────────────────────────────
@@ -620,6 +657,7 @@ app.include_router(audit_admin_router.router)
 def _rebuild_router_models() -> None:
     import inspect as _inspect
     import sys as _sys
+
     from pydantic import BaseModel as _BaseModel
 
     rebuilt = 0
@@ -665,6 +703,7 @@ app.mount("/sio", _sio_app)
 
 # ── Legacy endpoints (kept for backward compatibility) ────────────────────────
 
+
 class ScopeRequest(BaseModel):
     state: str
     project_scope: str
@@ -699,6 +738,7 @@ def truck_ping(req: TelemetryPing, background_tasks: BackgroundTasks):
 
 # ── Health check ──────────────────────────────────────────────────────────────
 
+
 @app.get("/health", tags=["ops"])
 def health():
     return {"status": "ok", "service": "JWordenAI"}
@@ -708,6 +748,7 @@ def health():
 # Hit GET /sentry-test to trigger a deliberate exception and confirm that Sentry
 # is capturing and reporting errors from this environment.  Remove or gate behind
 # auth once the integration has been verified.
+
 
 @app.get("/sentry-test", tags=["ops"])
 def sentry_test():

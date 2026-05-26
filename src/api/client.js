@@ -125,7 +125,7 @@ export function clearAuthToken() {
   clearStoredAuthToken()
 }
 
-export async function request(method, path, body) {
+export async function request(method, path, body, options = {}) {
   const controller = new AbortController()
   const timeoutId = setTimeout(() => controller.abort(), DEFAULT_TIMEOUT_MS)
 
@@ -144,7 +144,7 @@ export async function request(method, path, body) {
 
   const opts = {
     method,
-    headers,
+    headers: { ...headers, ...(options.headers || {}) },
     signal: controller.signal,
   }
   if (body) opts.body = JSON.stringify(body)
@@ -167,14 +167,18 @@ export async function request(method, path, body) {
   }
 }
 
-async function protectedRequest(method, path, body) {
+async function protectedRequest(method, path, body, options = {}) {
   const token = await getAccessToken()
   const controller = new AbortController()
   const timeoutId = setTimeout(() => controller.abort(), DEFAULT_TIMEOUT_MS)
   const headers = { 'Content-Type': 'application/json' }
   if (token) headers.Authorization = `Bearer ${token}`
 
-  const opts = { method, headers, signal: controller.signal }
+  const opts = {
+    method,
+    headers: { ...headers, ...(options.headers || {}) },
+    signal: controller.signal,
+  }
   if (body) opts.body = JSON.stringify(body)
 
   try {
@@ -681,6 +685,7 @@ export const api = {
     request('POST', '/api/v1/jarvis/command', { query, persona, confirmed }),
   jarvisStatus: () => request('GET', '/api/v1/jarvis/status'),
   jarvisReadiness: () => request('GET', '/api/v1/jarvis/readiness'),
+  jarvisMetrics: () => protectedRequest('GET', '/api/v1/metrics/jarvis'),
   jarvisSearch: (query, deep = false) =>
     request('POST', '/api/v1/jarvis/search', { query, deep }),
   jarvisCall: (toNumber, purpose, scriptHint) =>
@@ -785,6 +790,8 @@ export const api = {
   getFeatures: () => request('GET', '/api/v1/features'),
   // ── Autonomy kill switch (defense-in-depth, layer 2) ─────────────────────
   getAutonomyState: () => request('GET', '/api/v1/autonomy/state'),
+  autonomyStatus: () => protectedRequest('GET', '/api/v1/autonomy/status'),
+  autonomyIntelligenceMap: () => protectedRequest('GET', '/api/v1/autonomy/intelligence-map'),
   freezeAutonomy: (reason = 'manual') => request('POST', '/api/v1/autonomy/freeze', { reason }),
   unfreezeAutonomy: () => protectedRequest('POST', '/api/v1/autonomy/unfreeze'),
   // ── Command Center dashboard metrics ──────────────────────────────────────
@@ -839,6 +846,8 @@ export const api = {
   getReciprocityRanking: (homeState = 'VA', topN = 10) =>
     request('GET', `/api/v1/advisor/reciprocity-ranking${buildQS({ home_state: homeState, top_n: topN })}`),
   evaluateUtilityRisk: (data) => request('POST', '/api/v1/advisor/utility-risk', data),
+  askLegalQuestion: (data) => request('POST', '/api/v1/advisor/legal-qa', data),
+  scoreProjectLegal: (data) => request('POST', '/api/v1/advisor/project-legal-score', data),
   // ── What-If schedule simulator ────────────────────────────────────────────
   simulateSchedule: (data) => request('POST', '/api/v1/schedule/simulate', data),
   // ── Ads Intelligence (AI Max URL exclusions, CRM export, qualifier, anomaly) ─
@@ -913,6 +922,16 @@ export const api = {
   getVdotStatus: () => request('GET', '/api/v1/vdot-bids/status'),
   dashboardPreflight: () => request('GET', '/api/v1/ops/dashboard-preflight'),
   getMonitoringStatus: () => protectedRequest('GET', '/api/v1/admin/monitoring/status'),
+  getTechIntelligenceQueue: (params = {}) => protectedRequest('GET', `/api/v1/tech-intelligence/queue${buildQS(params)}`),
+  getPredictiveCapitalShadowForecast: (params = {}) => protectedRequest('GET', `/api/v1/predictive-capital/shadow-forecast${buildQS(params)}`),
+  ingestAmbientVoiceEvent: (payload) => protectedRequest('POST', '/api/v1/voice/ambient-ingest', payload),
+  getVoiceOpsReviewQueue: (params = {}) => protectedRequest('GET', `/api/v1/voice/ops/review-queue${buildQS(params)}`),
+  verifyVoiceOpsReviewItem: (eventId, payload) => protectedRequest('POST', `/api/v1/voice/ops/review-queue/${eventId}/verify`, payload),
+  drivewayEstimatePreview: (payload) => protectedRequest('POST', '/api/v1/driveway-growth/estimate-preview', payload),
+  drivewayCvMaskEstimate: (payload) => protectedRequest('POST', '/api/v1/driveway-growth/cv/mask-estimate', payload),
+  draftDrivewayDirectMailCampaign: (payload, options = {}) => protectedRequest('POST', '/api/v1/driveway-growth/direct-mail/campaign-draft', payload, options),
+  getDrivewayOptInLanding: (token) => request('GET', `/api/v1/driveway-growth/opt-in/${encodeURIComponent(token)}`),
+  submitDrivewayOptIn: (token, payload, options = {}) => request('POST', `/api/v1/driveway-growth/opt-in/${encodeURIComponent(token)}/submit`, payload, options),
   createEstimateFromLead: (leadId, scopeSummary) => protectedRequest('POST', '/api/v1/operations/estimates/from-lead', { lead_id: leadId, scope_summary: scopeSummary }),
   listEstimates: () => protectedRequest('GET', '/api/v1/operations/estimates'),
   createJobFromEstimate: (estimateId, payload = {}) => protectedRequest('POST', '/api/v1/operations/jobs/from-estimate', { estimate_id: estimateId, ...payload }),

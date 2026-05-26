@@ -37,6 +37,7 @@ celery_app = Celery(
         "app.tasks.vdot_scraper",
         "app.tasks.autonomy_tasks",
         "app.tasks.self_heal_beat",
+        "app.tasks.voice_events",
     ],
 )
 
@@ -45,18 +46,14 @@ celery_app.conf.update(
     task_serializer="json",
     result_serializer="json",
     accept_content=["json"],
-
     # Timezone
     timezone="America/New_York",
     enable_utc=True,
-
     # Retries
     task_acks_late=True,
     task_reject_on_worker_lost=True,
-
     # Result expiry — keep results for 1 hour (dashboard polling)
     result_expires=3600,
-
     # Beat schedule — long-running periodic tasks
     beat_schedule={
         "scrape-virginia-lis-every-6h": {

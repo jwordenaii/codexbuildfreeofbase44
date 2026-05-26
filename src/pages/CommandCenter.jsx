@@ -39,6 +39,91 @@ const TABS = [
   { id: 'roller', label: 'Roller' },
 ]
 
+const WEATHER_RADAR_AREAS = [
+  { id: 'richmond-va', label: 'Richmond, VA', lat: 37.5407, lng: -77.4360, zoom: 8 },
+  { id: 'chesterfield-va', label: 'Chesterfield, VA', lat: 37.3789, lng: -77.5040, zoom: 9 },
+  { id: 'hampton-roads-va', label: 'Hampton Roads, VA', lat: 36.8508, lng: -76.2859, zoom: 8 },
+  { id: 'fredericksburg-va', label: 'Fredericksburg, VA', lat: 38.3032, lng: -77.4605, zoom: 8 },
+  { id: 'northern-va', label: 'Northern Virginia', lat: 38.9072, lng: -77.0369, zoom: 8 },
+  { id: 'charlottesville-va', label: 'Charlottesville, VA', lat: 38.0293, lng: -78.4767, zoom: 8 },
+  { id: 'statewide-va', label: 'Virginia Statewide', lat: 37.4316, lng: -78.6569, zoom: 7 },
+]
+
+const WEATHER_RADAR_PROVIDERS = [
+  { id: 'windy', label: 'Windy HD Radar' },
+  { id: 'noaa', label: 'NOAA Radar (NWS)' },
+]
+
+function windyRadarUrl(areaId) {
+  const area = WEATHER_RADAR_AREAS.find((row) => row.id === areaId) || WEATHER_RADAR_AREAS[0]
+  return `https://www.windy.com/-Weather-radar-radar?radar,${area.lat},${area.lng},${area.zoom}`
+}
+
+function noaaRadarUrl(areaId) {
+  const area = WEATHER_RADAR_AREAS.find((row) => row.id === areaId) || WEATHER_RADAR_AREAS[0]
+  return `https://radar.weather.gov/?settings=v1_${area.lng}_${area.lat}`
+}
+
+function buildRadarUrl(providerId, areaId) {
+  return providerId === 'noaa' ? noaaRadarUrl(areaId) : windyRadarUrl(areaId)
+}
+
+function normalizeText(value) {
+  return String(value || '').toLowerCase()
+}
+
+function inferRadarAreaFromJobs(jobs) {
+  if (!Array.isArray(jobs) || jobs.length === 0) return null
+  const candidates = WEATHER_RADAR_AREAS.map((row) => ({ ...row, score: 0 }))
+
+  const weightMatch = (text, tokens, points) => {
+    if (!text) return 0
+    const lower = normalizeText(text)
+    return tokens.some((token) => lower.includes(token)) ? points : 0
+  }
+
+  for (const job of jobs.slice(0, 120)) {
+    const haystack = [
+      job?.address,
+      job?.city,
+      job?.state,
+      job?.state_code,
+      job?.location,
+      job?.market,
+      job?.site_name,
+      job?.project_name,
+      job?.name,
+      job?.description,
+    ]
+
+    for (const area of candidates) {
+      if (area.id === 'richmond-va') {
+        area.score += haystack.reduce((sum, text) => sum + weightMatch(text, ['richmond', 'henrico', 'short pump', 'glen allen', 'bon air', 'lakeside'], 3), 0)
+      }
+      if (area.id === 'chesterfield-va') {
+        area.score += haystack.reduce((sum, text) => sum + weightMatch(text, ['chesterfield', 'chester', 'midlothian', 'powhatan', 'amelia', 'dinwiddie'], 3), 0)
+      }
+      if (area.id === 'hampton-roads-va') {
+        area.score += haystack.reduce((sum, text) => sum + weightMatch(text, ['hampton roads', 'norfolk', 'chesapeake', 'virginia beach', 'newport news', 'hampton', 'portsmouth', 'suffolk'], 3), 0)
+      }
+      if (area.id === 'fredericksburg-va') {
+        area.score += haystack.reduce((sum, text) => sum + weightMatch(text, ['fredericksburg', 'spotsylvania', 'stafford', 'caroline', 'king george'], 3), 0)
+      }
+      if (area.id === 'northern-va') {
+        area.score += haystack.reduce((sum, text) => sum + weightMatch(text, ['northern virginia', 'fairfax', 'arlington', 'alexandria', 'loudoun', 'prince william', 'mclean'], 3), 0)
+      }
+      if (area.id === 'charlottesville-va') {
+        area.score += haystack.reduce((sum, text) => sum + weightMatch(text, ['charlottesville', 'albemarle', 'louisa', 'fluvanna', 'orange'], 3), 0)
+      }
+      area.score += haystack.reduce((sum, text) => sum + weightMatch(text, ['virginia', 'va'], 1), 0)
+    }
+  }
+
+  const best = [...candidates].sort((a, b) => b.score - a.score)[0]
+  if (!best || best.score <= 0) return null
+  return best.id
+}
+
 // ── Autonomy master controls (you decide what runs on its own) ────────────
 const AUTONOMY_KEY = 'cc_autonomy_master_v1'
 const AUTONOMY_DOMAINS = [
@@ -1971,6 +2056,154 @@ function ChannelPerformancePanel() {
   )
 }
 
+function TechOpportunityQueuePanel() {
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+  const [payload, setPayload] = useState(null)
+
+  const load = useCallback(async () => {
+    setLoading(true)
+    setError('')
+    try {
+      const res = await api.getTechIntelligenceQueue({ limit: 12, min_priority: 'medium' })
+      setPayload(res)
+    } catch (err) {
+      setError(err?.message || 'Unable to load technology intelligence queue.')
+    } finally {
+      setLoading(false)
+    }
+  }, [])
+
+  useEffect(() => {
+    let active = true
+    ;(async () => {
+      try {
+        const res = await api.getTechIntelligenceQueue({ limit: 12, min_priority: 'medium' })
+        if (active) setPayload(res)
+      } catch (err) {
+        if (active) setError(err?.message || 'Unable to load technology intelligence queue.')
+      } finally {
+        if (active) setLoading(false)
+      }
+    })()
+
+    const id = setInterval(() => {
+      load()
+    }, 60_000)
+
+    return () => {
+      active = false
+      clearInterval(id)
+    }
+  }, [load])
+
+  const queue = useMemo(() => {
+    const list = payload?.queue
+    return Array.isArray(list) ? list : []
+  }, [payload])
+
+  const domainSummary = useMemo(() => {
+    const list = payload?.domain_summary
+    return Array.isArray(list) ? list.slice(0, 4) : []
+  }, [payload])
+
+  return (
+    <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 md:p-5">
+      <div className="flex items-center justify-between gap-3 mb-4">
+        <h3 className="font-display font-bold text-white text-sm uppercase tracking-[0.12em]">
+          Technology Opportunity Queue
+        </h3>
+        <button
+          type="button"
+          onClick={() => load()}
+          className="inline-flex items-center gap-1.5 rounded-lg border border-white/20 px-2.5 py-1 text-[11px] font-semibold text-white/80 hover:border-brand-amber/40"
+        >
+          <RefreshCw className="w-3.5 h-3.5" />
+          Refresh
+        </button>
+      </div>
+
+      {loading ? (
+        <div className="h-20 flex items-center justify-center text-white/55 text-sm">
+          <Loader2 className="w-4 h-4 animate-spin mr-2" />
+          Loading technology queue...
+        </div>
+      ) : error ? (
+        <div className="rounded-xl border border-red-300/40 bg-red-300/10 px-3 py-2.5 text-sm text-red-100">
+          {error}
+        </div>
+      ) : (
+        <>
+          <div className="grid grid-cols-1 xl:grid-cols-3 gap-3 mb-3">
+            <div className="rounded-xl border border-white/10 bg-black/20 p-3">
+              <p className="text-[11px] uppercase tracking-[0.14em] text-white/45">Queue Size</p>
+              <p className="text-white text-2xl font-black mt-2">{payload?.queue_count ?? queue.length}</p>
+            </div>
+            <div className="rounded-xl border border-white/10 bg-black/20 p-3">
+              <p className="text-[11px] uppercase tracking-[0.14em] text-white/45">Signals Analyzed</p>
+              <p className="text-white text-2xl font-black mt-2">{payload?.signals_analyzed ?? 'n/a'}</p>
+            </div>
+            <div className="rounded-xl border border-white/10 bg-black/20 p-3">
+              <p className="text-[11px] uppercase tracking-[0.14em] text-white/45">Data Staleness (hrs)</p>
+              <p className="text-white text-2xl font-black mt-2">{payload?.staleness_hours ?? 'n/a'}</p>
+            </div>
+          </div>
+
+          {domainSummary.length > 0 ? (
+            <div className="rounded-xl border border-white/10 bg-black/20 p-3 mb-3">
+              <p className="text-[11px] uppercase tracking-[0.14em] text-white/45 mb-2">Top Domain Pressure</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-2">
+                {domainSummary.map((item) => (
+                  <div key={item.domainId || item.domainLabel} className="rounded-lg border border-white/10 bg-black/30 px-3 py-2">
+                    <p className="text-white text-xs font-semibold truncate">{item.domainLabel || item.domainId}</p>
+                    <p className="text-brand-amber text-[11px] mt-1">Signals {item.signalCount || 0} · Score {item.totalScore || 0}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : null}
+
+          {queue.length === 0 ? (
+            <p className="text-sm text-white/55">No medium/high/critical opportunities currently queued.</p>
+          ) : (
+            <div className="space-y-2 max-h-96 overflow-y-auto pr-1">
+              {queue.map((item, index) => (
+                <div key={`${item.url || item.title}-${index}`} className="rounded-xl border border-white/10 bg-black/25 px-3 py-2.5">
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="text-white text-sm font-semibold line-clamp-1">{item.title || 'Untitled signal'}</p>
+                    <span className={`text-[10px] font-bold uppercase tracking-[0.12em] ${
+                      item.priority === 'critical'
+                        ? 'text-red-200'
+                        : item.priority === 'high'
+                          ? 'text-amber-200'
+                          : 'text-emerald-200'
+                    }`}>
+                      {item.priority || 'unknown'}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-white/55 mt-1">
+                    {item.sourceName || 'source'} · Score {item.overallScore ?? 'n/a'} · {item.publishedAt ? String(item.publishedAt).slice(0, 10) : 'date n/a'}
+                  </p>
+                  {item.url ? (
+                    <a
+                      href={item.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-[11px] text-brand-amber hover:text-brand-amber/80 mt-1 inline-block break-all"
+                    >
+                      {item.url}
+                    </a>
+                  ) : null}
+                </div>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  )
+}
+
 function HumanChecksControlPanel() {
   const requiredChecks = useMemo(
     () => [
@@ -2933,6 +3166,16 @@ function CivilContractorIntelligencePanel() {
   const [advisorData, setAdvisorData] = useState(null)
   const [advisorStatus, setAdvisorStatus] = useState('idle')
   const [utilityRisk, setUtilityRisk] = useState(null)
+  const [legalQuestion, setLegalQuestion] = useState('What notice and payment terms should we enforce before mobilization?')
+  const [legalQaStatus, setLegalQaStatus] = useState('idle')
+  const [legalQaResult, setLegalQaResult] = useState(null)
+  const [projectName, setProjectName] = useState('Sample Retail Parking Lot')
+  const [projectStatus, setProjectStatus] = useState('bid')
+  const [projectScope, setProjectScope] = useState('2.3-acre commercial parking lot mill and overlay with utility conflict exposure near existing service lines.')
+  const [projectValue, setProjectValue] = useState(385000)
+  const [projectPublicFunding, setProjectPublicFunding] = useState(false)
+  const [projectScoreStatus, setProjectScoreStatus] = useState('idle')
+  const [projectScoreResult, setProjectScoreResult] = useState(null)
 
   const validStateCodes = useMemo(() => new Set(states.map((stateRow) => stateRow.abbr)), [])
   const stateCodeValid = validStateCodes.has(stateCodeInput)
@@ -3010,6 +3253,43 @@ function CivilContractorIntelligencePanel() {
     }
   }, [disputeType, role, selectedState])
 
+  const askLegalQuestion = useCallback(async () => {
+    if (!legalQuestion.trim()) return
+    setLegalQaStatus('loading')
+    try {
+      const result = await api.askLegalQuestion({
+        state: selectedState,
+        question: legalQuestion.trim(),
+        role,
+      })
+      setLegalQaResult(result)
+      setLegalQaStatus('live')
+    } catch {
+      setLegalQaResult(null)
+      setLegalQaStatus('fallback')
+    }
+  }, [legalQuestion, role, selectedState])
+
+  const scoreProjectLegal = useCallback(async () => {
+    if (!projectName.trim() || !projectScope.trim()) return
+    setProjectScoreStatus('loading')
+    try {
+      const result = await api.scoreProjectLegal({
+        project_name: projectName.trim(),
+        state: selectedState,
+        status: projectStatus,
+        scope_summary: projectScope.trim(),
+        contract_value_usd: Number(projectValue || 0),
+        has_public_funding: Boolean(projectPublicFunding),
+      })
+      setProjectScoreResult(result)
+      setProjectScoreStatus('live')
+    } catch {
+      setProjectScoreResult(null)
+      setProjectScoreStatus('fallback')
+    }
+  }, [projectName, projectPublicFunding, projectScope, projectStatus, projectValue, selectedState])
+
   useEffect(() => {
     runAdvisor()
   }, [runAdvisor])
@@ -3025,6 +3305,8 @@ function CivilContractorIntelligencePanel() {
   const activeActions = activeStrategy?.strategy?.key_actions || localRecommendation.strategy.keyActions
   const activeTopStates = advisorData?.topStates?.states || localRankedStates
   const activeLicenseLeaders = advisorData?.licenseOptimizer?.results || licenseLeaders
+  const legalQaPayload = legalQaResult?.status === 'success' ? legalQaResult : null
+  const legalProjectPayload = projectScoreResult?.status === 'success' ? projectScoreResult : null
 
   const applyStateCode = useCallback((nextValue) => {
     const nextCode = String(nextValue || '').replace(/[^a-z]/gi, '').toUpperCase().slice(0, 2)
@@ -3196,6 +3478,104 @@ function CivilContractorIntelligencePanel() {
       </div>
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 md:gap-5">
+        <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 md:p-5 xl:col-span-2">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div className="rounded-xl border border-white/10 bg-black/20 p-3">
+              <div className="flex items-center justify-between gap-3 mb-2">
+                <p className="text-[11px] uppercase tracking-[0.12em] text-brand-amber">Legal Q&A</p>
+                <span className="text-[10px] text-white/50">
+                  {legalQaStatus === 'live' ? 'Live' : legalQaStatus === 'loading' ? 'Loading' : 'Idle'}
+                </span>
+              </div>
+              <textarea
+                value={legalQuestion}
+                onChange={(event) => setLegalQuestion(event.target.value)}
+                rows={4}
+                className="w-full rounded-lg border border-white/15 bg-black/30 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-brand-amber"
+                placeholder="Ask anything legal/compliance related for this state..."
+              />
+              <button
+                type="button"
+                onClick={askLegalQuestion}
+                className="mt-2 w-full rounded-lg border border-brand-amber/40 bg-brand-amber/15 px-3 py-2 text-xs font-bold uppercase tracking-[0.12em] text-brand-amber"
+              >
+                Ask Legal Question
+              </button>
+              {legalQaPayload && (
+                <div className="mt-3 rounded-lg border border-white/10 bg-white/[0.03] p-3 text-xs text-white/75 space-y-2">
+                  <p className="text-white/90">{legalQaPayload.answer}</p>
+                  <p>Strategy: {legalQaPayload.strategy?.title}</p>
+                  <p>Composite: {legalQaPayload.scores?.composite}/100 · Liability: {legalQaPayload.compliance?.liability_risk}</p>
+                </div>
+              )}
+            </div>
+
+            <div className="rounded-xl border border-white/10 bg-black/20 p-3">
+              <div className="flex items-center justify-between gap-3 mb-2">
+                <p className="text-[11px] uppercase tracking-[0.12em] text-brand-amber">Project Legal Score</p>
+                <span className="text-[10px] text-white/50">
+                  {projectScoreStatus === 'live' ? 'Live' : projectScoreStatus === 'loading' ? 'Loading' : 'Idle'}
+                </span>
+              </div>
+              <div className="space-y-2">
+                <input
+                  type="text"
+                  value={projectName}
+                  onChange={(event) => setProjectName(event.target.value)}
+                  className="w-full rounded-lg border border-white/15 bg-black/30 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-brand-amber"
+                  placeholder="Project name"
+                />
+                <div className="grid grid-cols-2 gap-2">
+                  <select
+                    value={projectStatus}
+                    onChange={(event) => setProjectStatus(event.target.value)}
+                    className="rounded-lg border border-white/15 bg-black/30 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-brand-amber"
+                  >
+                    <option value="bid">Bid</option>
+                    <option value="awarded">Awarded</option>
+                  </select>
+                  <input
+                    type="number"
+                    value={projectValue}
+                    onChange={(event) => setProjectValue(event.target.value)}
+                    className="rounded-lg border border-white/15 bg-black/30 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-brand-amber"
+                    placeholder="Contract value"
+                  />
+                </div>
+                <textarea
+                  value={projectScope}
+                  onChange={(event) => setProjectScope(event.target.value)}
+                  rows={3}
+                  className="w-full rounded-lg border border-white/15 bg-black/30 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-brand-amber"
+                  placeholder="Scope summary"
+                />
+                <label className="flex items-center gap-2 text-xs text-white/75">
+                  <input
+                    type="checkbox"
+                    checked={projectPublicFunding}
+                    onChange={(event) => setProjectPublicFunding(event.target.checked)}
+                  />
+                  Public funding applies
+                </label>
+              </div>
+              <button
+                type="button"
+                onClick={scoreProjectLegal}
+                className="mt-2 w-full rounded-lg border border-brand-amber/40 bg-brand-amber/15 px-3 py-2 text-xs font-bold uppercase tracking-[0.12em] text-brand-amber"
+              >
+                Score Legal Risk
+              </button>
+              {legalProjectPayload && (
+                <div className="mt-3 rounded-lg border border-white/10 bg-white/[0.03] p-3 text-xs text-white/75 space-y-2">
+                  <p className="text-white/90">Score: {legalProjectPayload.legal_score?.value}/100 ({legalProjectPayload.legal_score?.risk_band})</p>
+                  <p>Liability: {legalProjectPayload.legal_score?.liability_risk}</p>
+                  <p>{legalProjectPayload.checklist?.[0]}</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
         <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 md:p-5">
           <div className="flex items-center gap-2 mb-3">
             <FileText className="w-4 h-4 text-brand-amber" />
@@ -4094,9 +4474,352 @@ function JarvisAutonomy() {
   )
 }
 
+function JarvisMissionControl() {
+  const [loading, setLoading] = useState(false)
+  const [payload, setPayload] = useState(null)
+
+  const dispatchJarvisPrompt = useCallback((prompt) => {
+    try {
+      window.dispatchEvent(new CustomEvent('cc:jarvis-prefill', { detail: { prompt } }))
+      window.dispatchEvent(new CustomEvent('cc:open-jarvis-drawer'))
+    } catch {
+      // no-op
+    }
+  }, [])
+
+  const load = useCallback(async () => {
+    setLoading(true)
+    try {
+      const [
+        readiness,
+        preflight,
+        autonomy,
+        intelMap,
+        metrics,
+        techQueue,
+        legalScore,
+      ] = await Promise.allSettled([
+        api.jarvisReadiness(),
+        api.dashboardPreflight(),
+        api.autonomyStatus(),
+        api.autonomyIntelligenceMap(),
+        api.jarvisMetrics(),
+        api.getTechIntelligenceQueue({ limit: 6, min_priority: 'high' }),
+        api.scoreProjectLegal({
+          project_name: 'Premium Sample Operations Project',
+          state: 'VA',
+          status: 'awarded',
+          scope_summary: 'Commercial paving with utility conflict risk and public-access traffic controls.',
+          contract_value_usd: 625000,
+          has_public_funding: false,
+        }),
+      ])
+
+      const readinessData = readiness.status === 'fulfilled' ? readiness.value : null
+      const preflightData = preflight.status === 'fulfilled' ? preflight.value : null
+      const autonomyData = autonomy.status === 'fulfilled' ? autonomy.value : null
+      const mapData = intelMap.status === 'fulfilled' ? intelMap.value : null
+      const metricsData = metrics.status === 'fulfilled' ? metrics.value : null
+      const techData = techQueue.status === 'fulfilled' ? techQueue.value : null
+      const legalData = legalScore.status === 'fulfilled' ? legalScore.value : null
+
+      const blockers = [
+        ...(Array.isArray(readinessData?.blockers) ? readinessData.blockers : []),
+        ...(Array.isArray(preflightData?.jarvis?.blockers) ? preflightData.jarvis.blockers : []),
+      ]
+
+      const capabilityCoverage = (() => {
+        if (!mapData?.levels) return null
+        const l1 = Array.isArray(mapData.levels?.L1_descriptive?.capabilities) ? mapData.levels.L1_descriptive.capabilities.length : 0
+        const l2 = Array.isArray(mapData.levels?.L2_predictive?.capabilities) ? mapData.levels.L2_predictive.capabilities.length : 0
+        const l3 = Array.isArray(mapData.levels?.L3_prescriptive?.capabilities) ? mapData.levels.L3_prescriptive.capabilities.length : 0
+        const l4 = Array.isArray(mapData.levels?.L4_autonomous?.capabilities) ? mapData.levels.L4_autonomous.capabilities.length : 0
+        return { l1, l2, l3, l4, total: l1 + l2 + l3 + l4 }
+      })()
+
+      const legalScoreValue = Number(legalData?.legal_score?.value || 0)
+      const techHighCount = Number(techData?.queue_count || 0)
+      const readinessScore = readinessData?.full_capacity ? 40 : 18
+      const autonomyScore = String(autonomyData?.autonomy_level || '').toUpperCase() === 'L4' ? 20 : 10
+      const legalScoreContribution = Math.round((legalScoreValue / 100) * 20)
+      const techScore = techHighCount >= 4 ? 20 : techHighCount >= 2 ? 14 : 8
+      const blockerPenalty = Math.min(20, blockers.length * 4)
+      const missionScore = Math.max(0, Math.min(100, readinessScore + autonomyScore + legalScoreContribution + techScore - blockerPenalty))
+
+      setPayload({
+        readiness: readinessData,
+        preflight: preflightData,
+        autonomy: autonomyData,
+        intelMap: mapData,
+        metrics: metricsData,
+        techQueue: techData,
+        legalScore: legalData,
+        blockers,
+        capabilityCoverage,
+        missionScore,
+      })
+    } finally {
+      setLoading(false)
+    }
+  }, [])
+
+  useEffect(() => {
+    load()
+    const timer = setInterval(load, 120000)
+    return () => clearInterval(timer)
+  }, [load])
+
+  const tone = payload?.missionScore >= 85 ? 'good' : payload?.missionScore >= 65 ? 'warn' : 'bad'
+  const toneClass = tone === 'good'
+    ? 'border-emerald-300/40 bg-emerald-300/10 text-emerald-100'
+    : tone === 'warn'
+      ? 'border-amber-300/40 bg-amber-300/10 text-amber-100'
+      : 'border-red-300/40 bg-red-300/10 text-red-100'
+
+  const quickOpsPrompts = [
+    'Give me an executive briefing now: revenue, legal risk, lead bottlenecks, and actions for the next 4 hours.',
+    'Build a same-day strike plan for hot leads, late jobs, and legal risk with owners and deadlines.',
+    'Scan for hidden risks across operations and propose automatic remediations ranked by impact.',
+  ]
+
+  return (
+    <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 md:p-5 xl:col-span-3 2xl:col-span-4">
+      <div className="flex items-start justify-between gap-3 flex-wrap">
+        <div>
+          <p className="text-[10px] uppercase tracking-[0.14em] text-brand-amber">Premium Mission Control</p>
+          <h3 className="font-display font-black text-white text-xl leading-tight mt-1">Jarvis Executive Intelligence Cockpit</h3>
+          <p className="text-white/55 text-sm mt-1">Live fusion of readiness, autonomy, legal posture, intelligence coverage, and tool reliability.</p>
+        </div>
+        <button
+          type="button"
+          onClick={load}
+          className="inline-flex items-center gap-2 rounded-lg border border-white/15 bg-white/[0.05] px-3 py-2 text-xs font-semibold text-white/80 hover:text-white"
+        >
+          <RefreshCw className={["w-3.5 h-3.5", loading ? 'animate-spin' : ''].join(' ')} /> Refresh
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-3 mt-4">
+        <div className={["rounded-xl border px-3 py-3", toneClass].join(' ')}>
+          <p className="text-[10px] uppercase tracking-[0.12em] opacity-75">Mission Score</p>
+          <p className="text-2xl font-black mt-1">{payload?.missionScore ?? '—'}/100</p>
+        </div>
+        <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-3 text-white">
+          <p className="text-[10px] uppercase tracking-[0.12em] text-white/45">Jarvis Brain</p>
+          <p className="text-sm font-bold mt-1">{payload?.readiness?.engine || 'unknown'}</p>
+          <p className="text-xs text-white/55 mt-0.5">{payload?.readiness?.full_capacity ? 'Full capacity' : 'Reduced capacity'}</p>
+        </div>
+        <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-3 text-white">
+          <p className="text-[10px] uppercase tracking-[0.12em] text-white/45">Autonomy Level</p>
+          <p className="text-sm font-bold mt-1">{payload?.autonomy?.autonomy_level || 'L?'}</p>
+          <p className="text-xs text-white/55 mt-0.5">{payload?.autonomy?.autonomy_label || 'No protected status yet'}</p>
+        </div>
+        <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-3 text-white">
+          <p className="text-[10px] uppercase tracking-[0.12em] text-white/45">Legal Readiness</p>
+          <p className="text-sm font-bold mt-1">{payload?.legalScore?.legal_score?.value ?? '—'}/100</p>
+          <p className="text-xs text-white/55 mt-0.5">{payload?.legalScore?.legal_score?.risk_band || 'pending'} risk band</p>
+        </div>
+        <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-3 text-white">
+          <p className="text-[10px] uppercase tracking-[0.12em] text-white/45">Tech Queue</p>
+          <p className="text-sm font-bold mt-1">{payload?.techQueue?.queue_count ?? '—'} high priority</p>
+          <p className="text-xs text-white/55 mt-0.5">{payload?.techQueue?.staleness_hours != null ? `${payload.techQueue.staleness_hours}h stale` : 'staleness unknown'}</p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-3 mt-3">
+        <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-3">
+          <p className="text-[11px] uppercase tracking-[0.12em] text-brand-amber">Coverage Map</p>
+          <p className="text-xs text-white/65 mt-1">
+            {payload?.capabilityCoverage
+              ? `L1 ${payload.capabilityCoverage.l1} · L2 ${payload.capabilityCoverage.l2} · L3 ${payload.capabilityCoverage.l3} · L4 ${payload.capabilityCoverage.l4} (${payload.capabilityCoverage.total} total capabilities)`
+              : 'Protected intelligence map unavailable in this session.'}
+          </p>
+        </div>
+        <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-3">
+          <p className="text-[11px] uppercase tracking-[0.12em] text-brand-amber">Reliability</p>
+          <p className="text-xs text-white/65 mt-1">
+            {payload?.metrics?.jarvis?.latency?.p95_ms != null
+              ? `p95 latency ${payload.metrics.jarvis.latency.p95_ms}ms · tool failure ${(payload.metrics.jarvis.tool_calls?.failure_rate_pct ?? 0).toFixed(1)}%`
+              : 'Jarvis metrics require protected auth.'}
+          </p>
+        </div>
+        <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-3">
+          <p className="text-[11px] uppercase tracking-[0.12em] text-brand-amber">Blockers</p>
+          {Array.isArray(payload?.blockers) && payload.blockers.length > 0 ? (
+            <div className="mt-1 space-y-1">
+              {payload.blockers.slice(0, 3).map((b) => (
+                <p key={b} className="text-xs text-red-200">• {b}</p>
+              ))}
+            </div>
+          ) : (
+            <p className="text-xs text-emerald-200 mt-1">No blockers detected.</p>
+          )}
+        </div>
+      </div>
+
+      <div className="mt-3 flex flex-wrap gap-2">
+        {quickOpsPrompts.map((prompt) => (
+          <button
+            key={prompt}
+            type="button"
+            onClick={() => dispatchJarvisPrompt(prompt)}
+            className="rounded-full border border-brand-amber/35 bg-brand-amber/10 px-3 py-1.5 text-xs font-semibold text-brand-amber hover:bg-brand-amber/20"
+          >
+            {prompt.slice(0, 60)}...
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function PremiumIntelRibbon({ activeTab }) {
+  const [loading, setLoading] = useState(false)
+  const [intel, setIntel] = useState(null)
+
+  const openJarvisWithPrompt = useCallback((prompt) => {
+    try {
+      window.dispatchEvent(new CustomEvent('cc:jarvis-prefill', { detail: { prompt } }))
+      window.dispatchEvent(new CustomEvent('cc:open-jarvis-drawer'))
+    } catch {
+      // no-op
+    }
+  }, [])
+
+  const refresh = useCallback(async () => {
+    setLoading(true)
+    try {
+      const [preflight, readiness, leads, jobs, estimates, tech, anomalies] = await Promise.allSettled([
+        api.dashboardPreflight(),
+        api.jarvisReadiness(),
+        api.listRecentOperationalLeads(80),
+        api.listJobs(),
+        api.listEstimates(),
+        api.getTechIntelligenceQueue({ limit: 8, min_priority: 'high' }),
+        api.getAnomalies(false),
+      ])
+
+      const preflightData = preflight.status === 'fulfilled' ? preflight.value : null
+      const readinessData = readiness.status === 'fulfilled' ? readiness.value : null
+      const leadsCount = leads.status === 'fulfilled' && Array.isArray(leads.value) ? leads.value.length : null
+      const jobsCount = jobs.status === 'fulfilled' && Array.isArray(jobs.value) ? jobs.value.length : null
+      const estimatesCount = estimates.status === 'fulfilled' && Array.isArray(estimates.value) ? estimates.value.length : null
+      const techCount = tech.status === 'fulfilled' ? Number(tech.value?.queue_count || 0) : null
+      const anomaliesCount = anomalies.status === 'fulfilled' && Array.isArray(anomalies.value?.anomalies) ? anomalies.value.anomalies.length : null
+
+      const score = (() => {
+        let s = 100
+        if (!readinessData?.full_capacity) s -= 18
+        if (Array.isArray(readinessData?.blockers)) s -= Math.min(18, readinessData.blockers.length * 4)
+        if (preflightData?.jarvis?.full_capacity === false) s -= 12
+        if ((techCount ?? 0) > 5) s -= 8
+        if ((anomaliesCount ?? 0) > 0) s -= 8
+        return Math.max(0, s)
+      })()
+
+      setIntel({
+        preflight: preflightData,
+        readiness: readinessData,
+        leadsCount,
+        jobsCount,
+        estimatesCount,
+        techCount,
+        anomaliesCount,
+        score,
+      })
+    } finally {
+      setLoading(false)
+    }
+  }, [])
+
+  useEffect(() => {
+    refresh()
+    const timer = setInterval(refresh, 90000)
+    return () => clearInterval(timer)
+  }, [refresh])
+
+  const tabPrompts = {
+    jarvis: 'Give me the highest-priority executive briefing and assign actions for the next 4 hours.',
+    'richmond-grid': 'Analyze geospatial priorities and tell me where we should deploy crews first.',
+    kpi: 'Audit KPI anomalies and give me exact actions to improve close rate and response time today.',
+    crm: 'Prioritize leads by urgency and produce a call/email attack plan with scripts.',
+    ops: 'Find bottlenecks across jobs and dispatch, then propose a same-day recovery plan.',
+    'civil-intel': 'Evaluate legal and contractor risk across active projects and rank exposure by severity.',
+    integrations: 'Identify integration blockers and output the minimum steps to full Jarvis capacity.',
+    'search-pulse': 'Summarize search and ads opportunities likely to generate qualified leads this week.',
+    dispatch: 'Optimize dispatch order and travel efficiency for current routes and job windows.',
+    thermal: 'Assess thermal risk for active paving windows and recommend schedule adjustments.',
+    drone: 'Summarize drone intelligence gaps and suggest inspections with highest ROI first.',
+    lidar: 'Prioritize LiDAR scan opportunities that will improve estimate accuracy this week.',
+    roller: 'Assess compaction telemetry risk and propose proactive QC interventions.',
+  }
+
+  const scoreTone = (intel?.score ?? 0) >= 85 ? 'text-emerald-200 border-emerald-300/40 bg-emerald-300/10' : (intel?.score ?? 0) >= 65 ? 'text-amber-100 border-amber-300/40 bg-amber-300/10' : 'text-red-100 border-red-300/40 bg-red-300/10'
+
+  return (
+    <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 md:p-5 mb-4">
+      <div className="flex items-start justify-between gap-3 flex-wrap">
+        <div>
+          <p className="text-[10px] uppercase tracking-[0.14em] text-brand-amber">Premium Intelligence Layer</p>
+          <h3 className="font-display font-bold text-white text-base mt-1">Elite Ops Ribbon</h3>
+          <p className="text-white/55 text-xs mt-1">Every tab now runs with live strategic scoring plus an instant Jarvis action bridge.</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => openJarvisWithPrompt(tabPrompts[activeTab] || tabPrompts.jarvis)}
+            className="inline-flex items-center gap-2 rounded-lg border border-brand-amber/35 bg-brand-amber/10 px-3 py-2 text-xs font-semibold text-brand-amber hover:bg-brand-amber/20"
+          >
+            <Bot className="w-3.5 h-3.5" /> Deploy Elite Briefing
+          </button>
+          <button
+            type="button"
+            onClick={refresh}
+            className="inline-flex items-center gap-2 rounded-lg border border-white/15 bg-white/[0.05] px-3 py-2 text-xs font-semibold text-white/80 hover:text-white"
+          >
+            <RefreshCw className={["w-3.5 h-3.5", loading ? 'animate-spin' : ''].join(' ')} /> Sync
+          </button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7 gap-2 mt-3">
+        <div className={["rounded-lg border px-2.5 py-2", scoreTone].join(' ')}>
+          <p className="text-[10px] uppercase tracking-[0.12em] opacity-80">Ops Score</p>
+          <p className="text-base font-black mt-0.5">{intel?.score ?? '—'}</p>
+        </div>
+        <div className="rounded-lg border border-white/10 bg-black/20 px-2.5 py-2">
+          <p className="text-[10px] uppercase tracking-[0.12em] text-white/45">Leads</p>
+          <p className="text-base font-black text-white mt-0.5">{intel?.leadsCount ?? '—'}</p>
+        </div>
+        <div className="rounded-lg border border-white/10 bg-black/20 px-2.5 py-2">
+          <p className="text-[10px] uppercase tracking-[0.12em] text-white/45">Jobs</p>
+          <p className="text-base font-black text-white mt-0.5">{intel?.jobsCount ?? '—'}</p>
+        </div>
+        <div className="rounded-lg border border-white/10 bg-black/20 px-2.5 py-2">
+          <p className="text-[10px] uppercase tracking-[0.12em] text-white/45">Estimates</p>
+          <p className="text-base font-black text-white mt-0.5">{intel?.estimatesCount ?? '—'}</p>
+        </div>
+        <div className="rounded-lg border border-white/10 bg-black/20 px-2.5 py-2">
+          <p className="text-[10px] uppercase tracking-[0.12em] text-white/45">Tech Queue</p>
+          <p className="text-base font-black text-white mt-0.5">{intel?.techCount ?? '—'}</p>
+        </div>
+        <div className="rounded-lg border border-white/10 bg-black/20 px-2.5 py-2">
+          <p className="text-[10px] uppercase tracking-[0.12em] text-white/45">Ads Alerts</p>
+          <p className="text-base font-black text-white mt-0.5">{intel?.anomaliesCount ?? '—'}</p>
+        </div>
+        <div className="rounded-lg border border-white/10 bg-black/20 px-2.5 py-2">
+          <p className="text-[10px] uppercase tracking-[0.12em] text-white/45">Jarvis</p>
+          <p className="text-sm font-black text-white mt-1">{intel?.readiness?.full_capacity ? 'Full' : 'Reduced'}</p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function JarvisPanel() {
   return (
     <div className="grid grid-cols-1 xl:grid-cols-3 2xl:grid-cols-4 gap-4 md:gap-5">
+      <JarvisMissionControl />
       {/* Chat — biggest panel, takes 2 cols on xl, 2 cols on 2xl */}
       <div className="xl:col-span-2 2xl:col-span-2 space-y-4 md:space-y-5">
         <JarvisChat />
@@ -5427,12 +6150,246 @@ function TabDeepLinkBar({ activeTab }) {
   )
 }
 
+function StrategicOpsPilotPanel() {
+  const [predictiveLoading, setPredictiveLoading] = useState(false)
+  const [predictiveError, setPredictiveError] = useState('')
+  const [predictive, setPredictive] = useState(null)
+
+  const [queueLoading, setQueueLoading] = useState(false)
+  const [queueError, setQueueError] = useState('')
+  const [queue, setQueue] = useState([])
+
+  const [voiceProjectId, setVoiceProjectId] = useState('ops-shadow-project')
+  const [voiceSiteId, setVoiceSiteId] = useState('site-alpha')
+  const [voiceTranscript, setVoiceTranscript] = useState('Crew reports safety cones missing near active lane and milling delay at station 11.')
+  const [voiceSubmitting, setVoiceSubmitting] = useState(false)
+
+  const [maskSubmitting, setMaskSubmitting] = useState(false)
+  const [maskEstimate, setMaskEstimate] = useState(null)
+  const [maskError, setMaskError] = useState('')
+
+  const [campaignSubmitting, setCampaignSubmitting] = useState(false)
+  const [campaignResult, setCampaignResult] = useState(null)
+  const [campaignError, setCampaignError] = useState('')
+
+  const loadPredictive = useCallback(async () => {
+    setPredictiveLoading(true)
+    setPredictiveError('')
+    try {
+      const data = await api.getPredictiveCapitalShadowForecast({
+        project_id: 'ops-shadow-project',
+        budget_usd: 125000,
+        projected_duration_days: 21,
+      })
+      setPredictive(data)
+    } catch (error) {
+      setPredictiveError(String(error?.message || 'Could not load predictive forecast'))
+    } finally {
+      setPredictiveLoading(false)
+    }
+  }, [])
+
+  const loadQueue = useCallback(async () => {
+    setQueueLoading(true)
+    setQueueError('')
+    try {
+      const data = await api.getVoiceOpsReviewQueue({ status: 'pending_review', limit: 25 })
+      setQueue(Array.isArray(data?.queue) ? data.queue : [])
+    } catch (error) {
+      setQueueError(String(error?.message || 'Could not load voice review queue'))
+      setQueue([])
+    } finally {
+      setQueueLoading(false)
+    }
+  }, [])
+
+  useEffect(() => {
+    loadPredictive()
+    loadQueue()
+  }, [loadPredictive, loadQueue])
+
+  async function submitVoiceIngest() {
+    if (!voiceTranscript.trim()) return
+    setVoiceSubmitting(true)
+    setQueueError('')
+    try {
+      await api.ingestAmbientVoiceEvent({
+        project_id: voiceProjectId,
+        site_id: voiceSiteId,
+        transcript_text: voiceTranscript,
+        speaker_role: 'foreman',
+        source: 'standup',
+      })
+      await loadQueue()
+    } catch (error) {
+      setQueueError(String(error?.message || 'Could not ingest voice event'))
+    } finally {
+      setVoiceSubmitting(false)
+    }
+  }
+
+  async function verifyVoiceEvent(eventId, status) {
+    try {
+      await api.verifyVoiceOpsReviewItem(eventId, {
+        status,
+        reviewed_by: 'command-center-ops',
+        review_note: status === 'verified' ? 'Verified from Command Center queue' : 'Dismissed from Command Center queue',
+      })
+      await loadQueue()
+    } catch (error) {
+      setQueueError(String(error?.message || 'Could not update review item'))
+    }
+  }
+
+  async function runMaskEstimate() {
+    setMaskSubmitting(true)
+    setMaskError('')
+    try {
+      const data = await api.drivewayCvMaskEstimate({
+        project_id: 'driveway-shadow-001',
+        address: '123 Main St',
+        state: 'VA',
+        service_type: 'driveway',
+        model_name: 'yolo11-seg',
+        model_version: 'v1',
+        imagery_source: 'nearmap',
+        mask_pixel_count: 220000,
+        gsd_sqft_per_pixel: 0.03,
+        segmentation_confidence: 0.87,
+      })
+      setMaskEstimate(data)
+    } catch (error) {
+      setMaskError(String(error?.message || 'Could not run CV mask estimate'))
+      setMaskEstimate(null)
+    } finally {
+      setMaskSubmitting(false)
+    }
+  }
+
+  async function draftCampaign() {
+    setCampaignSubmitting(true)
+    setCampaignError('')
+    try {
+      const idem = `cc-${Date.now()}`
+      const data = await api.draftDrivewayDirectMailCampaign(
+        {
+          campaign_name: 'Command Center Pilot Batch',
+          source: 'manual',
+          targets: [
+            {
+              property_id: 'pilot-001',
+              address: '123 Main St',
+              owner_name: 'Pilot Owner',
+              mailing_address: 'PO Box 101',
+              state: 'VA',
+              estimated_total_usd: 5600,
+            },
+          ],
+        },
+        { headers: { 'Idempotency-Key': idem } },
+      )
+      setCampaignResult(data)
+    } catch (error) {
+      setCampaignError(String(error?.message || 'Could not draft direct-mail campaign'))
+      setCampaignResult(null)
+    } finally {
+      setCampaignSubmitting(false)
+    }
+  }
+
+  return (
+    <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 md:gap-5">
+      <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 md:p-5">
+        <div className="flex items-center justify-between gap-2 mb-3">
+          <h3 className="font-display font-bold text-white text-sm uppercase tracking-[0.12em]">Predictive Capital</h3>
+          <button type="button" onClick={loadPredictive} className="text-xs text-brand-amber hover:text-brand-amber/80" disabled={predictiveLoading}>
+            {predictiveLoading ? 'Loading…' : 'Refresh'}
+          </button>
+        </div>
+        {predictiveError ? <p className="text-rose-300 text-xs">{predictiveError}</p> : null}
+        {!predictiveError && predictive ? (
+          <div className="space-y-2 text-sm text-white/80">
+            <div className="flex items-center justify-between"><span className="text-white/55">Risk band</span><span className="font-semibold">{predictive.risk_band || 'n/a'}</span></div>
+            <div className="flex items-center justify-between"><span className="text-white/55">Projected overrun</span><span className="font-semibold">{predictive.projected_overrun_usd != null ? `$${Number(predictive.projected_overrun_usd).toLocaleString()}` : 'n/a'}</span></div>
+            <div className="flex items-center justify-between"><span className="text-white/55">Days risk</span><span className="font-semibold">{predictive.projected_delay_days != null ? String(predictive.projected_delay_days) : 'n/a'}</span></div>
+          </div>
+        ) : null}
+      </div>
+
+      <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 md:p-5">
+        <h3 className="font-display font-bold text-white text-sm uppercase tracking-[0.12em] mb-3">Ambient Voice Review</h3>
+        <div className="space-y-2 mb-3">
+          <input value={voiceProjectId} onChange={(e) => setVoiceProjectId(e.target.value)} className="w-full rounded-lg border border-white/15 bg-black/20 px-3 py-2 text-xs text-white" placeholder="Project ID" />
+          <input value={voiceSiteId} onChange={(e) => setVoiceSiteId(e.target.value)} className="w-full rounded-lg border border-white/15 bg-black/20 px-3 py-2 text-xs text-white" placeholder="Site ID" />
+          <textarea value={voiceTranscript} onChange={(e) => setVoiceTranscript(e.target.value)} rows={3} className="w-full rounded-lg border border-white/15 bg-black/20 px-3 py-2 text-xs text-white" placeholder="Transcript text" />
+        </div>
+        <div className="flex gap-2 mb-3">
+          <button type="button" onClick={submitVoiceIngest} disabled={voiceSubmitting} className="rounded-lg bg-brand-amber text-brand-navy text-xs font-bold px-3 py-1.5">{voiceSubmitting ? 'Submitting…' : 'Ingest'}</button>
+          <button type="button" onClick={loadQueue} disabled={queueLoading} className="rounded-lg border border-white/20 text-white/80 text-xs font-semibold px-3 py-1.5">{queueLoading ? 'Loading…' : 'Reload Queue'}</button>
+        </div>
+        {queueError ? <p className="text-rose-300 text-xs mb-2">{queueError}</p> : null}
+        <div className="max-h-40 overflow-auto space-y-2">
+          {queue.slice(0, 4).map((item) => (
+            <div key={item.event_id} className="rounded-lg border border-white/10 bg-black/20 p-2">
+              <p className="text-[11px] text-white/80 line-clamp-2">{item.transcript_text}</p>
+              <div className="mt-2 flex gap-2">
+                <button type="button" onClick={() => verifyVoiceEvent(item.event_id, 'verified')} className="rounded border border-emerald-300/40 text-emerald-200 text-[10px] px-2 py-0.5">Verify</button>
+                <button type="button" onClick={() => verifyVoiceEvent(item.event_id, 'dismissed')} className="rounded border border-rose-300/40 text-rose-200 text-[10px] px-2 py-0.5">Dismiss</button>
+              </div>
+            </div>
+          ))}
+          {queue.length === 0 ? <p className="text-xs text-white/45">No pending review items.</p> : null}
+        </div>
+      </div>
+
+      <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 md:p-5">
+        <h3 className="font-display font-bold text-white text-sm uppercase tracking-[0.12em] mb-3">Driveway CV + Mail</h3>
+        <div className="flex gap-2 mb-3">
+          <button type="button" onClick={runMaskEstimate} disabled={maskSubmitting} className="rounded-lg border border-white/20 text-white/80 text-xs font-semibold px-3 py-1.5">{maskSubmitting ? 'Estimating…' : 'Run CV Estimate'}</button>
+          <button type="button" onClick={draftCampaign} disabled={campaignSubmitting} className="rounded-lg bg-brand-amber text-brand-navy text-xs font-bold px-3 py-1.5">{campaignSubmitting ? 'Drafting…' : 'Draft Mail Batch'}</button>
+        </div>
+        {maskError ? <p className="text-rose-300 text-xs mb-2">{maskError}</p> : null}
+        {maskEstimate?.geometry?.driveway_sqft ? (
+          <p className="text-xs text-white/75 mb-2">CV area: <span className="text-white">{Number(maskEstimate.geometry.driveway_sqft).toLocaleString()} sqft</span> | Mid est: <span className="text-white">${Number(maskEstimate?.estimate?.mid_usd || 0).toLocaleString()}</span></p>
+        ) : null}
+        {campaignError ? <p className="text-rose-300 text-xs mb-2">{campaignError}</p> : null}
+        {campaignResult?.campaign_id ? (
+          <p className="text-xs text-white/75">Campaign <span className="text-white">{campaignResult.campaign_id}</span> drafted ({campaignResult.piece_count || 0} piece).</p>
+        ) : null}
+      </div>
+    </div>
+  )
+}
+
 export default function CommandCenter() {
   const [activeTab, setActiveTab] = useState('jarvis')
+  const [radarAreaId, setRadarAreaId] = useState('richmond-va')
+  const [radarProviderId, setRadarProviderId] = useState('windy')
+  const [radarAreaMode, setRadarAreaMode] = useState('manual')
+  const [radarLastAutoSource, setRadarLastAutoSource] = useState('')
   const strategyVisible = INTERNAL_STRATEGY_ENABLED && isCommandCenterPath()
   const [latestAudit, setLatestAudit] = useState(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
   const now = new Date()
+
+  const radarHref = useMemo(
+    () => buildRadarUrl(radarProviderId, radarAreaId),
+    [radarAreaId, radarProviderId],
+  )
+
+  const autoSelectRadarArea = useCallback(async () => {
+    try {
+      const jobs = await api.listJobs()
+      const inferred = inferRadarAreaFromJobs(jobs)
+      if (inferred) {
+        setRadarAreaId(inferred)
+        setRadarAreaMode('auto')
+        setRadarLastAutoSource('active jobs')
+      }
+    } catch {
+      // Protected endpoint may be unavailable in some sessions.
+    }
+  }, [])
 
   // Keyboard shortcuts: J = Jarvis drawer, 1-6 = tabs (when not typing in an input)
   useEffect(() => {
@@ -5486,6 +6443,10 @@ export default function CommandCenter() {
     return () => { cancelled = true }
   }, [])
 
+  useEffect(() => {
+    autoSelectRadarArea()
+  }, [autoSelectRadarArea])
+
   return (
     <div className="min-h-screen bg-brand-navy text-white">
       <FrozenBanner />
@@ -5499,6 +6460,53 @@ export default function CommandCenter() {
             <p className="text-white/40 text-xs mt-0.5">JWordenAI Command Center — internal operations</p>
           </div>
           <div className="flex items-center gap-2">
+            <label className="hidden lg:flex items-center gap-2 rounded-full border border-sky-300/30 bg-sky-300/10 px-2.5 py-1 text-[11px] text-sky-100">
+              <span className="uppercase tracking-[0.1em] font-bold">Radar</span>
+              <select
+                value={radarProviderId}
+                onChange={(event) => setRadarProviderId(event.target.value)}
+                className="rounded bg-black/30 px-2 py-0.5 text-[11px] text-sky-100 border border-sky-300/20"
+              >
+                {WEATHER_RADAR_PROVIDERS.map((provider) => (
+                  <option key={provider.id} value={provider.id}>{provider.label}</option>
+                ))}
+              </select>
+            </label>
+            <label className="hidden lg:flex items-center gap-2 rounded-full border border-sky-300/30 bg-sky-300/10 px-2.5 py-1 text-[11px] text-sky-100">
+              <span className="uppercase tracking-[0.1em] font-bold">Radar Area</span>
+              <select
+                value={radarAreaId}
+                onChange={(event) => {
+                  setRadarAreaId(event.target.value)
+                  setRadarAreaMode('manual')
+                }}
+                className="rounded bg-black/30 px-2 py-0.5 text-[11px] text-sky-100 border border-sky-300/20"
+              >
+                {WEATHER_RADAR_AREAS.map((area) => (
+                  <option key={area.id} value={area.id}>{area.label}</option>
+                ))}
+              </select>
+            </label>
+            <button
+              type="button"
+              onClick={autoSelectRadarArea}
+              className="hidden lg:inline-flex items-center gap-1.5 rounded-full border border-sky-300/35 bg-sky-400/10 px-3 py-1.5 text-xs font-semibold text-sky-100 hover:bg-sky-400/20"
+              title="Auto-select best radar area from active jobs"
+            >
+              Auto Radar
+            </button>
+            <a
+              href={radarHref}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 rounded-full bg-sky-500/20 border border-sky-300/45 text-sky-100 text-xs font-bold px-3 py-1.5 hover:bg-sky-500/30"
+              title="Open high-resolution live weather radar"
+            >
+              <Globe className="w-3.5 h-3.5" /> Weather Radar HQ
+              <span className="hidden sm:inline text-[10px] opacity-80">
+                {radarAreaMode === 'auto' ? `AUTO${radarLastAutoSource ? ` (${radarLastAutoSource})` : ''}` : 'MANUAL'}
+              </span>
+            </a>
             <PanicButton />
             <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 border border-white/20 text-white/60 text-xs font-semibold px-3 py-1">
               Internal
@@ -5537,6 +6545,7 @@ export default function CommandCenter() {
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 py-6">
         <>
           {!strategyVisible ? <InternalStrategyNotice /> : null}
+          <PremiumIntelRibbon activeTab={activeTab} />
           <TabDeepLinkBar activeTab={activeTab} />
           {strategyVisible ? <HubLinkPanel /> : null}
 
@@ -5601,6 +6610,8 @@ export default function CommandCenter() {
               <div className="space-y-4 md:space-y-5">
                 <OperationsPipelinePanel />
                 <AuditFeedPanel />
+                {strategyVisible ? <TechOpportunityQueuePanel /> : null}
+                {strategyVisible ? <StrategicOpsPilotPanel /> : null}
               </div>
             )}
 
