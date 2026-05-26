@@ -5,6 +5,19 @@
 [build.environment]
   NODE_VERSION = "20"
 
+# Keep SEO static assets from falling through to SPA index.html
+[[redirects]]
+  from   = "/robots.txt"
+  to     = "/robots.txt"
+  status = 200
+  force  = true
+
+[[redirects]]
+  from   = "/sitemap.xml"
+  to     = "/sitemap.xml"
+  status = 200
+  force  = true
+
 # SPA fallback — all routes handled by React Router
 [[redirects]]
   from   = "/*"
@@ -28,6 +41,18 @@
   for = "/assets/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/sitemap.xml"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+    Content-Type  = "application/xml; charset=utf-8"
+
+[[headers]]
+  for = "/robots.txt"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+    Content-Type  = "text/plain; charset=utf-8"
 
 # Security + allow camera/GPS/mic for field use
 [[headers]]
