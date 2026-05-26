@@ -1,0 +1,122 @@
+{
+  "mode": "diff",
+  "generatedAt": "2026-05-26T00:16:54.821Z",
+  "durationMs": 50,
+  "baselineGeneratedAt": "2026-05-08T22:48:22.965Z",
+  "currentGeneratedAt": "2026-05-26T00:16:54.821Z",
+  "summary": {
+    "tableCount": 12,
+    "changedTables": 0,
+    "highImpactChanges": 0,
+    "coverageRegressions": 0,
+    "severityCounts": {
+      "high": 0,
+      "medium": 0,
+      "low": 0
+    },
+    "areaCounts": {}
+  },
+  "coverage": [
+    {
+      "file": "buildingPermits.js",
+      "rowCount": 51,
+      "uniqueAbbrCount": 51,
+      "missingCount": 0,
+      "missingJurisdictions": [],
+      "duplicateAbbrs": []
+    },
+    {
+      "file": "constructionLicensing.js",
+      "rowCount": 51,
+      "uniqueAbbrCount": 51,
+      "missingCount": 0,
+      "missingJurisdictions": [],
+      "duplicateAbbrs": []
+    },
+    {
+      "file": "contractLaw.js",
+      "rowCount": 51,
+      "uniqueAbbrCount": 51,
+      "missingCount": 0,
+      "missingJurisdictions": [],
+      "duplicateAbbrs": []
+    },
+    {
+      "file": "environmentalPermits.js",
+      "rowCount": 51,
+      "uniqueAbbrCount": 51,
+      "missingCount": 0,
+      "missingJurisdictions": [],
+      "duplicateAbbrs": []
+    },
+    {
+      "file": "mechanicsLienLaws.js",
+      "rowCount": 51,
+      "uniqueAbbrCount": 51,
+      "missingCount": 0,
+      "missingJurisdictions": [],
+      "duplicateAbbrs": []
+    },
+    {
+      "file": "prevailingWage.js",
+      "rowCount": 51,
+      "uniqueAbbrCount": 51,
+      "missingCount": 0,
+      "missingJurisdictions": [],
+      "duplicateAbbrs": []
+    },
+    {
+      "file": "promptPaymentLaws.js",
+      "rowCount": 51,
+      "uniqueAbbrCount": 51,
+      "missingCount": 0,
+      "missingJurisdictions": [],
+      "duplicateAbbrs": []
+    },
+    {
+      "file": "roadsAndPavingRegulations.js",
+      "rowCount": 51,
+      "uniqueAbbrCount": 51,
+      "missingCount": 0,
+      "missingJurisdictions": [],
+      "duplicateAbbrs": []
+    },
+    {
+      "file": "states.js",
+      "rowCount": 51,
+      "uniqueAbbrCount": 51,
+      "missingCount": 0,
+      "missingJurisdictions": [],
+      "duplicateAbbrs": []
+    },
+    {
+      "file": "utilitiesOneCall.js",
+      "rowCount": 51,
+      "uniqueAbbrCount": 51,
+      "missingCount": 0,
+      "missingJurisdictions": [],
+      "duplicateAbbrs": []
+    },
+    {
+      "file": "utilityDepthClearances.js",
+      "rowCount": 51,
+      "uniqueAbbrCount": 51,
+      "missingCount": 0,
+      "missingJurisdictions": [],
+      "duplicateAbbrs": []
+    },
+    {
+      "file": "workersSafety.js",
+      "rowCount": 51,
+      "uniqueAbbrCount": 51,
+      "missingCount": 0,
+      "missingJurisdictions": [],
+      "duplicateAbbrs": []
+    }
+  ],
+  "tableChanges": [],
+  "recommendations": [
+    "No legal advisory changes detected compared to baseline.",
+    "Treat this report as advisory operations intelligence, not legal advice."
+  ]
+}

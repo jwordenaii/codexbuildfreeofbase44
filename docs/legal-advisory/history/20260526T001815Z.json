@@ -1,9 +1,9 @@
 {
   "mode": "diff",
-  "generatedAt": "2026-05-26T00:28:03.299Z",
-  "durationMs": 55,
+  "generatedAt": "2026-05-26T00:18:15.546Z",
+  "durationMs": 51,
   "baselineGeneratedAt": "2026-05-08T22:48:22.965Z",
-  "currentGeneratedAt": "2026-05-26T00:28:03.299Z",
+  "currentGeneratedAt": "2026-05-26T00:18:15.546Z",
   "summary": {
     "tableCount": 12,
     "changedTables": 0,

@@ -1,11 +1,12 @@
 [build]
   base    = "."
-  command = "npx puppeteer browsers install chrome && npm run ai:authority && npm run build"
+  command = "npx puppeteer browsers install chrome && npm run ai:authority && npm run build && npm run gate:deploy-premium"
   publish = "dist"
 
 [build.environment]
   NODE_VERSION        = "20"
   VITE_SITE_URL       = "https://www.jwordenasphaltpaving.com"
+  PREMIUM_GATE_STRICT = "1"
   PUPPETEER_CACHE_DIR = "/opt/buildhome/.cache/puppeteer"
   # Authority engine reads this to call /api/v1/authority/local-proof at build time.
   # Failures degrade to cached content — never block the build.

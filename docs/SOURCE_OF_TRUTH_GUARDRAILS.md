@@ -2,6 +2,10 @@
 
 Use this checklist whenever multiple Copilot conversations or forks are active.
 
+Reference matrix:
+
+- See [NETLIFY_PROJECT_MATRIX.md](NETLIFY_PROJECT_MATRIX.md) for current site-to-role mapping and guard expectations.
+
 ## Session Start (Required)
 
 1. Confirm local repo root:
@@ -28,7 +32,7 @@ If any mismatch appears, stop and fix before editing.
 ## Netlify Deploy Source Check
 
 1. Open the Netlify site that owns domain:
-   - www.jwordenasphaltpaving.com
+   - [www.jwordenasphaltpaving.com](https://www.jwordenasphaltpaving.com)
 2. Confirm linked repo:
    - jwordenaii/codexbuildfreeofbase44
 3. Confirm branch:
@@ -67,6 +71,6 @@ When another forked conversation is active:
 - Local folder:
   - C:/Users/genew/Downloads/jworden_netlify_standalone_patched (2) (1)
 - Remote:
-  - https://github.com/jwordenaii/codexbuildfreeofbase44.git
+  - [github.com/jwordenaii/codexbuildfreeofbase44.git](https://github.com/jwordenaii/codexbuildfreeofbase44.git)
 - Branch:
   - main

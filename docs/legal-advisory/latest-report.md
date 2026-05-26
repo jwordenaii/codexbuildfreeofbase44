@@ -1,6 +1,6 @@
 # Legal Advisory Change Report
 
-Generated at: 2026-05-08T22:48:23.463Z
+Generated at: 2026-05-26T00:28:03.299Z
 Baseline: 2026-05-08T22:48:22.965Z
 Mode: diff
 
@@ -28,6 +28,25 @@ Mode: diff
 | utilitiesOneCall.js | 51 | 51 | none | none |
 | utilityDepthClearances.js | 51 | 51 | none | none |
 | workersSafety.js | 51 | 51 | none | none |
+
+## Jurisdiction Capability
+
+- Jurisdictions scored: 51
+- Average capability score: 98.33
+- Tier counts: high=51, medium=0, baseline=0
+
+| Jurisdiction | Capability Score | Tier | Missing Rows |
+| --- | ---: | --- | ---: |
+| AK | 98.33 | high | 0 |
+| AL | 98.33 | high | 0 |
+| AR | 98.33 | high | 0 |
+| AZ | 98.33 | high | 0 |
+| CA | 98.33 | high | 0 |
+| CO | 98.33 | high | 0 |
+| CT | 98.33 | high | 0 |
+| DC | 98.33 | high | 0 |
+| DE | 98.33 | high | 0 |
+| FL | 98.33 | high | 0 |
 
 ## Changes
 

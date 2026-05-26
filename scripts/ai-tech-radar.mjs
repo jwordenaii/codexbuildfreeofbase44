@@ -66,6 +66,20 @@ const SOURCES = [
     linkPattern: /^https:\/\/vercel\.com\/changelog\/[a-z0-9-]+\/?$/i,
     maxItems: 80,
   },
+  {
+    id: 'arxiv-cs-ai',
+    name: 'arXiv cs.AI (Preprint Signals)',
+    url: 'https://rss.arxiv.org/rss/cs.AI',
+    mode: 'rss',
+    maxItems: 120,
+  },
+  {
+    id: 'arxiv-cs-cv',
+    name: 'arXiv cs.CV (Preprint Signals)',
+    url: 'https://rss.arxiv.org/rss/cs.CV',
+    mode: 'rss',
+    maxItems: 120,
+  },
 ]
 
 const CAPABILITY_RULES = [
@@ -100,6 +114,24 @@ const CAPABILITY_RULES = [
   {
     tag: 'search-retrieval',
     keywords: ['search', 'retrieval', 'rag', 'knowledge', 'index'],
+  },
+  {
+    tag: 'pre-release-signals',
+    keywords: [
+      'preview',
+      'private preview',
+      'public preview',
+      'beta',
+      'alpha',
+      'coming soon',
+      'roadmap',
+      'early access',
+      'launching soon',
+      'preprint',
+      'arxiv',
+      'forthcoming',
+      'rfc',
+    ],
   },
 ]
 

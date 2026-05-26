@@ -2,10 +2,10 @@
 /**
  * submit-google-search-console.mjs
  * ---------------------------------------------------------------
- * Auto-submits the sitemap to Google Search Console after every
+ * Auto-submits sitemap URLs to Google Search Console after every
  * production build. Uses a service-account JSON key, signs a JWT
  * with RS256 (built-in Node crypto — no extra dependencies),
- * exchanges it for an OAuth2 token, then POSTs the sitemap to the
+ * exchanges it for an OAuth2 token, then PUTs sitemap URLs to the
  * Search Console API.
  *
  * One-time setup (do this in Google Cloud Console):
@@ -21,8 +21,13 @@
  *   GSC_SERVICE_ACCOUNT_JSON  full service-account JSON (string)
  *
  * Optional env:
- *   GSC_SITE_URL    default https://www.jwordenasphaltpaving.com/
- *   GSC_SITEMAP_URL default https://www.jwordenasphaltpaving.com/sitemap.xml
+ *   GSC_SITE_URL      default https://www.jwordenasphaltpaving.com/
+ *   GSC_PROPERTY_SITE_URL
+ *                     Search Console property identifier for API path,
+ *                     e.g. sc-domain:jwordenasphaltpaving.com or
+ *                     https://www.jwordenasphaltpaving.com/
+ *   GSC_SITEMAP_URL   legacy single sitemap URL
+ *   GSC_SITEMAP_URLS  newline/comma-separated sitemap URLs to submit
  *   GSC_FORCE=1     run outside of Netlify production deploys
  * ---------------------------------------------------------------
  */
@@ -49,8 +54,62 @@ if (!SA_JSON) {
 }
 
 const SITE_URL = process.env.GSC_SITE_URL || 'https://www.jwordenasphaltpaving.com/';
-const SITEMAP_URL =
-  process.env.GSC_SITEMAP_URL || 'https://www.jwordenasphaltpaving.com/sitemap.xml';
+const PROPERTY_SITE_URL = process.env.GSC_PROPERTY_SITE_URL || SITE_URL;
+
+function splitConfiguredUrls(rawValue) {
+  return String(rawValue || '')
+    .split(/[\n,]/)
+    .map((value) => value.trim())
+    .filter(Boolean);
+}
+
+function normalizeUrl(url) {
+  return String(url).trim();
+}
+
+function isHttpUrl(url) {
+  try {
+    const parsed = new URL(url);
+    return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+  } catch {
+    return false;
+  }
+}
+
+async function discoverSitemapsFromRobots(siteUrl) {
+  const robotsUrl = new URL('/robots.txt', siteUrl).toString();
+  try {
+    const res = await fetch(robotsUrl);
+    if (!res.ok) {
+      log(`robots.txt discovery skipped (HTTP ${res.status} at ${robotsUrl})`);
+      return [];
+    }
+    const text = await res.text();
+    return text
+      .split(/\r?\n/)
+      .map((line) => line.match(/^\s*Sitemap:\s*(\S+)\s*$/i)?.[1] || '')
+      .filter(Boolean);
+  } catch (e) {
+    log(`robots.txt discovery skipped (${e.message})`);
+    return [];
+  }
+}
+
+async function resolveSitemapUrls(siteUrl) {
+  const configured = [
+    ...splitConfiguredUrls(process.env.GSC_SITEMAP_URLS),
+    ...splitConfiguredUrls(process.env.GSC_SITEMAP_URL),
+  ];
+  const discovered = await discoverSitemapsFromRobots(siteUrl);
+  const fallback = [new URL('/sitemap.xml', siteUrl).toString()];
+
+  const urls = [...configured, ...discovered, ...fallback]
+    .map(normalizeUrl)
+    .filter(Boolean)
+    .filter(isHttpUrl);
+
+  return [...new Set(urls)];
+}
 
 let creds;
 try {
@@ -114,10 +173,10 @@ async function getAccessToken() {
   return j.access_token;
 }
 
-async function submitSitemap(token) {
+async function submitSitemap(token, sitemapUrl) {
   // PUT https://www.googleapis.com/webmasters/v3/sites/{siteUrl}/sitemaps/{feedpath}
-  const siteEnc = encodeURIComponent(SITE_URL);
-  const feedEnc = encodeURIComponent(SITEMAP_URL);
+  const siteEnc = encodeURIComponent(PROPERTY_SITE_URL);
+  const feedEnc = encodeURIComponent(sitemapUrl);
   const url = `https://www.googleapis.com/webmasters/v3/sites/${siteEnc}/sitemaps/${feedEnc}`;
   const res = await fetch(url, {
     method: 'PUT',
@@ -125,19 +184,32 @@ async function submitSitemap(token) {
   });
   // 200 or 204 = success. Google returns 204 No Content on resubmit.
   if (res.status === 200 || res.status === 204) {
-    log(`success (HTTP ${res.status}) — sitemap (re)submitted to Google for ${SITE_URL}`);
-    return;
+    log(`success (HTTP ${res.status}) — submitted ${sitemapUrl}`);
+    return true;
   }
   const txt = await res.text().catch(() => '');
-  log(`HTTP ${res.status}: ${txt.slice(0, 300)}`);
+  log(`HTTP ${res.status} for ${sitemapUrl}: ${txt.slice(0, 300)}`);
   // Don't fail the build — Google submissions are advisory.
+  return false;
 }
 
 try {
   log(`requesting OAuth token for ${creds.client_email}`);
   const token = await getAccessToken();
-  log(`submitting ${SITEMAP_URL} to Google Search Console`);
-  await submitSitemap(token);
+  log(`using Search Console property ${PROPERTY_SITE_URL}`);
+  const sitemapUrls = await resolveSitemapUrls(SITE_URL);
+  if (!sitemapUrls.length) {
+    log('no sitemap URLs resolved — skipping');
+    process.exit(0);
+  }
+
+  log(`submitting ${sitemapUrls.length} sitemap URL(s) to Google Search Console`);
+  let successCount = 0;
+  for (const sitemapUrl of sitemapUrls) {
+    const ok = await submitSitemap(token, sitemapUrl);
+    if (ok) successCount += 1;
+  }
+  log(`done — ${successCount}/${sitemapUrls.length} sitemap URL(s) accepted by Google`);
 } catch (e) {
   log(`error: ${e.message}`);
   process.exit(0); // advisory — never fail the build

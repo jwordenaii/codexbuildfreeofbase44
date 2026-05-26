@@ -57,6 +57,7 @@ const startedAt = Date.now()
 const nowIso = new Date().toISOString()
 
 const currentSnapshot = await buildSnapshot(nowIso)
+const jurisdictionCapability = buildJurisdictionCapability(currentSnapshot)
 
 if (!args.noWrite) {
   await mkdir(OUTPUT_DIR, { recursive: true })
@@ -74,6 +75,7 @@ if (args.refreshBaseline || !baselineSnapshot) {
   reportPayload = buildBootstrapPayload({
     generatedAt: nowIso,
     snapshot: currentSnapshot,
+    jurisdictionCapability,
     baselineReason: args.refreshBaseline ? 'baseline refreshed by flag' : 'baseline initialized because none existed',
     durationMs: Date.now() - startedAt,
   })
@@ -104,6 +106,7 @@ reportPayload = {
   currentGeneratedAt: currentSnapshot.generatedAt,
   summary: diff.summary,
   coverage: currentSnapshot.coverage,
+  jurisdictionCapability,
   tableChanges: diff.tableChanges,
   recommendations: buildRecommendations(diff.summary),
 }
@@ -422,12 +425,109 @@ function buildBootstrapPayload({ generatedAt, snapshot, baselineReason, duration
       areaCounts: {},
     },
     coverage: snapshot.coverage,
+    jurisdictionCapability,
     tableChanges: [],
     recommendations: [
       'Baseline initialized. Future runs will report legal advisory deltas and impact.',
       'Keep baseline in CI cache to compare each run against the previous snapshot.',
     ],
   }
+}
+
+function buildJurisdictionCapability(snapshot) {
+  const jurisdictions = Array.isArray(snapshot.jurisdictions) ? snapshot.jurisdictions : []
+  const tables = snapshot.tables && typeof snapshot.tables === 'object' ? snapshot.tables : {}
+  const tableNames = Object.keys(tables)
+  const tableCount = tableNames.length || 1
+
+  const byJurisdiction = jurisdictions.map((abbr) => {
+    let presentRows = 0
+    let criticalTables = 0
+    const missingTables = []
+
+    for (const tableName of tableNames) {
+      const row = tables[tableName]?.rowsByAbbr?.[abbr]
+      if (!row || typeof row !== 'object') {
+        missingTables.push(tableName)
+        continue
+      }
+      presentRows += 1
+      if (hasCriticalSignal(row)) {
+        criticalTables += 1
+      }
+    }
+
+    const coveragePct = round2((presentRows / tableCount) * 100)
+    const criticalSignalPct = round2((criticalTables / tableCount) * 100)
+    const capabilityScore = round2((coveragePct * 0.8) + (criticalSignalPct * 0.2))
+
+    return {
+      abbr,
+      presentRows,
+      missingRows: tableCount - presentRows,
+      coveragePct,
+      criticalSignalPct,
+      capabilityScore,
+      tier: capabilityTier(capabilityScore),
+      missingTables,
+    }
+  })
+
+  const sortedWeakest = [...byJurisdiction]
+    .sort((a, b) => a.capabilityScore - b.capabilityScore)
+    .slice(0, 10)
+
+  const summary = {
+    jurisdictionCount: byJurisdiction.length,
+    tableCount,
+    averageCapabilityScore: round2(byJurisdiction.reduce((sum, row) => sum + row.capabilityScore, 0) / Math.max(byJurisdiction.length, 1)),
+    tierCounts: {
+      high: byJurisdiction.filter((x) => x.tier === 'high').length,
+      medium: byJurisdiction.filter((x) => x.tier === 'medium').length,
+      baseline: byJurisdiction.filter((x) => x.tier === 'baseline').length,
+    },
+    weakestJurisdictions: sortedWeakest.map((row) => ({
+      abbr: row.abbr,
+      capabilityScore: row.capabilityScore,
+      tier: row.tier,
+      missingRows: row.missingRows,
+    })),
+  }
+
+  return { summary, byJurisdiction }
+}
+
+function hasCriticalSignal(value) {
+  if (!value || typeof value !== 'object') return false
+  const stack = [value]
+  while (stack.length > 0) {
+    const current = stack.pop()
+    if (!current || typeof current !== 'object') continue
+    for (const [key, val] of Object.entries(current)) {
+      if (isCriticalField(key) && hasNonEmptyValue(val)) return true
+      if (val && typeof val === 'object') stack.push(val)
+    }
+  }
+  return false
+}
+
+function hasNonEmptyValue(value) {
+  if (value === null || value === undefined) return false
+  if (typeof value === 'string') return value.trim().length > 0
+  if (typeof value === 'number' || typeof value === 'boolean') return true
+  if (Array.isArray(value)) return value.some((item) => hasNonEmptyValue(item))
+  if (typeof value === 'object') return Object.values(value).some((item) => hasNonEmptyValue(item))
+  return false
+}
+
+function capabilityTier(score) {
+  if (score >= 90) return 'high'
+  if (score >= 75) return 'medium'
+  return 'baseline'
+}
+
+function round2(value) {
+  return Number(Number(value || 0).toFixed(2))
 }
 
 function buildRecommendations(summary) {
@@ -498,6 +598,21 @@ function buildMarkdownReport(payload) {
     lines.push(`| ${row.file} | ${row.rowCount} | ${row.uniqueAbbrCount} | ${missing} | ${dupes} |`)
   }
   lines.push('')
+
+  if (payload.jurisdictionCapability?.summary) {
+    lines.push('## Jurisdiction Capability')
+    lines.push('')
+    lines.push(`- Jurisdictions scored: ${payload.jurisdictionCapability.summary.jurisdictionCount}`)
+    lines.push(`- Average capability score: ${payload.jurisdictionCapability.summary.averageCapabilityScore}`)
+    lines.push(`- Tier counts: high=${payload.jurisdictionCapability.summary.tierCounts.high}, medium=${payload.jurisdictionCapability.summary.tierCounts.medium}, baseline=${payload.jurisdictionCapability.summary.tierCounts.baseline}`)
+    lines.push('')
+    lines.push('| Jurisdiction | Capability Score | Tier | Missing Rows |')
+    lines.push('| --- | ---: | --- | ---: |')
+    for (const row of (payload.jurisdictionCapability.summary.weakestJurisdictions || [])) {
+      lines.push(`| ${row.abbr} | ${row.capabilityScore} | ${row.tier} | ${row.missingRows} |`)
+    }
+    lines.push('')
+  }
 
   lines.push('## Changes')
   lines.push('')

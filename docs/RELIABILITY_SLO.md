@@ -83,4 +83,6 @@ Primary artifacts are generated at:
 1. docs/reliability/latest-synthetic.json
 2. docs/reliability/latest-synthetic.md
 
+Related architecture references: docs/reliability/OFFLINE_RESILIENCE_BLUEPRINT.md and docs/reliability/LIVING_DIGITAL_TWIN_5D_BLUEPRINT.md
+
 These artifacts should be uploaded by CI for audit and trend review.

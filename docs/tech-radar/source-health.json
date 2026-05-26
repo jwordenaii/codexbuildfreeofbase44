@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-08T21:54:06.245Z",
+  "generatedAt": "2026-05-26T00:16:59.099Z",
   "sources": [
     {
       "sourceId": "openai-news",
@@ -8,9 +8,9 @@
       "mode": "rss",
       "status": "ok",
       "itemCount": 80,
-      "durationMs": 530,
+      "durationMs": 648,
       "error": null,
-      "fetchedAt": "2026-05-08T21:54:00.116Z"
+      "fetchedAt": "2026-05-26T00:16:55.334Z"
     },
     {
       "sourceId": "google-ai-blog",
@@ -19,9 +19,9 @@
       "mode": "rss",
       "status": "ok",
       "itemCount": 20,
-      "durationMs": 215,
+      "durationMs": 244,
       "error": null,
-      "fetchedAt": "2026-05-08T21:54:00.165Z"
+      "fetchedAt": "2026-05-26T00:16:55.404Z"
     },
     {
       "sourceId": "cloudflare-ai-blog",
@@ -30,9 +30,9 @@
       "mode": "rss",
       "status": "ok",
       "itemCount": 20,
-      "durationMs": 422,
+      "durationMs": 1396,
       "error": null,
-      "fetchedAt": "2026-05-08T21:54:00.166Z"
+      "fetchedAt": "2026-05-26T00:16:55.406Z"
     },
     {
       "sourceId": "microsoft-ai-blog",
@@ -41,9 +41,9 @@
       "mode": "rss",
       "status": "ok",
       "itemCount": 10,
-      "durationMs": 303,
+      "durationMs": 338,
       "error": null,
-      "fetchedAt": "2026-05-08T21:54:00.167Z"
+      "fetchedAt": "2026-05-26T00:16:55.406Z"
     },
     {
       "sourceId": "anthropic-news",
@@ -51,10 +51,10 @@
       "url": "https://www.anthropic.com/news",
       "mode": "html-links",
       "status": "ok",
-      "itemCount": 12,
-      "durationMs": 6071,
+      "itemCount": 13,
+      "durationMs": 3678,
       "error": null,
-      "fetchedAt": "2026-05-08T21:54:00.168Z"
+      "fetchedAt": "2026-05-26T00:16:55.407Z"
     },
     {
       "sourceId": "vercel-changelog",
@@ -63,9 +63,31 @@
       "mode": "html-links",
       "status": "ok",
       "itemCount": 8,
-      "durationMs": 264,
+      "durationMs": 286,
       "error": null,
-      "fetchedAt": "2026-05-08T21:54:00.169Z"
+      "fetchedAt": "2026-05-26T00:16:55.408Z"
+    },
+    {
+      "sourceId": "arxiv-cs-ai",
+      "sourceName": "arXiv cs.AI (Preprint Signals)",
+      "url": "https://rss.arxiv.org/rss/cs.AI",
+      "mode": "rss",
+      "status": "ok",
+      "itemCount": 120,
+      "durationMs": 334,
+      "error": null,
+      "fetchedAt": "2026-05-26T00:16:55.408Z"
+    },
+    {
+      "sourceId": "arxiv-cs-cv",
+      "sourceName": "arXiv cs.CV (Preprint Signals)",
+      "url": "https://rss.arxiv.org/rss/cs.CV",
+      "mode": "rss",
+      "status": "ok",
+      "itemCount": 120,
+      "durationMs": 302,
+      "error": null,
+      "fetchedAt": "2026-05-26T00:16:55.409Z"
     }
   ]
 }

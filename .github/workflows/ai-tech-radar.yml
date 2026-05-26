@@ -2,7 +2,7 @@ name: AI Tech Radar
 
 on:
   schedule:
-    - cron: "11 */6 * * *"
+    - cron: "11 * * * *"
   workflow_dispatch:
 
 permissions:
@@ -40,6 +40,25 @@ jobs:
       - name: Run AI tech radar
         run: npm run ops:tech-radar
 
+      - name: Import radar signals into system intelligence payload
+        run: npm run ops:tech-radar:import
+
+      - name: Send urgent tech-radar email alerts
+        run: npm run ops:tech-radar:email-alert
+        env:
+          SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+          SENDGRID_FROM_EMAIL: ${{ secrets.SENDGRID_FROM_EMAIL }}
+          SENDGRID_FROM_NAME: JWordenAI Tech Radar
+          TECH_RADAR_ALERT_TO_EMAIL: J.WORDENANDSONSPAVING@GMAIL.COM
+
+      - name: Send daily tech-radar digest email
+        run: npm run ops:tech-radar:email-alert:daily
+        env:
+          SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+          SENDGRID_FROM_EMAIL: ${{ secrets.SENDGRID_FROM_EMAIL }}
+          SENDGRID_FROM_NAME: JWordenAI Tech Radar
+          TECH_RADAR_ALERT_TO_EMAIL: J.WORDENANDSONSPAVING@GMAIL.COM
+
       - name: Save updated radar snapshot to cache
         if: always()
         uses: actions/cache/save@v4
@@ -61,4 +80,8 @@ jobs:
             docs/tech-radar/latest.json
             docs/tech-radar/source-health.json
             docs/tech-radar/snapshot.json
+            docs/tech-radar/intelligence/latest-report.md
+            docs/tech-radar/intelligence/latest.json
+            docs/tech-radar/intelligence/email-alert-state.json
+            app/data/tech-intelligence/latest.json
           retention-days: 21

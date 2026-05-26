@@ -25,13 +25,13 @@ Command Center.
 import hashlib
 import json
 import logging
-from pathlib import Path
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from ..core.limiter import limiter
+from ..core.tenant_contract import profiles_by_key
 from ..database import get_db
 from ..models import AuditEvent
 from ..services import ai_foreman
@@ -42,25 +42,17 @@ router = APIRouter(prefix="/api/v1/authority", tags=["authority"])
 
 
 # ── Tenant key validation ────────────────────────────────────────────────────
-# Source of truth: src/config/siteFactoryManifest.json. Loaded once on import.
-
-_MANIFEST_PATH = Path(__file__).resolve().parents[2] / "src" / "config" / "siteFactoryManifest.json"
-
-
-def _load_tenant_keys() -> set[str]:
-    try:
-        with _MANIFEST_PATH.open("r", encoding="utf-8") as f:
-            manifest = json.load(f)
-        return {p["key"] for p in manifest.get("profiles", []) if "key" in p}
-    except Exception as exc:  # noqa: BLE001
-        logger.warning("Could not load siteFactoryManifest.json (%s); defaulting to 'jworden' only", exc)
-        return {"jworden"}
-
-
-_VALID_TENANTS = _load_tenant_keys()
+try:
+    _VALID_TENANTS = set(profiles_by_key().keys())
+except Exception as exc:  # noqa: BLE001
+    logger.warning(
+        "Could not load tenant contract (%s); defaulting to 'jworden' only", exc
+    )
+    _VALID_TENANTS = {"jworden"}
 
 
 # ── Response model ───────────────────────────────────────────────────────────
+
 
 class ProofResponse(BaseModel):
     tenant: str
@@ -74,15 +66,33 @@ class ProofResponse(BaseModel):
 
 # ── Endpoint ─────────────────────────────────────────────────────────────────
 
-@router.get("/local-proof", response_model=ProofResponse, summary="Generate Verified Proof content for one city")
+
+@router.get(
+    "/local-proof",
+    response_model=ProofResponse,
+    summary="Generate Verified Proof content for one city",
+)
 @limiter.limit("30/minute")
 def get_local_proof(
     request: Request,
-    city: str = Query(..., min_length=2, max_length=120, description="Target city name (display form), e.g. 'Richmond'"),
-    tenant: str = Query("jworden", min_length=2, max_length=60, description="Site-factory profile key"),
+    city: str = Query(
+        ...,
+        min_length=2,
+        max_length=120,
+        description="Target city name (display form), e.g. 'Richmond'",
+    ),
+    tenant: str = Query(
+        "jworden", min_length=2, max_length=60, description="Site-factory profile key"
+    ),
     project_type: str = Query("commercial parking lot repaving", max_length=200),
-    equipment: str = Query("Mauldin 690, LeeBoy", max_length=400, description="Comma-separated equipment list"),
-    state: str | None = Query(None, max_length=2, description="Optional state code override (e.g. 'NC')"),
+    equipment: str = Query(
+        "Mauldin 690, LeeBoy",
+        max_length=400,
+        description="Comma-separated equipment list",
+    ),
+    state: str | None = Query(
+        None, max_length=2, description="Optional state code override (e.g. 'NC')"
+    ),
     db: Session = Depends(get_db),
 ) -> ProofResponse:
     """
@@ -109,7 +119,9 @@ def get_local_proof(
             state=state,
         )
     except RuntimeError as exc:
-        logger.error("Authority generation failed: tenant=%s city=%s err=%s", tenant, city, exc)
+        logger.error(
+            "Authority generation failed: tenant=%s city=%s err=%s", tenant, city, exc
+        )
         raise HTTPException(status_code=502, detail=str(exc)) from exc
 
     # ── Audit log (best-effort; never fails the request) ─────────────────────
@@ -125,18 +137,20 @@ def get_local_proof(
             entity_id=city,
             tenant_id=tenant,
             summary=f"Generated {len(proof.text)} chars for {city} via {proof.model}",
-            detail_json=json.dumps({
-                "tenant": tenant,
-                "city": city,
-                "project_type": project_type,
-                "equipment": equipment_list,
-                "model": proof.model,
-                "provider": proof.provider,
-                "fallback_used": proof.fallback_used,
-                "latency_ms": proof.latency_ms,
-                "prompt_hash": prompt_hash,
-                "content_length": len(proof.text),
-            }),
+            detail_json=json.dumps(
+                {
+                    "tenant": tenant,
+                    "city": city,
+                    "project_type": project_type,
+                    "equipment": equipment_list,
+                    "model": proof.model,
+                    "provider": proof.provider,
+                    "fallback_used": proof.fallback_used,
+                    "latency_ms": proof.latency_ms,
+                    "prompt_hash": prompt_hash,
+                    "content_length": len(proof.text),
+                }
+            ),
         )
         db.add(event)
         db.commit()

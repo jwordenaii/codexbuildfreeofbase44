@@ -27,6 +27,7 @@ import logging
 import time
 from dataclasses import dataclass
 
+from app.core.tenant_contract import infer_default_state, profiles_by_key
 from app.services import llm_client
 
 logger = logging.getLogger(__name__)
@@ -51,25 +52,53 @@ _TENANT_BRANDS: dict[str, dict[str, str]] = {
 _DEFAULT_TENANT = "jworden"
 
 
+def _load_manifest_brands() -> dict[str, dict[str, str]]:
+    try:
+        brands: dict[str, dict[str, str]] = {}
+        for key, profile in profiles_by_key().items():
+            if not key:
+                continue
+            label = (profile.label or key).strip()
+            brands[key] = {
+                "brand_descriptor": (
+                    f"{label}, an enterprise asphalt and operations platform "
+                    "focused on technically credible project documentation"
+                ),
+                "default_state": infer_default_state(profile),
+            }
+        return brands
+    except Exception as exc:  # noqa: BLE001
+        logger.warning(
+            "Could not load siteFactoryManifest.json for tenant branding (%s)", exc
+        )
+        return {}
+
+
+_TENANT_BRANDS = {**_TENANT_BRANDS, **_load_manifest_brands()}
+
+
 def _brand_for(tenant: str) -> dict[str, str]:
     return _TENANT_BRANDS.get(tenant) or _TENANT_BRANDS[_DEFAULT_TENANT]
 
 
 # ── Response dataclass ──────────────────────────────────────────────────────
 
+
 @dataclass
 class AuthorityProof:
     """Result of one Authority-engine generation call."""
+
     text: str
     tenant: str
     city: str
-    model: str           # actual model used (resolved by llm_client)
-    provider: str        # "google" | "openai" | ...
+    model: str  # actual model used (resolved by llm_client)
+    provider: str  # "google" | "openai" | ...
     fallback_used: bool  # true if primary failed and a fallback succeeded
-    latency_ms: int      # round-trip time including provider fallthrough
+    latency_ms: int  # round-trip time including provider fallthrough
 
 
 # ── Public API ──────────────────────────────────────────────────────────────
+
 
 def generate_city_proof(
     city_name: str,
@@ -101,7 +130,9 @@ def generate_city_proof(
     """
     brand = _brand_for(tenant)
     state_code = state or brand.get("default_state", "VA")
-    equipment_str = ", ".join(equipment_used) if equipment_used else "standard paving equipment"
+    equipment_str = (
+        ", ".join(equipment_used) if equipment_used else "standard paving equipment"
+    )
 
     system_prompt = (
         f"You are {brand['brand_descriptor']}. "
@@ -128,7 +159,9 @@ def generate_city_proof(
     if response.error or not response.text:
         logger.error(
             "Authority engine failed for tenant=%s city=%s: %s",
-            tenant, city_name, response.error_detail,
+            tenant,
+            city_name,
+            response.error_detail,
         )
         raise RuntimeError(
             f"Authority Engine unavailable: {response.error_detail or 'no providers responded'}"
