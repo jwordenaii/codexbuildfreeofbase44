@@ -13,18 +13,20 @@ if str(REPO_ROOT) not in sys.path:
 
 @pytest.fixture()
 def app_modules(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
-    db_path = tmp_path / 'test.db'
-    monkeypatch.setenv('DATABASE_URL', f'sqlite:///{db_path}')
-    monkeypatch.setenv('JWORDEN_MASTER_KEY', 'test-master-key')
-    monkeypatch.setenv('JWT_SECRET_KEY', 'test-jwt-secret')
-    monkeypatch.setenv('ADMIN_PIN', '1234')
-    monkeypatch.setenv('AUTO_CREATE_TABLES', 'true')
-    monkeypatch.delenv('REDIS_URL', raising=False)
-    monkeypatch.delenv('CELERY_BROKER_URL', raising=False)
+    db_path = tmp_path / "test.db"
+    monkeypatch.setenv("DATABASE_URL", f"sqlite:///{db_path}")
+    monkeypatch.setenv("JWORDEN_MASTER_KEY", "test-master-key")
+    monkeypatch.setenv("JWT_SECRET_KEY", "test-jwt-secret")
+    monkeypatch.setenv("ADMIN_PIN", "1234")
+    monkeypatch.setenv("ADMIN_USERNAME", "admin")
+    monkeypatch.setenv("ADMIN_PASSWORD", "test-admin-password")
+    monkeypatch.setenv("AUTO_CREATE_TABLES", "true")
+    monkeypatch.delenv("REDIS_URL", raising=False)
+    monkeypatch.delenv("CELERY_BROKER_URL", raising=False)
 
     import app.database as dbmod
-    import app.models as modelsmod
     import app.main as mainmod
+    import app.models as modelsmod
 
     dbmod = importlib.reload(dbmod)
     modelsmod = importlib.reload(modelsmod)
@@ -38,10 +40,10 @@ def app_modules(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
 async def client(app_modules):
     mainmod, _ = app_modules
     transport = ASGITransport(app=mainmod.app)
-    async with AsyncClient(transport=transport, base_url='http://testserver') as c:
+    async with AsyncClient(transport=transport, base_url="http://testserver") as c:
         yield c
 
 
 @pytest.fixture()
 def auth_headers():
-    return {'Authorization': 'Bearer test-master-key'}
+    return {"Authorization": "Bearer test-master-key"}

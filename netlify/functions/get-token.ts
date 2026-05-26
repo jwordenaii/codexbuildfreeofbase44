@@ -16,21 +16,49 @@ function cors(origin?: string) {
 async function fetchBackendToken() {
   const apiBase = process.env.VITE_API_BASE_URL
   const masterKey = process.env.JWORDEN_MASTER_KEY
+  const adminUser = process.env.ADMIN_USERNAME
+  const adminPass = process.env.ADMIN_PASSWORD
 
   if (!apiBase) throw new Error('VITE_API_BASE_URL is not set.')
-  if (!masterKey) throw new Error('JWORDEN_MASTER_KEY is not set.')
+  if (!masterKey && !(adminUser && adminPass)) {
+    throw new Error('No backend auth credentials configured for token exchange.')
+  }
 
-  const res = await fetch(`${apiBase}/api/v1/auth/token`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${masterKey}`,
-    },
-  })
+  let res: Response | null = null
+  let lastError = ''
 
-  if (!res.ok) {
-    const body = await res.json().catch(() => ({ detail: res.statusText }))
-    throw new Error(body.detail || `Backend token endpoint returned ${res.status}`)
+  if (masterKey) {
+    res = await fetch(`${apiBase}/api/v1/auth/token`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${masterKey}`,
+      },
+    })
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({ detail: res?.statusText }))
+      lastError = String(body.detail || `Backend bearer token exchange failed (${res.status})`)
+    }
+  }
+
+  if ((!res || !res.ok) && adminUser && adminPass) {
+    const basic = Buffer.from(`${adminUser}:${adminPass}`).toString('base64')
+    res = await fetch(`${apiBase}/api/v1/auth/token`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Basic ${basic}`,
+      },
+    })
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({ detail: res?.statusText }))
+      const basicError = String(body.detail || `Backend basic token exchange failed (${res.status})`)
+      lastError = lastError ? `${lastError}; ${basicError}` : basicError
+    }
+  }
+
+  if (!res || !res.ok) {
+    throw new Error(lastError || 'Backend token endpoint request failed.')
   }
 
   const data = await res.json()

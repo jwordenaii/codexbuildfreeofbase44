@@ -15,13 +15,14 @@ Flow:
   4. Client uses the JWT for all subsequent authenticated requests.
 """
 
+import base64
+import hashlib
 import logging
 import os
-import hashlib
+import secrets
 from datetime import datetime, timedelta, timezone
 
-from fastapi import APIRouter, Depends, HTTPException, Security
-from fastapi.security import OAuth2PasswordBearer
+from fastapi import APIRouter, Depends, HTTPException, Request
 from jose import jwt
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
@@ -35,8 +36,6 @@ router = APIRouter(prefix="/api/v1/auth", tags=["auth"])
 
 _ALGORITHM = "HS256"
 _TOKEN_EXPIRE_SECONDS = 86_400  # 24 hours
-
-_oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/token", auto_error=False)
 
 
 def _secret_fingerprint(value: str) -> str:
@@ -93,7 +92,10 @@ def _issue_admin_jwt() -> str:
 def auth_status():
     mode = _auth_mode()
     auth_required = mode not in {"none", "off", "disabled", "0", "false"}
-    admin_configured = bool(os.getenv("ADMIN_PIN") or (os.getenv("ADMIN_USERNAME") and os.getenv("ADMIN_PASSWORD")))
+    admin_configured = bool(
+        os.getenv("ADMIN_PIN")
+        or (os.getenv("ADMIN_USERNAME") and os.getenv("ADMIN_PASSWORD"))
+    )
     token_endpoint = "/.netlify/functions/get-token" if auth_required else None
     return AuthStatusResponse(
         auth_required=auth_required,
@@ -109,7 +111,7 @@ def auth_status():
     response_model=TokenResponse,
 )
 def issue_token(
-    raw_token: str = Security(_oauth2_scheme),
+    request: Request,
     db: Session = Depends(get_db),
 ):
     """
@@ -124,34 +126,97 @@ def issue_token(
     The returned ``access_token`` can then be used in place of the master key
     for all protected endpoints.
     """
-    if raw_token is None:
+    auth_header = request.headers.get("authorization", "")
+    if not auth_header:
         raise HTTPException(
             status_code=401,
-            detail="Authorization header with Bearer token required",
-            headers={"WWW-Authenticate": "Bearer"},
+            detail="Authorization header with Bearer or Basic token required",
+            headers={"WWW-Authenticate": "Bearer, Basic"},
         )
 
-    master_key = os.getenv("JWORDEN_MASTER_KEY", "")
-    if not master_key:
-        raise HTTPException(
-            status_code=500,
-            detail="Server authentication is not configured. Set JWORDEN_MASTER_KEY.",
-        )
+    scheme, _, credentials = auth_header.partition(" ")
+    scheme = scheme.lower().strip()
+    credentials = credentials.strip()
 
-    if raw_token != master_key:
-        logger.warning(
-            "Token issuance rejected — invalid master key presented (presented=%s expected=%s)",
-            _secret_fingerprint(raw_token),
-            _secret_fingerprint(master_key),
+    if scheme == "bearer":
+        if not credentials:
+            raise HTTPException(
+                status_code=401,
+                detail="Bearer token required",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+
+        master_key = os.getenv("JWORDEN_MASTER_KEY", "")
+        if not master_key:
+            raise HTTPException(
+                status_code=500,
+                detail="Server authentication is not configured. Set JWORDEN_MASTER_KEY.",
+            )
+
+        if credentials != master_key:
+            logger.warning(
+                "Token issuance rejected — invalid master key presented (presented=%s expected=%s)",
+                _secret_fingerprint(credentials),
+                _secret_fingerprint(master_key),
+            )
+            raise HTTPException(
+                status_code=403,
+                detail="Invalid master key",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+
+    elif scheme == "basic":
+        if not credentials:
+            raise HTTPException(
+                status_code=401,
+                detail="Basic credentials required",
+                headers={"WWW-Authenticate": 'Basic realm="Auth Token"'},
+            )
+
+        admin_username = os.getenv("ADMIN_USERNAME", "")
+        admin_password = os.getenv("ADMIN_PASSWORD", "")
+        if not admin_username or not admin_password:
+            raise HTTPException(
+                status_code=500,
+                detail="Server authentication is not configured. Set ADMIN_USERNAME and ADMIN_PASSWORD.",
+            )
+
+        try:
+            decoded = base64.b64decode(credentials).decode("utf-8", errors="replace")
+            provided_username, _, provided_password = decoded.partition(":")
+        except Exception:  # noqa: BLE001
+            provided_username = ""
+            provided_password = ""
+
+        username_ok = secrets.compare_digest(
+            provided_username.encode(), admin_username.encode()
         )
+        password_ok = secrets.compare_digest(
+            provided_password.encode(), admin_password.encode()
+        )
+        if not username_ok or not password_ok:
+            logger.warning(
+                "Token issuance rejected — invalid basic credentials (user=%s)",
+                provided_username or "<empty>",
+            )
+            raise HTTPException(
+                status_code=403,
+                detail="Invalid admin credentials",
+                headers={"WWW-Authenticate": 'Basic realm="Auth Token"'},
+            )
+
+    else:
         raise HTTPException(
-            status_code=403,
-            detail="Invalid master key",
-            headers={"WWW-Authenticate": "Bearer"},
+            status_code=401,
+            detail="Unsupported auth scheme. Use Bearer or Basic.",
+            headers={"WWW-Authenticate": "Bearer, Basic"},
         )
 
     token = _issue_admin_jwt()
-    logger.info("JWT issued for Admin (tenant=JWORDEN_HQ, expires_in=%ds)", _TOKEN_EXPIRE_SECONDS)
+    logger.info(
+        "JWT issued for Admin (tenant=JWORDEN_HQ, expires_in=%ds)",
+        _TOKEN_EXPIRE_SECONDS,
+    )
 
     write_audit_event(
         db,
@@ -195,7 +260,10 @@ def issue_pin_token(
         raise HTTPException(status_code=403, detail="Incorrect PIN")
 
     token = _issue_admin_jwt()
-    logger.info("JWT issued for Admin via PIN auth (tenant=JWORDEN_HQ, expires_in=%ds)", _TOKEN_EXPIRE_SECONDS)
+    logger.info(
+        "JWT issued for Admin via PIN auth (tenant=JWORDEN_HQ, expires_in=%ds)",
+        _TOKEN_EXPIRE_SECONDS,
+    )
 
     write_audit_event(
         db,
