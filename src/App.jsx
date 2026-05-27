@@ -54,6 +54,7 @@ const CandidatePortal = lazy(() => import('./pages/CandidatePortal'));
 const ContractorAIPlatform = lazy(() => import('./pages/ContractorAIPlatform'));
 const CommandCenter = lazy(() => import('./pages/CommandCenter'));
 const JwordenAI = lazy(() => import('./pages/JwordenAI'));
+const AIResearchHub = lazy(() => import('./pages/AIResearchHub'));
 const Visualizer = lazy(() => import('./pages/Visualizer'));
 const LandingPage = lazy(() => import('./pages/LandingPage'));
 const DnsMigration = lazy(() => import('./pages/DnsMigration'));
@@ -175,11 +176,17 @@ const AdminPinGate = () => {
 
 // Gate only back-office pages behind auth. Public pages render without any auth check.
 const RequireAuth = ({ children }) => {
-  const { authRequired, isAuthenticated, isLoadingAuth, authError } = useAuth();
+  const { authRequired, isAuthenticated, isLoadingAuth, authError, authChecked, checkUserAuth } = useAuth();
+
+  useEffect(() => {
+    if (!authChecked && !isLoadingAuth) {
+      checkUserAuth();
+    }
+  }, [authChecked, checkUserAuth, isLoadingAuth]);
+
+  if (isLoadingAuth || !authChecked) return <LoadingSpinner />;
 
   if (!authRequired) return children;
-
-  if (isLoadingAuth) return <LoadingSpinner />;
 
   if (authError?.type === 'user_not_registered') {
     return <UserNotRegisteredError />;
@@ -291,6 +298,7 @@ const AuthenticatedApp = () => {
         <Route path="/driveway-ai" element={<Navigate to="/jwordenai" replace />} />
         <Route path="/commercial/richmond-va" element={<RichmondCommercial />} />
         <Route path="/jwordenai" element={<JwordenAI />} />
+        <Route path="/ai-research" element={<PublicLayout><AIResearchHub /></PublicLayout>} />
         <Route path="/general-contracting" element={<GeneralContracting />} />
         <Route path="/visualizer" element={<Visualizer />} />
         <Route path="/floor-plan-studio" element={<FloorPlanStudio />} />

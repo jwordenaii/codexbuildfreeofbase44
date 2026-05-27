@@ -1,94 +1,15 @@
 {
-  "generatedAt": "2026-05-26T00:16:59.578Z",
-  "radarGeneratedAt": "2026-05-26T00:16:59.099Z",
-  "sourceCount": 8,
-  "signalsAnalyzed": 373,
+  "generatedAt": "2026-05-27T01:43:30.602Z",
+  "radarGeneratedAt": "2026-05-27T01:42:44.594Z",
+  "sourceCount": 13,
+  "signalsAnalyzed": 408,
   "prioritizedSignals": [
-    {
-      "sourceId": "arxiv-cs-cv",
-      "sourceName": "arXiv cs.CV (Preprint Signals)",
-      "title": "GenEvolve: Self-Evolving Image Generation Agents via Tool-Orchestrated Visual Experience Distillation",
-      "url": "https://arxiv.org/abs/2605.21605",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
-      "capabilityTags": [
-        "agents-autonomy",
-        "models-reasoning",
-        "multimodal-voice-vision",
-        "developer-platforms",
-        "infra-inference-edge",
-        "security-governance",
-        "memory-state-personalization",
-        "search-retrieval",
-        "pre-release-signals"
-      ],
-      "overallScore": 48,
-      "priority": "critical",
-      "topDomains": [
-        {
-          "domainId": "scanning",
-          "domainLabel": "Scanning and Computer Vision Intelligence",
-          "score": 16,
-          "keywordMatches": 2
-        },
-        {
-          "domainId": "compliance",
-          "domainLabel": "Compliance and Governance Intelligence",
-          "score": 14,
-          "keywordMatches": 1
-        },
-        {
-          "domainId": "gc",
-          "domainLabel": "General Contracting Intelligence",
-          "score": 12,
-          "keywordMatches": 0
-        }
-      ]
-    },
-    {
-      "sourceId": "arxiv-cs-cv",
-      "sourceName": "arXiv cs.CV (Preprint Signals)",
-      "title": "Distill to Think, Foresee to Act: Cognitive-Physical Reinforcement Learning for Autonomous Driving",
-      "url": "https://arxiv.org/abs/2605.21139",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
-      "capabilityTags": [
-        "agents-autonomy",
-        "models-reasoning",
-        "developer-platforms",
-        "infra-inference-edge",
-        "security-governance",
-        "memory-state-personalization",
-        "search-retrieval",
-        "pre-release-signals"
-      ],
-      "overallScore": 47,
-      "priority": "critical",
-      "topDomains": [
-        {
-          "domainId": "compliance",
-          "domainLabel": "Compliance and Governance Intelligence",
-          "score": 18,
-          "keywordMatches": 3
-        },
-        {
-          "domainId": "gc",
-          "domainLabel": "General Contracting Intelligence",
-          "score": 12,
-          "keywordMatches": 0
-        },
-        {
-          "domainId": "scanning",
-          "domainLabel": "Scanning and Computer Vision Intelligence",
-          "score": 9,
-          "keywordMatches": 0
-        }
-      ]
-    },
     {
       "sourceId": "arxiv-cs-cv",
       "sourceName": "arXiv cs.CV (Preprint Signals)",
       "title": "PathNavigate: A Training-Free Pathology Agent with Surprise-Guided Scan and Shared Slide Memory for Whole-Slide Image VQA",
       "url": "https://arxiv.org/abs/2605.23559",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
       "capabilityTags": [
         "agents-autonomy",
         "models-reasoning",
@@ -120,52 +41,19 @@
           "score": 9,
           "keywordMatches": 0
         }
-      ]
-    },
-    {
-      "sourceId": "arxiv-cs-ai",
-      "sourceName": "arXiv cs.AI (Preprint Signals)",
-      "title": "AutoResearch AI: Towards AI-Powered Research Automation for Scientific Discovery",
-      "url": "https://arxiv.org/abs/2605.23204",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
-      "capabilityTags": [
-        "agents-autonomy",
-        "multimodal-voice-vision",
-        "developer-platforms",
-        "infra-inference-edge",
-        "memory-state-personalization",
-        "search-retrieval",
-        "pre-release-signals"
       ],
-      "overallScore": 43,
-      "priority": "critical",
-      "topDomains": [
-        {
-          "domainId": "scanning",
-          "domainLabel": "Scanning and Computer Vision Intelligence",
-          "score": 14,
-          "keywordMatches": 1
-        },
-        {
-          "domainId": "gc",
-          "domainLabel": "General Contracting Intelligence",
-          "score": 12,
-          "keywordMatches": 0
-        },
-        {
-          "domainId": "compliance",
-          "domainLabel": "Compliance and Governance Intelligence",
-          "score": 9,
-          "keywordMatches": 0
-        }
-      ]
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
     },
     {
-      "sourceId": "arxiv-cs-ai",
-      "sourceName": "arXiv cs.AI (Preprint Signals)",
+      "sourceId": "arxiv-cs-cv",
+      "sourceName": "arXiv cs.CV (Preprint Signals)",
       "title": "EvalVerse: Pipeline-Aware and Expert-Calibrated Benchmarking for Professional Cinematic Video Generation",
       "url": "https://arxiv.org/abs/2605.23271",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
       "capabilityTags": [
         "agents-autonomy",
         "models-reasoning",
@@ -197,92 +85,62 @@
           "score": 9,
           "keywordMatches": 0
         }
-      ]
+      ],
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
+    },
+    {
+      "sourceId": "arxiv-cs-ai",
+      "sourceName": "arXiv cs.AI (Preprint Signals)",
+      "title": "An Interactive Paradigm for Deep Research",
+      "url": "https://arxiv.org/abs/2605.24266",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
+      "capabilityTags": [
+        "agents-autonomy",
+        "models-reasoning",
+        "developer-platforms",
+        "infra-inference-edge",
+        "memory-state-personalization",
+        "search-retrieval",
+        "pre-release-signals"
+      ],
+      "overallScore": 40,
+      "priority": "critical",
+      "topDomains": [
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 12,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 9,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "compliance",
+          "domainLabel": "Compliance and Governance Intelligence",
+          "score": 9,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
     },
     {
       "sourceId": "arxiv-cs-cv",
       "sourceName": "arXiv cs.CV (Preprint Signals)",
-      "title": "MedExpMem: Adapting Experience Memory for Differential Diagnosis",
-      "url": "https://arxiv.org/abs/2605.22872",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
-      "capabilityTags": [
-        "agents-autonomy",
-        "models-reasoning",
-        "multimodal-voice-vision",
-        "developer-platforms",
-        "infra-inference-edge",
-        "memory-state-personalization",
-        "search-retrieval",
-        "pre-release-signals"
-      ],
-      "overallScore": 41,
-      "priority": "critical",
-      "topDomains": [
-        {
-          "domainId": "scanning",
-          "domainLabel": "Scanning and Computer Vision Intelligence",
-          "score": 14,
-          "keywordMatches": 1
-        },
-        {
-          "domainId": "gc",
-          "domainLabel": "General Contracting Intelligence",
-          "score": 12,
-          "keywordMatches": 0
-        },
-        {
-          "domainId": "compliance",
-          "domainLabel": "Compliance and Governance Intelligence",
-          "score": 9,
-          "keywordMatches": 0
-        }
-      ]
-    },
-    {
-      "sourceId": "arxiv-cs-ai",
-      "sourceName": "arXiv cs.AI (Preprint Signals)",
-      "title": "Agentic-VLA: Efficient Online Adaptation for Vision-Language-Action Models",
-      "url": "https://arxiv.org/abs/2605.22896",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
-      "capabilityTags": [
-        "agents-autonomy",
-        "models-reasoning",
-        "multimodal-voice-vision",
-        "developer-platforms",
-        "security-governance",
-        "memory-state-personalization",
-        "search-retrieval",
-        "pre-release-signals"
-      ],
-      "overallScore": 40,
-      "priority": "critical",
-      "topDomains": [
-        {
-          "domainId": "compliance",
-          "domainLabel": "Compliance and Governance Intelligence",
-          "score": 14,
-          "keywordMatches": 1
-        },
-        {
-          "domainId": "gc",
-          "domainLabel": "General Contracting Intelligence",
-          "score": 12,
-          "keywordMatches": 0
-        },
-        {
-          "domainId": "scanning",
-          "domainLabel": "Scanning and Computer Vision Intelligence",
-          "score": 11,
-          "keywordMatches": 1
-        }
-      ]
-    },
-    {
-      "sourceId": "arxiv-cs-ai",
-      "sourceName": "arXiv cs.AI (Preprint Signals)",
       "title": "ChainFlow-VLA: Causal Flow Planning with Vision-Language Models",
       "url": "https://arxiv.org/abs/2605.23270",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
       "capabilityTags": [
         "agents-autonomy",
         "models-reasoning",
@@ -314,14 +172,62 @@
           "score": 11,
           "keywordMatches": 1
         }
-      ]
+      ],
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
+    },
+    {
+      "sourceId": "arxiv-cs-cv",
+      "sourceName": "arXiv cs.CV (Preprint Signals)",
+      "title": "RS2AD-LiDAR: End-to-End Autonomous Driving LiDAR Data Generation from Roadside Sensor Observations",
+      "url": "https://arxiv.org/abs/2605.23406",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
+      "capabilityTags": [
+        "agents-autonomy",
+        "models-reasoning",
+        "multimodal-voice-vision",
+        "developer-platforms",
+        "infra-inference-edge",
+        "search-retrieval",
+        "pre-release-signals"
+      ],
+      "overallScore": 39,
+      "priority": "critical",
+      "topDomains": [
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 18,
+          "keywordMatches": 3
+        },
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 9,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "civil",
+          "domainLabel": "Civil and Pavement Intelligence",
+          "score": 6,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
     },
     {
       "sourceId": "arxiv-cs-ai",
       "sourceName": "arXiv cs.AI (Preprint Signals)",
-      "title": "Ax-Prover: A Deep Reasoning Agentic Framework for Theorem Proving in Mathematics and Quantum Physics",
-      "url": "https://arxiv.org/abs/2510.12787",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
+      "title": "A Multi-Agent LLM Framework for Rating the Quality of Surgical Feedback",
+      "url": "https://arxiv.org/abs/2605.25440",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
       "capabilityTags": [
         "agents-autonomy",
         "models-reasoning",
@@ -352,60 +258,199 @@
           "score": 9,
           "keywordMatches": 0
         }
-      ]
-    },
-    {
-      "sourceId": "arxiv-cs-ai",
-      "sourceName": "arXiv cs.AI (Preprint Signals)",
-      "title": "Curriculum reinforcement learning with measurable task representation learning",
-      "url": "https://arxiv.org/abs/2605.23372",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
-      "capabilityTags": [
-        "agents-autonomy",
-        "developer-platforms",
-        "infra-inference-edge",
-        "memory-state-personalization",
-        "search-retrieval",
-        "pre-release-signals"
       ],
-      "overallScore": 38,
-      "priority": "critical",
-      "topDomains": [
-        {
-          "domainId": "gc",
-          "domainLabel": "General Contracting Intelligence",
-          "score": 12,
-          "keywordMatches": 0
-        },
-        {
-          "domainId": "scanning",
-          "domainLabel": "Scanning and Computer Vision Intelligence",
-          "score": 9,
-          "keywordMatches": 0
-        },
-        {
-          "domainId": "compliance",
-          "domainLabel": "Compliance and Governance Intelligence",
-          "score": 9,
-          "keywordMatches": 0
-        }
-      ]
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
     },
     {
       "sourceId": "arxiv-cs-ai",
       "sourceName": "arXiv cs.AI (Preprint Signals)",
-      "title": "DRL-Driven Edge-Aware Utility Optimization for Multi-Slice 6G Networks",
-      "url": "https://arxiv.org/abs/2605.23056",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
+      "title": "A Two-Dimensional Framework for AI Agent Design Patterns: Cognitive Function and Execution Topology",
+      "url": "https://arxiv.org/abs/2605.13850",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
       "capabilityTags": [
         "agents-autonomy",
-        "multimodal-voice-vision",
+        "models-reasoning",
         "developer-platforms",
-        "infra-inference-edge",
+        "security-governance",
+        "memory-state-personalization",
         "search-retrieval",
         "pre-release-signals"
       ],
       "overallScore": 37,
+      "priority": "critical",
+      "topDomains": [
+        {
+          "domainId": "compliance",
+          "domainLabel": "Compliance and Governance Intelligence",
+          "score": 16,
+          "keywordMatches": 2
+        },
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 12,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 6,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
+    },
+    {
+      "sourceId": "arxiv-cs-ai",
+      "sourceName": "arXiv cs.AI (Preprint Signals)",
+      "title": "AI-Driven Controlled Environment Agriculture as Resilient Infrastructure for U.S. Fresh-Produce Supply Chains",
+      "url": "https://arxiv.org/abs/2605.23946",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
+      "capabilityTags": [
+        "agents-autonomy",
+        "developer-platforms",
+        "security-governance",
+        "search-retrieval",
+        "pre-release-signals"
+      ],
+      "overallScore": 37,
+      "priority": "critical",
+      "topDomains": [
+        {
+          "domainId": "compliance",
+          "domainLabel": "Compliance and Governance Intelligence",
+          "score": 15,
+          "keywordMatches": 3
+        },
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 9,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 8,
+          "keywordMatches": 1
+        }
+      ],
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
+    },
+    {
+      "sourceId": "arxiv-cs-cv",
+      "sourceName": "arXiv cs.CV (Preprint Signals)",
+      "title": "PhotoFlow: Agentic 3D Virtual Photography Missions",
+      "url": "https://arxiv.org/abs/2605.23771",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
+      "capabilityTags": [
+        "agents-autonomy",
+        "models-reasoning",
+        "multimodal-voice-vision",
+        "infra-inference-edge",
+        "memory-state-personalization",
+        "search-retrieval",
+        "pre-release-signals"
+      ],
+      "overallScore": 36,
+      "priority": "critical",
+      "topDomains": [
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 15,
+          "keywordMatches": 3
+        },
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 9,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "civil",
+          "domainLabel": "Civil and Pavement Intelligence",
+          "score": 6,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
+    },
+    {
+      "sourceId": "arxiv-cs-cv",
+      "sourceName": "arXiv cs.CV (Preprint Signals)",
+      "title": "B-GRTO: Bootstrapped Group Relative Tool Optimization for Referring Segmentation",
+      "url": "https://arxiv.org/abs/2605.23500",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
+      "capabilityTags": [
+        "agents-autonomy",
+        "models-reasoning",
+        "multimodal-voice-vision",
+        "developer-platforms",
+        "security-governance",
+        "memory-state-personalization",
+        "pre-release-signals"
+      ],
+      "overallScore": 36,
+      "priority": "critical",
+      "topDomains": [
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 13,
+          "keywordMatches": 2
+        },
+        {
+          "domainId": "compliance",
+          "domainLabel": "Compliance and Governance Intelligence",
+          "score": 11,
+          "keywordMatches": 1
+        },
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 9,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
+    },
+    {
+      "sourceId": "arxiv-cs-ai",
+      "sourceName": "arXiv cs.AI (Preprint Signals)",
+      "title": "ActQuant: Sub-4-bit Action-Guided Quantization for Vision-Language-Action Models",
+      "url": "https://arxiv.org/abs/2605.24011",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
+      "capabilityTags": [
+        "agents-autonomy",
+        "models-reasoning",
+        "multimodal-voice-vision",
+        "developer-platforms",
+        "infra-inference-edge",
+        "memory-state-personalization",
+        "pre-release-signals"
+      ],
+      "overallScore": 35,
       "priority": "critical",
       "topDomains": [
         {
@@ -423,287 +468,71 @@
         {
           "domainId": "civil",
           "domainLabel": "Civil and Pavement Intelligence",
-          "score": 8,
-          "keywordMatches": 1
-        }
-      ]
-    },
-    {
-      "sourceId": "arxiv-cs-cv",
-      "sourceName": "arXiv cs.CV (Preprint Signals)",
-      "title": "MedVIGIL: Evaluating Trustworthy Medical VLMs Under Broken Visual Evidence",
-      "url": "https://arxiv.org/abs/2605.07919",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
-      "capabilityTags": [
-        "models-reasoning",
-        "multimodal-voice-vision",
-        "developer-platforms",
-        "infra-inference-edge",
-        "security-governance",
-        "search-retrieval",
-        "pre-release-signals"
-      ],
-      "overallScore": 37,
-      "priority": "critical",
-      "topDomains": [
-        {
-          "domainId": "scanning",
-          "domainLabel": "Scanning and Computer Vision Intelligence",
-          "score": 13,
-          "keywordMatches": 2
-        },
-        {
-          "domainId": "compliance",
-          "domainLabel": "Compliance and Governance Intelligence",
-          "score": 11,
-          "keywordMatches": 1
-        },
-        {
-          "domainId": "gc",
-          "domainLabel": "General Contracting Intelligence",
           "score": 6,
           "keywordMatches": 0
         }
-      ]
+      ],
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
     },
     {
       "sourceId": "arxiv-cs-ai",
       "sourceName": "arXiv cs.AI (Preprint Signals)",
-      "title": "An AI-Driven Framework for Energy-Efficient Environmental Monitoring in Smart Cities Using Edge Intelligence",
-      "url": "https://arxiv.org/abs/2605.22824",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
+      "title": "Agent-Centric Social Trajectory Prediction: A Free Energy Principle Perspective",
+      "url": "https://arxiv.org/abs/2605.25748",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
       "capabilityTags": [
+        "agents-autonomy",
         "multimodal-voice-vision",
         "developer-platforms",
         "infra-inference-edge",
         "memory-state-personalization",
-        "search-retrieval",
-        "pre-release-signals"
-      ],
-      "overallScore": 36,
-      "priority": "critical",
-      "topDomains": [
-        {
-          "domainId": "scanning",
-          "domainLabel": "Scanning and Computer Vision Intelligence",
-          "score": 11,
-          "keywordMatches": 1
-        },
-        {
-          "domainId": "gc",
-          "domainLabel": "General Contracting Intelligence",
-          "score": 9,
-          "keywordMatches": 0
-        },
-        {
-          "domainId": "compliance",
-          "domainLabel": "Compliance and Governance Intelligence",
-          "score": 9,
-          "keywordMatches": 0
-        }
-      ]
-    },
-    {
-      "sourceId": "arxiv-cs-cv",
-      "sourceName": "arXiv cs.CV (Preprint Signals)",
-      "title": "B-GRTO: Bootstrapped Group Relative Tool Optimization for Referring Segmentation",
-      "url": "https://arxiv.org/abs/2605.23500",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
-      "capabilityTags": [
-        "agents-autonomy",
-        "models-reasoning",
-        "multimodal-voice-vision",
-        "developer-platforms",
-        "security-governance",
-        "memory-state-personalization",
-        "pre-release-signals"
-      ],
-      "overallScore": 36,
-      "priority": "critical",
-      "topDomains": [
-        {
-          "domainId": "scanning",
-          "domainLabel": "Scanning and Computer Vision Intelligence",
-          "score": 13,
-          "keywordMatches": 2
-        },
-        {
-          "domainId": "compliance",
-          "domainLabel": "Compliance and Governance Intelligence",
-          "score": 11,
-          "keywordMatches": 1
-        },
-        {
-          "domainId": "gc",
-          "domainLabel": "General Contracting Intelligence",
-          "score": 9,
-          "keywordMatches": 0
-        }
-      ]
-    },
-    {
-      "sourceId": "arxiv-cs-ai",
-      "sourceName": "arXiv cs.AI (Preprint Signals)",
-      "title": "Co-ReAct: Rubrics as Step-Level Collaborators for ReAct Agents",
-      "url": "https://arxiv.org/abs/2605.23590",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
-      "capabilityTags": [
-        "agents-autonomy",
-        "models-reasoning",
-        "developer-platforms",
-        "infra-inference-edge",
-        "memory-state-personalization",
-        "search-retrieval",
-        "pre-release-signals"
-      ],
-      "overallScore": 36,
-      "priority": "critical",
-      "topDomains": [
-        {
-          "domainId": "gc",
-          "domainLabel": "General Contracting Intelligence",
-          "score": 12,
-          "keywordMatches": 0
-        },
-        {
-          "domainId": "scanning",
-          "domainLabel": "Scanning and Computer Vision Intelligence",
-          "score": 9,
-          "keywordMatches": 0
-        },
-        {
-          "domainId": "compliance",
-          "domainLabel": "Compliance and Governance Intelligence",
-          "score": 9,
-          "keywordMatches": 0
-        }
-      ]
-    },
-    {
-      "sourceId": "arxiv-cs-ai",
-      "sourceName": "arXiv cs.AI (Preprint Signals)",
-      "title": "FastKernels: Benchmarking GPU Kernel Generation in Production",
-      "url": "https://arxiv.org/abs/2605.23215",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
-      "capabilityTags": [
-        "agents-autonomy",
-        "developer-platforms",
-        "infra-inference-edge",
-        "memory-state-personalization",
-        "search-retrieval",
-        "pre-release-signals"
-      ],
-      "overallScore": 36,
-      "priority": "critical",
-      "topDomains": [
-        {
-          "domainId": "gc",
-          "domainLabel": "General Contracting Intelligence",
-          "score": 12,
-          "keywordMatches": 0
-        },
-        {
-          "domainId": "scanning",
-          "domainLabel": "Scanning and Computer Vision Intelligence",
-          "score": 9,
-          "keywordMatches": 0
-        },
-        {
-          "domainId": "compliance",
-          "domainLabel": "Compliance and Governance Intelligence",
-          "score": 9,
-          "keywordMatches": 0
-        }
-      ]
-    },
-    {
-      "sourceId": "arxiv-cs-ai",
-      "sourceName": "arXiv cs.AI (Preprint Signals)",
-      "title": "ARMS: Automatic Reward Shaping for Sparse-Reward Multi-Agent Reinforcement Learning",
-      "url": "https://arxiv.org/abs/2605.23562",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
-      "capabilityTags": [
-        "agents-autonomy",
-        "models-reasoning",
-        "developer-platforms",
-        "infra-inference-edge",
-        "security-governance",
-        "search-retrieval",
         "pre-release-signals"
       ],
       "overallScore": 35,
       "priority": "critical",
       "topDomains": [
         {
-          "domainId": "compliance",
-          "domainLabel": "Compliance and Governance Intelligence",
-          "score": 11,
-          "keywordMatches": 1
-        },
-        {
-          "domainId": "gc",
-          "domainLabel": "General Contracting Intelligence",
-          "score": 9,
-          "keywordMatches": 0
-        },
-        {
           "domainId": "scanning",
           "domainLabel": "Scanning and Computer Vision Intelligence",
-          "score": 9,
-          "keywordMatches": 0
-        }
-      ]
-    },
-    {
-      "sourceId": "arxiv-cs-ai",
-      "sourceName": "arXiv cs.AI (Preprint Signals)",
-      "title": "Classical State Preparation for Variational Quantum Algorithms via Reinforcement Learning",
-      "url": "https://arxiv.org/abs/2605.23138",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
-      "capabilityTags": [
-        "agents-autonomy",
-        "developer-platforms",
-        "security-governance",
-        "memory-state-personalization",
-        "search-retrieval",
-        "pre-release-signals"
-      ],
-      "overallScore": 35,
-      "priority": "critical",
-      "topDomains": [
-        {
-          "domainId": "compliance",
-          "domainLabel": "Compliance and Governance Intelligence",
           "score": 14,
           "keywordMatches": 1
         },
         {
           "domainId": "gc",
           "domainLabel": "General Contracting Intelligence",
-          "score": 12,
+          "score": 9,
           "keywordMatches": 0
         },
         {
-          "domainId": "scanning",
-          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "domainId": "civil",
+          "domainLabel": "Civil and Pavement Intelligence",
           "score": 6,
           "keywordMatches": 0
         }
-      ]
+      ],
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
     },
     {
       "sourceId": "arxiv-cs-ai",
       "sourceName": "arXiv cs.AI (Preprint Signals)",
-      "title": "Evaluating Large Language Models in a Complex Hidden Role Game",
-      "url": "https://arxiv.org/abs/2605.22826",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
+      "title": "Agent-ToM: Learning to Monitor Autonomous LLM Agents via Theory-of-Mind Reasoning",
+      "url": "https://arxiv.org/abs/2605.24216",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
       "capabilityTags": [
         "agents-autonomy",
         "models-reasoning",
         "developer-platforms",
+        "infra-inference-edge",
         "security-governance",
         "memory-state-personalization",
-        "search-retrieval",
         "pre-release-signals"
       ],
       "overallScore": 35,
@@ -712,29 +541,34 @@
         {
           "domainId": "compliance",
           "domainLabel": "Compliance and Governance Intelligence",
-          "score": 14,
+          "score": 11,
           "keywordMatches": 1
         },
         {
           "domainId": "gc",
           "domainLabel": "General Contracting Intelligence",
-          "score": 12,
+          "score": 9,
           "keywordMatches": 0
         },
         {
           "domainId": "scanning",
           "domainLabel": "Scanning and Computer Vision Intelligence",
-          "score": 6,
+          "score": 9,
           "keywordMatches": 0
         }
-      ]
+      ],
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
     },
     {
       "sourceId": "arxiv-cs-cv",
       "sourceName": "arXiv cs.CV (Preprint Signals)",
       "title": "FAST-ME: Foundation-aware Adaptive Stopping for Motion Estimation for Efficient IoT Video Analysis",
       "url": "https://arxiv.org/abs/2605.23428",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
       "capabilityTags": [
         "agents-autonomy",
         "models-reasoning",
@@ -764,14 +598,19 @@
           "score": 6,
           "keywordMatches": 0
         }
-      ]
+      ],
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
     },
     {
       "sourceId": "arxiv-cs-cv",
       "sourceName": "arXiv cs.CV (Preprint Signals)",
       "title": "GFSR: Geometric Fidelity and Spatial Refinement for Reliable Lane Detection",
       "url": "https://arxiv.org/abs/2605.23327",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
       "capabilityTags": [
         "agents-autonomy",
         "models-reasoning",
@@ -802,14 +641,104 @@
           "score": 9,
           "keywordMatches": 0
         }
-      ]
+      ],
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
     },
     {
       "sourceId": "arxiv-cs-ai",
       "sourceName": "arXiv cs.AI (Preprint Signals)",
-      "title": "Anatomy-Guided Vision-Language Learning with Angular Prototype Separation for Multi-Label Video Capsule Endoscopy Classification Under Class Imbalance",
-      "url": "https://arxiv.org/abs/2603.17879",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
+      "title": "Authority Inversion in LLM-Mediated Ubiquitous Systems: When Models Trust Users Over Sensors",
+      "url": "https://arxiv.org/abs/2605.23938",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
+      "capabilityTags": [
+        "models-reasoning",
+        "developer-platforms",
+        "infra-inference-edge",
+        "security-governance",
+        "memory-state-personalization",
+        "search-retrieval",
+        "pre-release-signals"
+      ],
+      "overallScore": 34,
+      "priority": "critical",
+      "topDomains": [
+        {
+          "domainId": "compliance",
+          "domainLabel": "Compliance and Governance Intelligence",
+          "score": 14,
+          "keywordMatches": 1
+        },
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 9,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 8,
+          "keywordMatches": 1
+        }
+      ],
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
+    },
+    {
+      "sourceId": "arxiv-cs-cv",
+      "sourceName": "arXiv cs.CV (Preprint Signals)",
+      "title": "CVSearch: Empowering Multimodal LLMs with Cognitive Visual Search for High-Resolution Image Perception",
+      "url": "https://arxiv.org/abs/2605.23655",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
+      "capabilityTags": [
+        "models-reasoning",
+        "multimodal-voice-vision",
+        "developer-platforms",
+        "memory-state-personalization",
+        "search-retrieval",
+        "pre-release-signals"
+      ],
+      "overallScore": 34,
+      "priority": "critical",
+      "topDomains": [
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 14,
+          "keywordMatches": 4
+        },
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 11,
+          "keywordMatches": 1
+        },
+        {
+          "domainId": "compliance",
+          "domainLabel": "Compliance and Governance Intelligence",
+          "score": 9,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
+    },
+    {
+      "sourceId": "arxiv-cs-cv",
+      "sourceName": "arXiv cs.CV (Preprint Signals)",
+      "title": "MDS-DETR: DETR with Masked Duplicate Suppressor",
+      "url": "https://arxiv.org/abs/2605.23507",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
       "capabilityTags": [
         "models-reasoning",
         "multimodal-voice-vision",
@@ -823,8 +752,133 @@
       "priority": "critical",
       "topDomains": [
         {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 11,
+          "keywordMatches": 1
+        },
+        {
           "domainId": "scanning",
           "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 11,
+          "keywordMatches": 1
+        },
+        {
+          "domainId": "compliance",
+          "domainLabel": "Compliance and Governance Intelligence",
+          "score": 9,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
+    },
+    {
+      "sourceId": "arxiv-cs-cv",
+      "sourceName": "arXiv cs.CV (Preprint Signals)",
+      "title": "Scene Reconstruction as Mapping Priors for 3D Detection",
+      "url": "https://arxiv.org/abs/2605.22997",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
+      "capabilityTags": [
+        "agents-autonomy",
+        "developer-platforms",
+        "memory-state-personalization",
+        "search-retrieval",
+        "pre-release-signals"
+      ],
+      "overallScore": 32,
+      "priority": "critical",
+      "topDomains": [
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 12,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "compliance",
+          "domainLabel": "Compliance and Governance Intelligence",
+          "score": 9,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 8,
+          "keywordMatches": 1
+        }
+      ],
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
+    },
+    {
+      "sourceId": "arxiv-cs-ai",
+      "sourceName": "arXiv cs.AI (Preprint Signals)",
+      "title": "Adaptive Human-AI Coordination via Hierarchical Action Disentanglement",
+      "url": "https://arxiv.org/abs/2605.24343",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
+      "capabilityTags": [
+        "agents-autonomy",
+        "models-reasoning",
+        "developer-platforms",
+        "security-governance",
+        "search-retrieval",
+        "pre-release-signals"
+      ],
+      "overallScore": 31,
+      "priority": "critical",
+      "topDomains": [
+        {
+          "domainId": "compliance",
+          "domainLabel": "Compliance and Governance Intelligence",
+          "score": 11,
+          "keywordMatches": 1
+        },
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 9,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 6,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
+    },
+    {
+      "sourceId": "arxiv-cs-ai",
+      "sourceName": "arXiv cs.AI (Preprint Signals)",
+      "title": "Attested Tool-Server Admission: A Security Extension to the Model Context Protocol",
+      "url": "https://arxiv.org/abs/2605.24248",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
+      "capabilityTags": [
+        "agents-autonomy",
+        "models-reasoning",
+        "developer-platforms",
+        "security-governance",
+        "memory-state-personalization",
+        "pre-release-signals"
+      ],
+      "overallScore": 31,
+      "priority": "critical",
+      "topDomains": [
+        {
+          "domainId": "compliance",
+          "domainLabel": "Compliance and Governance Intelligence",
           "score": 13,
           "keywordMatches": 2
         },
@@ -835,394 +889,24 @@
           "keywordMatches": 0
         },
         {
-          "domainId": "compliance",
-          "domainLabel": "Compliance and Governance Intelligence",
-          "score": 9,
-          "keywordMatches": 0
-        }
-      ]
-    },
-    {
-      "sourceId": "arxiv-cs-ai",
-      "sourceName": "arXiv cs.AI (Preprint Signals)",
-      "title": "Computable Fairness: Boltzmann-Softmax Control for AI Resource Allocation",
-      "url": "https://arxiv.org/abs/2605.22827",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
-      "capabilityTags": [
-        "agents-autonomy",
-        "models-reasoning",
-        "multimodal-voice-vision",
-        "developer-platforms",
-        "infra-inference-edge",
-        "security-governance",
-        "pre-release-signals"
-      ],
-      "overallScore": 34,
-      "priority": "critical",
-      "topDomains": [
-        {
-          "domainId": "scanning",
-          "domainLabel": "Scanning and Computer Vision Intelligence",
-          "score": 14,
-          "keywordMatches": 1
-        },
-        {
-          "domainId": "compliance",
-          "domainLabel": "Compliance and Governance Intelligence",
-          "score": 8,
-          "keywordMatches": 1
-        },
-        {
-          "domainId": "civil",
-          "domainLabel": "Civil and Pavement Intelligence",
-          "score": 6,
-          "keywordMatches": 0
-        }
-      ]
-    },
-    {
-      "sourceId": "arxiv-cs-ai",
-      "sourceName": "arXiv cs.AI (Preprint Signals)",
-      "title": "CVSearch: Empowering Multimodal LLMs with Cognitive Visual Search for High-Resolution Image Perception",
-      "url": "https://arxiv.org/abs/2605.23655",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
-      "capabilityTags": [
-        "models-reasoning",
-        "multimodal-voice-vision",
-        "developer-platforms",
-        "memory-state-personalization",
-        "search-retrieval",
-        "pre-release-signals"
-      ],
-      "overallScore": 34,
-      "priority": "critical",
-      "topDomains": [
-        {
-          "domainId": "scanning",
-          "domainLabel": "Scanning and Computer Vision Intelligence",
-          "score": 14,
-          "keywordMatches": 4
-        },
-        {
-          "domainId": "gc",
-          "domainLabel": "General Contracting Intelligence",
-          "score": 11,
-          "keywordMatches": 1
-        },
-        {
-          "domainId": "compliance",
-          "domainLabel": "Compliance and Governance Intelligence",
-          "score": 9,
-          "keywordMatches": 0
-        }
-      ]
-    },
-    {
-      "sourceId": "arxiv-cs-cv",
-      "sourceName": "arXiv cs.CV (Preprint Signals)",
-      "title": "MDS-DETR: DETR with Masked Duplicate Suppressor",
-      "url": "https://arxiv.org/abs/2605.23507",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
-      "capabilityTags": [
-        "models-reasoning",
-        "multimodal-voice-vision",
-        "developer-platforms",
-        "infra-inference-edge",
-        "memory-state-personalization",
-        "search-retrieval",
-        "pre-release-signals"
-      ],
-      "overallScore": 34,
-      "priority": "critical",
-      "topDomains": [
-        {
-          "domainId": "gc",
-          "domainLabel": "General Contracting Intelligence",
-          "score": 11,
-          "keywordMatches": 1
-        },
-        {
-          "domainId": "scanning",
-          "domainLabel": "Scanning and Computer Vision Intelligence",
-          "score": 11,
-          "keywordMatches": 1
-        },
-        {
-          "domainId": "compliance",
-          "domainLabel": "Compliance and Governance Intelligence",
-          "score": 9,
-          "keywordMatches": 0
-        }
-      ]
-    },
-    {
-      "sourceId": "arxiv-cs-ai",
-      "sourceName": "arXiv cs.AI (Preprint Signals)",
-      "title": "Diffusion and Flow Matching Models for Tabular Data: A Survey",
-      "url": "https://arxiv.org/abs/2502.17119",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
-      "capabilityTags": [
-        "models-reasoning",
-        "multimodal-voice-vision",
-        "developer-platforms",
-        "infra-inference-edge",
-        "security-governance",
-        "search-retrieval",
-        "pre-release-signals"
-      ],
-      "overallScore": 33,
-      "priority": "critical",
-      "topDomains": [
-        {
-          "domainId": "scanning",
-          "domainLabel": "Scanning and Computer Vision Intelligence",
-          "score": 15,
-          "keywordMatches": 3
-        },
-        {
-          "domainId": "compliance",
-          "domainLabel": "Compliance and Governance Intelligence",
-          "score": 9,
-          "keywordMatches": 0
-        },
-        {
-          "domainId": "gc",
-          "domainLabel": "General Contracting Intelligence",
-          "score": 6,
-          "keywordMatches": 0
-        }
-      ]
-    },
-    {
-      "sourceId": "arxiv-cs-ai",
-      "sourceName": "arXiv cs.AI (Preprint Signals)",
-      "title": "A Proactive Multi-Agent Dialogue Framework for Assessing Social Language Disorder Traits in Autism",
-      "url": "https://arxiv.org/abs/2605.22993",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
-      "capabilityTags": [
-        "agents-autonomy",
-        "models-reasoning",
-        "developer-platforms",
-        "infra-inference-edge",
-        "search-retrieval",
-        "pre-release-signals"
-      ],
-      "overallScore": 32,
-      "priority": "critical",
-      "topDomains": [
-        {
-          "domainId": "gc",
-          "domainLabel": "General Contracting Intelligence",
-          "score": 11,
-          "keywordMatches": 1
-        },
-        {
-          "domainId": "scanning",
-          "domainLabel": "Scanning and Computer Vision Intelligence",
-          "score": 9,
-          "keywordMatches": 0
-        },
-        {
-          "domainId": "civil",
-          "domainLabel": "Civil and Pavement Intelligence",
-          "score": 6,
-          "keywordMatches": 0
-        }
-      ]
-    },
-    {
-      "sourceId": "arxiv-cs-ai",
-      "sourceName": "arXiv cs.AI (Preprint Signals)",
-      "title": "Autonomous Frontier-Based Exploration with VLM Guidance",
-      "url": "https://arxiv.org/abs/2605.23165",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
-      "capabilityTags": [
-        "agents-autonomy",
-        "models-reasoning",
-        "multimodal-voice-vision",
-        "memory-state-personalization",
-        "search-retrieval",
-        "pre-release-signals"
-      ],
-      "overallScore": 32,
-      "priority": "critical",
-      "topDomains": [
-        {
-          "domainId": "scanning",
-          "domainLabel": "Scanning and Computer Vision Intelligence",
-          "score": 14,
-          "keywordMatches": 4
-        },
-        {
-          "domainId": "gc",
-          "domainLabel": "General Contracting Intelligence",
-          "score": 9,
-          "keywordMatches": 0
-        },
-        {
-          "domainId": "compliance",
-          "domainLabel": "Compliance and Governance Intelligence",
-          "score": 6,
-          "keywordMatches": 0
-        }
-      ]
-    },
-    {
-      "sourceId": "arxiv-cs-ai",
-      "sourceName": "arXiv cs.AI (Preprint Signals)",
-      "title": "EDGE-OPD: Internalizing Privileged Context with Evidence Guided On-Policy Distillation",
-      "url": "https://arxiv.org/abs/2605.23493",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
-      "capabilityTags": [
-        "models-reasoning",
-        "developer-platforms",
-        "infra-inference-edge",
-        "security-governance",
-        "memory-state-personalization",
-        "search-retrieval",
-        "pre-release-signals"
-      ],
-      "overallScore": 32,
-      "priority": "critical",
-      "topDomains": [
-        {
-          "domainId": "compliance",
-          "domainLabel": "Compliance and Governance Intelligence",
-          "score": 14,
-          "keywordMatches": 1
-        },
-        {
-          "domainId": "gc",
-          "domainLabel": "General Contracting Intelligence",
-          "score": 9,
-          "keywordMatches": 0
-        },
-        {
           "domainId": "scanning",
           "domainLabel": "Scanning and Computer Vision Intelligence",
           "score": 6,
           "keywordMatches": 0
         }
-      ]
-    },
-    {
-      "sourceId": "arxiv-cs-cv",
-      "sourceName": "arXiv cs.CV (Preprint Signals)",
-      "title": "Efficient Learned Image Compression without Entropy Coding",
-      "url": "https://arxiv.org/abs/2605.23323",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
-      "capabilityTags": [
-        "multimodal-voice-vision",
-        "developer-platforms",
-        "infra-inference-edge",
-        "memory-state-personalization",
-        "search-retrieval",
-        "pre-release-signals"
       ],
-      "overallScore": 32,
-      "priority": "critical",
-      "topDomains": [
-        {
-          "domainId": "scanning",
-          "domainLabel": "Scanning and Computer Vision Intelligence",
-          "score": 11,
-          "keywordMatches": 1
-        },
-        {
-          "domainId": "gc",
-          "domainLabel": "General Contracting Intelligence",
-          "score": 9,
-          "keywordMatches": 0
-        },
-        {
-          "domainId": "compliance",
-          "domainLabel": "Compliance and Governance Intelligence",
-          "score": 9,
-          "keywordMatches": 0
-        }
-      ]
-    },
-    {
-      "sourceId": "arxiv-cs-ai",
-      "sourceName": "arXiv cs.AI (Preprint Signals)",
-      "title": "Energy per Successful Goal: Goal-Level Energy Accounting for Agentic AI Systems",
-      "url": "https://arxiv.org/abs/2605.22883",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
-      "capabilityTags": [
-        "agents-autonomy",
-        "models-reasoning",
-        "developer-platforms",
-        "infra-inference-edge",
-        "search-retrieval",
-        "pre-release-signals"
-      ],
-      "overallScore": 32,
-      "priority": "critical",
-      "topDomains": [
-        {
-          "domainId": "gc",
-          "domainLabel": "General Contracting Intelligence",
-          "score": 9,
-          "keywordMatches": 0
-        },
-        {
-          "domainId": "scanning",
-          "domainLabel": "Scanning and Computer Vision Intelligence",
-          "score": 9,
-          "keywordMatches": 0
-        },
-        {
-          "domainId": "civil",
-          "domainLabel": "Civil and Pavement Intelligence",
-          "score": 6,
-          "keywordMatches": 0
-        }
-      ]
-    },
-    {
-      "sourceId": "arxiv-cs-ai",
-      "sourceName": "arXiv cs.AI (Preprint Signals)",
-      "title": "DocVAL: Validated Chain-of-Thought Distillation for Grounded Document VQA",
-      "url": "https://arxiv.org/abs/2511.22521",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
-      "capabilityTags": [
-        "models-reasoning",
-        "multimodal-voice-vision",
-        "developer-platforms",
-        "infra-inference-edge",
-        "security-governance",
-        "search-retrieval",
-        "pre-release-signals"
-      ],
-      "overallScore": 31,
-      "priority": "critical",
-      "topDomains": [
-        {
-          "domainId": "scanning",
-          "domainLabel": "Scanning and Computer Vision Intelligence",
-          "score": 11,
-          "keywordMatches": 1
-        },
-        {
-          "domainId": "compliance",
-          "domainLabel": "Compliance and Governance Intelligence",
-          "score": 9,
-          "keywordMatches": 0
-        },
-        {
-          "domainId": "gc",
-          "domainLabel": "General Contracting Intelligence",
-          "score": 6,
-          "keywordMatches": 0
-        }
-      ]
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
     },
     {
       "sourceId": "arxiv-cs-cv",
       "sourceName": "arXiv cs.CV (Preprint Signals)",
       "title": "General Hazard Detection",
       "url": "https://arxiv.org/abs/2605.23304",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
       "capabilityTags": [
         "models-reasoning",
         "multimodal-voice-vision",
@@ -1252,14 +936,395 @@
           "score": 6,
           "keywordMatches": 0
         }
-      ]
+      ],
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
+    },
+    {
+      "sourceId": "arxiv-cs-ai",
+      "sourceName": "arXiv cs.AI (Preprint Signals)",
+      "title": "AgentArk: Distilling Multi-Agent Intelligence into a Single LLM Agent",
+      "url": "https://arxiv.org/abs/2602.03955",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
+      "capabilityTags": [
+        "agents-autonomy",
+        "models-reasoning",
+        "developer-platforms",
+        "infra-inference-edge",
+        "search-retrieval",
+        "pre-release-signals"
+      ],
+      "overallScore": 30,
+      "priority": "critical",
+      "topDomains": [
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 9,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 9,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "civil",
+          "domainLabel": "Civil and Pavement Intelligence",
+          "score": 6,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
+    },
+    {
+      "sourceId": "arxiv-cs-ai",
+      "sourceName": "arXiv cs.AI (Preprint Signals)",
+      "title": "An Uncertainty-Aware Resilience Micro-Agent for Causal Observability in the Computing Continuum",
+      "url": "https://arxiv.org/abs/2605.10718",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
+      "capabilityTags": [
+        "agents-autonomy",
+        "developer-platforms",
+        "infra-inference-edge",
+        "memory-state-personalization",
+        "pre-release-signals"
+      ],
+      "overallScore": 30,
+      "priority": "critical",
+      "topDomains": [
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 9,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 9,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "civil",
+          "domainLabel": "Civil and Pavement Intelligence",
+          "score": 6,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
+    },
+    {
+      "sourceId": "arxiv-cs-ai",
+      "sourceName": "arXiv cs.AI (Preprint Signals)",
+      "title": "Auditing medical multi-agent AI reveals risks of false consensus",
+      "url": "https://arxiv.org/abs/2510.10185",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
+      "capabilityTags": [
+        "agents-autonomy",
+        "models-reasoning",
+        "multimodal-voice-vision",
+        "developer-platforms",
+        "security-governance",
+        "pre-release-signals"
+      ],
+      "overallScore": 30,
+      "priority": "critical",
+      "topDomains": [
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 11,
+          "keywordMatches": 1
+        },
+        {
+          "domainId": "compliance",
+          "domainLabel": "Compliance and Governance Intelligence",
+          "score": 10,
+          "keywordMatches": 2
+        },
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 6,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
+    },
+    {
+      "sourceId": "arxiv-cs-ai",
+      "sourceName": "arXiv cs.AI (Preprint Signals)",
+      "title": "Beyond the Final Answer: Evaluating the Reasoning Trajectories of Tool-Augmented Agents",
+      "url": "https://arxiv.org/abs/2510.02837",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
+      "capabilityTags": [
+        "agents-autonomy",
+        "models-reasoning",
+        "developer-platforms",
+        "infra-inference-edge",
+        "search-retrieval",
+        "pre-release-signals"
+      ],
+      "overallScore": 30,
+      "priority": "critical",
+      "topDomains": [
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 9,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 9,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "civil",
+          "domainLabel": "Civil and Pavement Intelligence",
+          "score": 6,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
     },
     {
       "sourceId": "arxiv-cs-cv",
       "sourceName": "arXiv cs.CV (Preprint Signals)",
-      "title": "How Far Are We from Generating Missing Modalities with Foundation Models?",
-      "url": "https://arxiv.org/abs/2506.03530",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
+      "title": "LangFlash: Feed-forward 3D Language Gaussian Splatting from Sparse Unposed Images",
+      "url": "https://arxiv.org/abs/2605.23287",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
+      "capabilityTags": [
+        "multimodal-voice-vision",
+        "developer-platforms",
+        "infra-inference-edge",
+        "memory-state-personalization",
+        "pre-release-signals"
+      ],
+      "overallScore": 30,
+      "priority": "critical",
+      "topDomains": [
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 15,
+          "keywordMatches": 3
+        },
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 6,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "compliance",
+          "domainLabel": "Compliance and Governance Intelligence",
+          "score": 6,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
+    },
+    {
+      "sourceId": "arxiv-cs-cv",
+      "sourceName": "arXiv cs.CV (Preprint Signals)",
+      "title": "Multimodal Distribution Matching for Vision-Language Dataset Distillation",
+      "url": "https://arxiv.org/abs/2605.23482",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
+      "capabilityTags": [
+        "models-reasoning",
+        "multimodal-voice-vision",
+        "developer-platforms",
+        "memory-state-personalization",
+        "search-retrieval",
+        "pre-release-signals"
+      ],
+      "overallScore": 30,
+      "priority": "critical",
+      "topDomains": [
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 12,
+          "keywordMatches": 3
+        },
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 9,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "compliance",
+          "domainLabel": "Compliance and Governance Intelligence",
+          "score": 9,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
+    },
+    {
+      "sourceId": "arxiv-cs-ai",
+      "sourceName": "arXiv cs.AI (Preprint Signals)",
+      "title": "A Tertiary Review of Large Language Model-Based Code Generating Tasks: Trends, Challenges, and Future Directions",
+      "url": "https://arxiv.org/abs/2605.25536",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
+      "capabilityTags": [
+        "models-reasoning",
+        "developer-platforms",
+        "infra-inference-edge",
+        "memory-state-personalization",
+        "search-retrieval",
+        "pre-release-signals"
+      ],
+      "overallScore": 29,
+      "priority": "critical",
+      "topDomains": [
+        {
+          "domainId": "compliance",
+          "domainLabel": "Compliance and Governance Intelligence",
+          "score": 11,
+          "keywordMatches": 1
+        },
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 9,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 6,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
+    },
+    {
+      "sourceId": "arxiv-cs-ai",
+      "sourceName": "arXiv cs.AI (Preprint Signals)",
+      "title": "AgentHijack: Benchmarking Computer Use Agent Robustness to Common Environment Corruptions",
+      "url": "https://arxiv.org/abs/2605.25707",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
+      "capabilityTags": [
+        "agents-autonomy",
+        "models-reasoning",
+        "multimodal-voice-vision",
+        "developer-platforms",
+        "search-retrieval",
+        "pre-release-signals"
+      ],
+      "overallScore": 29,
+      "priority": "critical",
+      "topDomains": [
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 11,
+          "keywordMatches": 1
+        },
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 9,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "compliance",
+          "domainLabel": "Compliance and Governance Intelligence",
+          "score": 6,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
+    },
+    {
+      "sourceId": "arxiv-cs-ai",
+      "sourceName": "arXiv cs.AI (Preprint Signals)",
+      "title": "ATWL: A Formal Language for Representing, Comparing, and Reusing Visual Analytics Workflows",
+      "url": "https://arxiv.org/abs/2605.25489",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
+      "capabilityTags": [
+        "agents-autonomy",
+        "models-reasoning",
+        "infra-inference-edge",
+        "memory-state-personalization",
+        "search-retrieval",
+        "pre-release-signals"
+      ],
+      "overallScore": 29,
+      "priority": "critical",
+      "topDomains": [
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 9,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "civil",
+          "domainLabel": "Civil and Pavement Intelligence",
+          "score": 8,
+          "keywordMatches": 1
+        },
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 6,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
+    },
+    {
+      "sourceId": "arxiv-cs-ai",
+      "sourceName": "arXiv cs.AI (Preprint Signals)",
+      "title": "Back to Parsimonious Latents: Learning Task-Centric World Models from Visual Foundations",
+      "url": "https://arxiv.org/abs/2605.25620",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
       "capabilityTags": [
         "agents-autonomy",
         "models-reasoning",
@@ -1268,13 +1333,139 @@
         "memory-state-personalization",
         "pre-release-signals"
       ],
-      "overallScore": 31,
+      "overallScore": 29,
       "priority": "critical",
       "topDomains": [
         {
           "domainId": "scanning",
           "domainLabel": "Scanning and Computer Vision Intelligence",
-          "score": 13,
+          "score": 11,
+          "keywordMatches": 1
+        },
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 9,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "compliance",
+          "domainLabel": "Compliance and Governance Intelligence",
+          "score": 6,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
+    },
+    {
+      "sourceId": "arxiv-cs-cv",
+      "sourceName": "arXiv cs.CV (Preprint Signals)",
+      "title": "IntentionNav: A Benchmark for Intent-Driven Object Navigation from Implicit Human Instruction",
+      "url": "https://arxiv.org/abs/2605.23187",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
+      "capabilityTags": [
+        "agents-autonomy",
+        "models-reasoning",
+        "infra-inference-edge",
+        "memory-state-personalization",
+        "search-retrieval",
+        "pre-release-signals"
+      ],
+      "overallScore": 29,
+      "priority": "critical",
+      "topDomains": [
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 9,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "civil",
+          "domainLabel": "Civil and Pavement Intelligence",
+          "score": 6,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 6,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
+    },
+    {
+      "sourceId": "arxiv-cs-ai",
+      "sourceName": "arXiv cs.AI (Preprint Signals)",
+      "title": "Beyond Killer Robots: General AI Attitudes and Public Support for Military AI in Nine Countries",
+      "url": "https://arxiv.org/abs/2605.25196",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
+      "capabilityTags": [
+        "agents-autonomy",
+        "models-reasoning",
+        "security-governance",
+        "memory-state-personalization",
+        "search-retrieval",
+        "pre-release-signals"
+      ],
+      "overallScore": 28,
+      "priority": "critical",
+      "topDomains": [
+        {
+          "domainId": "compliance",
+          "domainLabel": "Compliance and Governance Intelligence",
+          "score": 11,
+          "keywordMatches": 1
+        },
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 9,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 5,
+          "keywordMatches": 1
+        }
+      ],
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
+    },
+    {
+      "sourceId": "arxiv-cs-cv",
+      "sourceName": "arXiv cs.CV (Preprint Signals)",
+      "title": "PixIE: Prompted Pixel-Space Low-Light Image Enhancement",
+      "url": "https://arxiv.org/abs/2605.23531",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
+      "capabilityTags": [
+        "models-reasoning",
+        "multimodal-voice-vision",
+        "developer-platforms",
+        "memory-state-personalization",
+        "search-retrieval",
+        "pre-release-signals"
+      ],
+      "overallScore": 28,
+      "priority": "critical",
+      "topDomains": [
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 10,
           "keywordMatches": 2
         },
         {
@@ -1286,217 +1477,205 @@
         {
           "domainId": "compliance",
           "domainLabel": "Compliance and Governance Intelligence",
-          "score": 6,
+          "score": 9,
           "keywordMatches": 0
         }
-      ]
+      ],
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
     },
     {
       "sourceId": "arxiv-cs-cv",
       "sourceName": "arXiv cs.CV (Preprint Signals)",
-      "title": "Investigating Robot Control Policy Learning for Autonomous X-ray-guided Spine Procedures",
-      "url": "https://arxiv.org/abs/2511.03882",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
+      "title": "Revitalizing Dense Material Segmentation: Stabilized Vision Transformers and the Generalization Paradox",
+      "url": "https://arxiv.org/abs/2605.23747",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
+      "capabilityTags": [
+        "models-reasoning",
+        "multimodal-voice-vision",
+        "developer-platforms",
+        "memory-state-personalization",
+        "search-retrieval",
+        "pre-release-signals"
+      ],
+      "overallScore": 28,
+      "priority": "critical",
+      "topDomains": [
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 9,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "compliance",
+          "domainLabel": "Compliance and Governance Intelligence",
+          "score": 9,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 8,
+          "keywordMatches": 1
+        }
+      ],
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
+    },
+    {
+      "sourceId": "arxiv-cs-cv",
+      "sourceName": "arXiv cs.CV (Preprint Signals)",
+      "title": "U-CESE: Unified Clip-based Event Search Engine for AI Challenge HCMC 2025",
+      "url": "https://arxiv.org/abs/2605.23274",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
+      "capabilityTags": [
+        "multimodal-voice-vision",
+        "developer-platforms",
+        "memory-state-personalization",
+        "search-retrieval",
+        "pre-release-signals"
+      ],
+      "overallScore": 28,
+      "priority": "critical",
+      "topDomains": [
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 10,
+          "keywordMatches": 2
+        },
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 9,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "compliance",
+          "domainLabel": "Compliance and Governance Intelligence",
+          "score": 9,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
+    },
+    {
+      "sourceId": "arxiv-cs-cv",
+      "sourceName": "arXiv cs.CV (Preprint Signals)",
+      "title": "Weierstrass Positional Encoding for Vision Transformers",
+      "url": "https://arxiv.org/abs/2605.23719",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
+      "capabilityTags": [
+        "models-reasoning",
+        "multimodal-voice-vision",
+        "developer-platforms",
+        "memory-state-personalization",
+        "search-retrieval",
+        "pre-release-signals"
+      ],
+      "overallScore": 28,
+      "priority": "critical",
+      "topDomains": [
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 10,
+          "keywordMatches": 2
+        },
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 9,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "compliance",
+          "domainLabel": "Compliance and Governance Intelligence",
+          "score": 9,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
+    },
+    {
+      "sourceId": "arxiv-cs-cv",
+      "sourceName": "arXiv cs.CV (Preprint Signals)",
+      "title": "CoReVAD: A Contextual Reasoning Framework for Training-Free Video Anomaly Detection",
+      "url": "https://arxiv.org/abs/2605.23116",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
+      "capabilityTags": [
+        "models-reasoning",
+        "multimodal-voice-vision",
+        "developer-platforms",
+        "infra-inference-edge",
+        "memory-state-personalization",
+        "pre-release-signals"
+      ],
+      "overallScore": 28,
+      "priority": "critical",
+      "topDomains": [
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 13,
+          "keywordMatches": 2
+        },
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 6,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "compliance",
+          "domainLabel": "Compliance and Governance Intelligence",
+          "score": 6,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
+    },
+    {
+      "sourceId": "arxiv-cs-cv",
+      "sourceName": "arXiv cs.CV (Preprint Signals)",
+      "title": "DepthAgent: Towards Better Universal Depth Estimation via Sample-wise Expert Selection",
+      "url": "https://arxiv.org/abs/2605.23281",
+      "publishedAt": "2026-05-26T04:00:00.000Z",
       "capabilityTags": [
         "agents-autonomy",
         "models-reasoning",
         "multimodal-voice-vision",
         "infra-inference-edge",
-        "security-governance",
         "search-retrieval",
         "pre-release-signals"
       ],
-      "overallScore": 31,
+      "overallScore": 28,
       "priority": "critical",
       "topDomains": [
         {
           "domainId": "scanning",
           "domainLabel": "Scanning and Computer Vision Intelligence",
-          "score": 11,
-          "keywordMatches": 1
-        },
-        {
-          "domainId": "compliance",
-          "domainLabel": "Compliance and Governance Intelligence",
-          "score": 8,
-          "keywordMatches": 1
-        },
-        {
-          "domainId": "civil",
-          "domainLabel": "Civil and Pavement Intelligence",
-          "score": 6,
-          "keywordMatches": 0
-        }
-      ]
-    },
-    {
-      "sourceId": "arxiv-cs-ai",
-      "sourceName": "arXiv cs.AI (Preprint Signals)",
-      "title": "A measurement substrate for agentic Kubernetes operations: Methodology and a case study in retrieval-compounding falsification",
-      "url": "https://arxiv.org/abs/2605.23058",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
-      "capabilityTags": [
-        "agents-autonomy",
-        "models-reasoning",
-        "developer-platforms",
-        "memory-state-personalization",
-        "search-retrieval",
-        "pre-release-signals"
-      ],
-      "overallScore": 30,
-      "priority": "critical",
-      "topDomains": [
-        {
-          "domainId": "gc",
-          "domainLabel": "General Contracting Intelligence",
-          "score": 12,
-          "keywordMatches": 0
-        },
-        {
-          "domainId": "compliance",
-          "domainLabel": "Compliance and Governance Intelligence",
-          "score": 9,
-          "keywordMatches": 0
-        },
-        {
-          "domainId": "scanning",
-          "domainLabel": "Scanning and Computer Vision Intelligence",
-          "score": 6,
-          "keywordMatches": 0
-        }
-      ]
-    },
-    {
-      "sourceId": "arxiv-cs-ai",
-      "sourceName": "arXiv cs.AI (Preprint Signals)",
-      "title": "BarrierSteer: LLM Safety via Learning Barrier Steering",
-      "url": "https://arxiv.org/abs/2602.20102",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
-      "capabilityTags": [
-        "models-reasoning",
-        "developer-platforms",
-        "infra-inference-edge",
-        "security-governance",
-        "memory-state-personalization",
-        "pre-release-signals"
-      ],
-      "overallScore": 30,
-      "priority": "critical",
-      "topDomains": [
-        {
-          "domainId": "compliance",
-          "domainLabel": "Compliance and Governance Intelligence",
-          "score": 11,
-          "keywordMatches": 1
-        },
-        {
-          "domainId": "gc",
-          "domainLabel": "General Contracting Intelligence",
-          "score": 6,
-          "keywordMatches": 0
-        },
-        {
-          "domainId": "scanning",
-          "domainLabel": "Scanning and Computer Vision Intelligence",
-          "score": 6,
-          "keywordMatches": 0
-        }
-      ]
-    },
-    {
-      "sourceId": "arxiv-cs-ai",
-      "sourceName": "arXiv cs.AI (Preprint Signals)",
-      "title": "BOHM: Zero-Cost Hierarchical Attribution for Compound AI Systems",
-      "url": "https://arxiv.org/abs/2605.22866",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
-      "capabilityTags": [
-        "agents-autonomy",
-        "developer-platforms",
-        "memory-state-personalization",
-        "search-retrieval",
-        "pre-release-signals"
-      ],
-      "overallScore": 30,
-      "priority": "critical",
-      "topDomains": [
-        {
-          "domainId": "gc",
-          "domainLabel": "General Contracting Intelligence",
-          "score": 12,
-          "keywordMatches": 0
-        },
-        {
-          "domainId": "compliance",
-          "domainLabel": "Compliance and Governance Intelligence",
-          "score": 9,
-          "keywordMatches": 0
-        },
-        {
-          "domainId": "scanning",
-          "domainLabel": "Scanning and Computer Vision Intelligence",
-          "score": 6,
-          "keywordMatches": 0
-        }
-      ]
-    },
-    {
-      "sourceId": "arxiv-cs-ai",
-      "sourceName": "arXiv cs.AI (Preprint Signals)",
-      "title": "Content-Aware Attack Detection in LLM Agent Tool-Call Traffic: An Empirical Study of Features, Architectures, and Evaluation Protocols",
-      "url": "https://arxiv.org/abs/2605.11053",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
-      "capabilityTags": [
-        "agents-autonomy",
-        "models-reasoning",
-        "developer-platforms",
-        "infra-inference-edge",
-        "memory-state-personalization",
-        "pre-release-signals"
-      ],
-      "overallScore": 30,
-      "priority": "critical",
-      "topDomains": [
-        {
-          "domainId": "gc",
-          "domainLabel": "General Contracting Intelligence",
-          "score": 9,
-          "keywordMatches": 0
-        },
-        {
-          "domainId": "scanning",
-          "domainLabel": "Scanning and Computer Vision Intelligence",
-          "score": 9,
-          "keywordMatches": 0
-        },
-        {
-          "domainId": "civil",
-          "domainLabel": "Civil and Pavement Intelligence",
-          "score": 6,
-          "keywordMatches": 0
-        }
-      ]
-    },
-    {
-      "sourceId": "arxiv-cs-ai",
-      "sourceName": "arXiv cs.AI (Preprint Signals)",
-      "title": "DART: Semantic Recoverability for Structured Tool Agents",
-      "url": "https://arxiv.org/abs/2605.23311",
-      "publishedAt": "2026-05-25T04:00:00.000Z",
-      "capabilityTags": [
-        "agents-autonomy",
-        "infra-inference-edge",
-        "security-governance",
-        "memory-state-personalization",
-        "pre-release-signals"
-      ],
-      "overallScore": 30,
-      "priority": "critical",
-      "topDomains": [
-        {
-          "domainId": "compliance",
-          "domainLabel": "Compliance and Governance Intelligence",
-          "score": 12,
-          "keywordMatches": 3
+          "score": 13,
+          "keywordMatches": 2
         },
         {
           "domainId": "civil",
@@ -1510,20 +1689,806 @@
           "score": 6,
           "keywordMatches": 0
         }
-      ]
+      ],
+      "websitePublication": {
+        "status": "review-required",
+        "reason": "Source is not on the trusted auto-publish list.",
+        "approved": false
+      }
+    }
+  ],
+  "websiteAutoApprovedSignals": [
+    {
+      "sourceId": "hugging-face-blog",
+      "sourceName": "Hugging Face Blog",
+      "title": "Introducing NVIDIA Nemotron 3 Nano Omni: Long-Context Multimodal Intelligence for Documents, Audio and Video Agents",
+      "url": "https://huggingface.co/blog/nvidia/nemotron-3-nano-omni-multimodal-intelligence",
+      "publishedAt": "2026-04-28T15:58:57.000Z",
+      "capabilityTags": [
+        "agents-autonomy",
+        "multimodal-voice-vision",
+        "memory-state-personalization"
+      ],
+      "overallScore": 22,
+      "priority": "critical",
+      "topDomains": [
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 10,
+          "keywordMatches": 2
+        },
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 6,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "civil",
+          "domainLabel": "Civil and Pavement Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "auto-approved",
+        "reason": "Trusted source and safe category for automatic public publication.",
+        "approved": true,
+        "approvedAt": "2026-05-27T01:43:30.601Z"
+      }
+    },
+    {
+      "sourceId": "hugging-face-blog",
+      "sourceName": "Hugging Face Blog",
+      "title": "A New Framework for Evaluating Voice Agents (EVA)",
+      "url": "https://huggingface.co/blog/ServiceNow-AI/eva",
+      "publishedAt": "2026-03-24T02:01:52.000Z",
+      "capabilityTags": [
+        "agents-autonomy",
+        "multimodal-voice-vision",
+        "developer-platforms"
+      ],
+      "overallScore": 21,
+      "priority": "critical",
+      "topDomains": [
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 9,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 6,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "civil",
+          "domainLabel": "Civil and Pavement Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "auto-approved",
+        "reason": "Trusted source and safe category for automatic public publication.",
+        "approved": true,
+        "approvedAt": "2026-05-27T01:43:30.601Z"
+      }
+    },
+    {
+      "sourceId": "github-copilot-changelog",
+      "sourceName": "GitHub Copilot Changelog (HTML fallback)",
+      "title": "One-click fixes for failing Actions with Copilot cloud agent",
+      "url": "https://github.blog/changelog/2026-05-18-one-click-fixes-for-failing-actions-with-copilot-cloud-agent",
+      "publishedAt": "2026-05-18T00:00:00.000Z",
+      "capabilityTags": [
+        "agents-autonomy",
+        "developer-platforms"
+      ],
+      "overallScore": 18,
+      "priority": "critical",
+      "topDomains": [
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 6,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 6,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "civil",
+          "domainLabel": "Civil and Pavement Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "auto-approved",
+        "reason": "Trusted source and safe category for automatic public publication.",
+        "approved": true,
+        "approvedAt": "2026-05-27T01:43:30.601Z"
+      }
+    },
+    {
+      "sourceId": "github-copilot-changelog",
+      "sourceName": "GitHub Copilot Changelog (HTML fallback)",
+      "title": "Introducing Copilot CLI agent and unified sessions view in GitHub Copilot for JetBrains IDEs",
+      "url": "https://github.blog/changelog/2026-05-13-introducing-copilot-cli-agent-and-unified-sessions-view-in-github-copilot-for-jetbrains-ides",
+      "publishedAt": "2026-05-13T00:00:00.000Z",
+      "capabilityTags": [
+        "agents-autonomy",
+        "developer-platforms"
+      ],
+      "overallScore": 18,
+      "priority": "critical",
+      "topDomains": [
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 6,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 6,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "civil",
+          "domainLabel": "Civil and Pavement Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "auto-approved",
+        "reason": "Trusted source and safe category for automatic public publication.",
+        "approved": true,
+        "approvedAt": "2026-05-27T01:43:30.601Z"
+      }
+    },
+    {
+      "sourceId": "github-copilot-changelog",
+      "sourceName": "GitHub Copilot Changelog (HTML fallback)",
+      "title": "Start Copilot cloud agent tasks via the REST API",
+      "url": "https://github.blog/changelog/2026-05-13-start-copilot-cloud-agent-tasks-via-the-rest-api",
+      "publishedAt": "2026-05-13T00:00:00.000Z",
+      "capabilityTags": [
+        "agents-autonomy",
+        "developer-platforms"
+      ],
+      "overallScore": 18,
+      "priority": "critical",
+      "topDomains": [
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 6,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 6,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "civil",
+          "domainLabel": "Civil and Pavement Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "auto-approved",
+        "reason": "Trusted source and safe category for automatic public publication.",
+        "approved": true,
+        "approvedAt": "2026-05-27T01:43:30.601Z"
+      }
+    },
+    {
+      "sourceId": "hugging-face-blog",
+      "sourceName": "Hugging Face Blog",
+      "title": "DeepSeek-V4: a million-token context that agents can actually use",
+      "url": "https://huggingface.co/blog/deepseekv4",
+      "publishedAt": "2026-04-24T00:00:00.000Z",
+      "capabilityTags": [
+        "agents-autonomy",
+        "memory-state-personalization"
+      ],
+      "overallScore": 15,
+      "priority": "critical",
+      "topDomains": [
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 6,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "civil",
+          "domainLabel": "Civil and Pavement Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "auto-approved",
+        "reason": "Trusted source and safe category for automatic public publication.",
+        "approved": true,
+        "approvedAt": "2026-05-27T01:43:30.601Z"
+      }
+    },
+    {
+      "sourceId": "hugging-face-blog",
+      "sourceName": "Hugging Face Blog",
+      "title": "Holotron-12B - High Throughput Computer Use Agent",
+      "url": "https://huggingface.co/blog/Hcompany/holotron-12b",
+      "publishedAt": "2026-03-17T12:33:39.000Z",
+      "capabilityTags": [
+        "agents-autonomy",
+        "infra-inference-edge"
+      ],
+      "overallScore": 15,
+      "priority": "critical",
+      "topDomains": [
+        {
+          "domainId": "civil",
+          "domainLabel": "Civil and Pavement Intelligence",
+          "score": 6,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 6,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "auto-approved",
+        "reason": "Trusted source and safe category for automatic public publication.",
+        "approved": true,
+        "approvedAt": "2026-05-27T01:43:30.601Z"
+      }
+    },
+    {
+      "sourceId": "hugging-face-blog",
+      "sourceName": "Hugging Face Blog",
+      "title": "Harness, Scaffold, and the AI Agent Terms Worth Getting Right",
+      "url": "https://huggingface.co/blog/agent-glossary",
+      "publishedAt": "2026-05-25T00:00:00.000Z",
+      "capabilityTags": [
+        "agents-autonomy"
+      ],
+      "overallScore": 9,
+      "priority": "high",
+      "topDomains": [
+        {
+          "domainId": "civil",
+          "domainLabel": "Civil and Pavement Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "auto-approved",
+        "reason": "Trusted source and safe category for automatic public publication.",
+        "approved": true,
+        "approvedAt": "2026-05-27T01:43:30.601Z"
+      }
+    },
+    {
+      "sourceId": "github-copilot-changelog",
+      "sourceName": "GitHub Copilot Changelog (HTML fallback)",
+      "title": "Easily apply Copilot code review feedback with Copilot cloud agent",
+      "url": "https://github.blog/changelog/2026-05-19-easily-apply-copilot-code-review-feedback-with-copilot-cloud-agent",
+      "publishedAt": "2026-05-19T00:00:00.000Z",
+      "capabilityTags": [
+        "agents-autonomy"
+      ],
+      "overallScore": 9,
+      "priority": "high",
+      "topDomains": [
+        {
+          "domainId": "civil",
+          "domainLabel": "Civil and Pavement Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "auto-approved",
+        "reason": "Trusted source and safe category for automatic public publication.",
+        "approved": true,
+        "approvedAt": "2026-05-27T01:43:30.601Z"
+      }
+    },
+    {
+      "sourceId": "hugging-face-blog",
+      "sourceName": "Hugging Face Blog",
+      "title": "The Open Agent Leaderboard",
+      "url": "https://huggingface.co/blog/ibm-research/open-agent-leaderboard",
+      "publishedAt": "2026-05-18T14:12:58.000Z",
+      "capabilityTags": [
+        "agents-autonomy"
+      ],
+      "overallScore": 9,
+      "priority": "high",
+      "topDomains": [
+        {
+          "domainId": "civil",
+          "domainLabel": "Civil and Pavement Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "auto-approved",
+        "reason": "Trusted source and safe category for automatic public publication.",
+        "approved": true,
+        "approvedAt": "2026-05-27T01:43:30.601Z"
+      }
+    },
+    {
+      "sourceId": "github-copilot-changelog",
+      "sourceName": "GitHub Copilot Changelog (HTML fallback)",
+      "title": "Copilot cloud agent: Fast, cost-efficient models for simple tasks",
+      "url": "https://github.blog/changelog/2026-05-18-copilot-cloud-agent-fast-cost-efficient-models-for-simple-tasks",
+      "publishedAt": "2026-05-18T00:00:00.000Z",
+      "capabilityTags": [
+        "agents-autonomy",
+        "models-reasoning"
+      ],
+      "overallScore": 9,
+      "priority": "high",
+      "topDomains": [
+        {
+          "domainId": "civil",
+          "domainLabel": "Civil and Pavement Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "auto-approved",
+        "reason": "Trusted source and safe category for automatic public publication.",
+        "approved": true,
+        "approvedAt": "2026-05-27T01:43:30.601Z"
+      }
+    },
+    {
+      "sourceId": "github-copilot-changelog",
+      "sourceName": "GitHub Copilot Changelog (HTML fallback)",
+      "title": "Copilot cloud agent supports auto model selection",
+      "url": "https://github.blog/changelog/2026-05-14-copilot-cloud-agent-supports-auto-model-selection",
+      "publishedAt": "2026-05-14T00:00:00.000Z",
+      "capabilityTags": [
+        "agents-autonomy",
+        "models-reasoning"
+      ],
+      "overallScore": 9,
+      "priority": "high",
+      "topDomains": [
+        {
+          "domainId": "civil",
+          "domainLabel": "Civil and Pavement Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "auto-approved",
+        "reason": "Trusted source and safe category for automatic public publication.",
+        "approved": true,
+        "approvedAt": "2026-05-27T01:43:30.601Z"
+      }
+    },
+    {
+      "sourceId": "github-copilot-changelog",
+      "sourceName": "GitHub Copilot Changelog (HTML fallback)",
+      "title": "More flexible secrets and variables for Copilot cloud agent",
+      "url": "https://github.blog/changelog/2026-05-08-more-flexible-secrets-and-variables-for-copilot-cloud-agent",
+      "publishedAt": "2026-05-08T00:00:00.000Z",
+      "capabilityTags": [
+        "agents-autonomy"
+      ],
+      "overallScore": 9,
+      "priority": "high",
+      "topDomains": [
+        {
+          "domainId": "civil",
+          "domainLabel": "Civil and Pavement Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "auto-approved",
+        "reason": "Trusted source and safe category for automatic public publication.",
+        "approved": true,
+        "approvedAt": "2026-05-27T01:43:30.601Z"
+      }
+    },
+    {
+      "sourceId": "hugging-face-blog",
+      "sourceName": "Hugging Face Blog",
+      "title": "Ecom-RLVE: Adaptive Verifiable Environments for E-Commerce Conversational Agents",
+      "url": "https://huggingface.co/blog/ecom-rlve",
+      "publishedAt": "2026-04-16T00:00:00.000Z",
+      "capabilityTags": [
+        "agents-autonomy"
+      ],
+      "overallScore": 9,
+      "priority": "high",
+      "topDomains": [
+        {
+          "domainId": "civil",
+          "domainLabel": "Civil and Pavement Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "auto-approved",
+        "reason": "Trusted source and safe category for automatic public publication.",
+        "approved": true,
+        "approvedAt": "2026-05-27T01:43:30.601Z"
+      }
+    },
+    {
+      "sourceId": "hugging-face-blog",
+      "sourceName": "Hugging Face Blog",
+      "title": "Inside VAKRA: Reasoning, Tool Use, and Failure Modes of Agents",
+      "url": "https://huggingface.co/blog/ibm-research/vakra-benchmark-analysis",
+      "publishedAt": "2026-04-15T12:07:25.000Z",
+      "capabilityTags": [
+        "agents-autonomy",
+        "models-reasoning"
+      ],
+      "overallScore": 9,
+      "priority": "high",
+      "topDomains": [
+        {
+          "domainId": "civil",
+          "domainLabel": "Civil and Pavement Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "auto-approved",
+        "reason": "Trusted source and safe category for automatic public publication.",
+        "approved": true,
+        "approvedAt": "2026-05-27T01:43:30.601Z"
+      }
+    },
+    {
+      "sourceId": "hugging-face-blog",
+      "sourceName": "Hugging Face Blog",
+      "title": "IBM and UC Berkeley Diagnose Why Enterprise Agents Fail Using IT-Bench and MAST",
+      "url": "https://huggingface.co/blog/ibm-research/itbenchandmast",
+      "publishedAt": "2026-02-18T16:15:45.000Z",
+      "capabilityTags": [
+        "agents-autonomy"
+      ],
+      "overallScore": 9,
+      "priority": "high",
+      "topDomains": [
+        {
+          "domainId": "civil",
+          "domainLabel": "Civil and Pavement Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "auto-approved",
+        "reason": "Trusted source and safe category for automatic public publication.",
+        "approved": true,
+        "approvedAt": "2026-05-27T01:43:30.601Z"
+      }
+    },
+    {
+      "sourceId": "hugging-face-blog",
+      "sourceName": "Hugging Face Blog",
+      "title": "OpenEnv in Practice: Evaluating Tool-Using Agents in Real-World Environments",
+      "url": "https://huggingface.co/blog/openenv-turing",
+      "publishedAt": "2026-02-12T00:00:00.000Z",
+      "capabilityTags": [
+        "agents-autonomy"
+      ],
+      "overallScore": 9,
+      "priority": "high",
+      "topDomains": [
+        {
+          "domainId": "civil",
+          "domainLabel": "Civil and Pavement Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "auto-approved",
+        "reason": "Trusted source and safe category for automatic public publication.",
+        "approved": true,
+        "approvedAt": "2026-05-27T01:43:30.601Z"
+      }
+    },
+    {
+      "sourceId": "hugging-face-blog",
+      "sourceName": "Hugging Face Blog",
+      "title": "Unlocking Agentic RL Training for GPT-OSS: A Practical Retrospective",
+      "url": "https://huggingface.co/blog/LinkedIn/gpt-oss-agentic-rl",
+      "publishedAt": "2026-01-27T01:53:15.000Z",
+      "capabilityTags": [
+        "agents-autonomy",
+        "models-reasoning"
+      ],
+      "overallScore": 9,
+      "priority": "high",
+      "topDomains": [
+        {
+          "domainId": "civil",
+          "domainLabel": "Civil and Pavement Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "auto-approved",
+        "reason": "Trusted source and safe category for automatic public publication.",
+        "approved": true,
+        "approvedAt": "2026-05-27T01:43:30.601Z"
+      }
+    },
+    {
+      "sourceId": "hugging-face-blog",
+      "sourceName": "Hugging Face Blog",
+      "title": "AssetOpsBench: Bridging the Gap Between AI Agent Benchmarks and Industrial Reality",
+      "url": "https://huggingface.co/blog/ibm-research/assetopsbench-playground-on-hugging-face",
+      "publishedAt": "2026-01-21T06:25:31.000Z",
+      "capabilityTags": [
+        "agents-autonomy"
+      ],
+      "overallScore": 9,
+      "priority": "high",
+      "topDomains": [
+        {
+          "domainId": "civil",
+          "domainLabel": "Civil and Pavement Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "auto-approved",
+        "reason": "Trusted source and safe category for automatic public publication.",
+        "approved": true,
+        "approvedAt": "2026-05-27T01:43:30.601Z"
+      }
+    },
+    {
+      "sourceId": "hugging-face-blog",
+      "sourceName": "Hugging Face Blog",
+      "title": "NVIDIA brings agents to life with DGX Spark and Reachy Mini",
+      "url": "https://huggingface.co/blog/nvidia-reachy-mini",
+      "publishedAt": "2026-01-05T00:00:00.000Z",
+      "capabilityTags": [
+        "agents-autonomy"
+      ],
+      "overallScore": 9,
+      "priority": "high",
+      "topDomains": [
+        {
+          "domainId": "civil",
+          "domainLabel": "Civil and Pavement Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "gc",
+          "domainLabel": "General Contracting Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        },
+        {
+          "domainId": "scanning",
+          "domainLabel": "Scanning and Computer Vision Intelligence",
+          "score": 3,
+          "keywordMatches": 0
+        }
+      ],
+      "websitePublication": {
+        "status": "auto-approved",
+        "reason": "Trusted source and safe category for automatic public publication.",
+        "approved": true,
+        "approvedAt": "2026-05-27T01:43:30.601Z"
+      }
     }
   ],
   "domainSummary": [
     {
       "domainId": "scanning",
       "domainLabel": "Scanning and Computer Vision Intelligence",
-      "signalCount": 39,
-      "totalScore": 435,
+      "signalCount": 40,
+      "totalScore": 427,
       "topSignals": [
         {
           "title": "PathNavigate: A Training-Free Pathology Agent with Surprise-Guided Scan and Shared Slide Memory for Whole-Slide Image VQA",
           "url": "https://arxiv.org/abs/2605.23559",
           "score": 20,
+          "priority": "critical"
+        },
+        {
+          "title": "RS2AD-LiDAR: End-to-End Autonomous Driving LiDAR Data Generation from Roadside Sensor Observations",
+          "url": "https://arxiv.org/abs/2605.23406",
+          "score": 18,
           "priority": "critical"
         },
         {
@@ -1533,20 +2498,14 @@
           "priority": "critical"
         },
         {
-          "title": "GenEvolve: Self-Evolving Image Generation Agents via Tool-Orchestrated Visual Experience Distillation",
-          "url": "https://arxiv.org/abs/2605.21605",
-          "score": 16,
-          "priority": "critical"
-        },
-        {
           "title": "EvalVerse: Pipeline-Aware and Expert-Calibrated Benchmarking for Professional Cinematic Video Generation",
           "url": "https://arxiv.org/abs/2605.23271",
           "score": 16,
           "priority": "critical"
         },
         {
-          "title": "Diffusion and Flow Matching Models for Tabular Data: A Survey",
-          "url": "https://arxiv.org/abs/2502.17119",
+          "title": "PhotoFlow: Agentic 3D Virtual Photography Missions",
+          "url": "https://arxiv.org/abs/2605.23771",
           "score": 15,
           "priority": "critical"
         }
@@ -1555,21 +2514,9 @@
     {
       "domainId": "gc",
       "domainLabel": "General Contracting Intelligence",
-      "signalCount": 38,
-      "totalScore": 378,
+      "signalCount": 40,
+      "totalScore": 370,
       "topSignals": [
-        {
-          "title": "GenEvolve: Self-Evolving Image Generation Agents via Tool-Orchestrated Visual Experience Distillation",
-          "url": "https://arxiv.org/abs/2605.21605",
-          "score": 12,
-          "priority": "critical"
-        },
-        {
-          "title": "Distill to Think, Foresee to Act: Cognitive-Physical Reinforcement Learning for Autonomous Driving",
-          "url": "https://arxiv.org/abs/2605.21139",
-          "score": 12,
-          "priority": "critical"
-        },
         {
           "title": "PathNavigate: A Training-Free Pathology Agent with Surprise-Guided Scan and Shared Slide Memory for Whole-Slide Image VQA",
           "url": "https://arxiv.org/abs/2605.23559",
@@ -1577,14 +2524,26 @@
           "priority": "critical"
         },
         {
-          "title": "AutoResearch AI: Towards AI-Powered Research Automation for Scientific Discovery",
-          "url": "https://arxiv.org/abs/2605.23204",
+          "title": "An Interactive Paradigm for Deep Research",
+          "url": "https://arxiv.org/abs/2605.24266",
           "score": 12,
           "priority": "critical"
         },
         {
-          "title": "MedExpMem: Adapting Experience Memory for Differential Diagnosis",
-          "url": "https://arxiv.org/abs/2605.22872",
+          "title": "ChainFlow-VLA: Causal Flow Planning with Vision-Language Models",
+          "url": "https://arxiv.org/abs/2605.23270",
+          "score": 12,
+          "priority": "critical"
+        },
+        {
+          "title": "A Multi-Agent LLM Framework for Rating the Quality of Surgical Feedback",
+          "url": "https://arxiv.org/abs/2605.25440",
+          "score": 12,
+          "priority": "critical"
+        },
+        {
+          "title": "A Two-Dimensional Framework for AI Agent Design Patterns: Cognitive Function and Execution Topology",
+          "url": "https://arxiv.org/abs/2605.13850",
           "score": 12,
           "priority": "critical"
         }
@@ -1593,13 +2552,19 @@
     {
       "domainId": "compliance",
       "domainLabel": "Compliance and Governance Intelligence",
-      "signalCount": 36,
-      "totalScore": 369,
+      "signalCount": 30,
+      "totalScore": 299,
       "topSignals": [
         {
-          "title": "Distill to Think, Foresee to Act: Cognitive-Physical Reinforcement Learning for Autonomous Driving",
-          "url": "https://arxiv.org/abs/2605.21139",
-          "score": 18,
+          "title": "A Two-Dimensional Framework for AI Agent Design Patterns: Cognitive Function and Execution Topology",
+          "url": "https://arxiv.org/abs/2605.13850",
+          "score": 16,
+          "priority": "critical"
+        },
+        {
+          "title": "AI-Driven Controlled Environment Agriculture as Resilient Infrastructure for U.S. Fresh-Produce Supply Chains",
+          "url": "https://arxiv.org/abs/2605.23946",
+          "score": 15,
           "priority": "critical"
         },
         {
@@ -1609,20 +2574,14 @@
           "priority": "critical"
         },
         {
-          "title": "GenEvolve: Self-Evolving Image Generation Agents via Tool-Orchestrated Visual Experience Distillation",
-          "url": "https://arxiv.org/abs/2605.21605",
-          "score": 14,
-          "priority": "critical"
-        },
-        {
-          "title": "Agentic-VLA: Efficient Online Adaptation for Vision-Language-Action Models",
-          "url": "https://arxiv.org/abs/2605.22896",
-          "score": 14,
-          "priority": "critical"
-        },
-        {
           "title": "ChainFlow-VLA: Causal Flow Planning with Vision-Language Models",
           "url": "https://arxiv.org/abs/2605.23270",
+          "score": 14,
+          "priority": "critical"
+        },
+        {
+          "title": "Authority Inversion in LLM-Mediated Ubiquitous Systems: When Models Trust Users Over Sensors",
+          "url": "https://arxiv.org/abs/2605.23938",
           "score": 14,
           "priority": "critical"
         }
@@ -1631,36 +2590,36 @@
     {
       "domainId": "civil",
       "domainLabel": "Civil and Pavement Intelligence",
-      "signalCount": 7,
-      "totalScore": 44,
+      "signalCount": 10,
+      "totalScore": 62,
       "topSignals": [
         {
-          "title": "DRL-Driven Edge-Aware Utility Optimization for Multi-Slice 6G Networks",
-          "url": "https://arxiv.org/abs/2605.23056",
+          "title": "ATWL: A Formal Language for Representing, Comparing, and Reusing Visual Analytics Workflows",
+          "url": "https://arxiv.org/abs/2605.25489",
           "score": 8,
           "priority": "critical"
         },
         {
-          "title": "Computable Fairness: Boltzmann-Softmax Control for AI Resource Allocation",
-          "url": "https://arxiv.org/abs/2605.22827",
+          "title": "RS2AD-LiDAR: End-to-End Autonomous Driving LiDAR Data Generation from Roadside Sensor Observations",
+          "url": "https://arxiv.org/abs/2605.23406",
           "score": 6,
           "priority": "critical"
         },
         {
-          "title": "A Proactive Multi-Agent Dialogue Framework for Assessing Social Language Disorder Traits in Autism",
-          "url": "https://arxiv.org/abs/2605.22993",
+          "title": "PhotoFlow: Agentic 3D Virtual Photography Missions",
+          "url": "https://arxiv.org/abs/2605.23771",
           "score": 6,
           "priority": "critical"
         },
         {
-          "title": "Energy per Successful Goal: Goal-Level Energy Accounting for Agentic AI Systems",
-          "url": "https://arxiv.org/abs/2605.22883",
+          "title": "ActQuant: Sub-4-bit Action-Guided Quantization for Vision-Language-Action Models",
+          "url": "https://arxiv.org/abs/2605.24011",
           "score": 6,
           "priority": "critical"
         },
         {
-          "title": "Investigating Robot Control Policy Learning for Autonomous X-ray-guided Spine Procedures",
-          "url": "https://arxiv.org/abs/2511.03882",
+          "title": "Agent-Centric Social Trajectory Prediction: A Free Energy Principle Perspective",
+          "url": "https://arxiv.org/abs/2605.25748",
           "score": 6,
           "priority": "critical"
         }
@@ -1681,8 +2640,13 @@
       "topSignals": []
     }
   ],
+  "websitePublicationSummary": {
+    "autoApproved": 23,
+    "reviewRequired": 385
+  },
   "notes": [
     "This intelligence payload is optimized for system ingestion and planning, not legal or production guarantees.",
-    "Use high score signals to drive feature spikes, pilot rollouts, and architecture updates."
+    "Use high score signals to drive feature spikes, pilot rollouts, and architecture updates.",
+    "Public website auto-publishing is limited to signals that pass the website publication policy."
   ]
 }

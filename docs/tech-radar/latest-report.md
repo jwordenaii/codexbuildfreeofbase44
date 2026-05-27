@@ -1,93 +1,98 @@
 # AI Tech Radar Report
 
-Generated: 2026-05-26T00:16:59.099Z
-Total normalized items: 373
-New since last snapshot: 373
-Changed since last snapshot: 0
+Generated: 2026-05-27T01:42:44.594Z
+Total normalized items: 586
+New since last snapshot: 345
+Changed since last snapshot: 63
 
 ## Source Health
 
 | Source | Status | Items | Duration (ms) | Error |
 |---|---|---:|---:|---|
-| OpenAI News | ok | 80 | 648 |  |
-| Google AI Blog | ok | 20 | 244 |  |
-| Cloudflare AI Blog | ok | 20 | 1396 |  |
-| Microsoft AI Blog | ok | 10 | 338 |  |
-| Anthropic News (HTML fallback) | ok | 13 | 3678 |  |
-| Vercel Changelog (HTML fallback) | ok | 8 | 286 |  |
-| arXiv cs.AI (Preprint Signals) | ok | 120 | 334 |  |
-| arXiv cs.CV (Preprint Signals) | ok | 120 | 302 |  |
+| OpenAI News | ok | 80 | 756 |  |
+| Google AI Blog | ok | 20 | 346 |  |
+| Google Cloud AI Blog | ok | 0 | 1628 |  |
+| Google Search Central Blog (HTML fallback) | ok | 80 | 1496 |  |
+| Cloudflare AI Blog | ok | 20 | 782 |  |
+| Microsoft AI Blog | ok | 10 | 537 |  |
+| Anthropic News (HTML fallback) | ok | 13 | 4475 |  |
+| Google DeepMind Blog (HTML fallback) | ok | 0 | 1082 |  |
+| Hugging Face Blog | ok | 80 | 531 |  |
+| GitHub Copilot Changelog (HTML fallback) | ok | 34 | 787 |  |
+| Vercel Changelog (HTML fallback) | ok | 9 | 738 |  |
+| arXiv cs.AI (Preprint Signals) | ok | 120 | 1077 |  |
+| arXiv cs.CV (Preprint Signals) | ok | 120 | 645 |  |
 
 ## New Signals
 
-- [arXiv cs.CV (Preprint Signals)] 4DThinker: Thinking with 4D Imagery for Dynamic Spatial Understanding (2026-05-25) - https://arxiv.org/abs/2605.05997
-- [arXiv cs.AI (Preprint Signals)] 6G Communication Networks Enabling Embodied Agents: Architecture and Prototype (2026-05-25) - https://arxiv.org/abs/2605.23263
-- [arXiv cs.AI (Preprint Signals)] A Comparative Analysis on the Performance of Upper Confidence Bound Algorithms in Adaptive Deep Neural Networks (2026-05-25) - https://arxiv.org/abs/2604.24810
-- [arXiv cs.AI (Preprint Signals)] A drone-based framework for coral habitat mapping via weakly supervised segmentation (2026-05-25) - https://arxiv.org/abs/2508.18958
-- [arXiv cs.CV (Preprint Signals)] A European Multi-Center Breast Cancer MRI Dataset (2026-05-25) - https://arxiv.org/abs/2506.00474
-- [arXiv cs.AI (Preprint Signals)] A Fine-Tuned BERT Classifier for Personal-Letter Titles in Late-Ming and Early-Qing Collected Works (2026-05-25) - https://arxiv.org/abs/2605.23103
-- [arXiv cs.AI (Preprint Signals)] A mathematical theory of balancing relational generalization and memorization (2026-05-25) - https://arxiv.org/abs/2605.22972
-- [arXiv cs.AI (Preprint Signals)] A measurement substrate for agentic Kubernetes operations: Methodology and a case study in retrieval-compounding falsification (2026-05-25) - https://arxiv.org/abs/2605.23058
-- [arXiv cs.CV (Preprint Signals)] A Novel Approach for the Counting of Wood Logs Using cGANs and Image Processing Techniques (2026-05-25) - https://arxiv.org/abs/2605.23775
-- [arXiv cs.AI (Preprint Signals)] A Proactive Multi-Agent Dialogue Framework for Assessing Social Language Disorder Traits in Autism (2026-05-25) - https://arxiv.org/abs/2605.22993
-- [arXiv cs.CV (Preprint Signals)] A Robust Semantic Segmentation Pipeline for the CVPR 2026 8th UG2+ Challenge Track 2 (2026-05-25) - https://arxiv.org/abs/2605.22216
-- [arXiv cs.CV (Preprint Signals)] A solution to generalized learning from small training sets found in infant repeated visual experiences of individual objects (2026-05-25) - https://arxiv.org/abs/2510.15060
-- [arXiv cs.AI (Preprint Signals)] A Systematic Evaluation of Co-folding Model Representations for Small-Molecule Learning (2026-05-25) - https://arxiv.org/abs/2602.13249
-- [arXiv cs.AI (Preprint Signals)] Adapting Dijkstra for Buffers and Unlimited Transfers (2026-05-25) - https://arxiv.org/abs/2603.11729
-- [arXiv cs.AI (Preprint Signals)] Adaptive Mass-Segmented KV Compression for Long-Context Reasoning (2026-05-25) - https://arxiv.org/abs/2605.23200
-- [arXiv cs.AI (Preprint Signals)] Adversarial Vulnerability Under Temporal Concept Drift: A Longitudinal Study of Android Malware Detection (2026-05-25) - https://arxiv.org/abs/2605.23623
-- [arXiv cs.AI (Preprint Signals)] Agentic Proving for Program Verification (2026-05-25) - https://arxiv.org/abs/2605.23772
-- [arXiv cs.AI (Preprint Signals)] Agentic-VLA: Efficient Online Adaptation for Vision-Language-Action Models (2026-05-25) - https://arxiv.org/abs/2605.22896
-- [arXiv cs.AI (Preprint Signals)] Agentivism: a learning theory for the age of artificial intelligence (2026-05-25) - https://arxiv.org/abs/2604.07813
-- [arXiv cs.AI (Preprint Signals)] AI Assurance: A Comprehensive Testing Strategy for Enterprise AI Systems (2026-05-25) - https://arxiv.org/abs/2605.23459
-- [arXiv cs.AI (Preprint Signals)] AI Evaluation Should Require Standardized Item-Level Data Releases (2026-05-25) - https://arxiv.org/abs/2604.03244
-- [arXiv cs.AI (Preprint Signals)] AI Security Research Should Better Incentivize Defense Research (2026-05-25) - https://arxiv.org/abs/2605.23448
-- [arXiv cs.AI (Preprint Signals)] ALIVE: Awakening LLM Reasoning via Adversarial Learning and Instructive Verbal Evaluation (2026-05-25) - https://arxiv.org/abs/2602.05472
-- [arXiv cs.AI (Preprint Signals)] An AI-Driven Framework for Energy-Efficient Environmental Monitoring in Smart Cities Using Edge Intelligence (2026-05-25) - https://arxiv.org/abs/2605.22824
-- [arXiv cs.AI (Preprint Signals)] An Interpretable Closed-Loop Intelligent Tutoring System for Multimodal Affective Feedback in Asynchronous Presentation Training (2026-05-25) - https://arxiv.org/abs/2605.17468
-- [arXiv cs.AI (Preprint Signals)] Anatomy-Guided Vision-Language Learning with Angular Prototype Separation for Multi-Label Video Capsule Endoscopy Classification Under Class Imbalance (2026-05-25) - https://arxiv.org/abs/2603.17879
-- [Anthropic News (HTML fallback)] Anthropic co-founder Chris Olah's remarks on Pope Leo XIV's encyclical "Magnifica humanitas" (2026-05-25) - https://www.anthropic.com/news/chris-olah-pope-leo-encyclical
-- [arXiv cs.AI (Preprint Signals)] Any2Any: Efficient Cross-Embodiment Transfer for Humanoid Whole-Body Tracking (2026-05-25) - https://arxiv.org/abs/2605.23733
-- [arXiv cs.AI (Preprint Signals)] Anytime Training with Schedule-Free Spectral Optimization (2026-05-25) - https://arxiv.org/abs/2605.23061
-- [arXiv cs.AI (Preprint Signals)] Approximate Machine Unlearning through Manifold Representation Forgetting Guided by Self Mode Connectivity (2026-05-25) - https://arxiv.org/abs/2605.22871
-- [arXiv cs.AI (Preprint Signals)] ArcMark: Distortion-Free Multi-Byte LLM Watermark via Optimal Transport (2026-05-25) - https://arxiv.org/abs/2602.07235
-- [arXiv cs.AI (Preprint Signals)] Are Frontier LLMs Ready for Cybersecurity? Evidence for Vertical Foundation Models from Dual-Mode Vulnerability Benchmarks (2026-05-25) - https://arxiv.org/abs/2605.23243
-- [arXiv cs.AI (Preprint Signals)] ARMS: Automatic Reward Shaping for Sparse-Reward Multi-Agent Reinforcement Learning (2026-05-25) - https://arxiv.org/abs/2605.23562
-- [arXiv cs.AI (Preprint Signals)] As X, Do Y: How Persona and Task Combine in Instruction-Tuned LLMs (2026-05-25) - https://arxiv.org/abs/2605.23147
-- [arXiv cs.AI (Preprint Signals)] Atom-level Protein Representation Learning Improves Protein Structure Prediction (2026-05-25) - https://arxiv.org/abs/2605.22133
-- [arXiv cs.AI (Preprint Signals)] Automated Random Embedding for Practical Bayesian Optimization with Unknown Effective Dimension (2026-05-25) - https://arxiv.org/abs/2605.23473
-- [arXiv cs.AI (Preprint Signals)] Autonomous Frontier-Based Exploration with VLM Guidance (2026-05-25) - https://arxiv.org/abs/2605.23165
-- [arXiv cs.AI (Preprint Signals)] AutoResearch AI: Towards AI-Powered Research Automation for Scientific Discovery (2026-05-25) - https://arxiv.org/abs/2605.23204
-- [arXiv cs.AI (Preprint Signals)] Ax-Prover: A Deep Reasoning Agentic Framework for Theorem Proving in Mathematics and Quantum Physics (2026-05-25) - https://arxiv.org/abs/2510.12787
-- [arXiv cs.CV (Preprint Signals)] B-GRTO: Bootstrapped Group Relative Tool Optimization for Referring Segmentation (2026-05-25) - https://arxiv.org/abs/2605.23500
+- [arXiv cs.AI (Preprint Signals)] 'Si'multaneous 'S'patial-'T'emporal Message Passing for Dynamic Graph Representation Learning (2026-05-26) - https://arxiv.org/abs/2605.25548
+- [arXiv cs.AI (Preprint Signals)] {\Phi}-Noise: Training-Free Temporal Video Conditioning via Phase-Based Noise Manipulation (2026-05-26) - https://arxiv.org/abs/2605.24509
+- [arXiv cs.AI (Preprint Signals)] $D^2$-Monitor: Dynamic Safety Monitoring for Diffusion LLMs via Hesitation-Aware Routing (2026-05-26) - https://arxiv.org/abs/2605.25893
+- [arXiv cs.AI (Preprint Signals)] $M^3-Verse$: A "Spot the Difference" Challenge for Large Multimodal Models (2026-05-26) - https://arxiv.org/abs/2512.18735
+- [arXiv cs.AI (Preprint Signals)] A Comprehensive Dataset for Human vs. AI Generated Image Detection (2026-05-26) - https://arxiv.org/abs/2601.00553
+- [arXiv cs.AI (Preprint Signals)] A Controlled Synthetic Benchmark for Educational Aspect-Based Sentiment Analysis (2026-05-26) - https://arxiv.org/abs/2605.25502
+- [arXiv cs.AI (Preprint Signals)] A Deep Dive into Axiomatic Design -- Part I: Problem Formulation (2026-05-26) - https://arxiv.org/abs/2605.25735
+- [arXiv cs.AI (Preprint Signals)] A Dynamical Framework for Cognitive Processes Based on Transformations and Semantic Equivalence (2026-05-26) - https://arxiv.org/abs/2605.23942
+- [arXiv cs.AI (Preprint Signals)] A general tensor-structured compression scheme for efficient large language models (2026-05-26) - https://arxiv.org/abs/2605.25344
+- [arXiv cs.AI (Preprint Signals)] A governance horizon for ethical-use constraints in open-weight AI models (2026-05-26) - https://arxiv.org/abs/2605.24383
+- [arXiv cs.AI (Preprint Signals)] A Large-Scale Dataset and Benchmark: Do Protein-Ligand Models Learn Binding Sites or Just Binding Likelihood? (2026-05-26) - https://arxiv.org/abs/2605.24045
+- [arXiv cs.AI (Preprint Signals)] A Multi-Agent LLM Framework for Rating the Quality of Surgical Feedback (2026-05-26) - https://arxiv.org/abs/2605.25440
+- [arXiv cs.AI (Preprint Signals)] A Multimodal 3D Foundation Model for Light Sheet Fluorescence Microscopy Enables Few-Shot Segmentation, Classification, and Deblurring (2026-05-26) - https://arxiv.org/abs/2605.26026
+- [arXiv cs.AI (Preprint Signals)] A Signal-Language Foundation Model for Broad-Spectrum Cardiovascular Assessment from Routine Electrocardiography (2026-05-26) - https://arxiv.org/abs/2605.25446
+- [arXiv cs.AI (Preprint Signals)] A Simplex Witness Certificate for Constant Collapse in Variational Autoencoders (2026-05-26) - https://arxiv.org/abs/2605.18224
+- [arXiv cs.AI (Preprint Signals)] A Sober Look at Agentic Misalignment in Automated Workflows (2026-05-26) - https://arxiv.org/abs/2605.24197
+- [arXiv cs.AI (Preprint Signals)] A Tertiary Review of Large Language Model-Based Code Generating Tasks: Trends, Challenges, and Future Directions (2026-05-26) - https://arxiv.org/abs/2605.25536
+- [arXiv cs.AI (Preprint Signals)] A Token/KV-Cache Communication Media Selection and Resource Allocation Strategy for Multi-Agent Collaboration (2026-05-26) - https://arxiv.org/abs/2605.25422
+- [arXiv cs.AI (Preprint Signals)] A Two-Dimensional Framework for AI Agent Design Patterns: Cognitive Function and Execution Topology (2026-05-26) - https://arxiv.org/abs/2605.13850
+- [arXiv cs.AI (Preprint Signals)] A World Model of Radiologist Reading for Medical Image Representation Learning (2026-05-26) - https://arxiv.org/abs/2605.23992
+- [arXiv cs.AI (Preprint Signals)] Abduction-Deduction Entanglement: Domain Generalization via Representation Transplants (2026-05-26) - https://arxiv.org/abs/2605.25156
+- [arXiv cs.AI (Preprint Signals)] Accelerating Long-Tail Generation in Synchronous RLHF Training via Adaptive Tensor Parallelism (2026-05-26) - https://arxiv.org/abs/2605.23945
+- [arXiv cs.AI (Preprint Signals)] Acting on the Unseen: Communication-Free Collaborative Filtering for Decentralized Multi-Robot Task Allocation (2026-05-26) - https://arxiv.org/abs/2605.25584
+- [arXiv cs.AI (Preprint Signals)] Action with Visual Primitives (2026-05-26) - https://arxiv.org/abs/2605.22183
+- [arXiv cs.AI (Preprint Signals)] Actionable and diverse counterfactual explanations incorporating domain knowledge and plausibility constraints (2026-05-26) - https://arxiv.org/abs/2511.20236
+- [arXiv cs.AI (Preprint Signals)] ActQuant: Sub-4-bit Action-Guided Quantization for Vision-Language-Action Models (2026-05-26) - https://arxiv.org/abs/2605.24011
+- [arXiv cs.AI (Preprint Signals)] Adaptive Graph Refinement and Label Propagation with LLMs for Cost-Effective Entity Resolution (2026-05-26) - https://arxiv.org/abs/2605.25814
+- [arXiv cs.AI (Preprint Signals)] Adaptive Human-AI Coordination via Hierarchical Action Disentanglement (2026-05-26) - https://arxiv.org/abs/2605.24343
+- [arXiv cs.AI (Preprint Signals)] Adaptive Punishment for Cooperation in Mixed-Motive Games (2026-05-26) - https://arxiv.org/abs/2605.24516
+- [arXiv cs.AI (Preprint Signals)] ADMFormer: An Adaptive-Decomposition Transformer with Time-Varying Masked Spatial Attention for Traffic Forecasting (2026-05-26) - https://arxiv.org/abs/2605.25543
+- [arXiv cs.AI (Preprint Signals)] Advancing Graph Few-Shot Learning via In-Context Learning (2026-05-26) - https://arxiv.org/abs/2605.24410
+- [arXiv cs.AI (Preprint Signals)] AdvantageFlow: Advantage-Weighted Least Squares for RL in Flow Models (2026-05-26) - https://arxiv.org/abs/2605.26013
+- [arXiv cs.AI (Preprint Signals)] Adversarial Error Correction for Visual Autoregressive Generation (2026-05-26) - https://arxiv.org/abs/2605.24843
+- [arXiv cs.AI (Preprint Signals)] Adversarial Network Imagination: Causal LLMs and Digital Twins for Proactive Telecom Mitigation (2026-05-26) - https://arxiv.org/abs/2602.13203
+- [arXiv cs.AI (Preprint Signals)] Adversarial Orthogonal Disentanglement for LVLM Hallucination Mitigation (2026-05-26) - https://arxiv.org/abs/2605.25377
+- [arXiv cs.AI (Preprint Signals)] AEROS: A Single-Agent Operating Architecture with Embodied Capability Modules (2026-05-26) - https://arxiv.org/abs/2604.07039
+- [arXiv cs.AI (Preprint Signals)] Aes3D: Aesthetic Assessment in 3D Gaussian Splatting (2026-05-26) - https://arxiv.org/abs/2605.05155
+- [arXiv cs.AI (Preprint Signals)] Agent Learning via Early Experience (2026-05-26) - https://arxiv.org/abs/2510.08558
+- [arXiv cs.AI (Preprint Signals)] Agent Manufacturing: Foundation-Model Agents as First-Class Industrial Entities (2026-05-26) - https://arxiv.org/abs/2605.24823
+- [arXiv cs.AI (Preprint Signals)] Agent Primitives: Reusable Latent Building Blocks for Multi-Agent Systems (2026-05-26) - https://arxiv.org/abs/2602.03695
 
 ## Capability Trend (All Items)
 
 | Capability Tag | Count |
 |---|---:|
-| models-reasoning | 250 |
-| pre-release-signals | 228 |
-| developer-platforms | 173 |
-| search-retrieval | 148 |
-| multimodal-voice-vision | 127 |
-| memory-state-personalization | 112 |
-| agents-autonomy | 102 |
-| infra-inference-edge | 91 |
-| security-governance | 63 |
+| models-reasoning | 302 |
+| pre-release-signals | 248 |
+| developer-platforms | 183 |
+| multimodal-voice-vision | 154 |
+| search-retrieval | 154 |
+| memory-state-personalization | 137 |
+| agents-autonomy | 131 |
+| infra-inference-edge | 97 |
+| security-governance | 62 |
 
 ## Capability Trend (New Items)
 
 | Capability Tag | Count |
 |---|---:|
-| models-reasoning | 250 |
-| pre-release-signals | 228 |
-| developer-platforms | 173 |
-| search-retrieval | 148 |
-| multimodal-voice-vision | 127 |
-| memory-state-personalization | 112 |
-| agents-autonomy | 102 |
-| infra-inference-edge | 91 |
-| security-governance | 63 |
+| models-reasoning | 154 |
+| pre-release-signals | 147 |
+| developer-platforms | 91 |
+| search-retrieval | 85 |
+| memory-state-personalization | 80 |
+| agents-autonomy | 71 |
+| multimodal-voice-vision | 66 |
+| infra-inference-edge | 55 |
+| security-governance | 30 |
 
 ## Latest Per Source
 
@@ -105,6 +110,16 @@ Changed since last snapshot: 0
 - A new experiment brings better group meetings to Google Beam (2026-05-20) - https://blog.google/innovation-and-ai/models-and-research/google-research/google-beam-group-meetings
 - A new era for AI Search (2026-05-19) - https://blog.google/products-and-platforms/products/search/search-io-2026
 
+### Google Cloud AI Blog
+- No items normalized in this run.
+
+### Google Search Central Blog (HTML fallback)
+- "Está no Google! Oba!" - Receber ajuda dos webmasters no nosso fórum - https://developers.google.com/search/blog/2010/12/its-on-google-yay-getting-webmaster
+- "Este site pode danificar seu computador" em todos os resultados da pesquisa? - https://developers.google.com/search/blog/2009/02/este-sitio-puede-danar-su-equipo-para
+- #MobileMadness: uma campanha para ajudar você a tornar seu site compatível com dispositivos móveis - https://developers.google.com/search/blog/2015/04/mobilemadness-campaign-to-help-you-go
+- #NoHacked 3.0: como saber se meu site foi invadido? - https://developers.google.com/search/blog/2017/12/nohacked-30-how-do-i-know-if-my-site-is
+- ⁠#NoHacked 3.0: correção de casos de invasão comuns - https://developers.google.com/search/blog/2017/12/nohacked-30-fixing-common-hack-cases
+
 ### Cloudflare AI Blog
 - Announcing Claude Managed Agents on Cloudflare (2026-05-19) - https://blog.cloudflare.com/claude-managed-agents
 - Project Glasswing: what Mythos showed us (2026-05-18) - https://blog.cloudflare.com/cyber-frontier-models
@@ -120,30 +135,47 @@ Changed since last snapshot: 0
 - Microsoft and OpenAI joint statement on continuing partnership (2026-02-27) - https://blogs.microsoft.com/blog/2026/02/27/microsoft-and-openai-joint-statement-on-continuing-partnership
 
 ### Anthropic News (HTML fallback)
+- Anthropic appoints KiYoung Choi as Representative Director of Korea ahead of Seoul office opening (2026-05-26) - https://www.anthropic.com/news/kiyoung-choi-representative-director-anthropic-korea
 - Anthropic co-founder Chris Olah's remarks on Pope Leo XIV's encyclical "Magnifica humanitas" (2026-05-25) - https://www.anthropic.com/news/chris-olah-pope-leo-encyclical
 - Widening the conversation on frontier AI (2026-05-22) - https://www.anthropic.com/news/widening-conversation-ai
 - KPMG integrates Claude across its core business and workforce of more than 276,000 in strategic alliance (2026-05-19) - https://www.anthropic.com/news/anthropic-kpmg
 - Anthropic acquires Stainless (2026-05-18) - https://www.anthropic.com/news/anthropic-acquires-stainless
-- PwC is deploying Claude to build technology, execute deals, and reinvent enterprise functions for clients (2026-05-18) - https://www.anthropic.com/news/pwc-expanded-partnership
+
+### Google DeepMind Blog (HTML fallback)
+- No items normalized in this run.
+
+### Hugging Face Blog
+- Harness, Scaffold, and the AI Agent Terms Worth Getting Right (2026-05-25) - https://huggingface.co/blog/agent-glossary
+- Towards Speed-of-Light Text Generation with Nemotron-Labs Diffusion Language Models (2026-05-23) - https://huggingface.co/blog/nvidia/nemotron-labs-diffusion
+- Specialization Beats Scale: A Strategic Variable Most AI Procurement Decisions Overlook (2026-05-22) - https://huggingface.co/blog/Dharma-AI/specialization-beats-scale
+- OlmoEarth v1.1: A more efficient family of Earth observation models (2026-05-19) - https://huggingface.co/blog/allenai/olmoearth-v1-1
+- Introducing the Ettin Reranker Family (2026-05-19) - https://huggingface.co/blog/ettin-reranker
+
+### GitHub Copilot Changelog (HTML fallback)
+- Copilot Memory has more controls for deletion, scope, and the Copilot CLI (2026-05-26) - https://github.blog/changelog/2026-05-26-copilot-memory-has-more-controls-for-deletion-scope-and-the-copilot-cli
+- Target Copilot models to organizations with model rules (2026-05-26) - https://github.blog/changelog/2026-05-26-target-copilot-models-to-organizations-with-model-rules
+- GitHub Copilot for Eclipse is open source (2026-05-21) - https://github.blog/changelog/2026-05-21-github-copilot-for-eclipse-is-open-source
+- Auto model selection now routes based on your task in VS Code (2026-05-20) - https://github.blog/changelog/2026-05-20-auto-model-selection-now-routes-based-on-your-task-in-vs-code
+- Copilot usage metrics reports now use GitHub-owned download URLs (2026-05-20) - https://github.blog/changelog/2026-05-20-copilot-usage-metrics-reports-now-use-github-owned-download-urls
 
 ### Vercel Changelog (HTML fallback)
+- Sandbox persistence is now GA (2026-05-26) - https://vercel.com/changelog/sandbox-persistence-is-now-ga
+- Firecrawl Joins The Vercel Marketplace (2026-05-26) - https://vercel.com/changelog/firecrawl-joins-the-vercel-marketplace
+- Microfrontends routing now applies to vc alias and branch domains (2026-05-26) - https://vercel.com/changelog/microfrontends-routing-now-applies-to-vc-alias-and-branch-domains
+- Vercel Domains now supports price sorting and availability filtering (2026-05-26) - https://vercel.com/changelog/vercel-domains-now-supports-price-sorting-and-availability-filtering
 - Pull anomaly alert details using the Vercel CLI (2026-05-21) - https://vercel.com/changelog/pull-anomaly-alert-details-using-the-vercel-cli
-- Qwen 3.7 Max now available on Vercel AI Gateway (2026-05-21) - https://vercel.com/changelog/qwen-3-7-max-now-available-on-vercel-ai-gateway
-- Configure weighted traffic splits for Vercel Flags from the Vercel CLI (2026-05-21) - https://vercel.com/changelog/configure-weighted-traffic-splits-for-vercel-flags-from-the-vercel-cli
-- Grok Build 0.1 now available on Vercel AI Gateway (2026-05-20) - https://vercel.com/changelog/grok-build-0-1-now-available-on-vercel-ai-gateway
-- Chat SDK adds message subjects and direct SDK access (2026-05-20) - https://vercel.com/changelog/chat-sdk-adds-message-subjects-and-direct-sdk-access
 
 ### arXiv cs.AI (Preprint Signals)
-- 6G Communication Networks Enabling Embodied Agents: Architecture and Prototype (2026-05-25) - https://arxiv.org/abs/2605.23263
-- A Comparative Analysis on the Performance of Upper Confidence Bound Algorithms in Adaptive Deep Neural Networks (2026-05-25) - https://arxiv.org/abs/2604.24810
-- A drone-based framework for coral habitat mapping via weakly supervised segmentation (2026-05-25) - https://arxiv.org/abs/2508.18958
-- A Fine-Tuned BERT Classifier for Personal-Letter Titles in Late-Ming and Early-Qing Collected Works (2026-05-25) - https://arxiv.org/abs/2605.23103
-- A mathematical theory of balancing relational generalization and memorization (2026-05-25) - https://arxiv.org/abs/2605.22972
+- 'Si'multaneous 'S'patial-'T'emporal Message Passing for Dynamic Graph Representation Learning (2026-05-26) - https://arxiv.org/abs/2605.25548
+- {\Phi}-Noise: Training-Free Temporal Video Conditioning via Phase-Based Noise Manipulation (2026-05-26) - https://arxiv.org/abs/2605.24509
+- $D^2$-Monitor: Dynamic Safety Monitoring for Diffusion LLMs via Hesitation-Aware Routing (2026-05-26) - https://arxiv.org/abs/2605.25893
+- $M^3-Verse$: A "Spot the Difference" Challenge for Large Multimodal Models (2026-05-26) - https://arxiv.org/abs/2512.18735
+- A Comprehensive Dataset for Human vs. AI Generated Image Detection (2026-05-26) - https://arxiv.org/abs/2601.00553
 
 ### arXiv cs.CV (Preprint Signals)
-- 4DThinker: Thinking with 4D Imagery for Dynamic Spatial Understanding (2026-05-25) - https://arxiv.org/abs/2605.05997
-- A European Multi-Center Breast Cancer MRI Dataset (2026-05-25) - https://arxiv.org/abs/2506.00474
-- A Novel Approach for the Counting of Wood Logs Using cGANs and Image Processing Techniques (2026-05-25) - https://arxiv.org/abs/2605.23775
-- A Robust Semantic Segmentation Pipeline for the CVPR 2026 8th UG2+ Challenge Track 2 (2026-05-25) - https://arxiv.org/abs/2605.22216
-- A solution to generalized learning from small training sets found in infant repeated visual experiences of individual objects (2026-05-25) - https://arxiv.org/abs/2510.15060
+- A Novel Approach for the Counting of Wood Logs Using cGANs and Image Processing Techniques (2026-05-26) - https://arxiv.org/abs/2605.23775
+- B-GRTO: Bootstrapped Group Relative Tool Optimization for Referring Segmentation (2026-05-26) - https://arxiv.org/abs/2605.23500
+- Beyond Normal References: Discriminative Few-Shot Anomaly Detection (2026-05-26) - https://arxiv.org/abs/2605.23231
+- Calibration-Informative Region Selection for Online LiDAR--Camera Calibration in Agricultural Environments (2026-05-26) - https://arxiv.org/abs/2605.23580
+- CARE: Class-Adaptive Expert Consensus for Reliable Learning with Long-Tailed Noisy Labels (2026-05-26) - https://arxiv.org/abs/2605.23254
 

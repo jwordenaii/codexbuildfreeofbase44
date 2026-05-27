@@ -23,6 +23,7 @@ import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
 import SchemaMarkup from '../components/SchemaMarkup';
 import SmartImage from '@/components/SmartImage';
+import PublicResearchFeed from '@/components/PublicResearchFeed';
 import { trackPhoneClick } from '@/lib/analytics';
 import { SITE_IMAGES } from '@/lib/siteImages';
 
@@ -170,6 +171,10 @@ export default function JwordenAI() {
             <div className="mt-9 flex flex-wrap gap-3">
               <Link to="/quote" className="inline-flex min-h-[52px] items-center gap-3 bg-primary px-7 py-4 font-display text-sm font-bold uppercase tracking-[0.14em] text-primary-foreground transition-colors hover:bg-accent hover:text-accent-foreground">
                 Request Estimate
+                <ArrowRight className="h-5 w-5" />
+              </Link>
+              <Link to="/ai-research" className="inline-flex min-h-[52px] items-center gap-3 border border-primary/45 bg-white px-7 py-4 font-display text-sm font-bold uppercase tracking-[0.14em] text-foreground transition-colors hover:border-primary hover:text-primary">
+                View AI Radar
                 <ArrowRight className="h-5 w-5" />
               </Link>
               <a href="tel:+18044461296" onClick={() => trackPhoneClick('jwordenai_hero')} className="inline-flex min-h-[52px] items-center gap-3 border border-primary/45 bg-white px-7 py-4 font-display text-sm font-bold uppercase tracking-[0.14em] text-foreground transition-colors hover:border-primary hover:text-primary">
@@ -331,6 +336,8 @@ export default function JwordenAI() {
           </div>
         </div>
       </section>
+
+      <PublicResearchFeed limit={4} />
 
       <section className="border-b border-border bg-background py-16 md:py-20">
         <div className="mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8">

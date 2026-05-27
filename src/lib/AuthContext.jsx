@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
 
 import { authenticateWithPin, bootstrapAuth, clearAuthToken, getAccessToken } from '@/api/client'
 
@@ -7,55 +7,50 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoadingAuth, setIsLoadingAuth] = useState(true);
+  const [isLoadingAuth, setIsLoadingAuth] = useState(false);
   const [authRequired, setAuthRequired] = useState(false);
   const [authError, setAuthError] = useState(null);
   const [accessToken, setAccessToken] = useState(null);
+  const [authChecked, setAuthChecked] = useState(false);
 
-  useEffect(() => {
-    let cancelled = false;
+  const checkUserAuth = useCallback(async ({ force = false } = {}) => {
+    if (isLoadingAuth) return;
+    if (authChecked && !force) return;
 
-    async function loadAuthStatus() {
-      setIsLoadingAuth(true);
-      try {
-        const status = await bootstrapAuth();
-        if (cancelled) return;
+    setIsLoadingAuth(true);
+    try {
+      const status = await bootstrapAuth();
+      const required = Boolean(status?.auth_required);
+      const token = required ? await getAccessToken().catch(() => null) : null;
 
-        const required = Boolean(status?.auth_required);
-        const token = required ? await getAccessToken().catch(() => null) : null;
-        setAuthRequired(required);
-        setIsAuthenticated(!required || Boolean(token));
-        setAccessToken(token);
-        setUser(required && token ? {
-          id: 'admin',
-          role: 'admin',
-          authMode: status?.auth_mode || 'required',
-          tokenEndpoint: status?.token_endpoint || null,
-        } : null);
-        setAuthError(status?.token_bootstrap_error ? { type: 'pin_required', message: status.token_bootstrap_error } : null);
-      } catch (error) {
-        if (cancelled) return;
-
-        setAuthRequired(true);
-        setIsAuthenticated(false);
-        setUser(null);
-        setAuthError({ type: 'auth_status_unavailable', message: error.message || 'Unable to load auth status.' });
-      } finally {
-        if (!cancelled) setIsLoadingAuth(false);
-      }
+      setAuthRequired(required);
+      setIsAuthenticated(!required || Boolean(token));
+      setAccessToken(token);
+      setUser(required && token ? {
+        id: 'admin',
+        role: 'admin',
+        authMode: status?.auth_mode || 'required',
+        tokenEndpoint: status?.token_endpoint || null,
+      } : null);
+      setAuthError(status?.token_bootstrap_error ? { type: 'pin_required', message: status.token_bootstrap_error } : null);
+    } catch (error) {
+      setAuthRequired(true);
+      setIsAuthenticated(false);
+      setUser(null);
+      setAuthError({ type: 'auth_status_unavailable', message: error.message || 'Unable to load auth status.' });
+    } finally {
+      setAuthChecked(true);
+      setIsLoadingAuth(false);
     }
-
-    loadAuthStatus();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+  }, [authChecked, isLoadingAuth]);
 
   useEffect(() => {
     const handleAuthExpired = () => {
       setAccessToken(null);
       setUser(null);
+      setAuthRequired(true);
       setIsAuthenticated(false);
+      setAuthChecked(true);
       setAuthError({ type: 'pin_required', message: 'Your admin session expired. Enter the PIN to continue.' });
     };
 
@@ -67,11 +62,16 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("jworden_admin_session");
     clearAuthToken();
     setUser(null);
+    setAuthRequired(true);
     setIsAuthenticated(false);
+    setAccessToken(null);
+    setAuthChecked(true);
   };
 
   const loginWithPin = async (pin) => {
     const token = await authenticateWithPin(pin);
+    setAuthRequired(true);
+    setAuthChecked(true);
     setAccessToken(token);
     setIsAuthenticated(true);
     setUser({
@@ -96,8 +96,8 @@ export const AuthProvider = ({ children }) => {
         authRequired,
         isAuthenticated,
         isLoadingAuth,
-        authChecked: true,
-        checkUserAuth: async () => {},
+        authChecked,
+        checkUserAuth,
         isLoadingPublicSettings: false,
         authError,
         appPublicSettings: { public_settings: {} },

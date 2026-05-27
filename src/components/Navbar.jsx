@@ -12,7 +12,8 @@ const NAV_LINKS = [
   { label: 'GC', href: '/general-contracting' },
   { label: 'About', href: '/about' },
   { label: 'Blog', href: '/blog' },
-  { label: 'JWordenAI', href: '/jwordenai' },
+  { label: 'Reviews', href: '/reviews' },
+  { label: 'Contact', href: '/contact' },
 ];
 
 export default function Navbar() {

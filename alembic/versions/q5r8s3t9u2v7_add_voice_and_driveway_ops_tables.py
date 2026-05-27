@@ -8,8 +8,9 @@ Adds durable persistence for ambient voice review events and driveway growth
 campaign/opt-in records, including idempotency support for retry-safe writes.
 """
 
-from alembic import op
 import sqlalchemy as sa
+
+from alembic import op
 
 revision = "q5r8s3t9u2v7"
 down_revision = "p4n7q2r8s1t6"
@@ -56,10 +57,21 @@ def upgrade() -> None:
             sa.PrimaryKeyConstraint("id"),
         )
         op.create_index("ix_voice_review_events_id", "voice_review_events", ["id"])
-        op.create_index("ix_voice_review_events_event_id", "voice_review_events", ["event_id"], unique=True)
-        op.create_index("ix_voice_review_events_project_id", "voice_review_events", ["project_id"])
-        op.create_index("ix_voice_review_events_site_id", "voice_review_events", ["site_id"])
-        op.create_index("ix_voice_review_events_status", "voice_review_events", ["status"])
+        op.create_index(
+            "ix_voice_review_events_event_id",
+            "voice_review_events",
+            ["event_id"],
+            unique=True,
+        )
+        op.create_index(
+            "ix_voice_review_events_project_id", "voice_review_events", ["project_id"]
+        )
+        op.create_index(
+            "ix_voice_review_events_site_id", "voice_review_events", ["site_id"]
+        )
+        op.create_index(
+            "ix_voice_review_events_status", "voice_review_events", ["status"]
+        )
 
     if "driveway_campaign_pieces" not in existing_tables:
         op.create_table(
@@ -84,11 +96,30 @@ def upgrade() -> None:
             sa.Column("created_at_utc", sa.DateTime(timezone=True), nullable=False),
             sa.PrimaryKeyConstraint("id"),
         )
-        op.create_index("ix_driveway_campaign_pieces_id", "driveway_campaign_pieces", ["id"])
-        op.create_index("ix_driveway_campaign_pieces_campaign_id", "driveway_campaign_pieces", ["campaign_id"])
-        op.create_index("ix_driveway_campaign_pieces_property_id", "driveway_campaign_pieces", ["property_id"])
-        op.create_index("ix_driveway_campaign_pieces_token", "driveway_campaign_pieces", ["token"], unique=True)
-        op.create_index("ix_driveway_campaign_pieces_idempotency_key", "driveway_campaign_pieces", ["idempotency_key"])
+        op.create_index(
+            "ix_driveway_campaign_pieces_id", "driveway_campaign_pieces", ["id"]
+        )
+        op.create_index(
+            "ix_driveway_campaign_pieces_campaign_id",
+            "driveway_campaign_pieces",
+            ["campaign_id"],
+        )
+        op.create_index(
+            "ix_driveway_campaign_pieces_property_id",
+            "driveway_campaign_pieces",
+            ["property_id"],
+        )
+        op.create_index(
+            "ix_driveway_campaign_pieces_token",
+            "driveway_campaign_pieces",
+            ["token"],
+            unique=True,
+        )
+        op.create_index(
+            "ix_driveway_campaign_pieces_idempotency_key",
+            "driveway_campaign_pieces",
+            ["idempotency_key"],
+        )
     else:
         columns = _column_names(inspector, "driveway_campaign_pieces")
         indexes = _index_names(inspector, "driveway_campaign_pieces")
@@ -116,17 +147,27 @@ def upgrade() -> None:
             sa.Column("consent_email", sa.Boolean(), nullable=False),
             sa.Column("consent_sms", sa.Boolean(), nullable=False),
             sa.Column("consent_tcpa", sa.Boolean(), nullable=False),
-            sa.Column("consent_timestamp_utc", sa.DateTime(timezone=True), nullable=False),
+            sa.Column(
+                "consent_timestamp_utc", sa.DateTime(timezone=True), nullable=False
+            ),
             sa.Column("source", sa.String(length=40), nullable=False),
             sa.Column("idempotency_key", sa.String(length=128), nullable=True),
             sa.Column("created_at_utc", sa.DateTime(timezone=True), nullable=False),
             sa.PrimaryKeyConstraint("id"),
         )
         op.create_index("ix_driveway_opt_ins_id", "driveway_opt_ins", ["id"])
-        op.create_index("ix_driveway_opt_ins_token", "driveway_opt_ins", ["token"], unique=True)
-        op.create_index("ix_driveway_opt_ins_property_id", "driveway_opt_ins", ["property_id"])
+        op.create_index(
+            "ix_driveway_opt_ins_token", "driveway_opt_ins", ["token"], unique=True
+        )
+        op.create_index(
+            "ix_driveway_opt_ins_property_id", "driveway_opt_ins", ["property_id"]
+        )
         op.create_index("ix_driveway_opt_ins_email", "driveway_opt_ins", ["email"])
-        op.create_index("ix_driveway_opt_ins_idempotency_key", "driveway_opt_ins", ["idempotency_key"])
+        op.create_index(
+            "ix_driveway_opt_ins_idempotency_key",
+            "driveway_opt_ins",
+            ["idempotency_key"],
+        )
     else:
         columns = _column_names(inspector, "driveway_opt_ins")
         indexes = _index_names(inspector, "driveway_opt_ins")

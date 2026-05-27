@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-26T00:16:59.099Z",
+  "generatedAt": "2026-05-27T01:42:44.594Z",
   "sources": [
     {
       "sourceId": "openai-news",
@@ -8,9 +8,9 @@
       "mode": "rss",
       "status": "ok",
       "itemCount": 80,
-      "durationMs": 648,
+      "durationMs": 756,
       "error": null,
-      "fetchedAt": "2026-05-26T00:16:55.334Z"
+      "fetchedAt": "2026-05-27T01:42:40.028Z"
     },
     {
       "sourceId": "google-ai-blog",
@@ -19,9 +19,31 @@
       "mode": "rss",
       "status": "ok",
       "itemCount": 20,
-      "durationMs": 244,
+      "durationMs": 346,
       "error": null,
-      "fetchedAt": "2026-05-26T00:16:55.404Z"
+      "fetchedAt": "2026-05-27T01:42:40.097Z"
+    },
+    {
+      "sourceId": "google-cloud-ai-blog",
+      "sourceName": "Google Cloud AI Blog",
+      "url": "https://cloud.google.com/blog/products/ai-machine-learning/rss/",
+      "mode": "rss",
+      "status": "ok",
+      "itemCount": 0,
+      "durationMs": 1628,
+      "error": null,
+      "fetchedAt": "2026-05-27T01:42:40.099Z"
+    },
+    {
+      "sourceId": "google-search-central",
+      "sourceName": "Google Search Central Blog (HTML fallback)",
+      "url": "https://developers.google.com/search/blog",
+      "mode": "html-links",
+      "status": "ok",
+      "itemCount": 80,
+      "durationMs": 1496,
+      "error": null,
+      "fetchedAt": "2026-05-27T01:42:40.100Z"
     },
     {
       "sourceId": "cloudflare-ai-blog",
@@ -30,9 +52,9 @@
       "mode": "rss",
       "status": "ok",
       "itemCount": 20,
-      "durationMs": 1396,
+      "durationMs": 782,
       "error": null,
-      "fetchedAt": "2026-05-26T00:16:55.406Z"
+      "fetchedAt": "2026-05-27T01:42:40.101Z"
     },
     {
       "sourceId": "microsoft-ai-blog",
@@ -41,9 +63,9 @@
       "mode": "rss",
       "status": "ok",
       "itemCount": 10,
-      "durationMs": 338,
+      "durationMs": 537,
       "error": null,
-      "fetchedAt": "2026-05-26T00:16:55.406Z"
+      "fetchedAt": "2026-05-27T01:42:40.102Z"
     },
     {
       "sourceId": "anthropic-news",
@@ -52,9 +74,42 @@
       "mode": "html-links",
       "status": "ok",
       "itemCount": 13,
-      "durationMs": 3678,
+      "durationMs": 4475,
       "error": null,
-      "fetchedAt": "2026-05-26T00:16:55.407Z"
+      "fetchedAt": "2026-05-27T01:42:40.102Z"
+    },
+    {
+      "sourceId": "deepmind-blog",
+      "sourceName": "Google DeepMind Blog (HTML fallback)",
+      "url": "https://deepmind.google/discover/blog/",
+      "mode": "html-links",
+      "status": "ok",
+      "itemCount": 0,
+      "durationMs": 1082,
+      "error": null,
+      "fetchedAt": "2026-05-27T01:42:40.103Z"
+    },
+    {
+      "sourceId": "hugging-face-blog",
+      "sourceName": "Hugging Face Blog",
+      "url": "https://huggingface.co/blog/feed.xml",
+      "mode": "rss",
+      "status": "ok",
+      "itemCount": 80,
+      "durationMs": 531,
+      "error": null,
+      "fetchedAt": "2026-05-27T01:42:40.104Z"
+    },
+    {
+      "sourceId": "github-copilot-changelog",
+      "sourceName": "GitHub Copilot Changelog (HTML fallback)",
+      "url": "https://github.blog/changelog/label/copilot/",
+      "mode": "html-links",
+      "status": "ok",
+      "itemCount": 34,
+      "durationMs": 787,
+      "error": null,
+      "fetchedAt": "2026-05-27T01:42:40.105Z"
     },
     {
       "sourceId": "vercel-changelog",
@@ -62,10 +117,10 @@
       "url": "https://vercel.com/changelog",
       "mode": "html-links",
       "status": "ok",
-      "itemCount": 8,
-      "durationMs": 286,
+      "itemCount": 9,
+      "durationMs": 738,
       "error": null,
-      "fetchedAt": "2026-05-26T00:16:55.408Z"
+      "fetchedAt": "2026-05-27T01:42:40.106Z"
     },
     {
       "sourceId": "arxiv-cs-ai",
@@ -74,9 +129,9 @@
       "mode": "rss",
       "status": "ok",
       "itemCount": 120,
-      "durationMs": 334,
+      "durationMs": 1077,
       "error": null,
-      "fetchedAt": "2026-05-26T00:16:55.408Z"
+      "fetchedAt": "2026-05-27T01:42:40.106Z"
     },
     {
       "sourceId": "arxiv-cs-cv",
@@ -85,9 +140,9 @@
       "mode": "rss",
       "status": "ok",
       "itemCount": 120,
-      "durationMs": 302,
+      "durationMs": 645,
       "error": null,
-      "fetchedAt": "2026-05-26T00:16:55.409Z"
+      "fetchedAt": "2026-05-27T01:42:40.107Z"
     }
   ]
 }

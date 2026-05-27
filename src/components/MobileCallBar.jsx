@@ -27,6 +27,7 @@ const ALLOWED_PREFIXES = [
   '/blog',
   '/states',
   '/jwordenai',
+  '/ai-research',
 ]
 
 // Routes that explicitly hide the bar even when prefix matches.

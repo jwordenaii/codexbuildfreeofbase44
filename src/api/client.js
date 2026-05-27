@@ -922,6 +922,7 @@ export const api = {
   getVdotStatus: () => request('GET', '/api/v1/vdot-bids/status'),
   dashboardPreflight: () => request('GET', '/api/v1/ops/dashboard-preflight'),
   getMonitoringStatus: () => protectedRequest('GET', '/api/v1/admin/monitoring/status'),
+  getPublicTechIntelligenceBrief: (params = {}) => request('GET', `/api/v1/tech-intelligence/public-brief${buildQS(params)}`),
   getTechIntelligenceQueue: (params = {}) => protectedRequest('GET', `/api/v1/tech-intelligence/queue${buildQS(params)}`),
   getPredictiveCapitalShadowForecast: (params = {}) => protectedRequest('GET', `/api/v1/predictive-capital/shadow-forecast${buildQS(params)}`),
   ingestAmbientVoiceEvent: (payload) => protectedRequest('POST', '/api/v1/voice/ambient-ingest', payload),

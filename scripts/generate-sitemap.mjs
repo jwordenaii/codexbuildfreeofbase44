@@ -101,6 +101,7 @@ const STATIC_ROUTES = [
   { path: '/locations',                     priority: '0.9',  changefreq: 'monthly' },
   { path: '/service-areas',                 priority: '0.9',  changefreq: 'monthly' },
   { path: '/jwordenai',                     priority: '0.85', changefreq: 'monthly' },
+  { path: '/ai-research',                   priority: '0.8',  changefreq: 'daily' },
   // Regional landing pages (high local-pack value)
   { path: '/richmond-paving',               priority: '0.95', changefreq: 'monthly' },
   { path: '/chesterfield-paving',           priority: '0.95', changefreq: 'monthly' },

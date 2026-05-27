@@ -60,7 +60,9 @@ def _next_unique_token(db: Session, property_id: str, address: str) -> str:
         )
         if not exists:
             return token
-    raise HTTPException(status_code=500, detail="Could not generate unique opt-in token")
+    raise HTTPException(
+        status_code=500, detail="Could not generate unique opt-in token"
+    )
 
 
 @router.post(
