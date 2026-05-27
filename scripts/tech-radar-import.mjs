@@ -64,6 +64,27 @@ const CAPABILITY_TO_DOMAIN = {
   'search-retrieval': ['compliance', 'gc'],
 }
 
+const WEBSITE_AUTO_APPROVED_SOURCES = new Set([
+  'openai-news',
+  'google-ai-blog',
+  'google-cloud-ai-blog',
+  'google-search-central',
+  'cloudflare-ai-blog',
+  'microsoft-ai-blog',
+  'anthropic-news',
+  'deepmind-blog',
+  'hugging-face-blog',
+  'github-copilot-changelog',
+  'vercel-changelog',
+])
+
+const WEBSITE_REVIEW_REQUIRED_TAGS = new Set([
+  'pre-release-signals',
+  'security-governance',
+])
+
+const WEBSITE_REVIEW_REQUIRED_DOMAINS = new Set(['compliance'])
+
 main().catch((err) => {
   console.error('[tech-radar-import] failed:', err)
   process.exit(1)
@@ -74,10 +95,21 @@ async function main() {
   const snapshot = await readJson(SNAPSHOT_PATH)
 
   const candidateItems = selectCandidates(latest, snapshot)
-  const scored = candidateItems.map((item) => scoreItem(item))
-  const prioritized = scored
+  const scored = candidateItems
+    .map((item) => scoreItem(item))
+    .map((item) => ({
+      ...item,
+      websitePublication: buildWebsitePublicationDecision(item),
+    }))
+
+  const prioritized = [...scored]
     .sort((a, b) => b.overallScore - a.overallScore)
     .slice(0, 40)
+
+  const websiteAutoApprovedSignals = [...scored]
+    .filter((item) => item.websitePublication?.status === 'auto-approved')
+    .sort((a, b) => b.overallScore - a.overallScore)
+    .slice(0, 20)
 
   const domainSummary = summarizeByDomain(prioritized)
   const payload = {
@@ -86,10 +118,13 @@ async function main() {
     sourceCount: latest.sourceCount || null,
     signalsAnalyzed: candidateItems.length,
     prioritizedSignals: prioritized,
+    websiteAutoApprovedSignals,
     domainSummary,
+    websitePublicationSummary: summarizeWebsitePublication(scored),
     notes: [
       'This intelligence payload is optimized for system ingestion and planning, not legal or production guarantees.',
       'Use high score signals to drive feature spikes, pilot rollouts, and architecture updates.',
+      'Public website auto-publishing is limited to signals that pass the website publication policy.',
     ],
   }
 
@@ -104,6 +139,7 @@ async function main() {
 
   console.log(`[tech-radar-import] signals analyzed: ${candidateItems.length}`)
   console.log(`[tech-radar-import] prioritized signals: ${prioritized.length}`)
+  console.log(`[tech-radar-import] website auto-approved signals: ${websiteAutoApprovedSignals.length}`)
   console.log('[tech-radar-import] wrote docs/tech-radar/intelligence/latest.json')
   console.log('[tech-radar-import] wrote docs/tech-radar/intelligence/latest-report.md')
   console.log('[tech-radar-import] wrote app/data/tech-intelligence/latest.json')
@@ -171,6 +207,70 @@ function scoreItem(item) {
   }
 }
 
+function buildWebsitePublicationDecision(item) {
+  const capabilityTags = Array.isArray(item.capabilityTags) ? item.capabilityTags : []
+  const topDomains = Array.isArray(item.topDomains) ? item.topDomains : []
+  const priority = String(item.priority || '').toLowerCase()
+  const sourceId = String(item.sourceId || '')
+
+  if (!WEBSITE_AUTO_APPROVED_SOURCES.has(sourceId)) {
+    return {
+      status: 'review-required',
+      reason: 'Source is not on the trusted auto-publish list.',
+      approved: false,
+    }
+  }
+
+  if (priority !== 'high' && priority !== 'critical') {
+    return {
+      status: 'review-required',
+      reason: 'Only high and critical signals can auto-publish to the website.',
+      approved: false,
+    }
+  }
+
+  if (capabilityTags.some((tag) => WEBSITE_REVIEW_REQUIRED_TAGS.has(tag))) {
+    return {
+      status: 'review-required',
+      reason: 'Preview-stage or governance-sensitive signals require human review.',
+      approved: false,
+    }
+  }
+
+  if (topDomains.some((domain) => WEBSITE_REVIEW_REQUIRED_DOMAINS.has(domain.domainId))) {
+    return {
+      status: 'review-required',
+      reason: 'Compliance-oriented signals require human review before public publication.',
+      approved: false,
+    }
+  }
+
+  return {
+    status: 'auto-approved',
+    reason: 'Trusted source and safe category for automatic public publication.',
+    approved: true,
+    approvedAt: new Date().toISOString(),
+  }
+}
+
+function summarizeWebsitePublication(items) {
+  const summary = {
+    autoApproved: 0,
+    reviewRequired: 0,
+  }
+
+  for (const item of items) {
+    const status = item.websitePublication?.status
+    if (status === 'auto-approved') {
+      summary.autoApproved += 1
+    } else {
+      summary.reviewRequired += 1
+    }
+  }
+
+  return summary
+}
+
 function summarizeByDomain(items) {
   const map = new Map(DOMAIN_RULES.map((d) => [d.id, {
     domainId: d.id,
@@ -214,6 +314,19 @@ function renderMarkdown(payload) {
   lines.push(`Generated at: ${payload.generatedAt}`)
   lines.push(`Radar snapshot at: ${payload.radarGeneratedAt || 'unknown'}`)
   lines.push(`Signals analyzed: ${payload.signalsAnalyzed}`)
+  lines.push(`Auto-approved for website: ${payload.websitePublicationSummary.autoApproved}`)
+  lines.push(`Review required: ${payload.websitePublicationSummary.reviewRequired}`)
+  lines.push('')
+  lines.push('## Website Auto-Approved Signals')
+  lines.push('')
+  if ((payload.websiteAutoApprovedSignals || []).length === 0) {
+    lines.push('No signals currently qualify for automatic website publication.')
+  } else {
+    for (const signal of payload.websiteAutoApprovedSignals.slice(0, 12)) {
+      lines.push(`- [${signal.priority}] ${signal.title} (${signal.sourceName || 'source'})`)
+      lines.push(`  ${signal.url || 'n/a'}`)
+    }
+  }
   lines.push('')
   lines.push('## Domain Priority Summary')
   lines.push('')
@@ -226,7 +339,7 @@ function renderMarkdown(payload) {
   lines.push('## Top Signals')
   lines.push('')
   for (const signal of payload.prioritizedSignals.slice(0, 20)) {
-    lines.push(`- [${signal.priority}] ${signal.title} (${signal.sourceName || 'source'})`)
+    lines.push(`- [${signal.priority}] [${signal.websitePublication?.status || 'review-required'}] ${signal.title} (${signal.sourceName || 'source'})`)
     lines.push(`  ${signal.url || 'n/a'}`)
   }
   lines.push('')

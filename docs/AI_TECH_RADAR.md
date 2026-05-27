@@ -6,9 +6,14 @@ This project now includes a feed-first monitoring pipeline for tracking new AI c
 
 - OpenAI News RSS
 - Google AI Blog RSS
+- Google Cloud AI Blog RSS
+- Google Search Central blog (HTML fallback)
 - Cloudflare AI tag RSS
 - Microsoft AI tag RSS
 - Anthropic newsroom page (HTML fallback)
+- Google DeepMind blog (HTML fallback)
+- Hugging Face blog RSS
+- GitHub Copilot changelog (HTML fallback)
 - Vercel changelog page (HTML fallback)
 - arXiv cs.AI RSS (preprint / pre-publication signals)
 - arXiv cs.CV RSS (vision preprint / pre-publication signals)
@@ -78,6 +83,8 @@ The intelligence import step writes:
 - `docs/tech-radar/intelligence/latest-report.md` - human-readable intelligence brief
 - `app/data/tech-intelligence/latest.json` - stable in-repo system import artifact for downstream analysis
 
+The import step also computes website publication policy fields so the public site can auto-publish only approved signals while routing preview-stage, compliance-heavy, and untrusted-source items into review.
+
 The email alert step writes:
 
 - `docs/tech-radar/intelligence/email-alert-state.json` - dedupe + daily-send checkpoint state
@@ -135,5 +142,9 @@ Added for upcoming technology tracking:
 Internal queue endpoint:
 
 - `GET /api/v1/tech-intelligence/queue?limit=20&min_priority=medium`
+
+Public digest endpoint:
+
+- `GET /api/v1/tech-intelligence/public-brief?limit=6`
 
 The endpoint reads from `app/data/tech-intelligence/latest.json` (or docs fallback), returns prioritized opportunities, staleness hours, and domain pressure summary for Command Center.
