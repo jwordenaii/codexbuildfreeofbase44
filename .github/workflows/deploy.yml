@@ -27,19 +27,34 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
+      # Explicit deploy ownership model:
+      # - git-integration: Netlify auto-builds from linked GitHub repo/branch.
+      # - cli: this workflow publishes dist via Netlify CLI.
+      NETLIFY_DEPLOY_MODE: ${{ vars.NETLIFY_DEPLOY_MODE || 'git-integration' }}
       NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
       NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
 
     steps:
-      - name: Check Netlify credentials
-        id: check_netlify
+      - name: Validate Netlify deploy mode
+        id: deploy_mode
         run: |
-          if [ -z "$NETLIFY_AUTH_TOKEN" ] || [ -z "$NETLIFY_SITE_ID" ]; then
-            echo "has_netlify=false" >> "$GITHUB_OUTPUT"
-            echo "::warning::NETLIFY_AUTH_TOKEN / NETLIFY_SITE_ID secrets are not set. The site is presumed to be auto-deployed by Netlify's git integration. Skipping CLI deploy."
-          else
-            echo "has_netlify=true" >> "$GITHUB_OUTPUT"
-          fi
+          case "$NETLIFY_DEPLOY_MODE" in
+            git-integration)
+              echo "use_cli=false" >> "$GITHUB_OUTPUT"
+              echo "::notice::NETLIFY_DEPLOY_MODE=git-integration. Netlify Git integration is the deploy source."
+              ;;
+            cli)
+              if [ -z "$NETLIFY_AUTH_TOKEN" ] || [ -z "$NETLIFY_SITE_ID" ]; then
+                echo "::error::NETLIFY_DEPLOY_MODE=cli requires NETLIFY_AUTH_TOKEN and NETLIFY_SITE_ID secrets."
+                exit 1
+              fi
+              echo "use_cli=true" >> "$GITHUB_OUTPUT"
+              ;;
+            *)
+              echo "::error::Invalid NETLIFY_DEPLOY_MODE '$NETLIFY_DEPLOY_MODE'. Use 'git-integration' or 'cli'."
+              exit 1
+              ;;
+          esac
 
       - uses: actions/checkout@v4
 
@@ -93,11 +108,11 @@ jobs:
 
       # ── Deploy to Netlify ──────────────────────────────────────────────────
       - name: Deploy to Netlify (production)
-        if: steps.check_netlify.outputs.has_netlify == 'true' && github.event.inputs.environment != 'preview'
+        if: steps.deploy_mode.outputs.use_cli == 'true' && github.event.inputs.environment != 'preview'
         run: npx netlify-cli deploy --dir=dist --prod
 
       - name: Deploy to Netlify (preview)
-        if: steps.check_netlify.outputs.has_netlify == 'true' && github.event.inputs.environment == 'preview'
+        if: steps.deploy_mode.outputs.use_cli == 'true' && github.event.inputs.environment == 'preview'
         run: npx netlify-cli deploy --dir=dist
 
   # ── Back-end: validate, test, build Docker ────────────────────────────────────

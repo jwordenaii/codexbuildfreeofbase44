@@ -29,6 +29,15 @@ Snapshot source: owner-shared Netlify dashboard inventory (May 2026).
    - `.well-known/worden-contract.json` in the University repo.
    - `guard:wordenuniversity-contract` in this repo.
 
+## Deployment Ownership Policy
+
+To prevent source drift and stale-route incidents, each Netlify project must use one explicit deployment owner:
+
+- `git-integration`: Netlify deploys from linked GitHub repo/branch.
+- `cli`: GitHub Actions deploys via Netlify CLI using site/token secrets.
+
+Never run both models implicitly for the same production domain. The owning mode must be documented and reviewed whenever deploy behavior changes.
+
 ## Update Trigger
 
 Update this matrix whenever one of these changes:

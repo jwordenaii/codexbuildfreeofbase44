@@ -48,6 +48,12 @@ This script runs `alembic upgrade head` on every deploy before starting Gunicorn
 |---|---|
 | `VITE_API_BASE_URL` | `https://your-api-service.up.railway.app` (your Railway API URL) |
 | `VITE_SENTRY_DSN` | Your frontend Sentry DSN (optional, enables browser error tracking) |
+| `NETLIFY_DEPLOY_MODE` (GitHub repo variable) | `git-integration` or `cli` |
+
+**Deploy ownership mode** (GitHub → Settings → Secrets and variables → Actions → Variables):
+
+- `git-integration`: Netlify deploys directly from linked GitHub repo/branch.
+- `cli`: GitHub Actions deploys via Netlify CLI and requires `NETLIFY_AUTH_TOKEN` + `NETLIFY_SITE_ID` secrets.
 
 > The SPA fallback redirect (`/* → /index.html 200`) and the `/api/*` proxy to Railway are already configured in `netlify.toml`.
 

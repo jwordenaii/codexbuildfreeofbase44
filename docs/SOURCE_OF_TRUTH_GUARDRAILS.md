@@ -40,6 +40,19 @@ If any mismatch appears, stop and fix before editing.
 4. Confirm published commit SHA matches local push.
 5. Use Clear cache and deploy site when route behavior is stale.
 
+## Deploy Mode Guardrail (Required)
+
+`deploy.yml` now requires an explicit deploy mode via `NETLIFY_DEPLOY_MODE` repository variable:
+
+- `git-integration`:
+  - Netlify's linked GitHub repo/branch is the deployment source.
+  - GitHub Actions builds/tests but does not publish via Netlify CLI.
+- `cli`:
+  - GitHub Actions publishes `dist/` via Netlify CLI.
+  - Requires `NETLIFY_AUTH_TOKEN` and `NETLIFY_SITE_ID` secrets.
+
+Do not leave deployment ownership implicit. Treat missing/invalid mode as a misconfiguration.
+
 ## Parallel Conversation Rule
 
 When another forked conversation is active:
@@ -74,3 +87,9 @@ When another forked conversation is active:
   - [github.com/jwordenaii/codexbuildfreeofbase44.git](https://github.com/jwordenaii/codexbuildfreeofbase44.git)
 - Branch:
   - main
+
+## Local Mirror Rule
+
+- `external-repos/` is local-only and ignored by this canonical repo.
+- Use mirrors for inspection/sync workflows only.
+- Do not treat mirror repos as application source of truth.

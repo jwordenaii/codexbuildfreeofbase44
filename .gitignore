@@ -67,6 +67,9 @@ resp.txt
 .cc_head.txt
 jworden_leads.db
 
+# Local mirror/fork repos used for deployment experiments and sync operations
+external-repos/
+
 # Generated local report artifacts
 docs/clean-house/latest-report.md
 docs/clean-house/latest.json
