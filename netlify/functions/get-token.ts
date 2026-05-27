@@ -110,7 +110,7 @@ export const handler: Handler = async (event) => {
     }
   } catch (error) {
     return {
-      statusCode: 500,
+      statusCode: 401,
       headers: { ...headers, 'Content-Type': 'application/json' },
       body: JSON.stringify({ error: error instanceof Error ? error.message : 'Unable to issue token' }),
     }
