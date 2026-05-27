@@ -60,17 +60,11 @@ if (typeof document !== 'undefined') {
 }
 
 const rootElement = document.getElementById('root');
-if (rootElement.hasChildNodes()) {
-  ReactDOM.hydrateRoot(
-    rootElement,
-    <HelmetProvider>
-      <App />
-    </HelmetProvider>
-  );
-} else {
-  ReactDOM.createRoot(rootElement).render(
-    <HelmetProvider>
-      <App />
-    </HelmetProvider>
-  );
-}
+
+// Prerendered HTML is kept for SEO, but we intentionally remount on the client
+// to avoid hydration drift caused by non-deterministic runtime widgets.
+ReactDOM.createRoot(rootElement).render(
+  <HelmetProvider>
+    <App />
+  </HelmetProvider>
+);
