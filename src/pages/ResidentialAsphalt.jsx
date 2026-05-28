@@ -4,13 +4,37 @@ import { CheckCircle2, Home, Phone, ShieldCheck } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import SEO from '@/components/SEO'
+import SmartImage from '@/components/SmartImage'
 import { trackPhoneClick } from '@/lib/analytics'
 import { getRichmondRadiusLocations, RICHMOND_RADIUS_MILES } from '@/lib/locations'
+
+const RESIDENTIAL_IMAGES = [
+  {
+    src: '/work/portfolio/portfolio-017.jpg',
+    alt: 'Premium finished asphalt driveway in Windsor Farms Richmond by J. Worden and Sons',
+    label: 'Historic Richmond finish work',
+  },
+  {
+    src: '/work/portfolio/portfolio-030.jpg',
+    alt: 'Large estate circular driveway paving in Chesterfield by J. Worden and Sons',
+    label: 'Estate circular driveway',
+  },
+  {
+    src: '/work/portfolio/portfolio-013.jpg',
+    alt: 'Circular residential asphalt driveway with clean edges in Chesterfield Virginia',
+    label: 'Circular driveway layout',
+  },
+  {
+    src: '/work/portfolio/portfolio-006.jpg',
+    alt: 'Residential asphalt driveway with decorative brick edging in Richmond Virginia',
+    label: 'Asphalt with border detail',
+  },
+]
 
 const RESIDENTIAL_SERVICES = [
   {
     title: 'New Driveway Installation',
-    detail: 'Full-base driveway paving with grading, compaction, and clean edge work for long-term durability.',
+    detail: 'A properly prepared driveway with clean edges, correct pitch, solid base, and a finish that looks right beside the home.',
   },
   {
     title: 'Driveway Resurfacing',
@@ -18,7 +42,7 @@ const RESIDENTIAL_SERVICES = [
   },
   {
     title: 'Remove And Replace',
-    detail: 'Full-depth reconstruction for failed asphalt with drainage corrections and reinforced base preparation.',
+    detail: 'Full-depth reconstruction when the existing driveway is beyond patching, including base correction and water control.',
   },
   {
     title: 'Crack Repair And Sealcoating',
@@ -26,11 +50,11 @@ const RESIDENTIAL_SERVICES = [
   },
   {
     title: 'Private Lanes And Long Driveways',
-    detail: 'Solutions for rural and estate properties with long runs, grade changes, and heavy seasonal weather shifts.',
+    detail: 'Long residential lanes, estate drives, farm entrances, and rural approaches that need stronger planning than a short city driveway.',
   },
   {
     title: 'Widening And Lengthening',
-    detail: 'Expand existing driveways for safer parking, better turn radius, and improved daily function.',
+    detail: 'More parking, better turn radius, cleaner garage access, and a driveway that works for how the home is actually used.',
   },
 ]
 
@@ -53,7 +77,7 @@ export default function ResidentialAsphalt() {
   const canonicalPath = '/residential'
   const title = 'Residential Asphalt Paving in Virginia | J. Worden & Sons'
   const description =
-    'Residential driveway paving, resurfacing, remove-and-replace, and asphalt maintenance across Virginia. Family-run crew with clear scope, strong prep, and long-life results.'
+    'High-quality residential driveway paving, resurfacing, private lanes, and asphalt maintenance around Chester, Richmond, Chesterfield, Henrico, and Central Virginia.'
 
   const richmondRadiusMarkets = getRichmondRadiusLocations()
 
@@ -117,36 +141,48 @@ export default function ResidentialAsphalt() {
       <section className="relative border-b border-border pt-32 pb-16 md:pb-20 overflow-hidden">
         <div className="absolute -top-16 right-0 w-72 h-72 rounded-full bg-primary/12 blur-3xl pointer-events-none" />
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <p className="font-display text-primary text-xs tracking-[0.3em] uppercase mb-4">Residential Asphalt Division</p>
-          <h1 className="font-display font-black text-foreground text-4xl md:text-6xl uppercase tracking-tight leading-[0.95] max-w-5xl">
-            Residential Driveway Paving Built To Last In Virginia
-          </h1>
-          <p className="text-muted-foreground text-base md:text-lg mt-6 max-w-3xl leading-relaxed">
-            We combine base preparation, grade control, and proper compaction so your driveway looks better now and
-            performs longer through Virginia heat, rain, and freeze-thaw cycles.
-          </p>
+          <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
+            <div>
+              <p className="font-display text-primary text-xs tracking-[0.3em] uppercase mb-4">Residential Driveway Division</p>
+              <h1 className="font-display font-black text-foreground text-4xl md:text-6xl uppercase tracking-tight leading-[0.95] max-w-5xl">
+                Luxury Driveways Built With Structural Discipline
+              </h1>
+              <p className="text-muted-foreground text-base md:text-lg mt-6 max-w-3xl leading-relaxed">
+                Your driveway is part of your property value. We evaluate drainage, base condition, tie-ins, edges, turnarounds,
+                and daily traffic before recommending repair, resurfacing, or full-depth replacement.
+              </p>
 
-          <div className="flex flex-wrap gap-3 mt-8">
-            <a
-              href="tel:+18044461296"
-              onClick={() => trackPhoneClick('residential_page_hero')}
-              className="premium-cta inline-flex items-center gap-2 px-6 py-4 font-display font-bold text-sm tracking-[0.14em] uppercase text-primary-foreground"
-            >
-              <Phone className="w-4 h-4" />
-              Call 804-446-1296
-            </a>
-            <Link
-              to="/jwordenai"
-              className="bg-foreground text-background px-6 py-4 font-display font-bold text-sm tracking-[0.14em] uppercase hover:bg-foreground/90 transition-colors"
-            >
-              Open JWordenAI Scan
-            </Link>
-            <Link
-              to="/#quote"
-              className="border border-primary/50 text-primary px-6 py-4 font-display font-bold text-sm tracking-[0.14em] uppercase hover:bg-primary/10 transition-colors"
-            >
-              Request Free Estimate
-            </Link>
+              <div className="flex flex-wrap gap-3 mt-8">
+                <a
+                  href="tel:+18044461296"
+                  onClick={() => trackPhoneClick('residential_page_hero')}
+                  className="premium-cta inline-flex items-center gap-2 px-6 py-4 font-display font-bold text-sm tracking-[0.14em] uppercase text-primary-foreground"
+                >
+                  <Phone className="w-4 h-4" />
+                  Call 804-446-1296
+                </a>
+                <Link
+                  to="/#quote"
+                  className="border border-primary/50 text-primary px-6 py-4 font-display font-bold text-sm tracking-[0.14em] uppercase hover:bg-primary/10 transition-colors"
+                >
+                  Request Free Estimate
+                </Link>
+              </div>
+            </div>
+            <figure className="border border-border bg-card p-3 shadow-[0_24px_60px_-36px_rgba(15,48,68,0.45)]">
+              <SmartImage
+                src="/work/portfolio/portfolio-017.jpg"
+                alt="Premium residential asphalt driveway finished in Richmond Virginia"
+                width={1200}
+                height={900}
+                sizes="(max-width: 1024px) 100vw, 48vw"
+                className="aspect-[4/3] w-full object-cover"
+                priority
+              />
+              <figcaption className="px-2 pt-3 font-display text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                Finished residential driveway work
+              </figcaption>
+            </figure>
           </div>
         </div>
       </section>
@@ -157,7 +193,7 @@ export default function ResidentialAsphalt() {
             <div>
               <p className="font-display text-primary text-xs tracking-[0.28em] uppercase mb-2">Residential Services</p>
               <h2 className="font-display font-black text-foreground text-3xl md:text-5xl uppercase tracking-tight leading-[0.95]">
-                Full-Scope Home Asphalt Work
+                High-Quality Home Asphalt Work
               </h2>
             </div>
           </div>
@@ -175,25 +211,56 @@ export default function ResidentialAsphalt() {
         </div>
       </section>
 
+      <section className="py-14 md:py-18 border-b border-border bg-white">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="mb-8 max-w-3xl">
+            <p className="font-display text-primary text-xs tracking-[0.28em] uppercase mb-2">Real Residential Work</p>
+            <h2 className="font-display font-black text-foreground text-3xl md:text-5xl uppercase tracking-tight leading-[0.95]">
+              Clean Edges, Smooth Finish, Proper Fit To The Home
+            </h2>
+            <p className="mt-4 text-sm md:text-base text-muted-foreground leading-relaxed">
+              Finished driveways, circular layouts, estate properties, and clean details help you see what the work should look like before you schedule an estimate.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+            {RESIDENTIAL_IMAGES.map((image) => (
+              <figure key={image.src} className="border border-border bg-card overflow-hidden">
+                <SmartImage
+                  src={image.src}
+                  alt={image.alt}
+                  width={900}
+                  height={675}
+                  sizes="(max-width: 768px) 100vw, 25vw"
+                  className="aspect-[4/3] w-full object-cover quality-premium"
+                />
+                <figcaption className="border-t border-border px-4 py-3 font-display text-xs uppercase tracking-[0.16em] text-muted-foreground">
+                  {image.label}
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="py-14 md:py-16 border-b border-border">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="premium-panel rounded-2xl p-6 md:p-8">
               <h2 className="font-display font-black text-foreground text-2xl md:text-3xl uppercase tracking-tight mb-4">
-                Why Homeowners Choose Us
+                Why Homeowners Call Us
               </h2>
               <div className="space-y-3">
                 <div className="flex items-start gap-2.5">
                   <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                  <p className="text-sm text-foreground/90 leading-relaxed">40+ years of field experience in Virginia asphalt paving.</p>
+                  <p className="text-sm text-foreground/90 leading-relaxed">We look at water, grade, base, edges, and daily use before recommending a scope.</p>
                 </div>
                 <div className="flex items-start gap-2.5">
                   <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                  <p className="text-sm text-foreground/90 leading-relaxed">Family-operated team with consistent quality control from estimate to finish.</p>
+                  <p className="text-sm text-foreground/90 leading-relaxed">Family-run accountability from estimate to finish, with real project photos to back up the work.</p>
                 </div>
                 <div className="flex items-start gap-2.5">
                   <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                  <p className="text-sm text-foreground/90 leading-relaxed">Clear scope, realistic scheduling, and no low-ball shortcut execution.</p>
+                  <p className="text-sm text-foreground/90 leading-relaxed">Clear scope, disciplined execution, and no shortcut workmanship that fails after one weather cycle.</p>
                 </div>
               </div>
             </div>
@@ -265,7 +332,7 @@ export default function ResidentialAsphalt() {
               <p className="font-display text-primary text-xs tracking-[0.28em] uppercase mb-2">Start Here</p>
               <h2 className="font-display font-black text-foreground text-3xl uppercase tracking-tight">Get A Residential Driveway Plan</h2>
               <p className="text-muted-foreground text-sm md:text-base mt-3 max-w-2xl leading-relaxed">
-                We will review your site, explain the right scope, and give you a clear estimate with no fluff.
+                We will review your driveway, explain the right scope, and give you a clear estimate with no pressure.
               </p>
             </div>
             <a

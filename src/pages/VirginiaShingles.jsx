@@ -77,7 +77,7 @@ export default function VirginiaShingles() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-white font-black text-3xl md:text-5xl tracking-tight mb-4">Total Property Enclosure.</h2>
-            <p className="text-white/40 max-w-2xl mx-auto">From the shingles on your roof to the asphalt on your driveway, JWORDENAI provides a unified maintenance blueprint.</p>
+            <p className="text-white/40 max-w-2xl mx-auto">From the shingles on your roof to the asphalt on your driveway, our team can help organize the right maintenance plan.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {SHINGLE_SERVICES.map((service, idx) => (

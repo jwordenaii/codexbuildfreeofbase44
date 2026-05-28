@@ -53,10 +53,10 @@ export default function Hardscapes() {
               Request Design Consultation
             </a>
             <Link
-              to="/jwordenai"
+              to="/quote"
               className="border-2 border-white/30 bg-white/10 px-10 py-5 font-display font-bold text-sm tracking-widest uppercase text-white hover:bg-white/20 transition-all"
             >
-              JWordenAI Scan
+              Request Estimate
             </Link>
           </div>
         </div>
@@ -66,12 +66,12 @@ export default function Hardscapes() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-8 items-start">
             <div>
-              <p className="font-display text-primary text-xs tracking-[0.28em] uppercase mb-2">Premium Design Intelligence</p>
+              <p className="font-display text-primary text-xs tracking-[0.28em] uppercase mb-2">Design Planning</p>
               <h2 className="font-display font-black text-foreground text-3xl md:text-5xl uppercase tracking-tight leading-[0.95]">
                 See The Patio, Pavers, Drainage, And Finish Before Construction Starts
               </h2>
               <p className="text-muted-foreground text-base leading-relaxed mt-5 max-w-3xl">
-                Our JWORDENAI design flow can turn customer photos, measurements, material preferences, drainage concerns, and outdoor-living ideas into a visual decision packet before a full hardscape proposal is approved.
+                We can review photos, measurements, material preferences, drainage concerns, and outdoor-living ideas before a full hardscape proposal is approved.
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">

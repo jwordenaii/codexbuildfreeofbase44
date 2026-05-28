@@ -1,0 +1,77 @@
+name: Market Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Template contract check
+        run: npm run check:template-contract
+
+      - name: Truth schema validation
+        run: npm run validate:truth
+
+  discover:
+    needs: validate
+    runs-on: ubuntu-latest
+    outputs:
+      markets: ${{ steps.set-matrix.outputs.markets }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - id: set-matrix
+        name: Discover market slugs
+        run: |
+          MARKETS=$(node -e "const fs=require('fs'); const path=require('path'); const root='data'; if(!fs.existsSync(root)){console.error('Missing data directory'); process.exit(1);} const out=fs.readdirSync(root).filter(d=>fs.existsSync(path.join(root,d,'truth.json'))).sort(); if(!out.length){console.error('No markets discovered under data/*/truth.json'); process.exit(1);} process.stdout.write(JSON.stringify(out));")
+          echo "markets=$MARKETS" >> "$GITHUB_OUTPUT"
+          echo "Discovered markets: $MARKETS"
+
+  build-markets:
+    needs: discover
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        market: ${{ fromJson(needs.discover.outputs.markets) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build market
+        run: npm run build:truth -- --client=${{ matrix.market }}

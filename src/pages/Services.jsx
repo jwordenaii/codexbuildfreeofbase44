@@ -196,7 +196,7 @@ const SERVICES = [
   },
 ]
 
-const PAVING_INTENT_CLUSTERS = [
+const PROJECT_GROUPS = [
   {
     audience: 'Commercial property managers',
     searches: [
@@ -220,7 +220,7 @@ const PAVING_INTENT_CLUSTERS = [
       'Driveway removal, stone base prep, grading, apron tie-ins, drainage corrections, curing guidance, and sealcoating recommendations.',
   },
   {
-    audience: 'Franchise and QSR operators',
+    audience: 'Restaurant and franchise operators',
     searches: [
       'restaurant parking lot paving',
       'QSR asphalt contractor',
@@ -231,18 +231,18 @@ const PAVING_INTENT_CLUSTERS = [
       'National QSR experience, traffic control, production phasing, asphalt temperature awareness, safety documentation, and multi-state coordination.',
   },
   {
-    audience: 'Risk-aware project owners',
+    audience: 'Owners with drainage or utility concerns',
     searches: [
       '811 before paving',
       'utility locating before excavation',
-      'GPR utility scan',
-      'pavement condition assessment',
+      'drainage repair before paving',
+      'pavement condition review',
     ],
     proof:
-      '811 response checks, GPR/EM locate logic, LiDAR/drone overlays, potholing recommendations, pavement age-decay scoring, and go/no-go production decisions.',
+      '811 checks when needed, drainage review, soft-spot checks, utility-cut review, and a clear decision on whether repair, overlay, or replacement makes sense.',
   },
   {
-    audience: 'Municipal, HOA, and institutional buyers',
+    audience: 'Municipal, HOA, and institutional customers',
     searches: [
       'pavement preservation',
       'asphalt resurfacing',
@@ -253,15 +253,15 @@ const PAVING_INTENT_CLUSTERS = [
       'Lifecycle-first recommendations that compare sealcoating, crack sealing, patching, overlay, reconstruction, drainage repair, and documentation for board or public-facility decisions.',
   },
   {
-    audience: 'Evidence-driven owners',
+    audience: 'Customers who want the work explained clearly',
     searches: [
-      'asphalt testing',
-      'pavement condition assessment',
+      'asphalt repair options',
+      'pavement condition review',
       'asphalt lifecycle planning',
       'pavement preservation contractor',
     ],
     proof:
-      'Plain-English condition scoring, photos, measurements, traffic/drainage review, material-temperature awareness, and preservation vs replacement reasoning.',
+      'Plain-English recommendations, photos, measurements, traffic and drainage review, and a clear explanation of preservation vs replacement.',
   },
 ]
 
@@ -456,24 +456,24 @@ export default function Services() {
         ))}
       </div>
 
-      {/* Buyer-intent service logic */}
+      {/* Service planning */}
       <section className="py-20 bg-brand-navy text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <span className="text-brand-amber text-xs font-bold uppercase tracking-widest">
-              Service logic built around real search intent
+              Services organized by real paving problems
             </span>
             <h2 className="font-display font-black text-3xl md:text-4xl mt-2 mb-4">
-              The Questions Buyers Ask Before They Call
+              The Questions Customers Ask Before They Call
             </h2>
             <p className="text-white/60 max-w-2xl mx-auto">
-              High-performing paving pages do more than list services. They match each buyer type
-              with the exact problems, keywords, proof, and next step needed to make a confident
-              estimate request.
+              Most customers are trying to decide whether they need repair, sealcoating,
+              resurfacing, replacement, drainage correction, or a full parking lot plan. These are
+              the questions we help sort out before the estimate.
             </p>
           </div>
           <div className="grid md:grid-cols-2 gap-5">
-            {PAVING_INTENT_CLUSTERS.map((cluster) => (
+            {PROJECT_GROUPS.map((cluster) => (
               <div
                 key={cluster.audience}
                 className="rounded-2xl bg-white/5 border border-white/10 p-6"

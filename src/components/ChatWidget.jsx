@@ -8,11 +8,11 @@
  * avatar opens a compact four-tab panel:
  *
  *   Actions — Quick-action onboarding buttons ("Get a Quote", "Call Now", etc.)
- *   Chat    — AI multi-turn conversation (POST /api/v1/public/chat)
+ *   Chat    — multi-turn conversation (POST /api/v1/public/chat)
  *             Structured responses include quick-reply chips and handoff CTAs.
  *   Help    — Page-specific FAQ accordion cards
  *   Lead    — Full lead-capture form (name/phone/email/address/city/ZIP/
- *             service type/timeframe/project size/notes) with AI suggestions
+ *             service type/timeframe/project size/notes) with service suggestions
  *
  * Panel open/tab state is preserved in sessionStorage.
  * Conversation history is sent to the backend (capped at 10 turns).
@@ -84,7 +84,7 @@ const PAGE_CONTEXT = {
   '/service-areas': 'service areas page',
   '/blog': 'blog page',
   '/general-contracting': 'general contracting and paid design packet page',
-  '/jwordenai': 'JWORDENAI drone and camera pavement scanning page',
+  '/jwordenai': 'photo estimate intake page',
 }
 
 const PAGE_HELP = {
@@ -243,9 +243,9 @@ const QUICK_ACTIONS = [
   {
     id: 'scan',
     Icon: Camera,
-    label: 'Pavement Scan',
-    sub: 'Driveway or lot triage',
-    action: 'chat:Help me start a JWordenAI pavement scan review for my driveway or small parking lot.',
+    label: 'Send Photos',
+    sub: 'Driveway or lot review',
+    action: 'chat:Help me send photos for a driveway or small parking lot estimate.',
   },
   {
     id: 'design',
@@ -273,7 +273,7 @@ const QUICK_ACTIONS = [
 // ── Form options ──────────────────────────────────────────────────────────────
 
 const SERVICE_OPTIONS = [
-  { value: 'paid_scan_review', label: 'Paid AI Pavement / Damage Scan' },
+  { value: 'photo_review', label: 'Photo Review / Damage Notes' },
   { value: 'design_packet', label: '4D Design Packet' },
   { value: 'plan_to_bid', label: 'Plan-To-Bid Readiness Review' },
   { value: '', label: 'Select service type\u2026' },
@@ -408,7 +408,7 @@ const GREETING_DELAY_MS = 5500
 const MESSAGES_SS_KEY = 'mrw_messages'
 const MESSAGES_PERSIST_LIMIT = 40
 const DEFAULT_QUICK_REPLIES = [
-  'Start a JWordenAI scan review',
+  'Send photos for review',
   'Request a design consultation',
   'Price my driveway or lot',
   'Help me decide repair or replace',
@@ -419,7 +419,7 @@ function buildInitialMessages() {
     {
       id: 0,
       role: 'bot',
-      text: `${timeOfDayGreeting()}. I am Mr. Worden, your digital founder concierge. Show me the pavement, the plan, the roof concern, the patio idea, or the remodel dream, and I will help you sort the smartest next move: free estimate, paid AI scan, drone review, 4D design packet, or plan-to-bid prep. What are we looking at today?`,
+      text: `${timeOfDayGreeting()}. This is J. Worden & Sons. Tell us what you need paved or repaired: driveway, parking lot, sealcoating, crack repair, drainage, concrete, or striping. We can help you get the right estimate started.`,
     },
   ]
 }

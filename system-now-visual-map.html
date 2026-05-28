@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JWorden System Map - Current State</title>
+  <style>
+    :root {
+      --bg: #0b1220;
+      --panel: #121c2f;
+      --line: #2a3a57;
+      --text: #e9eefc;
+      --muted: #9fb0d1;
+      --ok: #1fbf75;
+      --warn: #f5a524;
+      --bad: #e5484d;
+      --link: #66b3ff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.4;
+    }
+    .wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h1, h2 { margin: 0 0 10px; }
+    .subtitle { color: var(--muted); margin-bottom: 20px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .status {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .ok { background: rgba(31,191,117,0.2); color: #76e2ae; }
+    .warn { background: rgba(245,165,36,0.2); color: #ffd28a; }
+    .bad { background: rgba(229,72,77,0.2); color: #ff9ca0; }
+    ul { margin: 8px 0 0 18px; padding: 0; }
+    code { color: #bcd4ff; }
+    .flow {
+      margin-top: 16px;
+      padding: 14px;
+      background: #0f1a2b;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    .node {
+      display: inline-block;
+      vertical-align: middle;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px 12px;
+      min-width: 180px;
+      text-align: center;
+    }
+    .arrow {
+      display: inline-block;
+      margin: 0 8px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+    .links {
+      margin-top: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .btn {
+      text-decoration: none;
+      color: var(--link);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-size: 14px;
+      background: #0f1a2b;
+    }
+    .legend {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>JWorden System Map - Current State</h1>
+    <div class="subtitle">Snapshot date: May 27, 2026 (local workspace audit)</div>
+
+    <div class="flow">
+      <span class="node">Public Site<br><code>doooooone root HTML</code></span>
+      <span class="arrow">--&gt;</span>
+      <span class="node">Lead Entry<br><code>request-estimate.html</code></span>
+      <span class="arrow">--&gt;</span>
+      <span class="node">Serverless<br><code>netlify/functions/*</code></span>
+      <span class="arrow">--&gt;</span>
+      <span class="node">Email/Indexing APIs<br><code>Gmail/Google/Bing</code></span>
+    </div>
+
+    <h2 style="margin-top:18px;">Subsystems</h2>
+    <div class="grid">
+      <div class="card">
+        <span class="status warn">Partially Wired</span>
+        <h3>1) Public Site (Live Surface)</h3>
+        <ul>
+          <li>Repo path: <code>C:\Users\genew\doooooone</code></li>
+          <li>Many static service/location pages exist</li>
+          <li>CTAs point to <code>/request-estimate.html</code></li>
+          <li><code>request-estimate.html</code> currently appears broken</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <span class="status bad">Not Fully Wired</span>
+        <h3>2) Deploy Contract at Root</h3>
+        <ul>
+          <li>Git status shows deleted tracked deploy files</li>
+          <li><code>netlify.toml</code>, <code>_redirects</code>, <code>robots.txt</code>, <code>sitemap.xml</code> flagged deleted</li>
+          <li>High risk for stable publish contract</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <span class="status warn">Code Exists</span>
+        <h3>3) Netlify Functions</h3>
+        <ul>
+          <li><code>chat-lead-capture.js</code></li>
+          <li><code>deploy-succeeded.js</code></li>
+          <li><code>ping-search-engines.js</code></li>
+          <li>Need confirmed runtime linkage + env vars in active deploy</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <span class="status warn">Present, Untracked Here</span>
+        <h3>4) WordenEnterpriseOS</h3>
+        <ul>
+          <li>Large app platform exists under <code>WordenEnterpriseOS/</code></li>
+          <li>Contains command-center style logic, tests, docs</li>
+          <li>Current repo status shows it as untracked in this parent repo</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <span class="status warn">Present, Untracked Here</span>
+        <h3>5) Research Repos Bundle</h3>
+        <ul>
+          <li><code>research_repos/wordenstandard</code> (mega dashboard pieces)</li>
+          <li><code>research_repos/wordenuniversity</code> (training/onboarding)</li>
+          <li>Also includes other site/app variants and prototypes</li>
+          <li>Not yet mapped as one clean source-of-truth graph</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <span class="status ok">Verified Fact</span>
+        <h3>6) Overall Interpretation</h3>
+        <ul>
+          <li>You have substantial capability across repos</li>
+          <li>Main gap is integration governance and source-of-truth boundaries</li>
+          <li>Current state is powerful but fragmented</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2 style="margin-top:18px;">Quick Open Links</h2>
+    <div class="links">
+      <a class="btn" href="./index.html">Open Root index.html</a>
+      <a class="btn" href="./request-estimate.html">Open request-estimate.html</a>
+      <a class="btn" href="./service-areas.html">Open service-areas.html</a>
+      <a class="btn" href="./WordenEnterpriseOS/index.html">Open WordenEnterpriseOS index</a>
+      <a class="btn" href="./research_repos/wordenstandard/index.html">Open wordenstandard index</a>
+      <a class="btn" href="./research_repos/wordenuniversity/index.html">Open wordenuniversity index</a>
+    </div>
+
+    <div class="legend">
+      Status meaning: <span style="color:#76e2ae;">Verified/Working</span>,
+      <span style="color:#ffd28a;">Partial/Needs Confirmation</span>,
+      <span style="color:#ff9ca0;">Broken/High Risk</span>.
+    </div>
+  </div>
+</body>
+</html>

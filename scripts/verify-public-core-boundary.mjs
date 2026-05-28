@@ -24,8 +24,8 @@ const publicRoutes = [
   '/contact',
   '/quote',
   '/services',
-  '/jwordenai',
-  '/ai-research',
+  '/residential',
+  '/parking-lots',
   '/blog',
 ]
 

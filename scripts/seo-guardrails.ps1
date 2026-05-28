@@ -26,7 +26,7 @@ $requiredPublicUrls = @(
   'https://www.jwordenasphaltpaving.com/locations',
   'https://www.jwordenasphaltpaving.com/blog',
   'https://www.jwordenasphaltpaving.com/commercial/richmond-va',
-  'https://www.jwordenasphaltpaving.com/jwordenai'
+  'https://www.jwordenasphaltpaving.com/residential'
 )
 
 $canonicalMatches = [regex]::Matches($landingPages, "canonicalPath:\s*'(?<p>/[^']+)'")

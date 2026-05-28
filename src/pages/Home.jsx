@@ -14,15 +14,39 @@ import QuickQuoteBar from '../components/QuickQuoteBar';
 const HERO_IMAGE = '/work/portfolio/portfolio-010.jpg';
 const LOT_IMAGE = '/work/portfolio/portfolio-030.jpg';
 const WORK_IMAGE = '/work/portfolio/portfolio-019.jpg';
+const COMMERCIAL_PROOF_IMAGE = '/work/imported/KFC/IMG_9499-COLLAGE.jpg';
+const RESIDENTIAL_PROOF_IMAGE = '/work/portfolio/portfolio-017.jpg';
+const QSR_IMAGE = '/work/kfc/kfc-job-032.jpg';
+
+const serviceCards = [
+  {
+    label: 'Residential',
+    title: 'Private driveway paving with estate-grade finish standards.',
+    body: 'Driveways, circular layouts, private lanes, widening, resurfacing, and full replacement executed with clean edges, controlled slope, and finish quality that complements the property.',
+    href: '/residential',
+    cta: 'View Residential Work',
+    image: RESIDENTIAL_PROOF_IMAGE,
+    alt: 'Finished high-end residential asphalt driveway in Richmond Virginia',
+    points: ['Estate driveways', 'Private lanes', 'Clean edges', 'Drainage-first scope'],
+  },
+  {
+    label: 'Commercial',
+    title: 'Commercial paving built for active properties and tenant continuity.',
+    body: 'Parking lots, drive-thru lanes, retail access lanes, patching, milling, sealcoating, ADA striping, and phased execution designed to keep businesses operating.',
+    href: '/parking-lots',
+    cta: 'View Commercial Proof',
+    image: COMMERCIAL_PROOF_IMAGE,
+    alt: 'KFC commercial parking lot project documentation by J. Worden and Sons',
+    points: ['KFC experience', 'Taco Bell and Arby\'s work', 'Drive-thru lanes', 'ADA striping'],
+  },
+];
 
 const serviceSolutions = [
-  ' Serving Richmond, Chesterfield, Fredericksburg, and all of Central Virginia with top-tier asphalt paving solutions.',
   'Residential driveway paving, overlays, and private lanes',
-  'Commercial asphalt paving and parking lot resurfacing',
+  'Commercial parking lots, drive-thru lanes, and resurfacing',
   'Sealcoating, crack sealing, and pavement preservation programs',
   'Asphalt repair, pothole patching, milling, and overlays',
   'Drainage, base failure, grading, and water correction',
-  'Concrete, curbing, sidewalks, pads, and transitions',
   'Line striping, ADA layout, and property reimage work',
 ];
 
@@ -59,6 +83,26 @@ const richmondMetroSignals = [
     href: '/locations/midlothian-va',
   },
 ];
+
+const contractorStandards = [
+  {
+    title: 'Driveway Finish',
+    body: 'Clean edges, smooth transitions, proper pitch away from the home, and enough base under the asphalt to hold up.',
+  },
+  {
+    title: 'Commercial Scheduling',
+    body: 'Phased work for lots that need to stay open, with clear access plans for customers, tenants, employees, and deliveries.',
+  },
+  {
+    title: 'Drainage First',
+    body: 'Standing water ruins asphalt. We look at grade, runoff, soft spots, and drainage before recommending a surface repair.',
+  },
+  {
+    title: 'Written Scope',
+    body: 'You should know what is being paved, repaired, milled, sealed, striped, hauled away, and excluded before work starts.',
+  },
+];
+
 
 const footprintAnchors = [
   {
@@ -134,10 +178,10 @@ const trustChecklist = [
 
 const internalLinks = [
   { label: 'Asphalt Paving', href: '/paving' },
-  { label: 'JWordenAI Scan', href: '/jwordenai' },
+  { label: 'Residential Driveways', href: '/residential' },
   { label: 'Sealcoating', href: '/sealcoating' },
-  { label: 'Hardscapes', href: '/hardscapes' },
-  { label: 'Millings & Fines', href: '/millings-fines' },
+  { label: 'Parking Lots', href: '/parking-lots' },
+  { label: 'Gallery', href: '/gallery' },
   { label: 'Richmond Commercial', href: '/commercial/richmond-va' },
   { label: 'Learning Center', href: '/blog' },
 ];
@@ -175,7 +219,7 @@ const faqs = [
   },
   {
     question: 'Does J. Worden & Sons handle both commercial and residential paving?',
-    answer: 'Yes. The company is positioned around a balanced residential and commercial mix, with driveway, private-lane, parking-lot, sealcoating, and asphalt repair work all treated as core services. J. Worden serves Virginia property managers, commercial owners, retail centers, industrial properties, HOAs, churches, schools, private communities, and residential driveway customers from Dinwiddie and Southside Virginia north to Fairfax, east to Virginia Beach, through the Williamsburg and New Kent new-construction corridor, across rural residential areas between the larger cities, and west through the I-81 corridor.',
+    answer: 'Yes. J. Worden & Sons handles residential driveways, private lanes, parking lots, sealcoating, crack repair, pothole repair, milling, resurfacing, and line striping. Service areas include Chester, Richmond, Chesterfield, Henrico, Midlothian, Dinwiddie, Petersburg, Williamsburg, Virginia Beach, Fredericksburg, Fairfax, and other Virginia markets by project fit.',
   },
   {
     question: 'Do you handle sealcoating and asphalt repair, or only full paving?',
@@ -188,19 +232,19 @@ const faqs = [
 ];
 
 const proofStats = [
-  { value: '40+', label: 'years serving Virginia' },
-  { value: '50/50', label: 'residential and commercial focus' },
-  { value: 'Award-winning', label: 'real-world contractor reputation' },
-  { value: 'Family-owned', label: 'local accountability on every project' },
-  { value: '4 corridors', label: 'Southside, NOVA, coast, and I-81' },
+  { value: '40+', label: 'years in the trade' },
+  { value: 'Chester', label: 'home base for Central VA' },
+  { value: 'KFC', label: 'restaurant project experience' },
+  { value: 'Family-run', label: 'direct accountability' },
+  { value: 'Photos', label: 'completed work on file' },
 ];
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-background font-body relative text-foreground">
       <SEO 
-        title="J. Worden & Sons Paving LLC | Award-Winning Virginia Paving Contractor"
-        description="Award-winning Virginia asphalt paving from Dinwiddie north to Fairfax, east to Virginia Beach, through Williamsburg/New Kent and rural residential corridors, and west through I-81."
+        title="J. Worden & Sons Asphalt Paving | Chester & Richmond VA Driveways and Parking Lots"
+        description="Family-run asphalt paving in Chester, Richmond, Chesterfield, Henrico, and Central Virginia. Residential driveways, commercial parking lots, sealcoating, repairs, and restaurant lot experience."
       />
       <HomeSchema />
       <Navbar />
@@ -223,17 +267,18 @@ export default function Home() {
           </div>
 
           <div className="relative z-10 mx-auto flex min-h-[78vh] max-w-7xl flex-col justify-end px-6 pb-16 lg:px-8">
-            <div className="max-w-5xl">
+            <div className="grid gap-10 lg:grid-cols-[1fr_380px] lg:items-end">
+              <div className="max-w-5xl">
               <div className="mb-7 inline-flex items-center gap-3 rounded-md border border-primary/25 bg-white/88 px-4 py-2 text-primary shadow-[0_14px_30px_-24px_rgba(15,48,68,0.45)]">
                 <Award className="h-4 w-4" />
-                <span className="font-display text-sm uppercase tracking-[0.24em]">Free quotes • Same-week response • Central Virginia since 2005</span>
+                <span className="font-display text-sm uppercase tracking-[0.24em]">Chester based • Richmond metro • real job photos</span>
               </div>
               <h1 className="font-display text-5xl font-black uppercase leading-[0.88] tracking-normal text-foreground sm:text-6xl md:text-8xl lg:text-9xl">
-                Driveways &amp; Lots,<br />
-                <span className="text-primary">Done Right.</span>
+                Premium Asphalt<br />
+                <span className="text-primary">Built To Last.</span>
               </h1>
               <p className="mt-8 max-w-3xl text-lg leading-relaxed text-muted-foreground md:text-2xl">
-                Asphalt paving, sealcoating, and parking lot repair across Richmond, Chesterfield, Henrico, and Central VA. Free on-site quote — text us your number and we'll respond within an hour, 7 days a week.
+                Residential and commercial asphalt work across Chester, Richmond, Chesterfield, Henrico, and Central Virginia. Share your address or project photos and we will provide a clear recommendation on repair, resurfacing, replacement, or preservation.
               </p>
               <div className="mt-10 flex flex-wrap gap-4">
                 <a
@@ -242,20 +287,44 @@ export default function Home() {
                   className="inline-flex min-h-[52px] items-center gap-3 rounded-md bg-primary px-7 py-4 font-display text-lg uppercase tracking-[0.12em] text-primary-foreground shadow-[0_16px_32px_-22px_rgba(20,97,138,0.75)] transition-colors hover:bg-accent"
                 >
                   <Phone className="h-5 w-5" />
-                  Schedule A Free Evaluation
+                  Call For A Free Estimate
                 </a>
                 <a
-                  href="/jwordenai"
+                  href="/residential"
                   className="inline-flex min-h-[52px] items-center gap-3 rounded-md border border-primary/35 bg-white/80 px-7 py-4 font-display text-lg uppercase tracking-[0.12em] text-primary transition-colors hover:border-accent hover:text-accent"
                 >
-                  Open JWordenAI Scan
+                  Residential Driveways
                   <ArrowRight className="h-5 w-5" />
+                </a>
+                <a
+                  href="/parking-lots"
+                  className="inline-flex min-h-[52px] items-center gap-3 rounded-md border border-primary/35 bg-white/80 px-7 py-4 font-display text-lg uppercase tracking-[0.12em] text-primary transition-colors hover:border-accent hover:text-accent"
+                >
+                  Commercial Lots
+                  <Building2 className="h-5 w-5" />
                 </a>
               </div>
 
               {/* 1-tap lead capture: phone number only. Beats the long /quote form. */}
               <div className="mt-8 max-w-2xl">
                 <QuickQuoteBar source="home_hero" servicePreset="paving" />
+              </div>
+            </div>
+
+              <div className="hidden border border-border bg-white/92 p-4 shadow-[0_24px_60px_-36px_rgba(15,48,68,0.48)] lg:block">
+                <SmartImage
+                  src={QSR_IMAGE}
+                  alt="Documented commercial asphalt work by J. Worden and Sons"
+                  width={900}
+                  height={675}
+                  sizes="380px"
+                  className="aspect-[4/3] w-full object-cover"
+                />
+                <p className="mt-4 font-display text-xs uppercase tracking-[0.2em] text-primary">Commercial paving</p>
+                <h2 className="mt-2 font-display text-3xl uppercase leading-none text-foreground">Restaurant lots, drive-thru lanes, and local commercial work.</h2>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                  High-traffic commercial pavement requires disciplined scheduling, protected access, durable drive-thru lanes, and finish quality ready for immediate use.
+                </p>
               </div>
             </div>
 
@@ -280,9 +349,78 @@ export default function Home() {
           </div>
         </section>
 
+        <section className="bg-background py-16 md:py-24">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <div className="mb-10 max-w-4xl">
+              <p className="font-display text-sm uppercase tracking-[0.24em] text-primary">Main services</p>
+              <h2 className="mt-4 font-display text-4xl uppercase leading-none text-foreground sm:text-5xl md:text-7xl">
+                Residential driveways and commercial parking lots.
+              </h2>
+              <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+                J. Worden & Sons handles the asphalt work most property owners need: driveway paving, parking lot paving, resurfacing, sealcoating, crack repair, pothole patching, drainage correction, and line striping.
+              </p>
+            </div>
+            <div className="grid gap-6 lg:grid-cols-2">
+              {serviceCards.map((path) => (
+                <article key={path.label} className="overflow-hidden border border-border bg-card">
+                  <div className="grid md:grid-cols-[0.95fr_1.05fr]">
+                    <SmartImage
+                      src={path.image}
+                      alt={path.alt}
+                      width={1100}
+                      height={850}
+                      sizes="(max-width: 768px) 100vw, 35vw"
+                      className="h-full min-h-[280px] w-full object-cover"
+                    />
+                    <div className="p-7 md:p-8">
+                      <p className="font-display text-xs uppercase tracking-[0.24em] text-primary">{path.label}</p>
+                      <h3 className="mt-4 font-display text-4xl uppercase leading-none text-foreground">{path.title}</h3>
+                      <p className="mt-5 text-base leading-relaxed text-muted-foreground">{path.body}</p>
+                      <div className="mt-6 grid gap-2">
+                        {path.points.map((point) => (
+                          <div key={point} className="flex items-center gap-2 text-sm text-foreground/80">
+                            <CheckCircle2 className="h-4 w-4 shrink-0 text-primary" />
+                            <span>{point}</span>
+                          </div>
+                        ))}
+                      </div>
+                      <a href={path.href} className="mt-7 inline-flex items-center gap-3 rounded-md bg-primary px-5 py-3 font-display text-sm uppercase tracking-[0.14em] text-primary-foreground">
+                        {path.cta}
+                        <ArrowRight className="h-4 w-4" />
+                      </a>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
         <CommercialServicesHighlights />
 
         <CustomerProofGallery />
+
+        <section className="border-y border-border bg-white py-16 md:py-20">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
+              <div>
+                <p className="font-display text-sm uppercase tracking-[0.24em] text-primary">What we check before we pave</p>
+                <h2 className="mt-4 font-display text-5xl uppercase leading-none text-foreground md:text-7xl">Good asphalt starts before the truck arrives.</h2>
+                <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+                  A good paving job is not just a black surface. It is base prep, water movement, thickness, compaction, edges, timing, and a crew that understands how the property is used.
+                </p>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                {contractorStandards.map((item) => (
+                  <article key={item.title} className="border border-border bg-[#eef4f1] p-6">
+                    <h3 className="font-display text-3xl uppercase leading-none text-foreground">{item.title}</h3>
+                    <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{item.body}</p>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* Service Solutions */}
         <section id="services" className="bg-[#eef4f1] py-20 md:py-28">
@@ -290,10 +428,10 @@ export default function Home() {
             <div className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
               <div>
                 <p className="font-display text-sm uppercase tracking-[0.24em] text-primary">Core service solutions</p>
-                <h2 className="mt-4 font-display text-4xl uppercase leading-none text-foreground sm:text-5xl md:text-7xl">Everything your pavement needs.</h2>
+              <h2 className="mt-4 font-display text-4xl uppercase leading-none text-foreground sm:text-5xl md:text-7xl">Paving, repairs, sealcoating, and striping.</h2>
               </div>
               <p className="max-w-xl text-base leading-relaxed text-muted-foreground">
-                The work is roughly balanced between residential and commercial. Driveways, private lanes, parking lots, sealcoating, crack repair, patching, and resurfacing all matter because most pavement needs the right maintenance long before it needs full replacement.
+                Driveways need clean finish work, careful edges, and drainage that moves water away from the home. Commercial lots need phasing, ADA layout, durable drive-thru lanes, and a crew that can work around an active business.
               </p>
             </div>
 
@@ -322,9 +460,9 @@ export default function Home() {
           <div className="flex items-center px-6 py-20 lg:px-16">
             <div className="max-w-2xl">
               <p className="font-display text-sm uppercase tracking-[0.24em] text-primary">Markets we serve</p>
-              <h2 className="mt-4 font-display text-5xl uppercase leading-none text-foreground md:text-7xl">Built for owners who need the truth.</h2>
+              <h2 className="mt-4 font-display text-5xl uppercase leading-none text-foreground md:text-7xl">Driveways, lots, lanes, and repairs.</h2>
               <p className="mt-6 text-base leading-relaxed text-muted-foreground">
-                Our practical service footprint runs from Dinwiddie and Southside Virginia north to Fairfax and Northern Virginia, east to Virginia Beach and Hampton Roads, through Williamsburg and New Kent County new-construction growth, across the rural residential corridors between the larger cities, and west through the I-81 corridor.
+                We handle the practical asphalt work property owners call about every day: residential driveways, rural lanes, commercial parking lots, restaurant drive-thru lanes, sealcoating, crack repair, milling, overlays, drainage correction, and line striping.
               </p>
               <div className="mt-9 grid gap-4 sm:grid-cols-2">
                 {markets.map((market) => (
@@ -379,9 +517,9 @@ export default function Home() {
           <div className="mx-auto grid max-w-7xl gap-12 px-6 lg:grid-cols-[1fr_0.9fr] lg:px-8">
             <div>
               <p className="font-display text-sm uppercase tracking-[0.24em] text-primary">Learning center mindset</p>
-              <h2 className="mt-4 font-display text-5xl uppercase leading-none text-foreground md:text-7xl">We teach you what to look for before you hire anyone.</h2>
+              <h2 className="mt-4 font-display text-5xl uppercase leading-none text-foreground md:text-7xl">We explain the job before we sell the job.</h2>
               <p className="mt-7 max-w-3xl text-lg leading-relaxed text-muted-foreground">
-                A better buyer gets a better project. Our public pages are being rebuilt around the questions property owners actually ask: cost, timing, warning signs, repair vs. replace, drainage, ADA, and what separates a lasting job from a cheap one.
+                A good estimate should make the problem easier to understand. We explain base failure, drainage, repair vs. replace, sealcoating limits, traffic loads, and what is actually included in the scope.
               </p>
               <a href="/blog" className="mt-8 inline-flex items-center gap-3 rounded-md border border-primary/35 bg-white px-6 py-4 font-display text-lg uppercase tracking-[0.12em] text-primary transition-colors hover:border-accent hover:text-accent">
                 Visit The Learning Center
@@ -403,7 +541,7 @@ export default function Home() {
           <div className="mx-auto grid max-w-7xl gap-12 px-6 lg:grid-cols-[0.86fr_1.14fr] lg:px-8">
             <div>
               <p className="font-display text-sm uppercase tracking-[0.24em] text-primary">Cost and pricing guidance</p>
-              <h2 className="mt-4 font-display text-5xl uppercase leading-none text-foreground md:text-7xl">Real paving prices come from real site conditions.</h2>
+              <h2 className="mt-4 font-display text-5xl uppercase leading-none text-foreground md:text-7xl">Paving prices depend on the condition of the property.</h2>
               <p className="mt-7 text-lg leading-relaxed text-muted-foreground">
                 A responsible estimate should explain what drives cost before it asks you to sign. We help owners understand the variables, compare scopes, and spot bids that leave out the work that actually protects the pavement.
               </p>
@@ -441,9 +579,9 @@ export default function Home() {
           <div className="mx-auto grid max-w-7xl gap-12 px-6 lg:grid-cols-[0.95fr_1.05fr] lg:px-8">
             <div>
               <p className="font-display text-sm uppercase tracking-[0.24em] text-primary">How to compare contractors</p>
-              <h2 className="mt-4 font-display text-5xl uppercase leading-none text-foreground md:text-7xl">Google can rank pages. Owners still need a checklist.</h2>
+              <h2 className="mt-4 font-display text-5xl uppercase leading-none text-foreground md:text-7xl">Know what is in the bid before you choose.</h2>
               <p className="mt-7 text-lg leading-relaxed text-muted-foreground">
-                The best asphalt page should make you harder to fool. These are the items we want every Virginia buyer to check before choosing any paving contractor, including us.
+                A paving estimate should be clear enough to compare. These are the items every Virginia property owner should ask about before approving driveway, parking lot, repair, or sealcoating work.
               </p>
             </div>
             <div className="space-y-4">
@@ -461,7 +599,7 @@ export default function Home() {
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mb-12 max-w-4xl">
               <p className="font-display text-sm uppercase tracking-[0.24em] text-primary">Helpful answers</p>
-              <h2 className="mt-4 font-display text-5xl uppercase leading-none text-foreground md:text-7xl">Asphalt questions buyers ask before they call.</h2>
+              <h2 className="mt-4 font-display text-5xl uppercase leading-none text-foreground md:text-7xl">Common asphalt paving questions.</h2>
             </div>
             <div className="grid gap-5 lg:grid-cols-2">
               {faqs.map((faq) => (
@@ -545,8 +683,8 @@ export default function Home() {
                 <Phone className="h-5 w-5" />
                 Call 804.446.1296
               </a>
-              <a href="/jwordenai" className="inline-flex min-h-[52px] items-center gap-3 rounded-md border border-white/55 px-7 py-4 font-display text-lg uppercase tracking-[0.12em] text-white">
-                JWORDENAI Teaser
+              <a href="/parking-lots" className="inline-flex min-h-[52px] items-center gap-3 rounded-md border border-white/55 px-7 py-4 font-display text-lg uppercase tracking-[0.12em] text-white">
+                View Commercial Proof
                 <Building2 className="h-5 w-5" />
               </a>
             </div>

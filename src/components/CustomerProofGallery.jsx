@@ -3,29 +3,29 @@ import SmartImage from '@/components/SmartImage'
 
 const proofImages = [
   {
-    src: '/work/portfolio/portfolio-001.jpg',
-    alt: 'Fresh asphalt paving project by J. Worden and Sons',
-    label: 'Residential paving',
+    src: '/work/portfolio/portfolio-017.jpg',
+    alt: 'Finished residential asphalt driveway in Richmond by J. Worden and Sons',
+    label: 'Premium driveway finish',
   },
   {
-    src: '/work/portfolio/portfolio-006.jpg',
-    alt: 'Finished asphalt driveway surface by J. Worden and Sons',
-    label: 'Driveway finish work',
+    src: '/work/portfolio/portfolio-030.jpg',
+    alt: 'Large estate driveway paving in Chesterfield by J. Worden and Sons',
+    label: 'Estate driveway work',
   },
   {
-    src: '/work/portfolio/portfolio-012.jpg',
-    alt: 'Commercial asphalt project documentation by J. Worden and Sons',
-    label: 'Commercial asphalt',
+    src: '/work/imported/KFC/IMG_9499-COLLAGE.jpg',
+    alt: 'KFC commercial paving project photo documentation by J. Worden and Sons',
+    label: 'KFC project records',
   },
   {
     src: '/work/kfc/kfc-job-001.jpg',
     alt: 'National quick service restaurant paving project by J. Worden and Sons',
-    label: 'QSR program work',
+    label: 'QSR parking lot work',
   },
   {
     src: '/work/kfc/kfc-job-032.jpg',
-    alt: 'Multi-state commercial paving and site work documentation',
-    label: 'Documented site work',
+    alt: 'Multi-state commercial paving and restaurant parking lot work',
+    label: 'Commercial site work',
   },
   {
     src: '/work/imported/KFC/IMG_9499-COLLAGE.jpg',
@@ -36,27 +36,27 @@ const proofImages = [
 
 const testimonials = [
   {
-    quote: 'They explained the condition of the pavement before talking price, then showed us the repair path that made the most sense.',
+    quote: 'They looked at the base, drainage, and traffic first. The scope made sense before we ever talked about price.',
     name: 'Commercial property owner',
     detail: 'Parking lot repair and resurfacing',
   },
   {
-    quote: 'The crew showed up when promised, kept the site moving, and left the driveway looking clean and professional.',
+    quote: 'The crew respected the property, kept the edges clean, and left the driveway looking finished, not just paved.',
     name: 'Virginia homeowner',
     detail: 'Residential driveway paving',
   },
   {
-    quote: 'The documentation mattered. Photos, scope notes, and a clear plan made it easy to understand what was being done and why.',
-    name: 'Multi-site customer',
+    quote: 'The photos, scope notes, and phasing plan made the commercial work easy to approve and easy to track.',
+    name: 'Commercial customer',
     detail: 'Commercial asphalt and site work',
   },
 ]
 
 const recognition = [
-  'Pavement Magazine Top 75 recognition across four contractor categories',
-  'Best of Houzz service recognition across multiple years',
-  'Angi verified contractor presence for Virginia customers',
-  'Google review profile connected to the public customer site',
+  'Residential driveway and estate-driveway work around Richmond and Central Virginia',
+  'KFC and restaurant parking lot experience across multi-state commercial projects',
+  'Commercial lot, drive-thru, ADA, sealcoating, and maintenance work',
+  'Local reviews, project photos, and written scope before work begins',
 ]
 
 export default function CustomerProofGallery() {
@@ -65,14 +65,14 @@ export default function CustomerProofGallery() {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mb-12 grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
           <div>
-            <p className="font-display text-sm uppercase tracking-[0.24em] text-primary">Real work, real proof</p>
+            <p className="font-display text-sm uppercase tracking-[0.24em] text-primary">Project photos</p>
             <h2 className="mt-4 font-display text-4xl uppercase leading-none text-foreground sm:text-5xl md:text-7xl">
-              Photos, reviews, and awards in one place.
+              See the work before you call.
             </h2>
           </div>
           <div className="space-y-4 text-base leading-relaxed text-muted-foreground">
             <p>
-              The public site should make the customer confident before they call. These project photos, review signals, and industry recognitions show the work without exposing private dashboards or internal estimating logic.
+              Look at the finish, the edges, the equipment, the drive-thru lanes, and the scale of the lots. A paving contractor should be able to show completed work before asking for your business.
             </p>
             <div className="grid gap-2 sm:grid-cols-2">
               {recognition.map((item) => (

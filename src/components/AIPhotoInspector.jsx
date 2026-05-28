@@ -136,13 +136,13 @@ export default function AIPhotoInspector() {
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 border border-primary/40 bg-primary/10 px-4 py-2 mb-4">
             <Sparkles className="w-4 h-4 text-primary" />
-            <span className="font-display text-primary text-xs tracking-[0.3em] uppercase">Powered by Claude Opus AI</span>
+            <span className="font-display text-primary text-xs tracking-[0.3em] uppercase">Photo Review</span>
           </div>
           <h2 className="font-display font-black text-foreground text-4xl md:text-6xl uppercase tracking-tight">
-            AI Pavement Inspector
+            Pavement Photo Review
           </h2>
           <p className="font-body text-muted-foreground text-lg mt-4 max-w-xl mx-auto leading-relaxed">
-            Snap a photo of your driveway or parking lot. Our AI — trained on 40 years of J. Worden field data — gives you a free professional condition report in seconds.
+            Send clear photos of your driveway or parking lot so our team can understand cracks, potholes, drainage, edges, and repair needs before the estimate.
           </p>
         </div>
 
@@ -235,7 +235,7 @@ export default function AIPhotoInspector() {
                   Property Markup (Phone-Friendly)
                 </p>
                 <p className="font-body text-muted-foreground text-xs leading-relaxed">
-                  Tap around the exact pavement zone you want inspected. This helps the AI focus the condition scan and prep recommendations before paving.
+                  Tap around the exact pavement zone you want reviewed. This helps us understand the condition and prepare better questions before paving.
                 </p>
                 <div className="flex flex-wrap gap-2">
                   <button
@@ -290,11 +290,11 @@ export default function AIPhotoInspector() {
               >
                 {loading ? (
                   <>
-                    <Loader2 className="w-4 h-4 animate-spin" /> Analyzing with Claude Opus…
+                    <Loader2 className="w-4 h-4 animate-spin" /> Reviewing photo…
                   </>
                 ) : (
                   <>
-                    <Sparkles className="w-4 h-4" /> Run AI Analysis
+                    <Sparkles className="w-4 h-4" /> Review Photo
                   </>
                 )}
               </button>

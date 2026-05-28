@@ -53,8 +53,6 @@ const TarAndChip = lazy(() => import('./pages/TarAndChip'));
 const CandidatePortal = lazy(() => import('./pages/CandidatePortal'));
 const ContractorAIPlatform = lazy(() => import('./pages/ContractorAIPlatform'));
 const CommandCenter = lazy(() => import('./pages/CommandCenter'));
-const JwordenAI = lazy(() => import('./pages/JwordenAI'));
-const AIResearchHub = lazy(() => import('./pages/AIResearchHub'));
 const Visualizer = lazy(() => import('./pages/Visualizer'));
 const LandingPage = lazy(() => import('./pages/LandingPage'));
 const DnsMigration = lazy(() => import('./pages/DnsMigration'));
@@ -295,10 +293,10 @@ const AuthenticatedApp = () => {
         <Route path="/shenandoah-valley-paving" element={<ShenandoahValleyPaving />} />
         <Route path="/millings-fines" element={<MillingsAndFines />} />
         <Route path="/tar-and-chip" element={<TarAndChip />} />
-        <Route path="/driveway-ai" element={<Navigate to="/jwordenai" replace />} />
+        <Route path="/driveway-ai" element={<Navigate to="/quote" replace />} />
         <Route path="/commercial/richmond-va" element={<RichmondCommercial />} />
-        <Route path="/jwordenai" element={<JwordenAI />} />
-        <Route path="/ai-research" element={<PublicLayout><AIResearchHub /></PublicLayout>} />
+        <Route path="/jwordenai" element={<Navigate to="/quote" replace />} />
+        <Route path="/ai-research" element={<Navigate to="/blog" replace />} />
         <Route path="/general-contracting" element={<GeneralContracting />} />
         <Route path="/visualizer" element={<Visualizer />} />
         <Route path="/floor-plan-studio" element={<FloorPlanStudio />} />

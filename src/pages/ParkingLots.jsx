@@ -9,12 +9,12 @@ import { legacyPortfolioImages } from '@/data/legacyPortfolio'
 
 // Real Richmond-area commercial references — the kind of properties we serve.
 const LOCAL_ACCOUNTS = [
-  { name: 'Short Pump Town Center Area', region: 'Henrico County', note: 'High-volume retail complex — phased overnight paving to keep tenants open' },
-  { name: 'Chesterfield Towne Center Corridor', region: 'Chesterfield County', note: 'Multi-lot resurfacing with full ADA striping compliance' },
-  { name: 'Midlothian Turnpike Commercial Strip', region: 'Midlothian, VA', note: 'Mill & overlay + drainage correction for active retail strip' },
-  { name: 'Broad Street Corridor', region: 'Richmond, VA', note: 'Urban commercial lots requiring precise phasing around GRTC bus routes' },
-  { name: 'Route 1 / Jefferson Davis Hwy', region: 'Prince George / Colonial Heights', note: 'Full-depth reclamation for heavy-truck industrial yard' },
-  { name: 'KFC / Taco Bell / Arby\'s Franchise Sites', region: 'Greater Richmond', note: 'Vetted franchise-grade parking lots. Same-day response guaranteed.' },
+  { name: 'KFC Franchise Sites', region: 'Multi-state QSR work', note: 'Parking lots, drive-thru lanes, ADA layout, sealcoating, resurfacing, and documented project photos.' },
+  { name: 'Taco Bell Restaurant Lots', region: 'Commercial restaurant work', note: 'Drive-thru circulation, customer access, tight scheduling, patching, and striping around active operations.' },
+  { name: 'Arby\'s Restaurant Lots', region: 'Commercial restaurant work', note: 'Restaurant parking and access lanes where clean turnover and customer flow matter.' },
+  { name: 'CVS / Rite Aid Style Retail', region: 'Virginia retail lots', note: 'Retail parking lots, ADA upgrades, resurfacing, patching, and line layout for daily customer traffic.' },
+  { name: 'Richmond Metro Commercial Corridors', region: 'Chester, Richmond, Henrico, Chesterfield', note: 'Local lots, offices, churches, schools, HOAs, and active business sites.' },
+  { name: 'Industrial And Service Yards', region: 'Central Virginia', note: 'Heavier traffic areas, loading movements, base failure repair, and practical phasing.' },
 ]
 
 const SERVICES = [
@@ -120,8 +120,8 @@ export default function ParkingLots() {
   return (
     <div className="min-h-screen bg-brand-navy">
       <SEO
-        title="Parking Lot Paving Richmond VA | Commercial Asphalt Contractors"
-        description="Parking lot paving, resurfacing, and ADA striping for Richmond, Chesterfield, Henrico, and Midlothian VA. J. Worden & Sons — 40+ years serving Virginia's commercial market. KFC, Arby's, and Taco Bell vetted."
+        title="Commercial Parking Lot Paving Richmond VA | KFC, Taco Bell & Arby's Proof"
+        description="Commercial asphalt paving, parking lot resurfacing, drive-thru lanes, ADA striping, sealcoating, and repairs for Richmond, Chesterfield, Henrico, and Central Virginia. Proven restaurant and retail work."
         canonicalPath="/parking-lots"
         jsonLd={jsonLd}
       />
@@ -136,17 +136,17 @@ export default function ParkingLots() {
             <div className="lg:w-1/2 space-y-6">
               <div className="flex flex-wrap gap-2">
                 <span className="inline-block bg-brand-amber/10 text-brand-amber text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full">
-                  Serving Richmond Metro Since 1984
+                  Commercial Parking Lots
                 </span>
                 <span className="inline-block bg-green-500/10 text-green-400 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full">
-                  KFC • Arby's • Taco Bell Vetted
+                  KFC • Taco Bell • Arby's Proof
                 </span>
               </div>
               <h1 className="font-display font-black text-5xl md:text-7xl text-white leading-tight tracking-tight">
-                Richmond's<br /><span className="text-brand-amber">Parking Lot</span><br />Authority.
+                Commercial<br /><span className="text-brand-amber">Parking Lots</span><br />Built For Business.
               </h1>
               <p className="text-white/70 text-lg md:text-xl max-w-xl">
-                From Midlothian Turnpike strip malls to Short Pump retail corridors — we pave, resurface, stripe, and maintain the parking lots that keep Richmond's commercial economy moving. Zero downtime scheduling for active properties.
+                Restaurant, retail, office, church, HOA, industrial, and active commercial lots need more than fresh blacktop. They need access planning, drainage, ADA layout, striping, drive-thru durability, and a crew that knows how to work around customers.
               </p>
               <div className="flex flex-wrap gap-4 pt-2">
                 <a
@@ -165,11 +165,11 @@ export default function ParkingLots() {
               <div className="grid grid-cols-3 gap-4 pt-6 border-t border-white/10">
                 <div className="text-center">
                   <p className="text-brand-amber font-black text-2xl">40+</p>
-                  <p className="text-white/40 text-xs uppercase tracking-widest">Yrs in Virginia</p>
+                  <p className="text-white/40 text-xs uppercase tracking-widest">Years in the trade</p>
                 </div>
                 <div className="text-center">
                   <p className="text-brand-amber font-black text-2xl">500+</p>
-                  <p className="text-white/40 text-xs uppercase tracking-widest">Commercial Lots</p>
+                  <p className="text-white/40 text-xs uppercase tracking-widest">QSR photos on file</p>
                 </div>
                 <div className="text-center">
                   <p className="text-brand-amber font-black text-2xl">ADA</p>
@@ -178,10 +178,10 @@ export default function ParkingLots() {
               </div>
               {/* Awards */}
               <div className="flex flex-wrap items-center gap-2 pt-4">
-                <span className="text-white/30 text-xs uppercase tracking-widest font-bold">Awards:</span>
-                <span className="bg-brand-amber/10 text-brand-amber text-xs font-bold px-3 py-1.5 rounded-full">🏆 Pavement Mag Top 75</span>
-                <span className="bg-white/10 text-white/80 text-xs font-bold px-3 py-1.5 rounded-full">⭐ Best of Houzz</span>
-                <span className="bg-white/10 text-white/80 text-xs font-bold px-3 py-1.5 rounded-full">🎖 2026 Top Contractor Nominee</span>
+                <span className="text-white/30 text-xs uppercase tracking-widest font-bold">Proof:</span>
+                <span className="bg-brand-amber/10 text-brand-amber text-xs font-bold px-3 py-1.5 rounded-full">KFC program photos</span>
+                <span className="bg-white/10 text-white/80 text-xs font-bold px-3 py-1.5 rounded-full">Restaurant drive-thru lanes</span>
+                <span className="bg-white/10 text-white/80 text-xs font-bold px-3 py-1.5 rounded-full">Retail parking lots</span>
               </div>
             </div>
 
@@ -216,9 +216,9 @@ export default function ParkingLots() {
       <section className="py-20 bg-white/5 border-y border-white/10">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
-            <span className="inline-block bg-brand-amber/10 text-brand-amber text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4">Local Knowledge</span>
-            <h2 className="text-white font-black text-3xl md:text-5xl tracking-tight">We Know Every Corner of Richmond.</h2>
-            <p className="text-white/40 mt-4 max-w-2xl mx-auto">Route 60. Midlothian Turnpike. Broad Street. Route 1. We've paved them all. Our crews know the clay soils, the drainage patterns, and the freeze-thaw cycles that destroy pavement here.</p>
+            <span className="inline-block bg-brand-amber/10 text-brand-amber text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4">Commercial Proof</span>
+            <h2 className="text-white font-black text-3xl md:text-5xl tracking-tight">Restaurant And Retail Work Is Our Proof.</h2>
+            <p className="text-white/40 mt-4 max-w-2xl mx-auto">KFC, Taco Bell, Arby's, CVS/Rite Aid-style retail, and local commercial lots all require the same discipline: clear scope, safe access, durable sections, and a finish that represents the business well.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {LOCAL_ACCOUNTS.map((acct, i) => (
@@ -241,8 +241,8 @@ export default function ParkingLots() {
       <section className="py-24 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-white font-black text-3xl md:text-5xl tracking-tight mb-4">Full-Spectrum Parking Lot Services.</h2>
-            <p className="text-white/40 max-w-2xl mx-auto">Every service your parking lot needs from the day it's poured to end of life — under one contract.</p>
+            <h2 className="text-white font-black text-3xl md:text-5xl tracking-tight mb-4">Commercial Lot Services That Keep Sites Open.</h2>
+            <p className="text-white/40 max-w-2xl mx-auto">Repair the failed areas, preserve the good pavement, resurface when it makes sense, and rebuild when the base is gone.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {SERVICES.map((svc, i) => (

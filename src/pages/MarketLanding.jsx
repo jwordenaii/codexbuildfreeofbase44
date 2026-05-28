@@ -8,13 +8,13 @@ const DEFAULT_MARKET_CONTENT = {
   marketName: 'Local Asphalt Paving',
   primaryRegion: 'Your Service Region',
   primaryMetro: 'Major Metro Area',
-  heroKicker: 'Verified Job Photos',
-  heroHeadline: 'Asphalt Work Built For Local Conditions',
+  heroKicker: 'Verified Field Documentation',
+  heroHeadline: 'Premium Asphalt Construction Built For Local Conditions',
   heroBody:
-    'Commercial lots and residential drives with clear scope, proper prep, and practical scheduling.',
-  ctaLabel: 'Call For An Estimate',
+    'Commercial parking lots and residential driveways delivered with clear scope, structural prep discipline, and execution standards built for long-term performance.',
+  ctaLabel: 'Call For A Professional Estimate',
   phoneDisplay: '804-446-1296',
-  proofHeadline: 'Recent Verified Work',
+  proofHeadline: 'Recent Documented Work',
   geo: {
     region: 'US-VA',
     placename: 'Chester, Virginia',
@@ -24,37 +24,37 @@ const DEFAULT_MARKET_CONTENT = {
 }
 
 const DELIVERY_STANDARDS = [
-  'Scope and sequencing defined before mobilization',
-  'Compaction and lift planning matched to traffic load',
-  'Cold-weather protocols for shoulder-season paving',
-  'Photo-verified closeout package for every project',
+  'Detailed scope and sequencing approved before mobilization',
+  'Compaction and lift planning matched to actual traffic load',
+  'Seasonal installation protocols for temperature-sensitive paving windows',
+  'Photo-documented closeout package for every project',
 ]
 
 const SERVICE_MIX = [
-  'Commercial parking lots and retail access lanes',
+  'Commercial parking lots, retail lanes, and access corridors',
   'Drive-thru and franchise remodel paving scopes',
-  'Private driveways and long-lane resurfacing',
+  'Private driveways, estate lanes, and long-lane resurfacing',
   'Repair, overlay, and preservation planning',
 ]
 
 const PROOF_IMAGES = [
   {
-    id: 'portfolio-010',
-    src: '/work/portfolio/portfolio-010.jpg',
-    title: 'Large-lot resurfacing sequence',
-    body: 'Production workflow with documented prep, lift placement, and final finish checks.',
+    id: 'kfc-9509',
+    src: '/work/imported/KFC/IMG_9509.JPG',
+    title: 'High-traffic commercial lot delivery',
+    body: 'Documented paving execution for high-use customer traffic with controlled sequencing and closeout verification.',
   },
   {
-    id: 'portfolio-019',
-    src: '/work/portfolio/portfolio-019.jpg',
-    title: 'Drive lane and apron restoration',
-    body: 'High-traffic entry lanes restored with practical scheduling and clean turnover.',
+    id: 'va-8724',
+    src: '/work/imported/va cars photos and videos for website/IMG_8724.JPG',
+    title: 'Residential driveway finish and edge control',
+    body: 'Clean residential finish work with stable transitions, water-shedding slope, and detail-focused completion.',
   },
   {
-    id: 'portfolio-030',
-    src: '/work/portfolio/portfolio-030.jpg',
-    title: 'Commercial lot reimage',
-    body: 'Surface renewal and layout prep to support tenant traffic and curb-appeal upgrades.',
+    id: 'va-8733',
+    src: '/work/imported/va cars photos and videos for website/IMG_8733.JPG',
+    title: 'Surface renewal with preservation planning',
+    body: 'Asphalt renewal strategy designed to protect service life, support traffic demand, and reduce avoidable capital rework.',
   },
 ]
 
@@ -76,7 +76,7 @@ export default function MarketLanding() {
   const phoneHref = toTelHref(phoneDisplay)
 
   const title = `${market.marketName} | Verified Asphalt Paving`
-  const description = `${market.marketName} serving ${market.primaryRegion}. Verified job photos, clear scope, and asphalt work built for local weather cycles.`
+  const description = `${market.marketName} serving ${market.primaryRegion}. Documented project proof, clear scope language, and asphalt construction built for local weather cycles.`
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -114,7 +114,7 @@ export default function MarketLanding() {
       <header className="border-b border-border bg-card/90 backdrop-blur">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-4 flex items-center justify-between gap-4">
           <div>
-            <p className="font-display text-xs uppercase tracking-[0.2em] text-primary">Website Factory Launch</p>
+            <p className="font-display text-xs uppercase tracking-[0.2em] text-primary">Licensed Asphalt Operations</p>
             <p className="font-display text-lg uppercase leading-none">{market.marketName}</p>
           </div>
           <a
@@ -169,7 +169,7 @@ export default function MarketLanding() {
               </div>
               <div className="border border-border bg-card p-4">
                 <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Operating Standard</p>
-                <p className="font-display text-2xl uppercase mt-2">Verified Documentation</p>
+                <p className="font-display text-2xl uppercase mt-2">Documented Delivery</p>
               </div>
             </div>
           </div>
@@ -200,7 +200,7 @@ export default function MarketLanding() {
               </div>
               <div className="mt-5 flex items-center gap-2 text-xs text-muted-foreground">
                 <ShieldCheck className="w-3.5 h-3.5 text-primary" />
-                Built to launch fast while staying isolated from other sites in the same repo.
+                Scope clarity, documented execution, and accountable delivery standards on every project.
               </div>
             </div>
           </div>
@@ -210,7 +210,7 @@ export default function MarketLanding() {
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <p className="font-display text-primary text-xs tracking-[0.24em] uppercase mb-2">{market.proofHeadline}</p>
             <h2 className="font-display text-3xl md:text-5xl uppercase tracking-tight leading-[0.95] mb-8">
-              Field photos used for estimate confidence
+              Field photos used for estimate confidence and scope accuracy
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
@@ -239,7 +239,7 @@ export default function MarketLanding() {
       <footer className="py-8">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-xs uppercase tracking-[0.14em] text-muted-foreground">
           <p>{market.marketName}</p>
-          <p>Website Factory mode active</p>
+          <p>Professional asphalt delivery standards</p>
         </div>
       </footer>
     </div>

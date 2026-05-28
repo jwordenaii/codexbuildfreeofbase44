@@ -1,0 +1,41 @@
+{
+  "market": {
+    "slug": "petersburg-va",
+    "city": "Petersburg",
+    "state": "VA",
+    "timezone": "America/New_York"
+  },
+  "entity": {
+    "name": "J. Worden & Sons Asphalt Paving",
+    "legalName": "J. Worden & Sons Paving, LLC",
+    "phone": "(804) 446-1296",
+    "naics": "237310"
+  },
+  "location": {
+    "street": "1601 Ware Bottom Spring Rd, Suite 214",
+    "city": "Chester",
+    "state": "VA",
+    "zip": "23836",
+    "serviceArea": [
+      "Petersburg"
+    ]
+  },
+  "services": [
+    {
+      "slug": "residential-quote",
+      "name": "Residential Paving",
+      "ctaPath": "/thanks-residential-quote"
+    },
+    {
+      "slug": "commercial-maintenance",
+      "name": "Commercial Maintenance",
+      "ctaPath": "/thanks-commercial-maintenance"
+    }
+  ],
+  "branding": {
+    "primaryColor": "#004a99",
+    "accentColor": "#ffcc00",
+    "fontStack": "'Helvetica Neue', Arial, sans-serif"
+  },
+  "sla_policy_ref": "config/sla-policy.json"
+}

@@ -9,7 +9,7 @@ import { trackPhoneClick } from '@/lib/analytics'
 import { SITE_IMAGES } from '@/lib/siteImages'
 
 const GC_SERVICES = [
-  'Paid scan and damage-intake packets for better owner decisions before major work',
+  'Photo and damage-intake packets for better owner decisions before major work',
   'Full permit acquisition and municipal coordination',
   'Bid package development and subcontractor management',
   'Milestone scheduling with weekly owner updates',
@@ -52,8 +52,8 @@ const DESIGN_INTELLIGENCE_ITEMS = [
 
 const SCAN_DECISION_ITEMS = [
   {
-    title: 'Paid Property Scan Packets',
-    body: 'Customers can pay for a focused scan packet before committing to a full project. Photos, video, drone notes, measurements, visible damage, and owner concerns are organized into a readable review.',
+    title: 'Property Review Packets',
+    body: 'Customers can request a focused review before committing to a full project. Photos, video, drone notes, measurements, visible damage, and owner concerns are organized into a readable scope discussion.',
     icon: BadgeDollarSign,
   },
   {
@@ -63,12 +63,12 @@ const SCAN_DECISION_ITEMS = [
   },
   {
     title: 'Better Scope Decisions',
-    body: 'The goal is not to sell the biggest job. The scan helps owners see what can wait, what needs repair now, what needs an engineer, and what belongs in a full GC scope.',
+    body: 'The goal is not to sell the biggest job. The review helps owners see what can wait, what needs repair now, what needs an engineer, and what belongs in a full GC scope.',
     icon: ScanLine,
   },
   {
     title: 'Professional Review Boundary',
-    body: 'AI can organize evidence and rank risk, but final structural safety, roof condition, code, and repair decisions require a qualified contractor, roofer, inspector, or structural engineer.',
+    body: 'Photos and notes help organize the conversation, but final structural safety, roof condition, code, and repair decisions require a qualified contractor, roofer, inspector, or structural engineer.',
     icon: ShieldAlert,
   },
 ]
@@ -151,7 +151,7 @@ export default function GeneralContracting() {
           'Permit and compliance coordination',
           'Construction scheduling and subcontractor management',
           'Commercial project delivery',
-          'Paid property scan and damage triage packets',
+          'Property photo review and damage triage packets',
           '4D kitchen remodel, addition, patio, hardscape, and interior design planning',
         ],
         url: 'https://www.jwordenasphaltpaving.com/general-contracting',
@@ -221,13 +221,6 @@ export default function GeneralContracting() {
               Request GC Consultation
             </Link>
             <Link
-              to="/jwordenai"
-              className="bg-foreground text-background px-6 py-4 font-display font-bold text-sm tracking-[0.14em] uppercase hover:bg-foreground/90 transition-colors inline-flex items-center gap-2"
-            >
-              <ScanLine className="w-4 h-4" />
-              View Scan Intelligence
-            </Link>
-            <Link
               to="/quote"
               className="border border-border text-foreground px-6 py-4 font-display font-bold text-sm tracking-[0.14em] uppercase hover:bg-card transition-colors inline-flex items-center gap-2"
             >
@@ -276,12 +269,12 @@ export default function GeneralContracting() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-[0.95fr_1.05fr] gap-8 items-start">
             <div>
-              <p className="font-display text-primary text-xs tracking-[0.28em] uppercase mb-2">Premium 4D Design Intelligence</p>
+              <p className="font-display text-primary text-xs tracking-[0.28em] uppercase mb-2">Design Planning</p>
               <h2 className="font-display font-black text-foreground text-3xl md:text-5xl uppercase tracking-tight leading-[0.95]">
                 Houzz-Style Design Power, Built For Real Construction Decisions
               </h2>
               <p className="text-sm md:text-base text-muted-foreground leading-relaxed mt-5 max-w-3xl">
-                Customers should not have to imagine the whole remodel from a flat proposal. JWORDENAI can support kitchen remodels, additions, patios, hardscapes, exterior upgrades, and interior design by turning photos, measurements, materials, floor plans, budgets, and schedule phases into a premium decision packet.
+                Customers should not have to imagine the whole remodel from a flat proposal. We can support kitchen remodels, additions, patios, hardscapes, exterior upgrades, and interior design by turning photos, measurements, materials, floor plans, budgets, and schedule phases into a clear decision packet.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link
@@ -330,27 +323,27 @@ export default function GeneralContracting() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-8 items-start">
             <div>
-              <p className="font-display text-primary text-xs tracking-[0.28em] uppercase mb-2">Paid Scan Decision Support</p>
+              <p className="font-display text-primary text-xs tracking-[0.28em] uppercase mb-2">Photo Review Decision Support</p>
               <h2 className="font-display font-black text-foreground text-3xl md:text-5xl uppercase tracking-tight leading-[0.95]">
-                Get Paid To Scan, Then Help Customers Make Better Decisions
+                Review The Property, Then Help Customers Make Better Decisions
               </h2>
               <p className="text-sm md:text-base text-muted-foreground leading-relaxed mt-5 max-w-3xl">
-                JWORDENAI gives the GC division a clean front-end offer: scan the property, organize the visible evidence, explain risk, and help the owner decide whether they need repair, maintenance, engineering review, roof work, drainage correction, or a full GC-managed scope.
+                A focused property review gives the GC division a clean front-end offer: organize the visible evidence, explain risk, and help the owner decide whether they need repair, maintenance, engineering review, roof work, drainage correction, or a full GC-managed scope.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link
-                  to="/jwordenai"
+                  to="/quote"
                   className="border border-primary/40 text-primary px-5 py-3 font-display font-bold text-xs tracking-[0.14em] uppercase hover:bg-primary/10 transition-colors inline-flex items-center gap-2"
                 >
                   <Camera className="w-4 h-4" />
-                  Read JWORDENAI Source Layer
+                  Request Property Review
                 </Link>
                 <Link
-                  to="/jwordenai"
+                  to="/quote"
                   className="border border-border text-foreground px-5 py-3 font-display font-bold text-xs tracking-[0.14em] uppercase hover:bg-background transition-colors inline-flex items-center gap-2"
                 >
                   <ScanLine className="w-4 h-4" />
-                  JWordenAI Scan
+                  Send Project Details
                 </Link>
               </div>
             </div>

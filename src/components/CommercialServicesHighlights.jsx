@@ -2,31 +2,31 @@ import { ShieldCheck, Droplets, Car, Zap } from 'lucide-react'
 
 const services = [
   {
-    title: 'Asphalt Paving & Resurfacing',
+    title: 'Restaurant, Retail, And Parking Lot Paving',
     description:
-      'Learn when your lot can be resurfaced — and when full replacement is the smarter investment.',
+      'KFC, Taco Bell, Arby\'s, retail, and active commercial lots need crews that understand phasing, access, traffic flow, and clean turnover.',
     icon: <Zap className="h-12 w-12 text-amber-400" />,
-    link: '/commercial#resurfacing-vs-replacement',
+    link: '/parking-lots',
   },
   {
-    title: 'Pavement Preservation: Sealcoating & Crack Sealing',
+    title: 'Sealcoating And Crack Sealing',
     description:
-      'Discover why “cheap” sealcoating can actually cost more long-term.',
+      'Maintenance is only valuable when the base is sound. We tell owners when preservation makes sense and when it is just covering a bigger problem.',
     icon: <ShieldCheck className="h-12 w-12 text-amber-400" />,
-    link: '/commercial#preservation-economics',
+    link: '/sealcoating',
   },
   {
     title: 'Drainage & Catch Basin Repairs',
     description: 'Understand how water destroys asphalt — and how to stop it.',
     icon: <Droplets className="h-12 w-12 text-amber-400" />,
-    link: '/commercial#drainage-solutions',
+    link: '/parking-lots',
   },
   {
     title: 'ADA Compliance & Pavement Marking',
     description:
-      'Ensure your property stays safe and compliant with federal standards.',
+      'Commercial lots need clean stall layout, handicap access, fire lanes, arrows, curb transitions, and a finish customers can navigate.',
     icon: <Car className="h-12 w-12 text-amber-400" />,
-    link: '/commercial#ada-compliance',
+    link: '/parking-lots',
   },
 ]
 
@@ -36,15 +36,13 @@ export default function CommercialServicesHighlights() {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:text-center">
           <h2 className="text-base font-semibold leading-7 text-amber-400">
-            Commercial & Industrial Expertise
+            Commercial Proof
           </h2>
           <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">
-            Build & Maintain Pavement That Lasts Decades
+            Proven On Restaurant, Retail, And Active Business Lots
           </p>
           <p className="mt-6 text-lg leading-8 text-slate-300">
-            We protect your investment by engineering pavement solutions that
-            address the root cause of failure, from subsurface water intrusion
-            to traffic load miscalculations.
+            Commercial paving has to protect the business while the work is happening. We plan access, phasing, drive-thru lanes, striping, drainage, and turnover so the property can keep operating.
           </p>
         </div>
         <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
