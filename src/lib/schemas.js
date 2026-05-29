@@ -251,3 +251,145 @@ export function reviewsSchema(reviews, aggregateRating) {
     })),
   }
 }
+
+/**
+ * Geo-tagged case-study schema for completed jobs. Use this on project pages
+ * so each before/after upload can be tied to a concrete place entity.
+ */
+export function projectCaseStudySchema({
+  pagePath,
+  headline,
+  imageUrl,
+  imageCaption,
+  placeName,
+  city,
+  addressRegion = 'VA',
+  addressCountry = 'US',
+  latitude,
+  longitude,
+  datePublished,
+  description,
+}) {
+  const normalizedPlaceName = placeName || (city ? `${city}, Virginia` : null)
+
+  if (!pagePath || !headline || !imageUrl || !normalizedPlaceName || !datePublished || !description) {
+    return null
+  }
+
+  const contentLocation = {
+    '@type': 'Place',
+    name: normalizedPlaceName,
+    address: {
+      '@type': 'PostalAddress',
+      addressRegion,
+      addressCountry,
+    },
+  }
+
+  if (latitude != null && longitude != null) {
+    contentLocation.geo = {
+      '@type': 'GeoCoordinates',
+      latitude: String(latitude),
+      longitude: String(longitude),
+    }
+  }
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `${SITE_URL}${pagePath}`,
+    },
+    headline,
+    image: [
+      {
+        '@type': 'ImageObject',
+        url: imageUrl.startsWith('http') ? imageUrl : `${SITE_URL}${imageUrl}`,
+        caption: imageCaption,
+        contentLocation,
+      },
+    ],
+    author: {
+      '@type': 'LocalBusiness',
+      '@id': SCHEMA_IDS.localBusiness,
+    },
+    publisher: {
+      '@type': 'LocalBusiness',
+      '@id': SCHEMA_IDS.localBusiness,
+    },
+    datePublished,
+    description,
+  }
+}
+
+export function premiumBlogPostingSchema({
+  slug,
+  headline,
+  description,
+  imageUrl,
+  datePublished,
+  dateModified,
+  locationName = 'Richmond Metro Area',
+  locationSameAs = 'https://en.wikipedia.org/wiki/Richmond,_Virginia',
+}) {
+  if (!slug || !headline || !description || !imageUrl || !datePublished) {
+    return null
+  }
+
+  const normalizedImage = imageUrl.startsWith('http') ? imageUrl : `${SITE_URL}${imageUrl}`
+  const canonicalUrl = `${SITE_URL}/blog/${slug}`
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': canonicalUrl,
+    },
+    headline,
+    description,
+    image: normalizedImage,
+    datePublished,
+    dateModified: dateModified || datePublished,
+    author: {
+      '@type': 'Person',
+      name: 'Gene Worden George',
+      jobTitle: 'Fourth-Generation Paving Contractor & Owner',
+      url: `${SITE_URL}/about`,
+      hasCredential: {
+        '@type': 'EducationalOccupationalCredential',
+        credentialCategory: 'Virginia Class A Contractor License',
+        recognizedBy: {
+          '@type': 'GovernmentOrganization',
+          name: 'Virginia Department of Professional and Occupational Regulation',
+        },
+      },
+      worksFor: {
+        '@type': 'LocalBusiness',
+        '@id': SCHEMA_IDS.organization,
+      },
+    },
+    publisher: {
+      '@type': 'LocalBusiness',
+      '@id': SCHEMA_IDS.organization,
+      name: BUSINESS_NAME,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${SITE_URL}/logo.png`,
+      },
+    },
+    about: [
+      {
+        '@type': 'Thing',
+        name: 'Asphalt Paving',
+        sameAs: 'https://en.wikipedia.org/wiki/Asphalt_concrete',
+      },
+      {
+        '@type': 'Place',
+        name: locationName,
+        sameAs: locationSameAs,
+      },
+    ],
+  }
+}

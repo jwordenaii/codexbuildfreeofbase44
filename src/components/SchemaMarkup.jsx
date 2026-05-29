@@ -12,6 +12,8 @@ export {
   reviewsSchema,
   howToSchema,
   videoObjectSchema,
+  projectCaseStudySchema,
+  premiumBlogPostingSchema,
 } from '../lib/schemas'
 
 const standaloneHelmetData = new HelmetData({})

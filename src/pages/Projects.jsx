@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import SchemaMarkup, { LOCAL_BUSINESS_SCHEMA } from '../components/SchemaMarkup'
+import SchemaMarkup, { LOCAL_BUSINESS_SCHEMA, projectCaseStudySchema } from '../components/SchemaMarkup'
 import SocialShare from '../components/SocialShare'
 import SmartImage from '../components/SmartImage'
 import { trackEvent } from '../api/client'
@@ -37,6 +37,19 @@ const PROJECTS = [
     imageWebp: '/work/commercial-access-road.webp',
     imageAlt:
       'Commercial asphalt access road beside a fenced industrial facility with fresh pavement and clean edge detail',
+    caseStudy: {
+      pagePath: '/projects#commercial-asphalt-access-road-photo',
+      headline: 'Commercial Asphalt Paving & Striping Completion in Chester',
+      imageUrl: '/work/commercial-access-road.jpg',
+      imageCaption:
+        'Freshly paved and striped commercial parking lot in Chester, VA completed by J. Worden & Sons.',
+      city: 'Chester',
+      latitude: 37.3565,
+      longitude: -77.4414,
+      datePublished: '2026-05-29',
+      description:
+        'Case study and visual proof of premium asphalt resurfacing performed by Class A Contractor J. Worden & Sons.',
+    },
   },
 
   // ── Virginia Roots ────────────────────────────────────────────────────
@@ -58,6 +71,19 @@ const PROJECTS = [
     ],
     highlight: 'Built entirely on reputation — zero advertising.',
     emoji: '🌊',
+    caseStudy: {
+      pagePath: '/projects#va-coastal-corridor',
+      headline: 'Regional Commercial Paving Program Across Virginia Coastal Corridor',
+      imageUrl: '/work/commercial-access-road.jpg',
+      imageCaption:
+        'Representative commercial asphalt work documented by J. Worden & Sons for Virginia corridor projects.',
+      placeName: 'Virginia Beach, Virginia',
+      latitude: 36.8529,
+      longitude: -75.978,
+      datePublished: '2026-05-29',
+      description:
+        'Long-run case-study proof of documented commercial paving execution from central Virginia to the coast.',
+    },
   },
 
   // ── KFC Virginia — First Franchise Contract ───────────────────────────
@@ -80,6 +106,17 @@ const PROJECTS = [
     ],
     highlight: 'First franchise contract — led to multi-state expansion.',
     emoji: '🍗',
+    caseStudy: {
+      pagePath: '/projects#kfc-virginia-initial',
+      headline: 'Initial KFC Franchise Asphalt Program in Virginia',
+      imageUrl: '/work/commercial-access-road.jpg',
+      imageCaption:
+        'Franchise-grade paving and documentation standards used by J. Worden & Sons in Virginia KFC programs.',
+      placeName: 'Virginia, US',
+      datePublished: '2026-05-29',
+      description:
+        'Documented franchise paving methodology that launched J. Worden & Sons into national multi-state execution.',
+    },
   },
 
   // ── KFC NC ────────────────────────────────────────────────────────────
@@ -101,6 +138,17 @@ const PROJECTS = [
     ],
     highlight: 'Direct referral from Virginia franchise network.',
     emoji: '🐾',
+    caseStudy: {
+      pagePath: '/projects#kfc-north-carolina',
+      headline: 'KFC Franchise Expansion Case Study in North Carolina',
+      imageUrl: '/work/commercial-access-road.jpg',
+      imageCaption:
+        'Documented lot resurfacing and franchise-compliant closeout process for North Carolina locations.',
+      placeName: 'North Carolina, US',
+      datePublished: '2026-05-29',
+      description:
+        'Case-study summary showing referral-led franchise expansion from Virginia into North Carolina markets.',
+    },
   },
 
   // ── KFC Southeast ─────────────────────────────────────────────────────
@@ -189,6 +237,17 @@ const PROJECTS = [
     ],
     highlight: 'Verified. Photos and records on file.',
     emoji: '🤠',
+    caseStudy: {
+      pagePath: '/projects#kfc-new-build-texas',
+      headline: 'Ground-Up KFC New Build Asphalt Program in Texas',
+      imageUrl: '/work/commercial-access-road.jpg',
+      imageCaption:
+        'Civil-through-finish paving standards applied on Texas new store build scope by J. Worden & Sons.',
+      placeName: 'Texas, US',
+      datePublished: '2026-05-29',
+      description:
+        'Verified new-build case study covering civil coordination, paving sequence, and documented closeout standards.',
+    },
   },
 
   // ── Texas Remodels ────────────────────────────────────────────────────
@@ -232,6 +291,19 @@ const PROJECTS = [
     ],
     highlight: 'Cross-state metro coordination.',
     emoji: '🌾',
+    caseStudy: {
+      pagePath: '/projects#kfc-kansas-kc',
+      headline: 'Cross-State Franchise Remodel Program in Kansas City Metro',
+      imageUrl: '/work/commercial-access-road.jpg',
+      imageCaption:
+        'Documented asphalt and concrete remodel operations coordinated across Kansas and Missouri locations.',
+      placeName: 'Kansas City Metro, US',
+      latitude: 39.0997,
+      longitude: -94.5786,
+      datePublished: '2026-05-29',
+      description:
+        'Case study on multi-jurisdiction planning and execution for franchise remodels across the Kansas City market.',
+    },
   },
 
   // ── Iowa / Missouri ────────────────────────────────────────────────────
@@ -312,6 +384,17 @@ const PROJECTS = [
     ],
     highlight: 'Urban-market franchise execution.',
     emoji: '🗽',
+    caseStudy: {
+      pagePath: '/projects#kfc-ny-nj',
+      headline: 'Urban-Market KFC Remodel Case Study in New York and New Jersey',
+      imageUrl: '/work/commercial-access-road.jpg',
+      imageCaption:
+        'Urban franchise site execution pattern for paving, concrete, and ADA upgrades across NY/NJ locations.',
+      placeName: 'New York and New Jersey, US',
+      datePublished: '2026-05-29',
+      description:
+        'Documented urban-market operations focused on scheduling, constrained access, and franchise closeout quality.',
+    },
   },
 
   // ── North Carolina / Georgia Post-Pandemic ────────────────────────────
@@ -356,6 +439,17 @@ const PROJECTS = [
     ],
     highlight: 'Franchise-level quality on every job.',
     emoji: '🏢',
+    caseStudy: {
+      pagePath: '/projects#private-commercial-current',
+      headline: 'Active Private Commercial Asphalt Program in Virginia',
+      imageUrl: '/work/commercial-access-road.jpg',
+      imageCaption:
+        'Current private commercial paving work delivered under franchise-level quality controls and documentation.',
+      placeName: 'Virginia, US',
+      datePublished: '2026-05-29',
+      description:
+        'Case-study proof that the same national franchise paving system is applied to private commercial clients.',
+    },
   },
 ]
 
@@ -377,6 +471,8 @@ export default function Projects() {
 
   const sorted = [...filtered].sort((a, b) => b.year - a.year)
 
+  const caseStudySchemas = PROJECTS.map((project) => projectCaseStudySchema(project.caseStudy)).filter(Boolean)
+
   return (
     <>
       <SchemaMarkup
@@ -385,6 +481,7 @@ export default function Projects() {
         canonical="/projects"
         schema={[
           LOCAL_BUSINESS_SCHEMA,
+          ...caseStudySchemas,
           {
             '@context': 'https://schema.org',
             '@type': 'ImageObject',

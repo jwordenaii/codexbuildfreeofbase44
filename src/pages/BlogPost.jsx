@@ -8,6 +8,7 @@ import Footer from '../components/Footer';
 import SEO from '../components/SEO';
 import { PRIMARY_DOMAIN } from '@/lib/locations';
 import { FALLBACK_BLOG_POSTS, getFallbackBlogPostBySlug } from '@/lib/fallbackBlogPosts';
+import { premiumBlogPostingSchema } from '../components/SchemaMarkup';
 
 export default function BlogPost() {
   const { slug } = useParams();
@@ -69,34 +70,21 @@ export default function BlogPost() {
   const postUrl = `${PRIMARY_DOMAIN}/blog/${post.slug}`;
   const postBodyText = (post.content || '').replace(/[#>*_`\-\[\]\(\)]/g, ' ').replace(/\s+/g, ' ').trim();
 
+  const premiumBlogSchema = premiumBlogPostingSchema({
+    slug: post.slug,
+    headline: post.title,
+    description: post.excerpt,
+    imageUrl: post.cover_image || '/og-default.jpg',
+    datePublished: post.published_date,
+    dateModified: post.updated_date || post.published_date,
+  });
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
       {
-        '@type': 'BlogPosting',
+        ...(premiumBlogSchema || {}),
         '@id': `${postUrl}#article`,
-        headline: post.title,
-        description: post.excerpt,
-        image: post.cover_image,
-        datePublished: post.published_date,
-        dateModified: post.updated_date || post.published_date,
-        author: {
-          '@type': 'Organization',
-          name: post.author || 'J. Worden & Sons',
-          url: PRIMARY_DOMAIN,
-        },
-        publisher: {
-          '@type': 'Organization',
-          name: 'J. Worden & Sons Paving LLC',
-          logo: {
-            '@type': 'ImageObject',
-            url: 'https://www.jwordenasphaltpaving.com/logo.png',
-          },
-        },
-        mainEntityOfPage: {
-          '@type': 'WebPage',
-          '@id': postUrl,
-        },
         articleSection: post.category?.replace('-', ' ') || 'Asphalt Paving',
         articleBody: postBodyText,
         inLanguage: 'en-US',

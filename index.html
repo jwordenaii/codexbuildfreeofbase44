@@ -100,17 +100,20 @@
     <!-- Theme -->
     <meta name="theme-color" content="#FFBF00" />
 
-    <!-- LocalBusiness Structured Data (Google Rich Results) -->
+    <!-- Consolidated LocalBusiness JSON-LD for entity consistency -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": ["PavingContractor", "LocalBusiness"],
-      "name": "J. Worden & Sons Paving LLC",
-      "image": "/og-default.jpg",
-      "url": "https://www.jwordenasphaltpaving.com/",
+      "@type": ["ProfessionalService", "LocalBusiness", "GeneralContractor"],
+      "@id": "https://www.jwordenasphaltpaving.com/#organization",
+      "name": "J. Worden & Sons Asphalt Paving",
+      "legalName": "J. Worden & Sons Paving LLC",
+      "url": "https://www.jwordenasphaltpaving.com",
       "telephone": "+1-804-446-1296",
-      "email": "j.wordenandsonspaving@gmail.com",
-      "priceRange": "$$",
+      "email": "contact@jwordenasphaltpaving.com",
+      "priceRange": "$$$",
+      "description": "Fourth-generation Class A Virginia paving contractor providing premium asphalt paving, sealcoating, and parking lot repair across the Richmond metro area and surrounding rural counties.",
+      "foundingDate": "1984",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "1601 Ware Bottom Spring Rd, Suite 214",
@@ -121,83 +124,87 @@
       },
       "geo": {
         "@type": "GeoCoordinates",
-        "latitude": 37.3563,
-        "longitude": -77.4411
+        "latitude": "37.3565",
+        "longitude": "-77.4414"
       },
       "areaServed": [
-        { "@type": "State", "name": "Virginia" },
-        { "@type": "City", "name": "Chester" },
-        { "@type": "City", "name": "Richmond" },
-        { "@type": "City", "name": "Midlothian" },
-        { "@type": "City", "name": "Short Pump" },
-        { "@type": "City", "name": "Glen Allen" },
-        { "@type": "City", "name": "Henrico" },
-        { "@type": "City", "name": "Williamsburg" },
-        { "@type": "City", "name": "Virginia Beach" },
-        { "@type": "City", "name": "Chesapeake" },
-        { "@type": "City", "name": "Roanoke" },
-        { "@type": "City", "name": "Harrisonburg" },
-        { "@type": "City", "name": "Winchester" },
-        { "@type": "City", "name": "Fredericksburg" },
-        { "@type": "City", "name": "Stafford" }
+        {
+          "@type": "City",
+          "name": "Richmond",
+          "sameAs": "https://en.wikipedia.org/wiki/Richmond,_Virginia"
+        },
+        {
+          "@type": "PostalCode",
+          "postalCode": "23221"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "Goochland County",
+          "sameAs": "https://en.wikipedia.org/wiki/Goochland_County,_Virginia"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "Powhatan County",
+          "sameAs": "https://en.wikipedia.org/wiki/Powhatan_County,_Virginia"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "Amelia County",
+          "sameAs": "https://en.wikipedia.org/wiki/Amelia_County,_Virginia"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "Dinwiddie County",
+          "sameAs": "https://en.wikipedia.org/wiki/Dinwiddie_County,_Virginia"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "New Kent County",
+          "sameAs": "https://en.wikipedia.org/wiki/New_Kent_County,_Virginia"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "Charles City County",
+          "sameAs": "https://en.wikipedia.org/wiki/Charles_City_County,_Virginia"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "Sussex County",
+          "sameAs": "https://en.wikipedia.org/wiki/Sussex_County,_Virginia"
+        },
+        {
+          "@type": "GeoCircle",
+          "geoMidpoint": {
+            "@type": "GeoCoordinates",
+            "latitude": "37.3565",
+            "longitude": "-77.4414"
+          },
+          "geoRadius": "80000"
+        }
       ],
-      "openingHoursSpecification": [{
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
-        "opens": "07:00",
-        "closes": "18:00"
-      }],
+      "hasCredential": {
+        "@type": "EducationalOccupationalCredential",
+        "credentialCategory": "Virginia Class A Contractor License",
+        "recognizedBy": {
+          "@type": "GovernmentOrganization",
+          "name": "Virginia Department of Professional and Occupational Regulation"
+        }
+      },
       "sameAs": [
-        "https://www.jwordenasphaltpaving.com",
         "https://www.facebook.com/jwordenpaving/",
-        "https://www.tiktok.com/@jwordenandsonspaving",
-        "https://www.instagram.com/jwordensons",
-        "https://www.youtube.com/@JWordenSons",
-        "https://www.linkedin.com/showcase/j.-worden-%26-sons-paving-l.l.c./",
         "https://www.yelp.com/biz/j-worden-and-sons-paving-chester",
-        "https://www.houzz.com/professionals/stone-pavers-and-concrete/j-worden-and-sons-paving-l-l-c-pfvwus-pf~663227484",
         "https://www.bbb.org/us/va/chester/profile/paving-contractors/j-worden-sons-asphalt-paving-0603-9003773",
-        "https://www.angi.com/companylist/us/va/chester/j-worden-and-sons-paving-reviews-7601083.htm"
+        "https://www.houzz.com/professionals/stone-pavers-and-concrete/j-worden-and-sons-paving-l-l-c-pfvwus-pf~663227484"
       ],
-      "foundingDate": "1984",
-      "award": [
-        "Best of Houzz Service 2014, 2015, 2016, 2023",
-        "2020 Best Asphalt Paving Company",
-        "2018 Pavement Magazine Top Contractor"
-      ],
-      "hasCredential": [
-        { "@type": "EducationalOccupationalCredential", "name": "Virginia Class A Contractor License" }
-      ],
-      "description": "Virginia's family-owned asphalt paving contractor for over 40 years. Serving all of Virginia — from Richmond and Chester to Virginia Beach, Roanoke, Fredericksburg, and Winchester. Specializing in residential driveways, commercial parking lots, industrial paving, sealcoating, and crack repair."
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+1-804-446-1296",
+        "contactType": "customer service",
+        "areaServed": "US",
+        "availableLanguage": "English"
+      }
     }
     </script>
-
-  <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "GeneralContractor",
-  "name": "J. Worden & Sons Asphalt Paving",
-  "legalName": "J. Worden & Sons Asphalt Paving",
-  "url": "https://www.jwordenasphaltpaving.com",
-  "foundingDate": "1984",
-  "founder": [
-    { "@type": "Person", "name": "Gene Worden George" },
-    { "@type": "Person", "name": "Chase George" }
-  ],
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "1601 Ware Bottom Spring Rd, Suite 214",
-    "addressLocality": "Chester",
-    "addressRegion": "VA",
-    "postalCode": "23836",
-    "addressCountry": "US"
-  },
-  "makesOffer": [
-    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Sunday Paving" } },
-    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Weekend Diligence" } }
-  ]
-}
-</script>
 
   </head>
   <body>

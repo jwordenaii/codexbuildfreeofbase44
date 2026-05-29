@@ -6,9 +6,9 @@
 
 @layer base {
   :root {
-    --font-display: 'Bebas Neue', sans-serif;
-    --font-heading: 'Bebas Neue', sans-serif;
-    --font-body: 'Inter', sans-serif;
+    --font-display: 'Bebas Neue', 'League Spartan', sans-serif;
+    --font-heading: 'Bebas Neue', 'League Spartan', sans-serif;
+    --font-body: 'Plus Jakarta Sans', 'Manrope', sans-serif;
 
     /* Construction palette: white surface, charcoal text, high-visibility orange */
     --background: 0 0% 100%;
@@ -54,11 +54,11 @@
     background-attachment: fixed;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', 'Manrope', sans-serif;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: 'Bebas Neue', 'League Spartan', sans-serif;
   }
 }
 
