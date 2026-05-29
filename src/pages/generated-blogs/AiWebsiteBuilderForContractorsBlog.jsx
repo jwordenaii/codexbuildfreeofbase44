@@ -3,26 +3,25 @@ import { Link } from 'react-router-dom'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import SEO from '@/components/SEO'
+import { premiumBlogPostingSchema } from '@/components/SchemaMarkup'
 import { Calendar, Clock, ArrowRight, ArrowLeft } from 'lucide-react'
 
 export default function AiWebsiteBuilderForContractorsBlog() {
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
-    headline: 'Ultimate Guide to AI Website Builder For Contractors',
-    description: 'Learn everything you need to know about AI website builder for contractors for your commercial properties. Expert insights from J.Worden AI Web Syndicate.',
-    author: {
-      '@type': 'Organization',
-      name: 'J.Worden AI Web Syndicate'
-    },
-    url: 'https://www.jwordenai.com/blog/info/ai-website-builder-for-contractors',
-  }
+  const jsonLd = premiumBlogPostingSchema({
+    slug: 'info/ai-website-builder-for-contractors',
+    headline: 'Commercial Asphalt Resurfacing Guide for Richmond Property Managers',
+    description:
+      'What to inspect before resurfacing a commercial lot in Richmond, how to protect traffic flow, and how to avoid costly base and drainage mistakes.',
+    imageUrl: '/hero-paving.jpg',
+    datePublished: '2026-05-29T08:00:00-04:00',
+    dateModified: '2026-05-29T08:00:00-04:00',
+  })
 
   return (
     <div className="min-h-screen bg-background font-body">
       <SEO
-        title={'Ultimate Guide to AI Website Builder For Contractors - J.Worden AI Web Syndicate'}
-        description={'Learn everything you need to know about AI website builder for contractors for your commercial properties. Expert insights from J.Worden AI Web Syndicate.'}
+        title={'Commercial Asphalt Resurfacing Guide for Richmond Property Managers'}
+        description={'What to inspect before resurfacing a commercial lot in Richmond, how to protect traffic flow, and how to avoid costly base and drainage mistakes.'}
         canonicalPath={'/blog/info/ai-website-builder-for-contractors'}
         jsonLd={jsonLd}
       />
@@ -37,49 +36,43 @@ export default function AiWebsiteBuilderForContractorsBlog() {
           <div className="flex items-center gap-4 text-xs font-display tracking-widest text-muted-foreground uppercase mb-6">
             <span className="text-primary font-bold">Insights</span>
             <span>•</span>
-            <div className="flex items-center"><Calendar className="w-3 h-3 mr-1.5" /> Programmatic SEO Post</div>
+            <div className="flex items-center"><Calendar className="w-3 h-3 mr-1.5" /> Field Guide</div>
             <span>•</span>
             <div className="flex items-center"><Clock className="w-3 h-3 mr-1.5" /> 4 min read</div>
           </div>
           <h1 className="font-display font-black text-foreground text-4xl md:text-5xl uppercase tracking-tight leading-[0.95] mb-6">
-            Ultimate Guide to AI Website Builder For Contractors
+            Commercial Asphalt Resurfacing Guide for Richmond Property Managers
           </h1>
           <p className="text-xl text-muted-foreground leading-relaxed max-w-2xl">
-            Learn everything you need to know about AI website builder for contractors for your commercial properties. Expert insights from J.Worden AI Web Syndicate.
+            What to inspect before resurfacing a commercial lot in Richmond, how to protect traffic flow, and how to avoid costly base and drainage mistakes.
           </p>
         </header>
 
         <div className="prose prose-invert max-w-none text-muted-foreground leading-relaxed space-y-6">
           <p>
-            When it comes to <strong>AI website builder for contractors</strong>, understanding the foundational 
-            aspects of Programmatic SEO and automated B2B website building is essential for commercial property owners and managers. 
-            At J.Worden AI Web Syndicate, our core focus is delivering Lightning-fast, AI-generated, perfectly optimized programmatic SEO websites deployed instantly.
+            Commercial resurfacing projects fail when the scope only addresses top-layer appearance. Property managers in Richmond and Chesterfield should start with drainage mapping,
+            heavy-turn lanes, and base stability before approving overlay thickness and traffic phasing.
           </p>
           
           <h2 className="font-display text-2xl text-foreground uppercase tracking-wide mt-10 mb-4 font-black">
-            The Importance of AI website builder for contractors
+            What to verify before resurfacing starts
           </h2>
           <p>
-            Implementing a sound Replacing slow traditional web agencies ensures you minimize lifelong 
-            risks and mitigate recurring costs. As a premium contractor serving regions like Nationwide, United States, 
-            we recognize that each site requires tailored focus.
+            Confirm curb and catch-basin elevations, check ponding zones, and document all failed patches. This prevents surface-only repairs that hide deeper issues and re-open in one to two seasons.
           </p>
 
           <h3 className="font-display text-xl text-foreground uppercase mt-8 mb-3 font-bold">
             Key Diagnostic Approaches
           </h3>
           <p>
-            Whether the issue stems from foundational fatigue or surface-level weathering, leveraging strategies in 
-            Programmatic SEO deployment strategy makes a verifiable difference in longevity. 
-            By addressing AI website builder for contractors correctly the first time, our clients consistently avoid 
-            catastrophic failures.
+            Build a phased schedule that separates milling, paving, striping, and ADA transitions. With clean sequencing, retail and medical sites can stay operational while long-term pavement performance improves.
           </p>
 
           <div className="bg-card border border-border p-8 my-10 rounded-sm">
             <h4 className="font-display text-lg text-primary uppercase font-bold mb-2">Ready to Upgrade Your Infrastructure?</h4>
             <p className="mb-6 text-sm">Join top-tier facility managers who have already maximized their property uptime and lowered maintenance intervals.</p>
             <Link to="/quote" className="premium-cta inline-flex items-center gap-2 px-6 py-3 font-display font-bold text-xs tracking-[0.14em] uppercase text-primary-foreground">
-              Launch Your AI Site Now <ArrowRight className="w-4 h-4 ml-2" />
+              Request A Site Evaluation <ArrowRight className="w-4 h-4 ml-2" />
             </Link>
           </div>
         </div>
@@ -89,3 +82,4 @@ export default function AiWebsiteBuilderForContractorsBlog() {
     </div>
   )
 }
+

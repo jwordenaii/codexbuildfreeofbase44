@@ -84,6 +84,25 @@ const richmondMetroSignals = [
   },
 ];
 
+const landmarkSignals = [
+  {
+    title: 'Downtown Richmond Core',
+    body: 'Project planning around Broad Street, Shockoe Bottom, The Fan, Scott\'s Addition, and VCU-adjacent commercial corridors where traffic timing and staging matter.',
+  },
+  {
+    title: 'Short Pump Retail Belt',
+    body: 'Parking-lot resurfacing and lane control for high-volume shopping centers, grocery anchors, and medical offices near West Broad and Pump Road.',
+  },
+  {
+    title: 'Chesterfield Growth Corridor',
+    body: 'Driveways, private roads, and commercial lots around Hull Street, Courthouse Road, and Route 288 where base prep and drainage are critical.',
+  },
+  {
+    title: 'River & Airport Routes',
+    body: 'Scope planning across Route 1, I-95 access roads, and Richmond International Airport corridors where pavement carries heavier delivery and commuter load.',
+  },
+]
+
 const contractorStandards = [
   {
     title: 'Driveway Finish',
@@ -278,7 +297,7 @@ export default function Home() {
                 <span className="text-primary">Built To Last.</span>
               </h1>
               <p className="mt-8 max-w-3xl text-lg leading-relaxed text-muted-foreground md:text-2xl">
-                Residential and commercial asphalt work across Chester, Richmond, Chesterfield, Henrico, and Central Virginia. Share your address or project photos and we will provide a clear recommendation on repair, resurfacing, replacement, or preservation.
+                Residential and commercial asphalt work across Chester, Richmond, Chesterfield, Henrico, and Central Virginia. From The Fan and Short Pump to Route 1 business corridors, every scope is built around traffic, drainage, and long-term pavement life.
               </p>
               <div className="mt-10 flex flex-wrap gap-4">
                 <a
@@ -490,6 +509,26 @@ export default function Home() {
                   <p className="font-display text-2xl uppercase leading-none text-foreground">{market.title}</p>
                   <p className="mt-5 text-sm leading-relaxed text-muted-foreground">{market.body}</p>
                 </a>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-[#eef4f1] py-20 md:py-28">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <div className="mb-12 max-w-4xl">
+              <p className="font-display text-sm uppercase tracking-[0.24em] text-primary">Landmark service coverage</p>
+              <h2 className="mt-4 font-display text-5xl uppercase leading-none text-foreground md:text-7xl">Built for real Virginia traffic corridors.</h2>
+              <p className="mt-7 text-lg leading-relaxed text-muted-foreground">
+                Search intent follows landmarks and known corridors. Our field scopes are built around the actual places people reference when they call for asphalt work.
+              </p>
+            </div>
+            <div className="grid gap-5 md:grid-cols-2">
+              {landmarkSignals.map((item) => (
+                <article key={item.title} className="rounded-lg border border-border bg-card p-7 shadow-[0_18px_42px_-34px_rgba(15,48,68,0.34)]">
+                  <h3 className="font-display text-3xl uppercase leading-none text-foreground">{item.title}</h3>
+                  <p className="mt-5 text-sm leading-relaxed text-muted-foreground">{item.body}</p>
+                </article>
               ))}
             </div>
           </div>

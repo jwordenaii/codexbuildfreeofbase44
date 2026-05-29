@@ -3,34 +3,34 @@ import SmartImage from '@/components/SmartImage'
 
 const proofImages = [
   {
+    src: '/work/portfolio/portfolio-019.jpg',
+    alt: 'Before condition of weathered commercial asphalt lot in Central Virginia',
+    label: 'Before: oxidized lot surface',
+  },
+  {
     src: '/work/portfolio/portfolio-017.jpg',
-    alt: 'Finished residential asphalt driveway in Richmond by J. Worden and Sons',
-    label: 'Premium driveway finish',
+    alt: 'After resurfacing condition for residential asphalt driveway in Richmond by J. Worden and Sons',
+    label: 'After: premium driveway finish',
+  },
+  {
+    src: '/work/portfolio/portfolio-010.jpg',
+    alt: 'Before condition of mixed-use access lane with visible wear and patching',
+    label: 'Before: access-lane failure signs',
   },
   {
     src: '/work/portfolio/portfolio-030.jpg',
-    alt: 'Large estate driveway paving in Chesterfield by J. Worden and Sons',
-    label: 'Estate driveway work',
-  },
-  {
-    src: '/work/imported/KFC/IMG_9499-COLLAGE.jpg',
-    alt: 'KFC commercial paving project photo documentation by J. Worden and Sons',
-    label: 'KFC project records',
+    alt: 'After paving condition showing large estate driveway restoration in Chesterfield',
+    label: 'After: estate driveway restoration',
   },
   {
     src: '/work/kfc/kfc-job-001.jpg',
-    alt: 'National quick service restaurant paving project by J. Worden and Sons',
-    label: 'QSR parking lot work',
-  },
-  {
-    src: '/work/kfc/kfc-job-032.jpg',
-    alt: 'Multi-state commercial paving and restaurant parking lot work',
-    label: 'Commercial site work',
+    alt: 'Before condition at restaurant parking lot with aged pavement and striping wear',
+    label: 'Before: restaurant lot deterioration',
   },
   {
     src: '/work/imported/KFC/IMG_9499-COLLAGE.jpg',
-    alt: 'J. Worden and Sons project photo collage from commercial work',
-    label: 'Project records',
+    alt: 'After condition at quick-service restaurant lot with fresh asphalt and defined striping',
+    label: 'After: completed restaurant lot',
   },
 ]
 
@@ -53,10 +53,10 @@ const testimonials = [
 ]
 
 const recognition = [
-  'Residential driveway and estate-driveway work around Richmond and Central Virginia',
-  'KFC and restaurant parking lot experience across multi-state commercial projects',
-  'Commercial lot, drive-thru, ADA, sealcoating, and maintenance work',
-  'Local reviews, project photos, and written scope before work begins',
+  'Before/after proof from Richmond, Chesterfield, and Henrico projects',
+  'Restaurant lot resurfacing around high-traffic retail corridors',
+  'Driveway and private-lane work across Chester and Midlothian neighborhoods',
+  'Project records with scope clarity before work begins',
 ]
 
 export default function CustomerProofGallery() {
@@ -67,7 +67,7 @@ export default function CustomerProofGallery() {
           <div>
             <p className="font-display text-sm uppercase tracking-[0.24em] text-primary">Project photos</p>
             <h2 className="mt-4 font-display text-4xl uppercase leading-none text-foreground sm:text-5xl md:text-7xl">
-              See the work before you call.
+              Before and after proof that earns trust.
             </h2>
           </div>
           <div className="space-y-4 text-base leading-relaxed text-muted-foreground">

@@ -3,20 +3,19 @@ import { Link } from 'react-router-dom'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import SEO from '@/components/SEO'
+import { premiumBlogPostingSchema } from '@/components/SchemaMarkup'
 import { Calendar, Clock, ArrowRight, ArrowLeft } from 'lucide-react'
 
 export default function IndustrialParkingLotRepairBlog() {
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
+  const jsonLd = premiumBlogPostingSchema({
+    slug: 'info/industrial-parking-lot-repair',
     headline: 'Ultimate Guide to Industrial Parking Lot Repair',
-    description: 'Learn everything you need to know about industrial parking lot repair for your commercial properties. Expert insights from J. Worden & Sons.',
-    author: {
-      '@type': 'Organization',
-      name: 'J. Worden & Sons'
-    },
-    url: 'https://www.jwordenasphaltpaving.com/blog/info/industrial-parking-lot-repair',
-  }
+    description:
+      'Learn everything you need to know about industrial parking lot repair for your commercial properties. Expert insights from J. Worden & Sons.',
+    imageUrl: '/hero-paving.jpg',
+    datePublished: '2026-05-29T08:00:00-04:00',
+    dateModified: '2026-05-29T08:00:00-04:00',
+  })
 
   return (
     <div className="min-h-screen bg-background font-body">
@@ -37,7 +36,7 @@ export default function IndustrialParkingLotRepairBlog() {
           <div className="flex items-center gap-4 text-xs font-display tracking-widest text-muted-foreground uppercase mb-6">
             <span className="text-primary font-bold">Insights</span>
             <span>•</span>
-            <div className="flex items-center"><Calendar className="w-3 h-3 mr-1.5" /> Programmatic SEO Post</div>
+            <div className="flex items-center"><Calendar className="w-3 h-3 mr-1.5" /> Field Guide</div>
             <span>•</span>
             <div className="flex items-center"><Clock className="w-3 h-3 mr-1.5" /> 4 min read</div>
           </div>
@@ -89,3 +88,4 @@ export default function IndustrialParkingLotRepairBlog() {
     </div>
   )
 }
+
