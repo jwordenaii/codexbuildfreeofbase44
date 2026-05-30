@@ -5,6 +5,7 @@ import { estimatePrice } from '../lib/pricing'
 import { STATE_OPTIONS, getStateSummary } from '../lib/states50'
 import { downloadPdf } from '../lib/pdfUtils'
 import QuickQuoteBar from '../components/QuickQuoteBar'
+import KickservEstimate from '../components/KickservEstimate'
 import { loadStripe } from '@stripe/stripe-js'
 // ── Step definitions ──────────────────────────────────────────────────────────
 
@@ -379,23 +380,30 @@ export default function Quote() {
               headline="Fastest way: just text us your number."
               subline="One tap. No form. We respond by text within 1 hour, 7 days a week."
             />
-            <div className="mt-6 text-center">
-              <button
-                type="button"
-                onClick={() => {
-                  setShowFullForm((v) => !v)
-                  if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
-                    window.gtag('event', 'quote_full_form_toggle', { opened: !showFullForm })
-                  }
-                }}
-                className="text-sm font-semibold uppercase tracking-widest text-brand-navy/70 underline-offset-4 hover:text-brand-navy hover:underline"
-                aria-expanded={showFullForm}
-              >
-                {showFullForm
-                  ? '── Hide detailed estimate form ──'
-                  : '── Need a detailed estimate? Open the full form ──'}
-              </button>
-            </div>
+          </div>
+
+          {/* Primary estimate path — Kickserv self-service request form.
+              Leads land directly in the Kickserv CRM (scheduling/estimating). */}
+          <div className="mb-8">
+            <KickservEstimate />
+          </div>
+
+          <div className="mb-8 text-center">
+            <button
+              type="button"
+              onClick={() => {
+                setShowFullForm((v) => !v)
+                if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+                  window.gtag('event', 'quote_full_form_toggle', { opened: !showFullForm })
+                }
+              }}
+              className="text-sm font-semibold uppercase tracking-widest text-brand-navy/70 underline-offset-4 hover:text-brand-navy hover:underline"
+              aria-expanded={showFullForm}
+            >
+              {showFullForm
+                ? '── Hide our instant-estimate form ──'
+                : '── Prefer an instant ballpark price? Open our quick form ──'}
+            </button>
           </div>
           {showFullForm && (
           <div className="bg-white rounded-2xl shadow-lg p-8 md:p-10">
