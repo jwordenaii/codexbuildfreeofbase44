@@ -1,29 +1,26 @@
 /**
- * KickservEstimate — embeds the J. Worden & Sons Kickserv self-service
- * estimate-request form so leads land directly in the Kickserv CRM
- * (scheduling, estimating, invoicing) with no manual re-entry.
+ * KickservEstimate — call-to-action card that sends customers to the
+ * J. Worden & Sons Kickserv self-service estimate-request form so leads
+ * land directly in the Kickserv CRM (scheduling, estimating, invoicing).
  *
- * Requires `https://app.kickserv.com` in the CSP `frame-src` allow-list
- * (see netlify.toml) or the iframe renders blank.
+ * Opens in a new tab rather than an iframe: Kickserv's self-service page
+ * refuses to be framed on third-party domains ("This content is blocked"),
+ * so a new-tab link is the reliable path that always works.
  */
 import { trackEvent } from '../api/client'
 
 // Account slug from the Kickserv portal URL.
 const KICKSERV_ACCOUNT = 'jwordenandsonspaving'
-const KICKSERV_FORM_PATH = 'self_service/requests/new'
+// Public self-service estimate request form (no ?iframe=true — opens standalone).
+const KICKSERV_URL = `https://app.kickserv.com/${KICKSERV_ACCOUNT}/self_service/requests/new`
 
-// Embedded iframe URL (adds ?iframe=true so Kickserv strips its own chrome).
-const KICKSERV_IFRAME_SRC = `https://app.kickserv.com/${KICKSERV_ACCOUNT}/${KICKSERV_FORM_PATH}?iframe=true`
-// Plain URL for the "open in a new window" fallback.
-const KICKSERV_DIRECT_URL = `https://app.kickserv.com/${KICKSERV_ACCOUNT}/${KICKSERV_FORM_PATH}`
-
-export default function KickservEstimate({ className = '', height = 1000 }) {
+export default function KickservEstimate({ className = '' }) {
   return (
     <div
       className={`bg-white rounded-2xl shadow-lg border border-brand-navy/10 overflow-hidden ${className}`}
     >
       {/* Header */}
-      <div className="bg-brand-navy text-white px-6 py-4 flex items-center justify-between gap-3">
+      <div className="bg-brand-navy text-white px-6 py-5">
         <div className="flex items-center gap-3">
           <span className="text-2xl">📋</span>
           <div>
@@ -33,39 +30,28 @@ export default function KickservEstimate({ className = '', height = 1000 }) {
             </div>
           </div>
         </div>
-        <a
-          href={KICKSERV_DIRECT_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={() => trackEvent('kickserv_open_new_window', { source: 'estimate_embed' })}
-          className="hidden sm:inline-block text-xs font-semibold text-brand-amber underline-offset-4 hover:underline whitespace-nowrap"
-        >
-          Open in new window ↗
-        </a>
       </div>
 
-      {/* Embedded Kickserv self-service request form */}
-      <iframe
-        src={KICKSERV_IFRAME_SRC}
-        title="Request a free estimate from J. Worden & Sons"
-        className="w-full"
-        style={{ border: 'none', height: `${height}px` }}
-        scrolling="auto"
-        loading="lazy"
-        onLoad={() => trackEvent('kickserv_form_loaded', { source: 'estimate_embed' })}
-      />
+      {/* Body */}
+      <div className="p-6 sm:p-8 text-center">
+        <p className="text-brand-navy/70 mb-6 leading-relaxed">
+          Tell us about your project and we&apos;ll get you a detailed, no-obligation estimate.
+          The form takes about 2 minutes — your request comes straight to our team.
+        </p>
 
-      {/* Mobile fallback link (header link is hidden on small screens) */}
-      <div className="sm:hidden border-t border-gray-100 px-6 py-3 text-center">
         <a
-          href={KICKSERV_DIRECT_URL}
+          href={KICKSERV_URL}
           target="_blank"
           rel="noopener noreferrer"
-          onClick={() => trackEvent('kickserv_open_new_window', { source: 'estimate_embed_mobile' })}
-          className="text-sm font-semibold text-brand-navy underline-offset-4 hover:underline"
+          onClick={() => trackEvent('kickserv_estimate_click', { source: 'quote_page' })}
+          className="btn-primary inline-flex items-center justify-center gap-2 px-8 py-4 text-base"
         >
-          Trouble loading the form? Open it in a new window ↗
+          Start My Free Estimate →
         </a>
+
+        <p className="text-brand-navy/40 text-xs mt-4">
+          Opens our secure request form in a new tab.
+        </p>
       </div>
     </div>
   )
