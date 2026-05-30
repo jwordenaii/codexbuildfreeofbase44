@@ -12,7 +12,7 @@ async def test_token_issuance_writes_audit_event(client, app_modules):
 
     token_res = await client.post(
         "/api/v1/auth/token",
-        headers={"Authorization": "Bearer test-master-key"},
+        headers={"Authorization": "Bearer test-master-key-for-ci-use-only-not-prod"},
     )
     assert token_res.status_code == 200
     body = token_res.json()
