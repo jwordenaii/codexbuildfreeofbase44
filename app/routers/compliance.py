@@ -42,7 +42,7 @@ _EXPIRY_AMBER_DAYS = 30
 
 # ── Schemas ───────────────────────────────────────────────────────────────────
 
-class VerifyRequest(BaseModel):
+class LicenseVerifyRequest(BaseModel):
     state_code:      str = Field(..., min_length=2, max_length=2)
     license_number:  str = Field(..., min_length=1, max_length=100)
     expected_name:   Optional[str] = Field(None, max_length=200)
@@ -50,8 +50,8 @@ class VerifyRequest(BaseModel):
     tenant_id:       Optional[str]  = Field(None, max_length=60)
 
 
-class BatchVerifyRequest(BaseModel):
-    licenses: List[VerifyRequest] = Field(..., min_length=1, max_length=50)
+class LicenseBatchVerifyRequest(BaseModel):
+    licenses: List[LicenseVerifyRequest] = Field(..., min_length=1, max_length=50)
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
@@ -71,7 +71,7 @@ def _risk_color(result: dict, expected_name: Optional[str] = None) -> str:
     return "GREEN"
 
 
-def _persist_log(db: Session, result: dict, req: VerifyRequest) -> None:
+def _persist_log(db: Session, result: dict, req: LicenseVerifyRequest) -> None:
     """Write an immutable audit record for this verification check."""
     from datetime import datetime, timezone
     try:
@@ -139,7 +139,7 @@ def verify_license(
     color  = _risk_color(result, expected_name)
     result["risk_color"] = color
 
-    req = VerifyRequest(
+    req = LicenseVerifyRequest(
         state_code=state.upper(),
         license_number=license_num,
         expected_name=expected_name,
@@ -150,7 +150,7 @@ def verify_license(
 
 
 @router.post("/verify-batch", dependencies=[Depends(verify_premium_security)])
-def verify_license_batch(req: BatchVerifyRequest, db: Session = Depends(get_db)):
+def verify_license_batch(req: LicenseBatchVerifyRequest, db: Session = Depends(get_db)):
     """
     Verify up to 50 licenses in one call.  Useful for daily subcontractor sweeps.
 
