@@ -71,7 +71,7 @@ def _require_admin(credentials: HTTPBasicCredentials = Depends(security)) -> str
 
 # ── Request / response schemas ────────────────────────────────────────────────
 
-class VerifyRequest(BaseModel):
+class TotpVerifyRequest(BaseModel):
     token: str  # 6-digit TOTP code from the authenticator app
 
 
@@ -149,7 +149,7 @@ def setup_2fa(
 
 @router.post("/verify", summary="Verify TOTP token to activate 2FA")
 def verify_2fa(
-    body: VerifyRequest,
+    body: TotpVerifyRequest,
     username: str = Depends(_require_admin),
     db: Session = Depends(get_db),
 ):

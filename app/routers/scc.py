@@ -42,7 +42,7 @@ class SccEntityResult(BaseModel):
     checked_at:       str
 
 
-class BatchVerifyRequest(BaseModel):
+class SccBatchVerifyRequest(BaseModel):
     entities: List[dict] = Field(..., min_length=1, max_length=50,
                                  description="List of {entity_id?, entity_name?} dicts")
 
@@ -86,7 +86,7 @@ def verify_entity(
 
 
 @router.post("/verify-batch")
-def verify_batch(body: BatchVerifyRequest):
+def verify_batch(body: SccBatchVerifyRequest):
     """
     Verify up to 50 Virginia SCC entities in a single call.
     Each entity must have entity_id or entity_name (or both).
