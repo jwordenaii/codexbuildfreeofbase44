@@ -15,7 +15,7 @@ if str(REPO_ROOT) not in sys.path:
 def app_modules(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
     db_path = tmp_path / "test.db"
     monkeypatch.setenv("DATABASE_URL", f"sqlite:///{db_path}")
-    monkeypatch.setenv("JWORDEN_MASTER_KEY", "test-master-key")
+    monkeypatch.setenv("JWORDEN_MASTER_KEY", "test-master-key-for-ci-use-only-not-prod")
     monkeypatch.setenv("JWT_SECRET_KEY", "test-jwt-secret")
     monkeypatch.setenv("ADMIN_PIN", "1234")
     monkeypatch.setenv("ADMIN_USERNAME", "admin")
@@ -46,4 +46,4 @@ async def client(app_modules):
 
 @pytest.fixture()
 def auth_headers():
-    return {"Authorization": "Bearer test-master-key"}
+    return {"Authorization": "Bearer test-master-key-for-ci-use-only-not-prod"}

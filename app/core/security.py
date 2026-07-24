@@ -10,6 +10,11 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token", auto_error=False)
 _ALGORITHM = "HS256"
 logger = logging.getLogger(__name__)
 
+# Minimum acceptable length for JWORDEN_MASTER_KEY.
+# Updated from 24 → 32 to support the current 64-character key format while
+# remaining flexible for any future key length ≥ 32 characters.
+_MASTER_KEY_MIN_LEN = 32
+
 
 def _secret_fingerprint(value: str) -> str:
     if not value:
@@ -39,7 +44,7 @@ def verify_premium_security(token: str = Security(oauth2_scheme)):
 
     # Master key path (simple API key, no expiry — suitable for internal tools)
     master_key = os.getenv("JWORDEN_MASTER_KEY", "")
-    if master_key and token == master_key:
+    if master_key and len(master_key) >= _MASTER_KEY_MIN_LEN and token == master_key:
         return {"user": "Admin", "tenant_id": "JWORDEN_HQ"}
 
     # JWT path

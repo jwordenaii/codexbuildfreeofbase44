@@ -37,6 +37,11 @@ router = APIRouter(prefix="/api/v1/auth", tags=["auth"])
 _ALGORITHM = "HS256"
 _TOKEN_EXPIRE_SECONDS = 86_400  # 24 hours
 
+# Minimum acceptable length for JWORDEN_MASTER_KEY.
+# Updated from 24 → 32 to support the current 64-character key format while
+# remaining flexible for any future key length ≥ 32 characters.
+_MASTER_KEY_MIN_LEN = 32
+
 
 def _secret_fingerprint(value: str) -> str:
     if not value:
@@ -151,6 +156,21 @@ def issue_token(
             raise HTTPException(
                 status_code=500,
                 detail="Server authentication is not configured. Set JWORDEN_MASTER_KEY.",
+            )
+
+        if len(master_key) < _MASTER_KEY_MIN_LEN:
+            logger.error(
+                "JWORDEN_MASTER_KEY is too short (len=%d, required>=%d). "
+                "Regenerate the key and update the environment variable.",
+                len(master_key),
+                _MASTER_KEY_MIN_LEN,
+            )
+            raise HTTPException(
+                status_code=500,
+                detail=(
+                    f"Server authentication is misconfigured: JWORDEN_MASTER_KEY must be "
+                    f"at least {_MASTER_KEY_MIN_LEN} characters. Regenerate the key."
+                ),
             )
 
         if credentials != master_key:
