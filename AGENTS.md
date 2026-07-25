@@ -60,3 +60,50 @@ not a style preference, it is a hard requirement:
 - File storage should go through `durable_data_dir()` in
   `app/services/durable_storage.py`, not a hardcoded `/tmp` path — Fly's
   ephemeral filesystem loses `/tmp` on every redeploy.
+
+## Deploying from a sandboxed/proxied environment
+
+If you're an agent running in a network-sandboxed environment (outbound
+HTTPS forced through a TLS-intercepting proxy — check for an
+`HTTPS_PROXY` env var pointing at `127.0.0.1`), `flyctl deploy
+--remote-only` will hang and then fail with `error releasing builder:
+deadline_exceeded` followed by `x509: certificate signed by unknown
+authority`. This is NOT a build-context-size problem (don't waste time
+on `.dockerignore` first, though keeping one is good practice
+regardless) — it's because Fly's remote-builder communication is gRPC,
+and TLS-intercepting HTTP proxies generally cannot pass gRPC through
+correctly. Confirmed on 2026-07-25: this is a structural limit of that
+kind of sandbox, not fixable with flyctl flags (`--wg=false` doesn't
+help either — same root cause).
+
+The fix that works: build locally instead of via Fly's remote builder,
+then deploy the already-built image (which only needs plain-HTTPS
+Machines API calls, not gRPC):
+
+1. Start Docker if it isn't running (`dockerd &` — sandboxes often ship
+   the client but not a running daemon).
+2. Build with `--network host` so the build container shares the host's
+   network namespace and can actually reach `127.0.0.1:<proxy-port>`.
+3. Trust the proxy's CA inside the build: copy the CA bundle in as an
+   early layer and `update-ca-certificates`, then set `PIP_CERT`/
+   `SSL_CERT_FILE`/`REQUESTS_CA_BUNDLE` to the updated bundle path
+   before any `pip install`. Do this in a temporary `-f` Dockerfile
+   variant, not the committed `Dockerfile` — production Fly builds
+   don't sit behind this proxy and don't need it.
+4. `docker login registry.fly.io --username x --password-stdin` with
+   the Fly API token as the password.
+5. Tag and `docker push` the built image to `registry.fly.io/<app>:...`
+   — plain Docker Registry HTTP API v2, works fine through the proxy.
+6. `flyctl deploy --image registry.fly.io/<app>:<tag> -a <app>
+   --strategy immediate` — this skips the remote builder entirely and
+   just updates the Machines API, which does work.
+7. Verify against the real production URL afterward, not just flyctl's
+   own success message — health endpoint, and specifically re-check
+   whatever you actually changed (e.g. a fixed endpoint's real
+   response), before telling anyone it's live.
+8. Remember to run any pending Alembic migrations against production
+   after deploying — `AUTO_CREATE_TABLES` (if enabled) only creates
+   brand-new tables via `metadata.create_all()`, it does NOT add new
+   columns to existing tables. Check `flyctl ssh console -a <app> -C
+   "python -m alembic current"` vs. `alembic heads` locally before
+   assuming the schema is caught up.
