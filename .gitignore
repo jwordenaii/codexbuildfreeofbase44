@@ -88,3 +88,8 @@ playwright-fix-check.txt
 build_check.txt
 staging-compare.txt
 temp_view.txt
+
+# Sandbox-only: proxy CA copied into the Docker build context for local
+# image builds (see AGENTS.md "Deploying from a sandboxed/proxied environment").
+# Never commit — it is environment-specific and irrelevant to production.
+ca-bundle.crt
