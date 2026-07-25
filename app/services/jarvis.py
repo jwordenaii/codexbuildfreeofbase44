@@ -796,33 +796,39 @@ class JarvisAI:
         if persona == "MR_WORDEN_SALES":
             return await self._converse_mr_worden_sales(query_lower, context)
 
-        # ── Unified Intelligence Harmonization ─────────────────────────────────
-        # This catch-all block synthesizes all available logic layers.
-        intel_report = f"Sir, I have synthesized the current request against our integrated nodes: {', '.join(self.intel_sources)}. "
+        # ── Degraded-mode fallback ───────────────────────────────────────────
+        # Reached only when no LLM brain (Claude / chat / fast-ops) answered —
+        # e.g. no API key configured or every provider call failed. This path
+        # must NEVER assert specific business facts (dollar amounts, ranking
+        # positions, compliance-check results) it has no data behind — say so
+        # plainly instead and point at the real source of truth.
+        degraded_notice = (
+            "Sir, my language-model brain is unavailable right now (no configured "
+            "provider responded), so I'm running in degraded mode. I won't fabricate "
+            "specific figures or statuses here — please check the Command Center "
+            "dashboards directly for live data. "
+        )
 
-        # weather / news / financial trends / supply chain / SEO
         if any(w in query_lower for w in ["weather", "forecast", "news", "trend", "market", "finance", "bank", "money", "capital", "revenue", "income", "commodity", "material", "supply", "concrete", "shingle", "asphalt", "aggregate", "stone", "seo", "rank", "google", "search", "virginia", "marketing", "sealcoat", "sealcoating"]):
             return {
                 "source": self.identity,
                 "message": (
-                    f"{intel_report}\n\n"
-                    "REAL-TIME SEO MAINTENANCE & DOMINATION REPORT:\n"
-                    "- Richmond Core: All SEO guardrails for 'Asphalt Paving Richmond' and 'Sealcoating Midlothian' are ACTIVE and maintained. We are currently defending our #1 spots with real-time content refresh cycles.\n"
-                    "- Sealcoating Offensive: I have prioritized 'Sealcoating All Types' (Coal Tar, Asphalt Emulsion, GSB-88) as our primary SEO edge in Virginia. We are positioning jwordenasphaltpaving.com as the definitive authority.\n"
-                    "- Evidence Pipeline: Richmond data is being streamed directly into the JWORDENAI Evidence Pipeline. This is the heart of our Case Study.\n"
-                    "- Material Integrity: Concrete, Shingle, and Sealant reserves are optimized. Our vertical supply chain ensures we fulfill Richmond's demand at maximum margin.\n"
-                    "- Market Trends: Virginia demand remains strong. Our dominance in Richmond is the proof-of-concept for the Global PF rollout."
+                    f"{degraded_notice}\n\n"
+                    "For real SEO/ranking status, check Google Search Console and the "
+                    "site's own analytics — I don't have a live ranking feed in this "
+                    "degraded mode and won't guess at position numbers."
                 ),
                 "action_required": False,
-                "intel_tier": "Global-Financial-Supreme"
+                "degraded": True,
             }
 
         # Business events context
         if any(w in query_lower for w in ["update", "status", "recent", "happen", "estimate", "payment"]):
             return {
                 "source": self.identity,
-                "message": f"{intel_report}\n\nUpdate: We have a new estimate in Richmond and a $4,500 cleared payment in Midlothian. All 51-state GC compliance checks passed successfully for these transactions.",
+                "message": f"{degraded_notice}\n\nFor real estimate/payment status, check the CRM/billing dashboard directly.",
                 "action_required": False,
+                "degraded": True,
             }
 
         # Legal & education context
@@ -830,25 +836,21 @@ class JarvisAI:
             return {
                 "source": self.identity,
                 "message": (
-                    f"{intel_report}\n\n"
-                    "ADVISORY ANSWER:\n"
-                    "Using our 51-jurisdiction advisory matrix (50 states + DC), I can give an operations-grade legal/compliance answer for licensing, civil risk, and safety posture.\n\n"
-                    "IMPACT:\n"
-                    "- Scope, schedule, and cost shift when licensing, wage, OSHA, lien, or utility constraints differ by jurisdiction.\n"
-                    "- Bid strategy and risk controls should be state-specific before commitment.\n\n"
-                    "VERIFICATION NEEDED:\n"
-                    "- Treat this as advisory guidance, not legal advice.\n"
-                    "- Confirm jurisdiction-specific statutes and permit terms before execution."
+                    f"{degraded_notice}\n\n"
+                    "For licensing/compliance questions, use the /api/v1/compliance endpoints "
+                    "directly (real 50-state + DC license matrix) rather than relying on this "
+                    "degraded chat fallback — that data is real; this response path is not."
                 ),
                 "action_required": False,
-                "intel_tier": "Supreme-Unified-Global"
+                "degraded": True,
             }
 
-        # Catch-all synthesis
+        # Catch-all
         return {
             "source": self.identity,
-            "message": f"Understood, Sir. {intel_report}\n\nI am monitoring all lifestyle, business, and legal systems. How would you like to scale the world today?",
+            "message": degraded_notice,
             "action_required": False,
+            "degraded": True,
         }
 
     async def _converse_mr_worden_sales(self, query: str, context: Dict[str, Any]) -> Dict[str, Any]:
@@ -858,17 +860,11 @@ class JarvisAI:
         """
         # Event Report Logic
         if any(w in query for w in ["update", "status", "estimate", "payment", "notification"]):
-            # Simulate fetching from a global event bus or DB in a real scenario
             return {
                 "source": "Mr. Worden (Sales)",
-                "message": "Big news! We just had a new estimate request come in from Richmond, and a payment of $4,500 just cleared for the Midlothian job. The momentum is incredible, Sir!",
+                "message": "I don't have my AI brain online right now, so I can't pull real numbers for you — check the CRM/billing dashboard directly for the latest estimates and payments.",
                 "action_required": False,
-                "data": {
-                    "recent_events": [
-                        {"type": "estimate", "location": "Richmond", "status": "new"},
-                        {"type": "payment", "amount": 4500, "status": "cleared"}
-                    ]
-                }
+                "degraded": True,
             }
 
         if any(w in query for w in ["price", "cost", "quote", "deal"]):
