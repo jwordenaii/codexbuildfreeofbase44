@@ -31,4 +31,4 @@ COPY --from=builder /usr/local/bin /usr/local/bin
 COPY --from=builder /app /app
 
 EXPOSE 8000
-CMD ["gunicorn", "-k", "uvicorn.workers.UvicornWorker", "-b", "0.0.0.0:${PORT:-8000}", "app.main:app"]
+CMD ["sh", "-c", "gunicorn -k uvicorn.workers.UvicornWorker -b 0.0.0.0:${PORT:-8000} app.main:app"]
