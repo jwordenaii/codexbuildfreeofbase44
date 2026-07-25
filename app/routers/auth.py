@@ -268,10 +268,18 @@ def issue_pin_token(
             detail="PIN authentication is not configured. Set ADMIN_PIN.",
         )
 
-    if not request.pin or not request.pin.isdigit() or len(request.pin) != 4:
-        raise HTTPException(status_code=400, detail="A 4-digit PIN is required.")
+    # Accept any numeric PIN of a reasonable length rather than hard-coding 4.
+    # The previous `len(...) != 4` check validated only the SUBMITTED pin, never
+    # ADMIN_PIN itself — so if ADMIN_PIN was configured with any other length,
+    # every login attempt failed with "A 4-digit PIN is required" before the
+    # comparison ever ran, and the account was unreachable by design. The real
+    # authority on correctness is ADMIN_PIN, not a magic number here.
+    if not request.pin or not request.pin.isdigit() or not (4 <= len(request.pin) <= 12):
+        raise HTTPException(status_code=400, detail="A numeric PIN of 4-12 digits is required.")
 
-    if request.pin != admin_pin:
+    # Constant-time comparison — a plain != leaks the PIN a character at a time
+    # through response timing, which matters for a short numeric secret.
+    if not secrets.compare_digest(request.pin, admin_pin):
         logger.warning(
             "PIN token issuance rejected — incorrect PIN presented (presented=%s expected=%s)",
             _secret_fingerprint(request.pin),
