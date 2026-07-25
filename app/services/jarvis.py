@@ -5,7 +5,6 @@ import asyncio
 import re
 import time
 from typing import Dict, Any, List, Optional
-from app.services.quantum_orchestrator import global_quantum_orchestrator
 from app.services import autonomy_state
 from app.services import web_search as _web_search
 from app.services import vapi_caller as _vapi

@@ -259,7 +259,6 @@ from .routers import follow_ups as follow_ups_router
 from .routers import foreman as foreman_router
 from .routers import gallery as gallery_router
 from .routers import geo as geo_router
-from .routers import global_platform as global_router
 from .routers import google_reporting as google_reporting_router
 from .routers import health as health_router
 from .routers import human_review as human_review_router
@@ -286,7 +285,6 @@ from .routers import proposals as proposals_router
 from .routers import public_chat as public_chat_router
 from .routers import quotes as quotes_router
 from .routers import retrospectives as retrospectives_router
-from .routers import revenue as revenue_router
 from .routers import safety as safety_router
 from .routers import scc as scc_router
 from .routers import schedule_sim as schedule_sim_router
@@ -309,7 +307,6 @@ from .routers import workforce as workforce_router
 from .routers.websocket_events import sio
 from .services.ai_brain import SupremeCourtAI
 from .services.monitoring_service import monitoring
-from .services.quantum_orchestrator import global_quantum_orchestrator
 from .services.state_data import verify_state_logic_integrity
 from .services.telemetry import FleetOperations
 
@@ -529,8 +526,6 @@ app.include_router(subcontractors_router.router)
 app.include_router(market_intelligence_router.router)
 app.include_router(materials_router.router)
 app.include_router(tenants_router.router)
-app.include_router(global_router.router)
-app.include_router(revenue_router.router)
 app.include_router(jarvis_router.router)
 app.include_router(blog_router.router)
 app.include_router(vector_search_router.router)
