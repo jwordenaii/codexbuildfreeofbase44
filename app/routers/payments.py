@@ -11,7 +11,7 @@ from sqlalchemy.orm import Session
 from ..core.limiter import limiter
 from ..core.security import verify_premium_security
 from ..database import get_db
-from ..models import Lead, PaymentTransaction, Tenant
+from ..models import Lead, PaymentTransaction, Tenant, TenantBillingEvent
 from ..services.pricing import estimate_price
 
 logger = logging.getLogger(__name__)
@@ -119,6 +119,20 @@ async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
 
     event_type = event.get('type', '')
     data_obj = ((event.get('data') or {}).get('object') or {})
+    stripe_event_id = event.get('id') or f'demo_{event_type}_{int(datetime.now(timezone.utc).timestamp())}'
+
+    def _log_tenant_billing_event(tenant, amount_cents=None, status=None):
+        # Idempotent: stripe_event_id is unique, so a retried webhook delivery
+        # (Stripe retries on any non-2xx) just no-ops here instead of duplicating.
+        if db.query(TenantBillingEvent).filter(TenantBillingEvent.stripe_event_id == stripe_event_id).first():
+            return
+        db.add(TenantBillingEvent(
+            tenant_id=tenant.id,
+            stripe_event_id=stripe_event_id,
+            event_type=event_type,
+            amount_cents=amount_cents,
+            status=status,
+        ))
 
     # SaaS tenant subscription checkout (see routers/factory.py) — distinguished
     # from a lead-deposit checkout by the tenant_id metadata key set at session
@@ -132,6 +146,7 @@ async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
             tenant.stripe_customer_id = data_obj.get('customer')
             tenant.stripe_subscription_id = data_obj.get('subscription')
             tenant.subscription_status = 'active'
+            _log_tenant_billing_event(tenant, amount_cents=data_obj.get('amount_total'), status='active')
             db.commit()
             logger.info('Tenant %s subscription activated (customer=%s)', tenant_id, tenant.stripe_customer_id)
 
@@ -144,8 +159,23 @@ async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
             else:
                 stripe_status = data_obj.get('status', '')
                 tenant.subscription_status = 'active' if stripe_status == 'active' else (stripe_status or 'past_due')
+                period_end = data_obj.get('current_period_end')
+                if period_end:
+                    tenant.current_period_end = datetime.fromtimestamp(period_end, tz=timezone.utc)
+            _log_tenant_billing_event(tenant, status=tenant.subscription_status)
             db.commit()
             logger.info('Tenant %s subscription status -> %s', tenant.tenant_id, tenant.subscription_status)
+
+    elif event_type == 'invoice.paid' and tenant_id:
+        tenant = db.query(Tenant).filter(Tenant.tenant_id == tenant_id).first()
+        if tenant:
+            tenant.subscription_status = 'active'
+            period_end = (data_obj.get('lines', {}).get('data') or [{}])[0].get('period', {}).get('end')
+            if period_end:
+                tenant.current_period_end = datetime.fromtimestamp(period_end, tz=timezone.utc)
+            _log_tenant_billing_event(tenant, amount_cents=data_obj.get('amount_paid'), status='active')
+            db.commit()
+            logger.info('Tenant %s invoice paid, period extended', tenant_id)
 
     elif event_type in {'checkout.session.completed', 'payment_intent.succeeded'}:
         checkout_id = data_obj.get('id') or data_obj.get('checkout_session')

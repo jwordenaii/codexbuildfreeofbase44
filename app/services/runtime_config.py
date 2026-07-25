@@ -28,6 +28,8 @@ import threading
 from pathlib import Path
 from typing import Iterable
 
+from .durable_storage import durable_data_dir
+
 logger = logging.getLogger(__name__)
 
 
@@ -35,22 +37,7 @@ def _default_state_path() -> Path:
     configured = (os.environ.get("RUNTIME_CONFIG_PATH") or "").strip()
     if configured:
         return Path(configured)
-
-    railway_mount = (os.environ.get("RAILWAY_VOLUME_MOUNT_PATH") or "").strip()
-    if railway_mount:
-        return Path(railway_mount) / "jworden_runtime_config.json"
-
-    data_dir = Path("/data")
-    try:
-        if data_dir.exists() and os.access(data_dir, os.W_OK):
-            return data_dir / "jworden_runtime_config.json"
-    except Exception:  # noqa: BLE001
-        pass
-
-    if os.name == "nt":
-        return Path.cwd() / ".runtime" / "jworden_runtime_config.json"
-
-    return Path("/tmp/jworden_runtime_config.json")
+    return durable_data_dir() / "jworden_runtime_config.json"
 
 
 _STATE_PATH = _default_state_path()

@@ -1319,6 +1319,10 @@ class Tenant(Base):
     stripe_subscription_id = Column(String(120), nullable=True, index=True)
     subscription_status = Column(String(20), nullable=False, default="pending_payment")
     # pending_payment | active | past_due | canceled | mock (no STRIPE_SECRET_KEY configured)
+    trial_ends_at = Column(DateTime(timezone=True), nullable=True)
+    current_period_end = Column(DateTime(timezone=True), nullable=True)
+    custom_domain = Column(String(200), nullable=True)
+    feature_flags = Column(Text, nullable=True)  # JSON: {"catalog": true, "drone": false}
     is_active = Column(Integer, nullable=False, default=1)
     created_at = Column(DateTime(timezone=True), default=_utcnow, nullable=False)
     updated_at = Column(
@@ -1327,6 +1331,29 @@ class Tenant(Base):
 
     def __repr__(self) -> str:
         return f"<Tenant tenant_id={self.tenant_id!r} company={self.company_name!r}>"
+
+
+class TenantBillingEvent(Base):
+    """Audit log of Stripe webhook events per tenant subscription.
+
+    tenant_id here stores Tenant.id (int PK), not the string tenant_id slug —
+    matches this file's existing convention of plain partition-key columns
+    rather than ORM relationships/ForeignKey (see Tenant's own docstring).
+    """
+
+    __tablename__ = "tenant_billing_events"
+
+    id = Column(Integer, primary_key=True, index=True)
+    tenant_id = Column(Integer, nullable=False, index=True)
+    stripe_event_id = Column(String(120), nullable=False, unique=True)
+    event_type = Column(String(100), nullable=False)
+    amount_cents = Column(Integer, nullable=True)
+    status = Column(String(30), nullable=True)
+    raw_json = Column(Text, nullable=True)
+    created_at = Column(DateTime(timezone=True), default=_utcnow, nullable=False)
+
+    def __repr__(self) -> str:
+        return f"<TenantBillingEvent tenant_id={self.tenant_id} type={self.event_type!r}>"
 
 
 # ── Real-time chat messages ───────────────────────────────────────────────────

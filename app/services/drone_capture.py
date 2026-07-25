@@ -11,8 +11,9 @@ stitching is delegated to an external worker (e.g., OpenDroneMap, WebODM,
 or the Maps Platform) and is triggered by a future job runner. We just
 collect the inputs and track state.
 
-Storage: DRONE_STORAGE_PATH (default /tmp/jworden_drone). One folder per
-job_id. Manifest is jworden_drone_manifest.json next to runtime config.
+Storage: DRONE_STORAGE_PATH (defaults to a mounted volume at /data if one
+exists, else /tmp — see durable_storage.py). One folder per job_id.
+Manifest is jworden_drone_manifest.json alongside it.
 """
 
 from __future__ import annotations
@@ -27,15 +28,14 @@ import uuid
 from pathlib import Path
 from typing import Optional
 
+from .durable_storage import durable_data_dir
+
 logger = logging.getLogger(__name__)
 
-_STORAGE = Path(os.environ.get("DRONE_STORAGE_PATH", "/tmp/jworden_drone"))
+_STORAGE = Path(os.environ.get("DRONE_STORAGE_PATH") or str(durable_data_dir() / "jworden_drone"))
 _MANIFEST = Path(
-    os.environ.get(
-        "DRONE_MANIFEST_PATH",
-        str(Path(os.environ.get("RUNTIME_CONFIG_PATH", "/tmp/jworden_runtime_config.json")).parent
-            / "jworden_drone_manifest.json"),
-    )
+    os.environ.get("DRONE_MANIFEST_PATH")
+    or str(durable_data_dir() / "jworden_drone_manifest.json")
 )
 _LOCK = threading.Lock()
 _STATE: dict | None = None  # {captures: {job_id: [row]}, jobs: {job_id: meta}}

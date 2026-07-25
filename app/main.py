@@ -288,7 +288,6 @@ from .routers import quotes as quotes_router
 from .routers import retrospectives as retrospectives_router
 from .routers import revenue as revenue_router
 from .routers import safety as safety_router
-from .routers import scaling as scaling_router
 from .routers import scc as scc_router
 from .routers import schedule_sim as schedule_sim_router
 from .routers import search as search_router
@@ -531,7 +530,6 @@ app.include_router(market_intelligence_router.router)
 app.include_router(materials_router.router)
 app.include_router(tenants_router.router)
 app.include_router(global_router.router)
-app.include_router(scaling_router.router)
 app.include_router(revenue_router.router)
 app.include_router(jarvis_router.router)
 app.include_router(blog_router.router)

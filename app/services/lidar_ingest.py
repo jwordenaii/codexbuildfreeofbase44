@@ -11,6 +11,8 @@ parcel_id,owner,address,lat,lng,acres). When unset or missing, parcel
 matching returns null but the scan still ingests cleanly.
 
 Storage layout: LIDAR_STORAGE_PATH/<parcel_id_or_unmatched>/<scan_id>_<filename>
+(defaults to a mounted volume at /data if one exists, else /tmp — see
+durable_storage.py).
 """
 
 from __future__ import annotations
@@ -27,15 +29,14 @@ import uuid
 from pathlib import Path
 from typing import Optional
 
+from .durable_storage import durable_data_dir
+
 logger = logging.getLogger(__name__)
 
-_STORAGE = Path(os.environ.get("LIDAR_STORAGE_PATH", "/tmp/jworden_lidar"))
+_STORAGE = Path(os.environ.get("LIDAR_STORAGE_PATH") or str(durable_data_dir() / "jworden_lidar"))
 _MANIFEST = Path(
-    os.environ.get(
-        "LIDAR_MANIFEST_PATH",
-        str(Path(os.environ.get("RUNTIME_CONFIG_PATH", "/tmp/jworden_runtime_config.json")).parent
-            / "jworden_lidar_manifest.json"),
-    )
+    os.environ.get("LIDAR_MANIFEST_PATH")
+    or str(durable_data_dir() / "jworden_lidar_manifest.json")
 )
 _PARCEL_CSV = Path(os.environ.get("PARCEL_REGISTRY_PATH", ""))
 _LOCK = threading.Lock()

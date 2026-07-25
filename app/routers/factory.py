@@ -21,17 +21,20 @@ import logging
 import os
 import re
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, Body, Depends, HTTPException, Query, Request
 from pydantic import BaseModel, EmailStr, Field
 from sqlalchemy.orm import Session
 
 from ..core.limiter import limiter
 from ..database import get_db
+from ..models import Tenant, TenantBillingEvent
+from ..routers.admin_integrations import _require_owner
 from ..services.tenant_service import get_tenant, create_tenant
 
 TENANT_ROOT_DOMAIN = "thewordenstandard.com"
+TRIAL_PERIOD_DAYS = 14
 
 logger = logging.getLogger(__name__)
 
@@ -39,6 +42,11 @@ router = APIRouter(prefix="/api/v1/factory", tags=["factory"])
 
 VALID_TIERS = {"starter", "pro", "enterprise"}
 TIER_MONTHLY_USD = {"starter": 299, "pro": 599, "enterprise": 1299}
+TIER_FEATURES = {
+    "starter": ["Jarvis AI", "Estimates", "CRM", "Weather", "5 crew"],
+    "pro": ["Everything in Starter", "Dispatch", "Crew wearables", "White-label subdomain", "25 crew"],
+    "enterprise": ["Everything in Pro", "Custom domain", "Drone/lidar capture", "SLA support", "Unlimited crew"],
+}
 
 
 class SaasProvisionRequest(BaseModel):
@@ -143,6 +151,7 @@ async def provision_saas_tenant(
         checkout = _create_subscription_checkout(tenant, tier, str(body.contact_email), success_url, cancel_url)
 
         tenant.subscription_status = "mock" if checkout["mode"] == "mock" else "pending_payment"
+        tenant.trial_ends_at = datetime.now(timezone.utc) + timedelta(days=TRIAL_PERIOD_DAYS)
         db.commit()
         db.refresh(tenant)
 
@@ -217,4 +226,157 @@ async def resolve_tenant(request: Request, hostname: str, db: Session = Depends(
         "logo_url": tenant.logo_url,
         "contact_email": tenant.contact_email,
         "contact_phone": tenant.contact_phone,
+    }
+
+
+# ── Owner-only admin endpoints — thewordenstandard.com dashboard, not the ─────
+# public JWordenAI product surface. Gated behind the same HTTP Basic owner
+# auth as admin_integrations.py. Ported from NewRepo's saas_billing.py, which
+# had this admin visibility (tenant list + MRR, per-tenant upgrade/cancel,
+# platform analytics) but was never deployed anywhere; the live factory.py
+# had provisioning and hostname resolution but no way for the owner to see
+# who'd signed up or manage them after the fact.
+
+
+def _tenant_out(t: Tenant) -> dict:
+    return {
+        "id": t.id,
+        "tenant_id": t.tenant_id,
+        "company_name": t.company_name,
+        "contact_email": t.contact_email,
+        "contact_phone": t.contact_phone,
+        "subscription_tier": t.subscription_tier,
+        "subscription_status": t.subscription_status,
+        "monthly_price_usd": TIER_MONTHLY_USD.get(t.subscription_tier, 0),
+        "trial_ends_at": t.trial_ends_at.isoformat() if t.trial_ends_at else None,
+        "current_period_end": t.current_period_end.isoformat() if t.current_period_end else None,
+        "stripe_customer_id": t.stripe_customer_id,
+        "custom_domain": t.custom_domain,
+        "features": TIER_FEATURES.get(t.subscription_tier, []),
+        "created_at": t.created_at.isoformat() if t.created_at else None,
+    }
+
+
+@router.get("/saas/tenants", summary="[owner] List provisioned SaaS tenants + MRR")
+async def list_saas_tenants(
+    subscription_status: str | None = Query(None),
+    subscription_tier: str | None = Query(None),
+    limit: int = Query(50, le=200),
+    db: Session = Depends(get_db),
+    _: str = Depends(_require_owner),
+):
+    qs = db.query(Tenant).filter(Tenant.is_active == 1)
+    if subscription_status:
+        qs = qs.filter(Tenant.subscription_status == subscription_status)
+    if subscription_tier:
+        qs = qs.filter(Tenant.subscription_tier == subscription_tier)
+    tenants = qs.order_by(Tenant.id.desc()).limit(limit).all()
+    active_mrr = sum(
+        TIER_MONTHLY_USD.get(t.subscription_tier, 0)
+        for t in tenants
+        if t.subscription_status == "active"
+    )
+    return {
+        "tenants": [_tenant_out(t) for t in tenants],
+        "total": len(tenants),
+        "active_mrr_usd": active_mrr,
+    }
+
+
+@router.get("/saas/tenants/{tenant_id_str}", summary="[owner] Get one tenant's full billing detail")
+async def get_saas_tenant(tenant_id_str: str, db: Session = Depends(get_db), _: str = Depends(_require_owner)):
+    tenant = get_tenant(tenant_id_str, db)
+    if not tenant:
+        raise HTTPException(status_code=404, detail="Tenant not found")
+    return _tenant_out(tenant)
+
+
+@router.post("/saas/tenants/{tenant_id_str}/upgrade", summary="[owner] Change a tenant's plan")
+async def upgrade_saas_tenant(
+    tenant_id_str: str,
+    tier: str = Body(..., embed=True),
+    db: Session = Depends(get_db),
+    _: str = Depends(_require_owner),
+):
+    tenant = get_tenant(tenant_id_str, db)
+    if not tenant:
+        raise HTTPException(status_code=404, detail="Tenant not found")
+    tier = tier.strip().lower()
+    if tier not in VALID_TIERS:
+        raise HTTPException(status_code=400, detail=f"tier must be one of {sorted(VALID_TIERS)}")
+
+    stripe_secret = os.getenv("STRIPE_SECRET_KEY", "").strip()
+    if stripe_secret and tenant.stripe_subscription_id:
+        try:
+            import stripe  # noqa: PLC0415
+
+            stripe.api_key = stripe_secret
+            sub = stripe.Subscription.retrieve(tenant.stripe_subscription_id)
+            stripe.Subscription.modify(
+                tenant.stripe_subscription_id,
+                items=[
+                    {
+                        "id": sub["items"]["data"][0]["id"],
+                        "price_data": {
+                            "currency": "usd",
+                            "product": sub["items"]["data"][0]["price"]["product"],
+                            "unit_amount": TIER_MONTHLY_USD[tier] * 100,
+                            "recurring": {"interval": "month"},
+                        },
+                    }
+                ],
+                proration_behavior="always_invoice",
+            )
+        except Exception as exc:  # noqa: BLE001
+            logger.exception("Stripe plan-change failed for tenant %s: %s", tenant_id_str, exc)
+            raise HTTPException(status_code=502, detail=f"Stripe plan change failed: {exc}") from exc
+
+    tenant.subscription_tier = tier
+    db.commit()
+    db.refresh(tenant)
+    return _tenant_out(tenant)
+
+
+@router.post("/saas/tenants/{tenant_id_str}/cancel", summary="[owner] Cancel a tenant's subscription")
+async def cancel_saas_tenant(tenant_id_str: str, db: Session = Depends(get_db), _: str = Depends(_require_owner)):
+    tenant = get_tenant(tenant_id_str, db)
+    if not tenant:
+        raise HTTPException(status_code=404, detail="Tenant not found")
+
+    stripe_secret = os.getenv("STRIPE_SECRET_KEY", "").strip()
+    if stripe_secret and tenant.stripe_subscription_id:
+        try:
+            import stripe  # noqa: PLC0415
+
+            stripe.api_key = stripe_secret
+            stripe.Subscription.cancel(tenant.stripe_subscription_id)
+        except Exception as exc:  # noqa: BLE001
+            logger.exception("Stripe cancel failed for tenant %s: %s", tenant_id_str, exc)
+            # Still mark canceled locally — the owner explicitly asked to cancel;
+            # a Stripe-side failure shouldn't leave the tenant looking active.
+
+    tenant.subscription_status = "canceled"
+    db.commit()
+    db.refresh(tenant)
+    return _tenant_out(tenant)
+
+
+@router.get("/saas/analytics", summary="[owner] Platform-level SaaS metrics")
+async def saas_analytics(db: Session = Depends(get_db), _: str = Depends(_require_owner)):
+    tenants = db.query(Tenant).filter(Tenant.is_active == 1).all()
+    by_tier: dict[str, int] = {}
+    by_status: dict[str, int] = {}
+    mrr = 0
+    for t in tenants:
+        by_tier[t.subscription_tier] = by_tier.get(t.subscription_tier, 0) + 1
+        by_status[t.subscription_status] = by_status.get(t.subscription_status, 0) + 1
+        if t.subscription_status == "active":
+            mrr += TIER_MONTHLY_USD.get(t.subscription_tier, 0)
+
+    return {
+        "total_tenants": len(tenants),
+        "by_tier": by_tier,
+        "by_status": by_status,
+        "mrr_usd": mrr,
+        "arr_usd": mrr * 12,
     }
