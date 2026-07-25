@@ -1,0 +1,25 @@
+# Keeps the Docker build context small so remote builds don't time out
+# provisioning a builder. Only app/ + requirements.txt + alembic/ are
+# actually needed at runtime (see Dockerfile's COPY . .).
+
+.git/
+public/
+docs/
+src/
+node_modules/
+.github/
+tests/
+data/
+db/
+field-app/
+ai-page-blueprints/
+site-blueprints/
+templates/
+*.md
+.env*
+!requirements.txt
+.pytest_cache/
+__pycache__/
+*.pyc
+.venv/
+venv/
