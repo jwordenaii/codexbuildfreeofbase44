@@ -252,6 +252,7 @@ from .routers import customers as customers_router
 from .routers import documents as documents_router
 from .routers import driveway_growth as driveway_growth_router
 from .routers import drone_scan as drone_scan_router
+from .routers import factory as factory_router
 from .routers import email as email_router
 from .routers import features as features_router
 from .routers import follow_ups as follow_ups_router
@@ -647,6 +648,7 @@ app.include_router(audit_admin_router.router)
 app.include_router(tech_intelligence_router.router)
 app.include_router(predictive_capital_router.router)
 app.include_router(driveway_growth_router.router)
+app.include_router(factory_router.router)
 
 
 # ── Resolve Pydantic forward references ──────────────────────────────────────

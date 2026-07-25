@@ -1314,6 +1314,7 @@ class Tenant(Base):
     logo_url = Column(String(500), nullable=True)
     contact_email = Column(String(254), nullable=True)
     contact_phone = Column(String(30), nullable=True)
+    subscription_tier = Column(String(20), nullable=False, default="starter")
     is_active = Column(Integer, nullable=False, default=1)
     created_at = Column(DateTime(timezone=True), default=_utcnow, nullable=False)
     updated_at = Column(

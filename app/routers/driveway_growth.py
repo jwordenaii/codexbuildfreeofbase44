@@ -7,8 +7,6 @@ Implements a compliance-first Physical-to-Digital funnel:
 - Public opt-in gateway for explicit consent capture
 """
 
-from __future__ import annotations
-
 import hashlib
 import json
 import secrets

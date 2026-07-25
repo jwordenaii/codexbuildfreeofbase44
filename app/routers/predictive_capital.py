@@ -2,8 +2,6 @@
 predictive_capital.py — Shadow-mode predictive capital intelligence endpoints.
 """
 
-from __future__ import annotations
-
 from typing import Any
 
 from fastapi import APIRouter, Depends, Query, Request
