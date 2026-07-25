@@ -1315,6 +1315,10 @@ class Tenant(Base):
     contact_email = Column(String(254), nullable=True)
     contact_phone = Column(String(30), nullable=True)
     subscription_tier = Column(String(20), nullable=False, default="starter")
+    stripe_customer_id = Column(String(120), nullable=True, index=True)
+    stripe_subscription_id = Column(String(120), nullable=True, index=True)
+    subscription_status = Column(String(20), nullable=False, default="pending_payment")
+    # pending_payment | active | past_due | canceled | mock (no STRIPE_SECRET_KEY configured)
     is_active = Column(Integer, nullable=False, default=1)
     created_at = Column(DateTime(timezone=True), default=_utcnow, nullable=False)
     updated_at = Column(

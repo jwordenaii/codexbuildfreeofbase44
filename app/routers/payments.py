@@ -11,7 +11,7 @@ from sqlalchemy.orm import Session
 from ..core.limiter import limiter
 from ..core.security import verify_premium_security
 from ..database import get_db
-from ..models import Lead, PaymentTransaction
+from ..models import Lead, PaymentTransaction, Tenant
 from ..services.pricing import estimate_price
 
 logger = logging.getLogger(__name__)
@@ -120,7 +120,34 @@ async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
     event_type = event.get('type', '')
     data_obj = ((event.get('data') or {}).get('object') or {})
 
-    if event_type in {'checkout.session.completed', 'payment_intent.succeeded'}:
+    # SaaS tenant subscription checkout (see routers/factory.py) — distinguished
+    # from a lead-deposit checkout by the tenant_id metadata key set at session
+    # creation time.
+    metadata = data_obj.get('metadata') or {}
+    tenant_id = metadata.get('tenant_id')
+
+    if event_type == 'checkout.session.completed' and data_obj.get('mode') == 'subscription' and tenant_id:
+        tenant = db.query(Tenant).filter(Tenant.tenant_id == tenant_id).first()
+        if tenant:
+            tenant.stripe_customer_id = data_obj.get('customer')
+            tenant.stripe_subscription_id = data_obj.get('subscription')
+            tenant.subscription_status = 'active'
+            db.commit()
+            logger.info('Tenant %s subscription activated (customer=%s)', tenant_id, tenant.stripe_customer_id)
+
+    elif event_type in {'customer.subscription.updated', 'customer.subscription.deleted'}:
+        sub_id = data_obj.get('id')
+        tenant = db.query(Tenant).filter(Tenant.stripe_subscription_id == sub_id).first()
+        if tenant:
+            if event_type == 'customer.subscription.deleted':
+                tenant.subscription_status = 'canceled'
+            else:
+                stripe_status = data_obj.get('status', '')
+                tenant.subscription_status = 'active' if stripe_status == 'active' else (stripe_status or 'past_due')
+            db.commit()
+            logger.info('Tenant %s subscription status -> %s', tenant.tenant_id, tenant.subscription_status)
+
+    elif event_type in {'checkout.session.completed', 'payment_intent.succeeded'}:
         checkout_id = data_obj.get('id') or data_obj.get('checkout_session')
         tx = db.query(PaymentTransaction).filter(PaymentTransaction.stripe_checkout_session_id == checkout_id).first()
         if tx:
