@@ -67,8 +67,8 @@ MANAGED_KEYS: tuple[str, ...] = (
     "GOOGLE_API_KEY", "GEMINI_API_KEY",
     "LLM_FALLBACK_SILENT", "JARVIS_MAX_TIER",
     "JARVIS_MODEL_OVERRIDE", "JARVIS_DISABLE_GEMINI", "LLM_DISABLED_PROVIDERS",
-    # Web search
-    "TAVILY_API_KEY", "TAVILY_MAX_RESULTS",
+    # Web search (Tavily preferred; Exa used automatically as a fallback)
+    "TAVILY_API_KEY", "TAVILY_MAX_RESULTS", "EXA_API_KEY",
     # Voice / phone
     "VAPI_API_KEY", "VAPI_PHONE_NUMBER_ID", "VAPI_ASSISTANT_ID",
     # SMS verification
@@ -153,7 +153,7 @@ def enabled_features() -> dict[str, bool]:
 
 # Keys that should NEVER be returned as plaintext on read — only last 4 chars.
 SENSITIVE_KEYS: frozenset[str] = frozenset({
-    "ANTHROPIC_API_KEY", "OPENAI_API_KEY", "TAVILY_API_KEY",
+    "ANTHROPIC_API_KEY", "OPENAI_API_KEY", "TAVILY_API_KEY", "EXA_API_KEY",
     "GOOGLE_API_KEY", "GEMINI_API_KEY",
     "VAPI_API_KEY", "TWILIO_AUTH_TOKEN",
     "SENDGRID_API_KEY", "GOOGLE_ADS_DEVELOPER_TOKEN", "SERPAPI_KEY",

@@ -315,7 +315,7 @@ async def jarvis_readiness():
     if not anthropic_ready:
         blockers.append("ANTHROPIC_API_KEY missing")
     if not tavily_ready:
-        blockers.append("TAVILY_API_KEY missing")
+        blockers.append("No web search key configured (TAVILY_API_KEY or EXA_API_KEY)")
     if not call_ready:
         blockers.append("Vapi integration not fully configured")
     if not email_ready:
