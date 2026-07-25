@@ -86,6 +86,10 @@ MANAGED_KEYS: tuple[str, ...] = (
     "WEARABLE_HR_SPIKE_BPM", "WEARABLE_HR_SUSTAINED_BPM",
     "WEARABLE_SPO2_LOW", "WEARABLE_SPO2_CRITICAL",
     "WEARABLE_SKIN_TEMP_HIGH_F", "WEARABLE_HRV_LOW_MS",
+    # Zip-code property scan -> direct-mail campaign pipeline
+    # (Regrid parcel lookup + Lob physical mail send; both honest-mock
+    # when unset — see app/services/parcel_service.py + mailer_service.py)
+    "REGRID_API_KEY", "LOB_API_KEY",
 )
 
 # Tier-gated feature catalogue. Used by the frontend + admin UI to decide which
@@ -152,6 +156,7 @@ SENSITIVE_KEYS: frozenset[str] = frozenset({
     "GOOGLE_PLACES_API_KEY", "GBP_OAUTH_TOKEN",
     "WEARABLE_APPLE_HEALTH_SECRET", "WEARABLE_FITBIT_SECRET",
     "WEARABLE_GARMIN_SECRET", "WEARABLE_WHOOP_SECRET", "WEARABLE_OURA_SECRET",
+    "REGRID_API_KEY", "LOB_API_KEY",
 })
 
 

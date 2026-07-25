@@ -286,6 +286,7 @@ from .routers import public_chat as public_chat_router
 from .routers import quotes as quotes_router
 from .routers import retrospectives as retrospectives_router
 from .routers import safety as safety_router
+from .routers import scan_campaign as scan_campaign_router
 from .routers import scc as scc_router
 from .routers import schedule_sim as schedule_sim_router
 from .routers import search as search_router
@@ -641,6 +642,7 @@ app.include_router(audit_admin_router.router)
 app.include_router(tech_intelligence_router.router)
 app.include_router(predictive_capital_router.router)
 app.include_router(driveway_growth_router.router)
+app.include_router(scan_campaign_router.router)
 app.include_router(factory_router.router)
 
 

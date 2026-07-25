@@ -38,6 +38,7 @@ celery_app = Celery(
         "app.tasks.autonomy_tasks",
         "app.tasks.self_heal_beat",
         "app.tasks.voice_events",
+        "app.tasks.scan_tasks",
     ],
 )
 
