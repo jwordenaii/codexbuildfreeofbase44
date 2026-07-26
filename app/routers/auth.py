@@ -101,7 +101,21 @@ def auth_status():
         os.getenv("ADMIN_PIN")
         or (os.getenv("ADMIN_USERNAME") and os.getenv("ADMIN_PASSWORD"))
     )
-    token_endpoint = "/.netlify/functions/get-token" if auth_required else None
+    # This used to hardcode "/.netlify/functions/get-token" — a Netlify
+    # function that held the master key server-side and minted a bootstrap
+    # token. The frontend moved to Vercel and that function does not exist
+    # there: verified 2026-07-26, POST to that path on the live site returns
+    # 405, so client.js:fetchBootstrapToken() threw on every cold start.
+    #
+    # There is deliberately no unauthenticated bootstrap endpoint on this
+    # backend — /auth/token requires the master key and /auth/pin-token
+    # requires the admin PIN, and neither should be callable with an empty
+    # body from the browser. So the honest answer is None, and the frontend
+    # falls through to its normal PIN login. AUTH_TOKEN_ENDPOINT is left as an
+    # override for deployments that do run such a shim.
+    token_endpoint = (os.getenv("AUTH_TOKEN_ENDPOINT") or "").strip() or None
+    if not auth_required:
+        token_endpoint = None
     return AuthStatusResponse(
         auth_required=auth_required,
         auth_mode=mode,

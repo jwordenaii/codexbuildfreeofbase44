@@ -401,22 +401,46 @@ _EXTRA_ORIGINS = [
     o.strip() for o in os.getenv("EXTRA_CORS_ORIGINS", "").split(",") if o.strip()
 ]
 _ALLOWED_ORIGINS = [
-    "https://jworden.netlify.app",
+    # Main site (both apex and www — the bundle calls this API cross-origin
+    # for checkout, portal estimate signing, and superadmin).
     "https://jwordenasphaltpaving.com",
     "https://www.jwordenasphaltpaving.com",
+    "https://app.jwordenasphaltpaving.com",
     "https://thewordenstandard.com",
     "https://www.thewordenstandard.com",
-    "https://doooone.netlify.app",
-    "https://app.jwordenasphaltpaving.com",
+    # Regional money domains. These were previously reaching the API only via
+    # EXTRA_CORS_ORIGINS; listed explicitly so that removing the wildcard
+    # regex below cannot silently break checkout or estimate signing on them.
+    "https://richmondasphaltpaving.com",
+    "https://www.richmondasphaltpaving.com",
+    "https://atlantaasphaltpavingpros.com",
+    "https://www.atlantaasphaltpavingpros.com",
+    "https://asphaltpavingkansascity.com",
+    "https://www.asphaltpavingkansascity.com",
+    "https://savannahasphaltpaving.com",
+    "https://www.savannahasphaltpaving.com",
+    "https://carolinablacktop.com",
+    "https://www.carolinablacktop.com",
     "http://localhost:5173",  # Vite dev server
     "http://localhost:3000",
 ] + _EXTRA_ORIGINS
 
-# Allow Netlify deploy-preview origins (e.g. https://deploy-preview-42--jworden.netlify.app)
-# AND any *.netlify.app subdomain (so renamed Netlify sites and branch deploys keep
-# working without redeploying the backend).  Override or extend via EXTRA_CORS_ORIGINS
-# env var on Railway for additional origins.
-_DEPLOY_PREVIEW_ORIGIN_REGEX = r"https://([\w-]+--)?[\w-]+\.netlify\.app"
+# SECURITY: this used to be r"https://([\w-]+--)?[\w-]+\.netlify\.app" — i.e.
+# ANY *.netlify.app subdomain, combined with allow_credentials=True below.
+# netlify.app subdomains are free and self-service, so any attacker could
+# register one and hold a credentialed cross-origin grant against this API.
+# Verified 2026-07-26 against production: a preflight from the invented origin
+# https://evil-attacker-site.netlify.app came back with
+# `access-control-allow-origin: https://evil-attacker-site.netlify.app`.
+#
+# Netlify is not part of this stack any more (frontend is Vercel, backend is
+# Fly), so the rule protected nothing. Preview deployments do not need it
+# either: the Vercel project proxies /api/* to this backend from the same
+# origin, so previews are not a cross-origin caller.
+#
+# Left configurable for genuine future need, but it MUST be a fully anchored
+# pattern for a domain you control — never a whole shared apex.
+_DEPLOY_PREVIEW_ORIGIN_REGEX = (os.getenv("CORS_ORIGIN_REGEX") or "").strip() or None
 
 app.add_middleware(
     CORSMiddleware,
