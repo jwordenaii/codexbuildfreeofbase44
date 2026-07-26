@@ -145,3 +145,46 @@ def test_elevenlabs_key_is_masked_in_the_admin_ui():
     assert "ELEVENLABS_API_KEY" in runtime_config.SENSITIVE_KEYS
     status = runtime_config.status_for(["ELEVENLABS_API_KEY"])["ELEVENLABS_API_KEY"]
     assert status["sensitive"] is True
+
+
+# ── The direct tool-calling path (raw HTTP, bypasses llm_client) ──────────────
+# Jarvis has TWO Anthropic paths. Fixing only the router left this one — the
+# lane the operator actually converses with — on last-generation Claude at a
+# 320-token ceiling, which is what production reported after the first deploy.
+
+def test_direct_path_uses_the_flagship_model(monkeypatch):
+    from app.services import jarvis
+
+    monkeypatch.delenv("ANTHROPIC_MODEL", raising=False)
+    monkeypatch.setattr(runtime_config, "_CACHE", None)
+    assert jarvis._anthropic_model() == "claude-opus-5"
+
+
+def test_direct_path_budget_and_timeout_fit_a_real_answer():
+    import re
+    from pathlib import Path
+    from app.services import jarvis
+
+    src = Path(jarvis.__file__).read_text()
+
+    budgets = [int(n) for n in re.findall(r"default_tokens = (\d+) if _low_cost_mode", src)]
+    assert budgets and min(budgets) >= 2000, f"direct-path budget too low: {budgets}"
+
+    # Adaptive thinking makes a good answer take longer than the old 14s ceiling,
+    # which surfaced as Jarvis returning nothing at all.
+    timeouts = [float(n) for n in re.findall(r"timeout_s = (\d+(?:\.\d+)?)", src)]
+    assert timeouts and min(timeouts) >= 60, f"timeout too tight for thinking: {timeouts}"
+
+
+def test_direct_path_never_sends_sampling_params():
+    """A `temperature` key in this payload 400s every request on claude-opus-5."""
+    import re
+    from pathlib import Path
+    from app.services import jarvis
+
+    src = Path(jarvis.__file__).read_text()
+    payload_blocks = re.findall(r'payload = \{.*?\n        \}', src, re.S)
+    assert payload_blocks, "could not locate the Anthropic payload"
+    for block in payload_blocks:
+        for param in ("temperature", "top_p", "top_k"):
+            assert f'"{param}"' not in block, f"{param} in payload -> 400 on current models"

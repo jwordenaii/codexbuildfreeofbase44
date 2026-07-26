@@ -30,7 +30,20 @@ logger = logging.getLogger(__name__)
 # queries through Claude with a JWordenAI-aware system prompt. Falls back
 # gracefully to canned responses when the key is missing or the call fails.
 def _anthropic_key()   -> str: return _cfg.get("ANTHROPIC_API_KEY")
-def _anthropic_model() -> str: return _cfg.get("ANTHROPIC_MODEL") or "claude-sonnet-4-5"
+def _effort() -> str:
+    """low | medium | high | xhigh | max — depth vs latency for a chat turn."""
+    raw = (_cfg.get("JARVIS_EFFORT") or "medium").strip().lower()
+    return raw if raw in {"low", "medium", "high", "xhigh", "max"} else "medium"
+
+
+def _anthropic_model() -> str:
+    """Model for the direct tool-calling path (raw HTTP, not via llm_client).
+
+    This is the lane the operator actually converses with, so it runs the
+    flagship. Note this payload never sends `temperature` — sampling params
+    return a 400 on the current generation, which is why the swap is safe
+    here but required stripping the parameter in llm_client first."""
+    return _cfg.get("ANTHROPIC_MODEL") or "claude-opus-5"
 _ANTHROPIC_URL = "https://api.anthropic.com/v1/messages"
 _ANTHROPIC_VERSION = "2023-06-01"
 
@@ -576,7 +589,9 @@ async def _ask_claude(
     # Two-round max: initial → optional tool use → final.
     for _round in range(2):
         try:
-            default_tokens = 320 if _low_cost_mode() else 700
+            # Thinking + answer share this budget on the current generation;
+            # 320 left nothing for the reply once reasoning ran.
+            default_tokens = 4000 if _low_cost_mode() else 8000
             max_tokens = int((_cfg.get("JARVIS_CLAUDE_MAX_TOKENS") or str(default_tokens)).strip())
         except Exception:  # noqa: BLE001
             max_tokens = 4000 if _low_cost_mode() else 8000
@@ -586,12 +601,13 @@ async def _ask_claude(
             "system":     system,
             "tools":      tools,
             "messages":   messages,
+            "output_config": {"effort": _effort()},
         }
         try:
             try:
-                timeout_s = float((_cfg.get("JARVIS_CLAUDE_TIMEOUT_SECONDS") or "14").strip())
+                timeout_s = float((_cfg.get("JARVIS_CLAUDE_TIMEOUT_SECONDS") or "90").strip())
             except Exception:  # noqa: BLE001
-                timeout_s = 14.0
+                timeout_s = 90.0
             async with httpx.AsyncClient(timeout=timeout_s) as client:
                 r = await client.post(_ANTHROPIC_URL, json=payload, headers=headers)
             if r.status_code != 200:
