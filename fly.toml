@@ -1,0 +1,71 @@
+# app configuration for jworden-api -----------------------------------------
+#
+# WHY THIS FILE EXISTS
+#
+# Deploys were previously image-only (`flyctl deploy --image`), which gives
+# every machine the Dockerfile CMD — the web server. That is why `flyctl
+# status` showed two machines both in process group `app` and nothing else.
+#
+# The consequence was not cosmetic. app/celery_app.py defines seven periodic
+# jobs and app/tasks/ holds thirteen background tasks, and with no worker
+# process none of them had ever run:
+#
+#   scrape-vdot-bids-daily      07:00 UTC   VDOT bid board — revenue-bearing
+#   scrape-virginia-lis          every 6h   legislative/regulatory changes
+#   anomaly-scan                every 30m   zero-lead-gap + HOT-rate alerts
+#   self-heal-cycle              every 5m   DB/Redis recovery loop
+#   warm-cache                   every 5m   dashboard/CRM cache priming
+#   process-vision-queue        every 15m   queued photo analysis
+#   run-autonomy-audit             daily    autonomy audit trail
+#
+# Three process groups fix that: the web server, a worker that executes
+# queued tasks, and exactly one beat scheduler that emits the periodic ones.
+
+app = "jworden-api"
+primary_region = "iad"
+
+[build]
+
+[env]
+  PORT = "8000"
+
+# ── web ─────────────────────────────────────────────────────────────────────
+[processes]
+  app = "sh -c 'gunicorn -k uvicorn.workers.UvicornWorker -b 0.0.0.0:${PORT:-8000} app.main:app'"
+
+  # Executes queued tasks. Concurrency is deliberately low: these are
+  # network-bound scrapers and API calls on a shared-cpu-1x machine, and
+  # oversubscribing them starves the web process on the same host.
+  worker = "celery -A app.celery_app:celery_app worker --loglevel=info --concurrency=2"
+
+  # Emits the scheduled jobs above. EXACTLY ONE beat machine may run — a
+  # second one double-fires every cron entry, which for the VDOT scraper
+  # means duplicate bid records and for email tasks means duplicate sends.
+  # See the [[vm]] block below pinning this to a single instance.
+  beat = "celery -A app.celery_app:celery_app beat --loglevel=info"
+
+[http_service]
+  internal_port = 8000
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ["app"]
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "1gb"
+  processes = ["app"]
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "1gb"
+  processes = ["worker"]
+
+# Beat is a clock, not a workhorse — it only needs to publish messages.
+# `count = 1` is the guard against duplicate scheduling described above.
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"
+  processes = ["beat"]
+  count = 1
