@@ -29,6 +29,7 @@ import uuid
 from pathlib import Path
 from typing import Optional
 
+from . import object_storage
 from .durable_storage import durable_data_dir
 
 logger = logging.getLogger(__name__)
@@ -174,12 +175,16 @@ def store_scan(
             parcel_id = matched.get("parcel_id")
 
     bucket = _safe(parcel_id or "unmatched")
-    scan_dir = _STORAGE / bucket
-    scan_dir.mkdir(parents=True, exist_ok=True)
     sid = uuid.uuid4().hex[:12]
     fname = f"{sid}_{_safe(filename)}"
-    path = scan_dir / fname
-    path.write_bytes(body)
+    # Object storage, not local disk — see drone_capture.py for why.
+    key = f"lidar/{bucket}/{fname}"
+    if not object_storage.put(key, body, ct):
+        logger.warning(
+            "lidar scan %s stored on local disk — object storage not "
+            "configured, it will be lost on the next redeploy", sid,
+        )
+    path = key
 
     row = {
         "id": sid,

@@ -28,6 +28,7 @@ import uuid
 from pathlib import Path
 from typing import Optional
 
+from . import object_storage
 from .durable_storage import durable_data_dir
 
 logger = logging.getLogger(__name__)
@@ -114,13 +115,18 @@ def store_capture(
     if ct not in ALLOWED_CT:
         raise ValueError(f"content_type {ct} not allowed")
 
-    job_dir = _STORAGE / _safe_filename(job_id)
-    job_dir.mkdir(parents=True, exist_ok=True)
     cap_id = uuid.uuid4().hex[:12]
     safe = _safe_filename(filename)
     fname = f"{cap_id}_{safe}"
-    path = job_dir / fname
-    path.write_bytes(body)
+    # Object storage, not local disk: there is no volume on this app, so the
+    # old path resolved to /tmp and captures were destroyed on every redeploy.
+    key = f"drone/{_safe_filename(job_id)}/{fname}"
+    if not object_storage.put(key, body, ct):
+        logger.warning(
+            "drone capture %s stored on local disk — object storage not "
+            "configured, it will be lost on the next redeploy", cap_id,
+        )
+    path = key
 
     row = {
         "id": cap_id,

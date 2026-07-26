@@ -54,16 +54,43 @@ from ..services.staff_compliance import (
     compliance_check,
 )
 
+from ..services import object_storage
 from ..services.durable_storage import durable_data_dir
 
 logger = logging.getLogger(__name__)
 
-# ── storage paths ─────────────────────────────────────────────────────────────
-# These hold REAL uploaded files (staff photos, signed documents). /tmp is
-# ephemeral on Fly, so every redeploy silently destroyed them. Use the durable
-# volume instead — see app/services/durable_storage.py.
+# ── storage ───────────────────────────────────────────────────────────────────
+# These hold REAL uploaded files: staff check-in photos and signed worker
+# compliance documents (I-9s, licences, certifications).
+#
+# They used to be written straight to disk. That looked durable but was not —
+# jworden-api has no volume mounted, so the path resolved to /tmp and every
+# redeploy destroyed them. Uploads now go to object storage, which is also the
+# only correct answer for an app running two machines: both read and write the
+# same bucket, whereas a volume attaches to one and diverges.
+#
+# object_storage falls back to local disk when no bucket is configured, so this
+# behaves exactly as before until the bucket is attached — it just starts
+# actually persisting once it is.
+#
+# Keys are derived from columns already on the row (user id / profile id /
+# doc_type / filename), so nothing here needs a schema migration to find a
+# file again later.
+_PHOTO_PREFIX = "staff-photos"
+_DOCS_PREFIX  = "staff-docs"
+
+# Retained only so files written before the bucket existed can still be found
+# and migrated up; nothing writes to these any more.
 _PHOTO_PATH = Path(os.getenv("STAFF_PHOTO_PATH") or str(durable_data_dir() / "jworden_staff_photos"))
 _DOCS_PATH  = Path(os.getenv("STAFF_DOCS_PATH")  or str(durable_data_dir() / "jworden_staff_docs"))
+
+
+def photo_key(user_id: int, filename: str) -> str:
+    return f"{_PHOTO_PREFIX}/{user_id}/{filename}"
+
+
+def doc_key(profile_id: int, doc_type: str, filename: str) -> str:
+    return f"{_DOCS_PREFIX}/{profile_id}/{doc_type}/{filename}"
 _MAX_PHOTO  = int(os.getenv("STAFF_PHOTO_MAX_BYTES", str(25 * 1024 * 1024)))
 _MAX_DOC    = int(os.getenv("STAFF_DOC_MAX_BYTES",   str(50 * 1024 * 1024)))
 _PHOTO_CT   = {"image/jpeg", "image/png", "image/heic", "image/heif", "image/webp"}
@@ -221,10 +248,13 @@ async def checkin(
         body = await photo.read()
         if len(body) > _MAX_PHOTO:
             raise HTTPException(status_code=413, detail="photo too large")
-        dest = _PHOTO_PATH / str(user.id)
-        dest.mkdir(parents=True, exist_ok=True)
         fname = f"{user.id}_{_safe_name(photo.filename)}"
-        (dest / fname).write_bytes(body)
+        if not object_storage.put(photo_key(user.id, fname), body, ct):
+            logger.warning(
+                "staff check-in photo for user %s written to local disk — object "
+                "storage is not configured, so it will be lost on redeploy",
+                user.id,
+            )
         photo_filename = fname
     ci = DailyCheckIn(user_id=user.id, note=note,
                       photo_filename=photo_filename, gps_lat=gps_lat, gps_lng=gps_lng)
@@ -292,10 +322,13 @@ async def upload_my_doc(
     body = await file.read()
     if len(body) > _MAX_DOC:
         raise HTTPException(status_code=413, detail="file too large")
-    dest = _DOCS_PATH / str(p.id) / doc_type
-    dest.mkdir(parents=True, exist_ok=True)
     fname = _safe_name(file.filename or doc_type)
-    (dest / fname).write_bytes(body)
+    if not object_storage.put(doc_key(p.id, doc_type, fname), body, ct):
+        logger.warning(
+            "worker document %s/%s written to local disk — object storage is not "
+            "configured, so this compliance file will be lost on redeploy",
+            p.id, doc_type,
+        )
     doc = WorkerDocument(profile_id=p.id, doc_type=doc_type, filename=fname,
                          status="pending", expiry_date=_parse_dt(expiry_date), notes=notes)
     db.add(doc); db.commit(); db.refresh(doc)
@@ -490,10 +523,13 @@ async def upload_worker_doc(
     body = await file.read()
     if len(body) > _MAX_DOC:
         raise HTTPException(status_code=413, detail="file too large")
-    dest = _DOCS_PATH / str(profile_id) / doc_type
-    dest.mkdir(parents=True, exist_ok=True)
     fname = _safe_name(file.filename or doc_type)
-    (dest / fname).write_bytes(body)
+    if not object_storage.put(doc_key(profile_id, doc_type, fname), body, ct):
+        logger.warning(
+            "worker document %s/%s written to local disk — object storage is not "
+            "configured, so this compliance file will be lost on redeploy",
+            profile_id, doc_type,
+        )
     doc = WorkerDocument(profile_id=profile_id, doc_type=doc_type, filename=fname,
                          status="pending", expiry_date=_parse_dt(expiry_date), notes=notes)
     db.add(doc); db.commit(); db.refresh(doc)
