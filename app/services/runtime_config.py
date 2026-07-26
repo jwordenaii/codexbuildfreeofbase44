@@ -37,6 +37,18 @@ logger = logging.getLogger(__name__)
 # One document, exactly mirroring the JSON file it replaces.
 _KV_KEY = "runtime_config"
 
+# The Claude model every surface reports and uses. This default was
+# previously copy-pasted into 6 files, so upgrading the model updated some
+# call sites and silently left others on the old one — production kept
+# reporting claude-sonnet-4-5 after the model had "been upgraded".
+# Override per-deployment with the ANTHROPIC_MODEL key.
+DEFAULT_ANTHROPIC_MODEL = "claude-opus-5"
+
+
+def anthropic_model() -> str:
+    """Configured Claude model, or the flagship default."""
+    return (get("ANTHROPIC_MODEL") or "").strip() or DEFAULT_ANTHROPIC_MODEL
+
 
 def _default_state_path() -> Path:
     configured = (os.environ.get("RUNTIME_CONFIG_PATH") or "").strip()

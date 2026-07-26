@@ -188,3 +188,57 @@ def test_direct_path_never_sends_sampling_params():
     for block in payload_blocks:
         for param in ("temperature", "top_p", "top_k"):
             assert f'"{param}"' not in block, f"{param} in payload -> 400 on current models"
+
+
+# ── One model default, not six ────────────────────────────────────────────────
+# The default was copy-pasted into 6 files. Upgrading the model updated some and
+# silently left others, so production kept reporting claude-sonnet-4-5 through
+# two deploys that had "upgraded the model".
+
+def test_single_source_of_truth_for_the_model_default():
+    assert runtime_config.DEFAULT_ANTHROPIC_MODEL == "claude-opus-5"
+    assert runtime_config.anthropic_model() == "claude-opus-5"
+
+
+def test_no_file_hardcodes_its_own_model_default():
+    """Any second copy of the default will drift out of sync with the first."""
+    from pathlib import Path
+
+    app_dir = Path(runtime_config.__file__).parent.parent
+    offenders = []
+    for py in app_dir.rglob("*.py"):
+        if py.name == "runtime_config.py":
+            continue  # the one legitimate definition
+        text = py.read_text()
+        for line in text.splitlines():
+            if 'ANTHROPIC_MODEL"' in line and "or " in line and "claude-" in line:
+                offenders.append(f"{py.name}: {line.strip()[:90]}")
+    assert not offenders, "hardcoded model defaults will drift:\n" + "\n".join(offenders)
+
+
+def test_every_reporting_surface_agrees_with_the_configured_model(monkeypatch):
+    """readiness / status / preflight must never disagree about what is running."""
+    from fastapi.testclient import TestClient
+    from app.main import app
+
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-test-key")
+    monkeypatch.setattr(runtime_config, "_CACHE", None)
+    client = TestClient(app)
+
+    expected = runtime_config.anthropic_model()
+    assert client.get("/api/v1/jarvis/readiness").json()["model"] == expected
+    assert client.get("/api/v1/jarvis/status").json()["model"] == expected
+    assert client.get("/api/v1/ops/dashboard-preflight").json()["jarvis"]["model"] == expected
+
+
+def test_operator_override_propagates_to_every_surface(monkeypatch):
+    from fastapi.testclient import TestClient
+    from app.main import app
+
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-test-key")
+    monkeypatch.setenv("ANTHROPIC_MODEL", "claude-sonnet-5")
+    monkeypatch.setattr(runtime_config, "_CACHE", None)
+    client = TestClient(app)
+
+    assert runtime_config.anthropic_model() == "claude-sonnet-5"
+    assert client.get("/api/v1/jarvis/readiness").json()["model"] == "claude-sonnet-5"

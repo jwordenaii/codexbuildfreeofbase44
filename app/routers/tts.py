@@ -16,6 +16,7 @@ from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 
 from ..core.limiter import limiter
+from ..services import runtime_config as _cfg
 from ..services import tts_service
 
 logger = logging.getLogger(__name__)
@@ -141,7 +142,7 @@ async def claude_ping() -> dict:
     key = _os.environ.get("ANTHROPIC_API_KEY", "").strip()
     if not key:
         return {"ok": False, "error": "ANTHROPIC_API_KEY not set on container"}
-    model = _os.environ.get("ANTHROPIC_MODEL") or "claude-sonnet-4-5"
+    model = _cfg.anthropic_model()
     try:
         async with httpx.AsyncClient(timeout=20.0) as client:
             r = await client.post(

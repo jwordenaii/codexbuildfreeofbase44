@@ -43,7 +43,7 @@ def _anthropic_model() -> str:
     flagship. Note this payload never sends `temperature` — sampling params
     return a 400 on the current generation, which is why the swap is safe
     here but required stripping the parameter in llm_client first."""
-    return _cfg.get("ANTHROPIC_MODEL") or "claude-opus-5"
+    return _cfg.anthropic_model()
 _ANTHROPIC_URL = "https://api.anthropic.com/v1/messages"
 _ANTHROPIC_VERSION = "2023-06-01"
 
