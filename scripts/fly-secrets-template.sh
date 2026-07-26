@@ -111,8 +111,8 @@ set_group "Google Ads / GSC / GA4" \
   "GOOGLE_ADS_CLIENT_SECRET=" \
   "GOOGLE_ADS_REFRESH_TOKEN=" \
   "GOOGLE_ADS_CUSTOMER_ID=" \
-  "GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT_JSON=" \
-  "GOOGLE_SEARCH_CONSOLE_SITE_URL=" \
+  "GSC_SERVICE_ACCOUNT_JSON=" \
+  "GSC_SITE_URL=" \
   "GOOGLE_ANALYTICS_PROPERTY_ID="
 
 # ── Zip-scan mailer pipeline (Regrid parcel lookup + Lob physical mail) ────
