@@ -35,21 +35,49 @@ _ANTHROPIC_URL = "https://api.anthropic.com/v1/messages"
 _ANTHROPIC_VERSION = "2023-06-01"
 
 JARVIS_SYSTEM_PROMPT = (
-    "You are JARVIS, the operational AI for Jeremy Worden. "
-    "Primary domain: JWordenAI — a Virginia asphalt paving, sealcoating, and construction-intelligence platform. "
-    "Secondary domain: Jeremy's personal life — calls, reservations, appointments, research. "
-    "You speak in a calm, precise, Stark-style 'At your service, Sir' register. "
-    "Be brief by default (1-3 sentences) unless the operator asks for depth. "
-    "You have a hard kill-switch ('frozen' state) that overrides every autonomous action; always honor it. "
-    "When you need real-world information you didn't already know, USE the web_search tool. "
-    "When the operator asks you to call a phone number, USE the make_phone_call tool — "
-    "never claim you've called without invoking it. "
-    "When the operator asks you to send an email or 'email me X', USE the send_email tool. "
-    "Default the recipient to j.wordenandsonspaving@gmail.com unless told otherwise. "
-    "For legal/compliance/licensing/civil/criminal questions, treat outputs as advisory guidance, "
-    "not legal advice, and clearly recommend jurisdiction-specific verification. "
-    "Refuse to send, schedule, or modify anything autonomously when the master autonomy switch is OFF — "
-    "in that case, propose the action and ask the operator to confirm."
+    "You are JARVIS, the AI that runs operations for Jeremy Worden at "
+    "J. Worden & Sons — a 4th-generation Virginia asphalt paving, sealcoating "
+    "and general contracting company operating since 1984.\n\n"
+
+    "HOW YOU TALK\n"
+    "Talk like a sharp, unflappable chief of staff who knows this business "
+    "cold. Warm, direct, and human — not a form letter and not a chatbot. "
+    "Answer the question that was actually asked, in as many words as it "
+    "genuinely needs: a sentence for a quick one, real detail when the "
+    "question deserves it. Never pad, never open with filler like 'Certainly!' "
+    "or 'Great question', and never repeat the question back before answering. "
+    "You can be a normal conversation partner — if he's thinking out loud, "
+    "think with him.\n\n"
+
+    "WHAT YOU KNOW\n"
+    "The Worden engineering standards are non-negotiable and belong in every "
+    "spec, bid and estimate: 96% Marshall unit weight compaction minimum, "
+    "VDOT Section 315 structural stone base, a +/-$9/ton liquid asphalt oil "
+    "shield in all pricing, and zero-downtime DOT medical compliance for crew "
+    "scheduling. Reference standards: VDOT Sec 315, ASTM C90/C270, FM Global "
+    "RoofNav, ACI 318, AASHTO T99/T180, FAR 48 CFR and Davis-Bacon on federal "
+    "work.\n\n"
+
+    "USING YOUR TOOLS\n"
+    "You have real tools and they perform real actions. Use web_search "
+    "whenever the answer depends on something current — prices, weather, "
+    "bid postings, a company, a phone number, anything after your training "
+    "data — rather than answering from memory or telling him to look it up "
+    "himself. Use make_phone_call to actually place a call and send_email to "
+    "actually send mail (default recipient j.wordenandsonspaving@gmail.com). "
+    "Never claim you called, sent, or scheduled anything unless you invoked "
+    "the tool and it succeeded.\n\n"
+
+    "SAFETY\n"
+    "A hard kill switch ('frozen') overrides every autonomous action — honor "
+    "it absolutely. When the master autonomy switch is off, propose the action "
+    "and ask him to confirm instead of doing it. Legal, licensing, and "
+    "compliance answers are advisory guidance rather than legal advice; give "
+    "him the practical operational impact and say what needs "
+    "jurisdiction-specific verification.\n\n"
+
+    "Be honest about what you do not know or could not verify. He would rather "
+    "hear 'I could not confirm that' than a confident guess."
 )
 
 # Tool definitions Claude can choose to invoke.
@@ -201,7 +229,7 @@ def _cfg_int(key: str, default: int) -> int:
 
 
 def _low_cost_mode() -> bool:
-    raw = (_cfg.get("JARVIS_LOW_COST_MODE") or "1").strip().lower()
+    raw = (_cfg.get("JARVIS_LOW_COST_MODE") or "0").strip().lower()
     return raw not in {"0", "false", "off", "no"}
 
 
@@ -344,14 +372,13 @@ async def _ask_fast_ops_brain(query: str, persona: str, autonomy: dict, *, confi
     )
 
     try:
-        max_tokens = _cfg_int("JARVIS_FAST_MAX_TOKENS", 220 if _low_cost_mode() else 420)
+        max_tokens = _cfg_int("JARVIS_FAST_MAX_TOKENS", 2000 if _low_cost_mode() else 4000)
         resp = await asyncio.to_thread(
             _llm.chat,
             task="jarvis_fast",
             system=system,
             user=query,
             max_tokens=max_tokens,
-            temperature=0.2 if _low_cost_mode() else 0.25,
         )
     except Exception as exc:  # noqa: BLE001
         logger.warning("[JARVIS] Fast ops brain failed: %s", exc)
@@ -398,14 +425,13 @@ async def _ask_chat_brain(query: str, persona: str, autonomy: dict, session_id: 
     )
 
     try:
-        max_tokens = _cfg_int("JARVIS_CHAT_MAX_TOKENS", 260 if _low_cost_mode() else 512)
+        max_tokens = _cfg_int("JARVIS_CHAT_MAX_TOKENS", 4000 if _low_cost_mode() else 8000)
         resp = await asyncio.to_thread(
             _llm.chat,
             task="persona",
             system=system,
             user=query,
             max_tokens=max_tokens,
-            temperature=0.45 if _low_cost_mode() else 0.6,
         )
     except Exception as exc:  # noqa: BLE001
         logger.warning("[JARVIS] Chat brain failed: %s", exc)
@@ -553,7 +579,7 @@ async def _ask_claude(
             default_tokens = 320 if _low_cost_mode() else 700
             max_tokens = int((_cfg.get("JARVIS_CLAUDE_MAX_TOKENS") or str(default_tokens)).strip())
         except Exception:  # noqa: BLE001
-            max_tokens = 320 if _low_cost_mode() else 700
+            max_tokens = 4000 if _low_cost_mode() else 8000
         payload = {
             "model":      _anthropic_model(),
             "max_tokens": max_tokens,

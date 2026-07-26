@@ -22,6 +22,8 @@ from typing import Optional
 
 import httpx
 
+from . import runtime_config as _cfg
+
 logger = logging.getLogger(__name__)
 
 # ── Voice profiles ───────────────────────────────────────────────────────────
@@ -29,6 +31,12 @@ logger = logging.getLogger(__name__)
 # Onyx = deep calm male, closest to Iron Man's J.A.R.V.I.S.
 
 OPENAI_VOICES = {"alloy", "echo", "fable", "onyx", "nova", "shimmer"}
+def _voice_cfg(name: str, default: str) -> str:
+    """runtime store -> env -> default. Read per call so a key pasted into
+    the Command Center takes effect without a redeploy."""
+    return (_cfg.get(name) or "").strip() or default
+
+
 DEFAULT_OPENAI_VOICE = os.getenv("JARVIS_TTS_VOICE", "onyx")
 DEFAULT_OPENAI_MODEL = os.getenv("JARVIS_TTS_MODEL", "tts-1-hd")  # -hd = higher quality
 
@@ -39,11 +47,11 @@ DEFAULT_ELEVENLABS_MODEL = os.getenv("ELEVENLABS_MODEL", "eleven_turbo_v2_5")
 
 
 def _has_elevenlabs() -> bool:
-    return bool(os.getenv("ELEVENLABS_API_KEY", "").strip())
+    return bool(_voice_cfg("ELEVENLABS_API_KEY", ""))
 
 
 def _has_openai() -> bool:
-    return bool(os.getenv("OPENAI_API_KEY", "").strip())
+    return bool(_voice_cfg("OPENAI_API_KEY", ""))
 
 
 def active_provider() -> str:
@@ -63,11 +71,11 @@ def _http_timeout() -> httpx.Timeout:
 # ── ElevenLabs ───────────────────────────────────────────────────────────────
 
 def _synthesize_elevenlabs(text: str, voice_id: Optional[str] = None) -> bytes:
-    api_key = os.getenv("ELEVENLABS_API_KEY", "").strip()
+    api_key = _voice_cfg("ELEVENLABS_API_KEY", "")
     if not api_key:
         raise RuntimeError("ELEVENLABS_API_KEY missing")
 
-    voice = voice_id or DEFAULT_ELEVENLABS_VOICE
+    voice = voice_id or _voice_cfg("ELEVENLABS_VOICE_ID", DEFAULT_ELEVENLABS_VOICE)
     url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice}"
     headers = {
         "xi-api-key": api_key,
@@ -76,7 +84,7 @@ def _synthesize_elevenlabs(text: str, voice_id: Optional[str] = None) -> bytes:
     }
     payload = {
         "text": text,
-        "model_id": DEFAULT_ELEVENLABS_MODEL,
+        "model_id": _voice_cfg("ELEVENLABS_MODEL", DEFAULT_ELEVENLABS_MODEL),
         "voice_settings": {
             "stability": 0.45,
             "similarity_boost": 0.85,
@@ -91,11 +99,11 @@ def _synthesize_elevenlabs(text: str, voice_id: Optional[str] = None) -> bytes:
 
 
 def _stream_elevenlabs(text: str, voice_id: Optional[str] = None) -> Iterator[bytes]:
-    api_key = os.getenv("ELEVENLABS_API_KEY", "").strip()
+    api_key = _voice_cfg("ELEVENLABS_API_KEY", "")
     if not api_key:
         raise RuntimeError("ELEVENLABS_API_KEY missing")
 
-    voice = voice_id or DEFAULT_ELEVENLABS_VOICE
+    voice = voice_id or _voice_cfg("ELEVENLABS_VOICE_ID", DEFAULT_ELEVENLABS_VOICE)
     url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice}"
     headers = {
         "xi-api-key": api_key,
@@ -104,7 +112,7 @@ def _stream_elevenlabs(text: str, voice_id: Optional[str] = None) -> Iterator[by
     }
     payload = {
         "text": text,
-        "model_id": DEFAULT_ELEVENLABS_MODEL,
+        "model_id": _voice_cfg("ELEVENLABS_MODEL", DEFAULT_ELEVENLABS_MODEL),
         "voice_settings": {
             "stability": 0.45,
             "similarity_boost": 0.85,
@@ -124,7 +132,7 @@ def _stream_elevenlabs(text: str, voice_id: Optional[str] = None) -> Iterator[by
 # ── OpenAI ───────────────────────────────────────────────────────────────────
 
 def _synthesize_openai(text: str, voice: Optional[str] = None) -> bytes:
-    api_key = os.getenv("OPENAI_API_KEY", "").strip()
+    api_key = _voice_cfg("OPENAI_API_KEY", "")
     if not api_key:
         raise RuntimeError("OPENAI_API_KEY missing")
 
@@ -152,7 +160,7 @@ def _synthesize_openai(text: str, voice: Optional[str] = None) -> bytes:
 
 
 def _stream_openai(text: str, voice: Optional[str] = None) -> Iterator[bytes]:
-    api_key = os.getenv("OPENAI_API_KEY", "").strip()
+    api_key = _voice_cfg("OPENAI_API_KEY", "")
     if not api_key:
         raise RuntimeError("OPENAI_API_KEY missing")
 

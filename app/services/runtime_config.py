@@ -59,6 +59,13 @@ MANAGED_KEYS: tuple[str, ...] = (
     "GOOGLE_API_KEY", "GEMINI_API_KEY",
     "LLM_FALLBACK_SILENT", "JARVIS_MAX_TIER",
     "JARVIS_MODEL_OVERRIDE", "JARVIS_DISABLE_GEMINI", "LLM_DISABLED_PROVIDERS",
+    "JARVIS_LOW_COST_MODE", "JARVIS_EFFORT",
+    "JARVIS_CHAT_MAX_TOKENS", "JARVIS_FAST_MAX_TOKENS", "JARVIS_CLAUDE_MAX_TOKENS",
+    # Voice — ElevenLabs is the premium TTS tier and outranks OpenAI whenever a
+    # key is present (see tts_service.py). Managed here so the owner can paste
+    # the key into the Command Center rather than redeploying.
+    "ELEVENLABS_API_KEY", "ELEVENLABS_VOICE_ID", "ELEVENLABS_MODEL",
+    "JARVIS_TTS_VOICE", "JARVIS_TTS_MODEL",
     # Web search (Tavily preferred; Exa used automatically as a fallback)
     "TAVILY_API_KEY", "TAVILY_MAX_RESULTS", "EXA_API_KEY",
     # Voice / phone
@@ -162,6 +169,7 @@ SENSITIVE_KEYS: frozenset[str] = frozenset({
     "WEARABLE_APPLE_HEALTH_SECRET", "WEARABLE_FITBIT_SECRET",
     "WEARABLE_GARMIN_SECRET", "WEARABLE_WHOOP_SECRET", "WEARABLE_OURA_SECRET",
     "REGRID_API_KEY", "LOB_API_KEY",
+    "ELEVENLABS_API_KEY",
 })
 
 
