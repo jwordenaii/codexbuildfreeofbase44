@@ -1957,3 +1957,27 @@ class ScanResult(Base):
 
     def __repr__(self) -> str:
         return f"<ScanResult id={self.id} property_id={self.property_id} score={self.overall_score}>"
+
+
+class DurableKV(Base):
+    """
+    Small control-plane state that must survive a redeploy AND be identical on
+    every machine — the Jarvis kill switch and the runtime API-key store.
+
+    This lives in Postgres rather than on disk because the live Fly app has no
+    volume mounted (so file state lands on ephemeral /tmp) and runs two
+    machines (so a volume would give each its own diverging copy). See
+    app/services/durable_kv.py for the full reasoning.
+
+    Values are opaque strings; each consumer serialises its own JSON document
+    under a single key. Not a blob store — uploaded files do not belong here.
+    """
+
+    __tablename__ = "durable_kv"
+
+    key = Column(String(200), primary_key=True, index=True)
+    value = Column(Text, nullable=False, default="")
+    updated_at = Column(DateTime(timezone=True), default=_utcnow, onupdate=_utcnow, nullable=False)
+
+    def __repr__(self) -> str:
+        return f"<DurableKV key={self.key!r} bytes={len(self.value or '')}>"

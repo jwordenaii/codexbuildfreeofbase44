@@ -3,7 +3,7 @@ runtime_config.py — Hot-reloadable secret/config store, owner-only.
 
 Lets the Command Center owner paste API keys into a UI instead of editing
 Railway env vars and redeploying. Values are persisted to a JSON file at
-RUNTIME_CONFIG_PATH (default /tmp/jworden_runtime_config.json) and shadow
+RUNTIME_CONFIG_PATH (default: the durable data dir, see durable_storage.py) and shadow
 the corresponding os.environ values when read via `get(name)`.
 
 Usage from any service:
@@ -28,9 +28,14 @@ import threading
 from pathlib import Path
 from typing import Iterable
 
+from . import durable_kv
 from .durable_storage import durable_data_dir
 
 logger = logging.getLogger(__name__)
+
+# Key under which the whole config document is stored in the Postgres KV.
+# One document, exactly mirroring the JSON file it replaces.
+_KV_KEY = "runtime_config"
 
 
 def _default_state_path() -> Path:
@@ -160,21 +165,44 @@ SENSITIVE_KEYS: frozenset[str] = frozenset({
 })
 
 
+def _sanitize(data: object) -> dict[str, str]:
+    """Keep only whitelisted keys with non-empty string values."""
+    if not isinstance(data, dict):
+        raise ValueError("runtime config root must be an object")
+    return {k: str(v) for k, v in data.items() if k in MANAGED_KEYS and v not in (None, "")}
+
+
 def _load() -> dict[str, str]:
-    """Load + cache the JSON state file. Lock must be held by caller."""
+    """
+    Load + cache the config document. Lock must be held by caller.
+
+    Order: Postgres KV (durable across redeploys AND shared by both Fly
+    machines) → local JSON file → empty. The file is only authoritative when
+    the database is unreachable or not configured; see durable_kv.py for why
+    the file alone is not enough in production.
+    """
     global _CACHE
     if _CACHE is not None:
         return _CACHE
+
+    raw_db = durable_kv.get(_KV_KEY)
+    if raw_db:
+        try:
+            _CACHE = _sanitize(json.loads(raw_db or "{}"))
+            return _CACHE
+        except Exception as exc:  # noqa: BLE001
+            logger.exception("runtime_config: KV document unreadable, trying file: %s", exc)
+
     if not _STATE_PATH.exists():
         _CACHE = {}
         return _CACHE
     try:
         raw = _STATE_PATH.read_text(encoding="utf-8")
-        data = json.loads(raw or "{}")
-        if not isinstance(data, dict):
-            raise ValueError("runtime config root must be an object")
-        # Keep only string values + whitelisted keys
-        _CACHE = {k: str(v) for k, v in data.items() if k in MANAGED_KEYS and v not in (None, "")}
+        _CACHE = _sanitize(json.loads(raw or "{}"))
+        # One-time promotion: keys that predate the KV store (or were written
+        # while the DB was down) get copied up so the next redeploy keeps them.
+        if _CACHE and raw_db is None:
+            durable_kv.set(_KV_KEY, json.dumps(_CACHE, sort_keys=True))
     except Exception as exc:
         logger.exception("runtime_config load failed; starting empty: %s", exc)
         _CACHE = {}
@@ -182,23 +210,40 @@ def _load() -> dict[str, str]:
 
 
 def _save(data: dict[str, str]) -> None:
-    """Atomic write. Lock must be held by caller."""
-    _STATE_PATH.parent.mkdir(parents=True, exist_ok=True)
-    fd, tmp_path = tempfile.mkstemp(prefix=".runtime_config_", dir=str(_STATE_PATH.parent))
+    """
+    Persist to Postgres (primary) and the local file (cache/fallback).
+    Lock must be held by caller.
+    """
+    stored = durable_kv.set(_KV_KEY, json.dumps(data, sort_keys=True))
+
+    # The local file is a cache/fallback. If Postgres accepted the write, a
+    # failure here is not fatal, so don't let it surface as a 500 on an
+    # otherwise-successful key update.
     try:
-        with os.fdopen(fd, "w", encoding="utf-8") as f:
-            json.dump(data, f, indent=2, sort_keys=True)
-        os.replace(tmp_path, _STATE_PATH)
+        _STATE_PATH.parent.mkdir(parents=True, exist_ok=True)
+        fd, tmp_path = tempfile.mkstemp(prefix=".runtime_config_", dir=str(_STATE_PATH.parent))
         try:
-            os.chmod(_STATE_PATH, 0o600)
-        except (OSError, PermissionError):
-            pass  # best-effort on Windows
-    finally:
-        if os.path.exists(tmp_path):
+            with os.fdopen(fd, "w", encoding="utf-8") as f:
+                json.dump(data, f, indent=2, sort_keys=True)
+            os.replace(tmp_path, _STATE_PATH)
             try:
-                os.unlink(tmp_path)
-            except OSError:
-                pass
+                os.chmod(_STATE_PATH, 0o600)
+            except (OSError, PermissionError):
+                pass  # best-effort on Windows
+        finally:
+            if os.path.exists(tmp_path):
+                try:
+                    os.unlink(tmp_path)
+                except OSError:
+                    pass
+    except OSError:
+        if not stored:
+            # Neither store took it — the value only lives in this process's
+            # memory and will be lost. Loud, because it means a key the owner
+            # just pasted into the UI is not actually saved.
+            logger.error("runtime_config: BOTH Postgres and file writes failed; value not persisted")
+        else:
+            logger.warning("runtime_config: file cache write failed; Postgres holds the value")
 
 
 def get(name: str, default: str = "") -> str:

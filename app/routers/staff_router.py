@@ -54,11 +54,16 @@ from ..services.staff_compliance import (
     compliance_check,
 )
 
+from ..services.durable_storage import durable_data_dir
+
 logger = logging.getLogger(__name__)
 
 # ── storage paths ─────────────────────────────────────────────────────────────
-_PHOTO_PATH = Path(os.getenv("STAFF_PHOTO_PATH", "/tmp/jworden_staff_photos"))
-_DOCS_PATH  = Path(os.getenv("STAFF_DOCS_PATH",  "/tmp/jworden_staff_docs"))
+# These hold REAL uploaded files (staff photos, signed documents). /tmp is
+# ephemeral on Fly, so every redeploy silently destroyed them. Use the durable
+# volume instead — see app/services/durable_storage.py.
+_PHOTO_PATH = Path(os.getenv("STAFF_PHOTO_PATH") or str(durable_data_dir() / "jworden_staff_photos"))
+_DOCS_PATH  = Path(os.getenv("STAFF_DOCS_PATH")  or str(durable_data_dir() / "jworden_staff_docs"))
 _MAX_PHOTO  = int(os.getenv("STAFF_PHOTO_MAX_BYTES", str(25 * 1024 * 1024)))
 _MAX_DOC    = int(os.getenv("STAFF_DOC_MAX_BYTES",   str(50 * 1024 * 1024)))
 _PHOTO_CT   = {"image/jpeg", "image/png", "image/heic", "image/heif", "image/webp"}
