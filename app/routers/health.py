@@ -241,7 +241,7 @@ def dashboard_preflight():
         "jarvis": {
             "full_capacity": jarvis_full_capacity,
             "engine": "anthropic-claude" if anthropic_ready else "heuristic-fallback",
-            "model": (_cfg.get("ANTHROPIC_MODEL") or "claude-sonnet-4-5") if anthropic_ready else None,
+            "model": (_cfg.anthropic_model()) if anthropic_ready else None,
             "tools": {
                 "web_search": web_ready,
                 "make_phone_call": call_ready,

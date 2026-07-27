@@ -205,6 +205,18 @@ def _save(data: dict[str, str]) -> None:
                 pass
 
 
+# The flagship model, defined ONCE. This literal was previously copy-pasted
+# into six files (jarvis, jarvis_router x2, tts, admin_integrations, health);
+# they drifted, and production reported claude-sonnet-4-5 on the tool path
+# while the chat lane ran Opus.
+DEFAULT_ANTHROPIC_MODEL = "claude-opus-5"
+
+
+def anthropic_model() -> str:
+    """Configured Claude model, or the flagship default."""
+    return (get("ANTHROPIC_MODEL") or "").strip() or DEFAULT_ANTHROPIC_MODEL
+
+
 def get(name: str, default: str = "") -> str:
     """Lookup order: runtime store → os.environ → default."""
     with _LOCK:

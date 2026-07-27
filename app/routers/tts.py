@@ -141,7 +141,7 @@ async def claude_ping() -> dict:
     key = _os.environ.get("ANTHROPIC_API_KEY", "").strip()
     if not key:
         return {"ok": False, "error": "ANTHROPIC_API_KEY not set on container"}
-    model = _os.environ.get("ANTHROPIC_MODEL") or "claude-sonnet-4-5"
+    model = __import__("app.services.runtime_config", fromlist=["x"]).anthropic_model()
     try:
         async with httpx.AsyncClient(timeout=20.0) as client:
             r = await client.post(
