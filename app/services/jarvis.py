@@ -119,6 +119,51 @@ JARVIS_TOOLS = [
             "required": ["state_code"],
         },
     },
+    # The business-data tools. Jarvis previously had no way to see the company
+    # it works for: 92 routers of leads, jobs, crews and cashflow, and a chat
+    # brain that could only guess or search the web. These read the same tables
+    # the dashboards read, in-process (those routers are auth-gated and Jarvis
+    # carries no bearer token). All read-only — no confirmation gate needed.
+    {
+        "name": "get_leads",
+        "description": (
+            "Recent inbound LEADS with score, priority and pipeline stage. Use for "
+            "'who called overnight', 'any new leads', 'what's in the pipeline', "
+            "'show me hot leads'. Returns newest first."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "limit": {"type": "integer", "description": "How many to return (default 10, max 50)."},
+                "min_score": {"type": "integer", "description": "Only leads scoring at or above this (0-100)."},
+                "stage": {"type": "string", "description": "Filter by pipeline stage, e.g. new, contacted, won."},
+            },
+        },
+    },
+    {
+        "name": "get_jobs",
+        "description": (
+            "Scheduled and in-progress JOBS with status, site address, crew schedule "
+            "and progress. Use for 'what's on today', 'where are my crews', "
+            "'what's running this week', 'which jobs are behind'."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "limit": {"type": "integer", "description": "How many to return (default 10, max 50)."},
+                "status": {"type": "string", "description": "Filter by status, e.g. scheduled, in_progress, completed."},
+            },
+        },
+    },
+    {
+        "name": "get_business_snapshot",
+        "description": (
+            "One-shot health check of the business: lead counts by stage, job counts by "
+            "status, customer total. Use for 'how are we doing', 'give me the numbers', "
+            "'morning brief', or any question needing overall shape rather than detail."
+        ),
+        "input_schema": {"type": "object", "properties": {}},
+    },
     {
         "name": "code_search",
         "description": (
@@ -213,6 +258,9 @@ _ROLE_TOOLS: dict[str, set[str]] = {
     ROLE_STAFF_OPERATOR: {
         "web_search", "code_search", "open_file", "plan_actions", "run_npm",
         "paving_forecast", "paving_seasonal_risk",
+        # Business data is staff+ only — a public visitor must never be able to
+        # enumerate leads, customer names or job sites through the concierge.
+        "get_leads", "get_jobs", "get_business_snapshot",
     },
     ROLE_OWNER_ROOT: {t["name"] for t in JARVIS_TOOLS},
 }
@@ -246,7 +294,11 @@ _ACTION_HINT_RE = re.compile(
 _CONDITIONS_RE = re.compile(
     r"\b(weather|forecast|rain\w*|precip\w*|temperature|temps?|wind\w*|storm\w*|"
     r"snow\w*|freez\w*|frost|humid\w*|pave|paving|sealcoat\w*|curing|"
-    r"too\s+cold|too\s+hot|dry\s+out)\b",
+    r"too\s+cold|too\s+hot|dry\s+out|"
+    # Business questions need the data tools for the same reason: the chat
+    # brain has none, and would answer "how many leads" from imagination.
+    r"lead|leads|job|jobs|crew|crews|customer|customers|pipeline|"
+    r"booked|scheduled|revenue|receivable|snapshot|how are we doing)\b",
     re.IGNORECASE,
 )
 
@@ -492,6 +544,88 @@ async def _ask_chat_brain(query: str, persona: str, autonomy: dict, session_id: 
     return {"text": resp.text.strip(), "provider": resp.provider, "model": resp.model, "fallback_used": bool(resp.fallback_used)}
 
 
+def _business_query(name: str, args: dict) -> dict:
+    """
+    Read leads / jobs / counts straight from the database.
+
+    Synchronous on purpose — SQLAlchemy sessions are blocking, so callers wrap
+    this in asyncio.to_thread rather than blocking the event loop.
+
+    Goes to the models rather than /api/v1/leads etc. because those routers
+    require a bearer token and Jarvis holds none; routing through HTTP would
+    mean minting a service credential for a read it can already do safely.
+    Every branch is read-only.
+    """
+    from ..database import SessionLocal  # noqa: PLC0415
+    from ..models import Customer, Job, Lead  # noqa: PLC0415
+
+    def _clamp(v, default=10, hi=50):
+        try:
+            return max(1, min(int(v), hi))
+        except (TypeError, ValueError):
+            return default
+
+    db = SessionLocal()
+    try:
+        if name == "get_leads":
+            q = db.query(Lead)
+            if args.get("stage"):
+                q = q.filter(Lead.pipeline_stage == str(args["stage"]).strip())
+            if args.get("min_score") is not None:
+                try:
+                    q = q.filter(Lead.score_value >= int(args["min_score"]))
+                except (TypeError, ValueError):
+                    pass
+            rows = q.order_by(Lead.id.desc()).limit(_clamp(args.get("limit"))).all()
+            return {
+                "ok": True,
+                "count": len(rows),
+                "leads": [{
+                    "id": r.id, "name": r.name, "phone": r.phone, "email": r.email,
+                    "service": r.service_type, "address": r.address, "state": r.state_code,
+                    "score": r.score_value, "priority": r.score_label,
+                    "stage": r.pipeline_stage, "urgency": r.urgency,
+                } for r in rows],
+            }
+
+        if name == "get_jobs":
+            q = db.query(Job)
+            if args.get("status"):
+                q = q.filter(Job.status == str(args["status"]).strip())
+            rows = q.order_by(Job.id.desc()).limit(_clamp(args.get("limit"))).all()
+            return {
+                "ok": True,
+                "count": len(rows),
+                "jobs": [{
+                    "id": r.id, "job_number": r.job_number, "name": r.name,
+                    "status": r.status, "service": r.service_type,
+                    "site": r.site_address, "state": r.state_code,
+                    "scheduled_start": str(r.scheduled_start) if r.scheduled_start else None,
+                    "scheduled_end": str(r.scheduled_end) if r.scheduled_end else None,
+                    "progress_percent": r.progress_percent,
+                } for r in rows],
+            }
+
+        # get_business_snapshot
+        def _by(model, column):
+            from sqlalchemy import func  # noqa: PLC0415
+            return {
+                str(k or "unspecified"): int(v)
+                for k, v in db.query(column, func.count()).group_by(column).all()
+            }
+
+        return {
+            "ok": True,
+            "leads_total": db.query(Lead).count(),
+            "leads_by_stage": _by(Lead, Lead.pipeline_stage),
+            "jobs_total": db.query(Job).count(),
+            "jobs_by_status": _by(Job, Job.status),
+            "customers_total": db.query(Customer).count(),
+        }
+    finally:
+        db.close()
+
+
 async def _run_tool(
     name: str,
     args: dict,
@@ -519,6 +653,14 @@ async def _run_tool(
             deep=bool(args.get("deep", False)),
         )
         return _finalize(result)
+    if name in ("get_leads", "get_jobs", "get_business_snapshot"):
+        try:
+            result = await asyncio.to_thread(_business_query, name, args)
+            return _finalize(result)
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("[JARVIS] %s failed: %s", name, exc)
+            return _finalize({"ok": False, "error": f"{name} unavailable: {exc}"})
+
     if name == "paving_forecast":
         # Called in-process rather than over /api/v1/weather/* — that router is
         # auth-gated, and Jarvis holds no bearer token of its own.
