@@ -58,10 +58,12 @@ JARVIS_TOOLS = [
     {
         "name": "web_search",
         "description": (
-            "Search the live web for current information (news, weather, prices, business hours, "
+            "Search the live web for current information (news, prices, business hours, "
             "phone numbers, reviews, anything you don't already know). Returns up to 5 results plus "
             "a synthesized answer. Use this whenever the user asks about current events or specific "
-            "real-world facts."
+            "real-world facts. Do NOT use this for weather or paving conditions — "
+            "`paving_forecast` and `paving_seasonal_risk` read our own forecast engine and apply "
+            "the Worden suitability thresholds, which a web search cannot do."
         ),
         "input_schema": {
             "type": "object",
@@ -70,6 +72,51 @@ JARVIS_TOOLS = [
                 "deep":  {"type": "boolean", "description": "Use advanced/deep search (slower, richer). Default false."},
             },
             "required": ["query"],
+        },
+    },
+    # Weather is NOT a web_search job. app/services/weather_service.py already
+    # holds the paving decision rules (precip > 30%, high < 50F, wind > 25mph)
+    # and per-state seasonal windows. Without these tools Jarvis had no way to
+    # reach any of it and fell back to searching Google — answering a crew
+    # scheduling question with a consumer weather headline instead of the
+    # thresholds the company actually paves by.
+    {
+        "name": "paving_forecast",
+        "description": (
+            "Authoritative 7-day PAVING SUITABILITY forecast for an address, from our own "
+            "weather engine. Returns each day's conditions plus a pave / do-not-pave verdict and "
+            "the reason, using the Worden thresholds: precipitation probability above 30%, high "
+            "temperature below 50F, or wind above 25 mph make a day unsuitable. Use this for ANY "
+            "question about weather, whether a crew can work, when to schedule a job, or whether "
+            "to postpone. Always prefer this over web_search for weather."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string",
+                    "description": "Street address, city+state, or ZIP of the job site.",
+                },
+            },
+            "required": ["address"],
+        },
+    },
+    {
+        "name": "paving_seasonal_risk",
+        "description": (
+            "Seasonal paving-risk profile for a US state (0 = low risk, 10 = high risk) by month, "
+            "reflecting typical paving season windows. Use for questions about when a state's "
+            "paving season opens or closes, or how risky a month is for scheduling work there."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "state_code": {
+                    "type": "string",
+                    "description": "Two-letter state code, e.g. VA, NC, MN.",
+                },
+            },
+            "required": ["state_code"],
         },
     },
     {
@@ -158,8 +205,15 @@ JARVIS_TOOLS = [
 
 _SENSITIVE_TOOL_NAMES = {"make_phone_call", "send_email", "run_npm"}
 _ROLE_TOOLS: dict[str, set[str]] = {
-    ROLE_PUBLIC_CONCIERGE: {"web_search"},
-    ROLE_STAFF_OPERATOR: {"web_search", "code_search", "open_file", "plan_actions", "run_npm"},
+    # Weather tools are read-only and carry no spend or side effects, so every
+    # role gets them. A customer asking "can you pave my lot next week?" is a
+    # sales conversation, and answering it from our own thresholds instead of a
+    # web search is the whole point of having the engine.
+    ROLE_PUBLIC_CONCIERGE: {"web_search", "paving_forecast", "paving_seasonal_risk"},
+    ROLE_STAFF_OPERATOR: {
+        "web_search", "code_search", "open_file", "plan_actions", "run_npm",
+        "paving_forecast", "paving_seasonal_risk",
+    },
     ROLE_OWNER_ROOT: {t["name"] for t in JARVIS_TOOLS},
 }
 
@@ -176,9 +230,30 @@ _ACTION_HINT_RE = re.compile(
 )
 
 
+# Conditions questions must reach the tool-capable lane.
+#
+# converse() routes on action verbs alone: anything without call/email/book/pay
+# etc. goes to _ask_chat_brain, which carries NO tools, and returns before
+# _ask_claude is ever reached. So "can my crew pave in Richmond this week?" was
+# answered from the model's memory while paving_forecast — our own engine, with
+# the real 30% precip / 50F / 25mph thresholds — sat unused two functions away.
+# The visible symptom was Jarvis reaching for a web search, or saying it had no
+# weather access at all.
+#
+# Scoped deliberately to weather and paving conditions rather than every
+# informational query: the tool lane costs an extra round trip, and widening
+# this further should be a measured decision, not a side effect of this fix.
+_CONDITIONS_RE = re.compile(
+    r"\b(weather|forecast|rain\w*|precip\w*|temperature|temps?|wind\w*|storm\w*|"
+    r"snow\w*|freez\w*|frost|humid\w*|pave|paving|sealcoat\w*|curing|"
+    r"too\s+cold|too\s+hot|dry\s+out)\b",
+    re.IGNORECASE,
+)
+
+
 def _looks_like_tool_action(query: str) -> bool:
     q = (query or "").strip()
-    return bool(_ACTION_HINT_RE.search(q))
+    return bool(_ACTION_HINT_RE.search(q) or _CONDITIONS_RE.search(q))
 
 
 _LIVE_INFO_KEYWORDS = {
@@ -444,6 +519,33 @@ async def _run_tool(
             deep=bool(args.get("deep", False)),
         )
         return _finalize(result)
+    if name == "paving_forecast":
+        # Called in-process rather than over /api/v1/weather/* — that router is
+        # auth-gated, and Jarvis holds no bearer token of its own.
+        try:
+            from . import weather_service  # noqa: PLC0415
+
+            data = await asyncio.to_thread(
+                weather_service.get_paving_forecast, args.get("address", "")
+            )
+            return _finalize({"ok": True, **data} if isinstance(data, dict) else {"ok": True, "result": data})
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("[JARVIS] paving_forecast failed: %s", exc)
+            return _finalize({"ok": False, "error": f"paving forecast unavailable: {exc}"})
+
+    if name == "paving_seasonal_risk":
+        try:
+            from . import weather_service  # noqa: PLC0415
+
+            data = await asyncio.to_thread(
+                weather_service.get_state_seasonal_risk,
+                (args.get("state_code", "") or "").strip().upper(),
+            )
+            return _finalize({"ok": True, **data} if isinstance(data, dict) else {"ok": True, "result": data})
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("[JARVIS] paving_seasonal_risk failed: %s", exc)
+            return _finalize({"ok": False, "error": f"seasonal risk unavailable: {exc}"})
+
     if name == "make_phone_call":
         result = await _vapi.place_call(
             args.get("to_number", ""),

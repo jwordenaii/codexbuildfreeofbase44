@@ -36,6 +36,8 @@ MAX_WIND_MPH_THRESHOLD = 25.0      # Wind above this → unsuitable
 _OWM_KEY = os.getenv("OPENWEATHERMAP_API_KEY", "")
 _GEO_URL = "https://api.openweathermap.org/geo/1.0/direct"
 _FORECAST_URL = "https://api.openweathermap.org/data/3.0/onecall"
+# Free tier: 5 days / 3-hour steps. Used when One Call 3.0 is not subscribed.
+_FREE_FORECAST_URL = "https://api.openweathermap.org/data/2.5/forecast"
 _TIMEOUT = 10.0
 
 # Seasonal risk scores by state (0=low risk, 10=high risk)
@@ -75,22 +77,110 @@ def _is_suitable(high_f: float, precip_prob: float, wind_mph: float) -> tuple[bo
     return True, "Conditions suitable for paving work"
 
 
-def _geocode(address: str) -> Optional[tuple[float, float]]:
-    """Return (lat, lon) for the given address or None."""
-    if not _OWM_KEY:
+def _geocode_candidates(address: str) -> list[str]:
+    """
+    Query forms to try against the OWM geocoder, best first.
+
+    OWM returns HTTP 200 with an EMPTY LIST for "Richmond, VA" — the space
+    after the comma is enough to break it — while "Richmond,VA,US" resolves.
+    Since callers pass addresses the way a person types them, every lookup
+    silently produced no coordinates, and the caller reported that as
+    "configure OPENWEATHERMAP_API_KEY", pointing at the wrong cause entirely.
+
+        q=Richmond, VA    -> []
+        q=Richmond,VA,US  -> [{"name": "Richmond", ...}]
+    """
+    raw = " ".join((address or "").split()).strip().strip(",")
+    if not raw:
+        return []
+
+    tight = ",".join(p.strip() for p in raw.split(",") if p.strip())
+    out = [tight]
+
+    # "City,ST" -> "City,ST,US": OWM wants an ISO country, and a bare 2-letter
+    # state is ambiguous to it.
+    parts = tight.split(",")
+    if len(parts) == 2 and len(parts[1]) == 2 and parts[1].isalpha():
+        out.insert(0, f"{tight},US")
+
+    # Street addresses never geocode here; fall back to the last two components
+    # ("1234 Main St,Chester,VA" -> "Chester,VA,US").
+    if len(parts) >= 3:
+        tail = ",".join(parts[-2:])
+        if len(parts[-1]) == 2 and parts[-1].isalpha():
+            out.append(f"{tail},US")
+        out.append(tail)
+
+    if raw not in out:
+        out.append(raw)
+
+    seen, ordered = set(), []
+    for q in out:
+        if q and q not in seen:
+            seen.add(q)
+            ordered.append(q)
+    return ordered
+
+
+def _geocode_google(address: str) -> Optional[tuple[float, float]]:
+    """
+    Geocode via Google when GOOGLE_MAPS_API_KEY is available.
+
+    Preferred over OWM because OWM's geocoder ignores the state qualifier and
+    picks the wrong city outright:
+
+        OWM    "Chester,VA,US" -> 40.613,-80.563   (Chester, WEST VIRGINIA)
+        actual  Chester, VA    -> 37.35,-77.44     (the company's home market)
+
+    A forecast for the wrong Chester is worse than no forecast: it looks
+    authoritative and would ground or dispatch a crew on another state's
+    weather. Falls through to OWM on any failure, so this can only improve
+    accuracy, never remove capability.
+    """
+    key = os.getenv("GOOGLE_MAPS_API_KEY", "")
+    if not key or not (address or "").strip():
         return None
     try:
         resp = httpx.get(
-            _GEO_URL,
-            params={"q": address, "limit": 1, "appid": _OWM_KEY},
+            "https://maps.googleapis.com/maps/api/geocode/json",
+            params={"address": address, "key": key},
             timeout=_TIMEOUT,
         )
         resp.raise_for_status()
-        data = resp.json()
-        if data:
-            return data[0]["lat"], data[0]["lon"]
+        payload = resp.json()
+        results = payload.get("results") or []
+        if payload.get("status") == "OK" and results:
+            loc = results[0]["geometry"]["location"]
+            return float(loc["lat"]), float(loc["lng"])
+        logger.info("Google geocode returned %s for %r", payload.get("status"), address)
     except Exception as exc:  # noqa: BLE001
-        logger.error("Geocoding error for %r: %s", address, exc)
+        logger.warning("Google geocode failed for %r: %s", address, exc)
+    return None
+
+
+def _geocode(address: str) -> Optional[tuple[float, float]]:
+    """Return (lat, lon) for the given address or None."""
+    google = _geocode_google(address)
+    if google:
+        return google
+
+    if not _OWM_KEY:
+        return None
+    for query in _geocode_candidates(address):
+        try:
+            resp = httpx.get(
+                _GEO_URL,
+                params={"q": query, "limit": 1, "appid": _OWM_KEY},
+                timeout=_TIMEOUT,
+            )
+            resp.raise_for_status()
+            data = resp.json()
+            if data:
+                return data[0]["lat"], data[0]["lon"]
+            logger.info("Geocoder returned no match for %r — trying next form", query)
+        except Exception as exc:  # noqa: BLE001
+            logger.error("Geocoding error for %r: %s", query, exc)
+    logger.error("Geocoding failed for %r after trying all query forms", address)
     return None
 
 
@@ -106,6 +196,66 @@ def _fallback_forecast(address: str) -> dict:
         ),
         "source": "fallback",
     }
+
+
+def _daily_from_free_forecast(lat: float, lon: float) -> list[dict]:
+    """
+    Build One-Call-shaped daily entries from the free /data/2.5/forecast endpoint.
+
+    That endpoint returns 3-hour steps for ~5 days. Aggregated per calendar day
+    the way a paving decision actually cares about:
+
+      temp.max / temp.min  → the day's extremes
+      pop                  → the WORST precipitation probability in the day, not
+                             an average; a 70% band at 2pm rules out the day even
+                             if the mean looks mild
+      wind_speed           → the day's peak gust-equivalent, same reasoning
+
+    Returned in Kelvin and m/s so the existing _kelvin_to_f / _ms_to_mph
+    conversions and _is_suitable thresholds apply unchanged.
+    """
+    try:
+        resp = httpx.get(
+            _FREE_FORECAST_URL,
+            params={"lat": lat, "lon": lon, "appid": _OWM_KEY},
+            timeout=_TIMEOUT,
+        )
+        resp.raise_for_status()
+        rows = resp.json().get("list", []) or []
+    except Exception as exc:  # noqa: BLE001
+        logger.error("Free forecast fetch failed: %s", exc)
+        return []
+
+    buckets: dict[str, dict] = {}
+    for row in rows:
+        ts = row.get("dt")
+        if ts is None:
+            continue
+        day_key = datetime.fromtimestamp(ts, tz=timezone.utc).strftime("%Y-%m-%d")
+        main = row.get("main") or {}
+        temp = main.get("temp")
+        if temp is None:
+            continue
+        b = buckets.setdefault(day_key, {
+            "dt": ts, "highs": [], "lows": [], "pops": [], "winds": [], "hums": [],
+        })
+        b["highs"].append(main.get("temp_max", temp))
+        b["lows"].append(main.get("temp_min", temp))
+        b["pops"].append(float(row.get("pop", 0.0) or 0.0))
+        b["winds"].append(float((row.get("wind") or {}).get("speed", 0.0) or 0.0))
+        b["hums"].append(main.get("humidity", 0) or 0)
+
+    daily = []
+    for day_key in sorted(buckets):
+        b = buckets[day_key]
+        daily.append({
+            "dt": b["dt"],
+            "temp": {"max": max(b["highs"]), "min": min(b["lows"])},
+            "pop": max(b["pops"]) if b["pops"] else 0.0,
+            "wind_speed": max(b["winds"]) if b["winds"] else 0.0,
+            "humidity": int(sum(b["hums"]) / len(b["hums"])) if b["hums"] else 0,
+        })
+    return daily
 
 
 def get_paving_forecast(address: str) -> dict:
@@ -138,10 +288,28 @@ def get_paving_forecast(address: str) -> dict:
             },
             timeout=_TIMEOUT,
         )
-        resp.raise_for_status()
-        data = resp.json()
-        daily = data.get("daily", [])
-        hourly = data.get("hourly", []) # Used for detailed daily reports
+        # One Call 3.0 is a PAID add-on. A standard OpenWeatherMap key geocodes
+        # fine (that call is free) and then 401s here:
+        #
+        #   {"cod":401,"message":"Please note that using One Call 3.0 requires a
+        #    separate subscription to the One Call by Call plan."}
+        #
+        # which surfaced as "weather engine requires additional configuration"
+        # even though OPENWEATHERMAP_API_KEY was present and valid. Fall back to
+        # the free 5-day/3-hour endpoint and aggregate it into the same daily
+        # shape, so paving decisions work on a plain key.
+        if resp.status_code in (401, 403):
+            logger.info(
+                "One Call 3.0 unavailable on this key (%s) — using free 5-day forecast",
+                resp.status_code,
+            )
+            daily = _daily_from_free_forecast(lat, lon)
+            if not daily:
+                return _fallback_forecast(address)
+        else:
+            resp.raise_for_status()
+            data = resp.json()
+            daily = data.get("daily", [])
 
         windows = []
         unsuitable_count = 0
