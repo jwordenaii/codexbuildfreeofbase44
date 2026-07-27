@@ -157,7 +157,7 @@ async def _test_anthropic() -> dict:
     key = runtime_config.get("ANTHROPIC_API_KEY")
     if not key:
         return {"ok": False, "error": "ANTHROPIC_API_KEY not set"}
-    model = (runtime_config.get("ANTHROPIC_MODEL") or "").strip() or "claude-sonnet-4-5"
+    model = runtime_config.anthropic_model()
     try:
         async with httpx.AsyncClient(timeout=10) as c:
             # 1-token ping

@@ -31,7 +31,7 @@ logger = logging.getLogger(__name__)
 # queries through Claude with a JWordenAI-aware system prompt. Falls back
 # gracefully to canned responses when the key is missing or the call fails.
 def _anthropic_key()   -> str: return _cfg.get("ANTHROPIC_API_KEY")
-def _anthropic_model() -> str: return _cfg.get("ANTHROPIC_MODEL") or "claude-sonnet-4-5"
+def _anthropic_model() -> str: return _cfg.anthropic_model()
 _ANTHROPIC_URL = "https://api.anthropic.com/v1/messages"
 _ANTHROPIC_VERSION = "2023-06-01"
 

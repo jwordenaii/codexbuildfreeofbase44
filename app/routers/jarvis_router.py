@@ -278,7 +278,7 @@ async def jarvis_status():
         "status":     "FROZEN" if state.get("frozen") else jarvis.status,
         "monitoring": jarvis.master_project,
         "engine":     "anthropic-claude" if has_brain else "heuristic-fallback",
-        "model":      (_cfg.get("ANTHROPIC_MODEL") or "claude-sonnet-4-5") if has_brain else None,
+        "model":      (_cfg.anthropic_model()) if has_brain else None,
         "tools": {
             "web_search":       _web_search.is_available(),
             "make_phone_call":  _vapi.is_available(),
@@ -331,7 +331,7 @@ async def jarvis_readiness():
         "identity": jarvis.identity,
         "status": "FROZEN" if frozen else jarvis.status,
         "engine": "anthropic-claude" if anthropic_ready else "heuristic-fallback",
-        "model": (_cfg.get("ANTHROPIC_MODEL") or "claude-sonnet-4-5") if anthropic_ready else None,
+        "model": (_cfg.anthropic_model()) if anthropic_ready else None,
         "tools": {
             "web_search": tavily_ready,
             "make_phone_call": call_ready,
