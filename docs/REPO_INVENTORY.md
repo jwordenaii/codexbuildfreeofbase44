@@ -93,3 +93,114 @@ holding domains, and still running scheduled functions.
   Check Netlify → Domains before deleting anything.
 - `jwordenandsonspaving.com` was unreachable from the audit environment.
   It is served by the June 9 `wordenproduction` build; confirm in a browser.
+
+---
+
+# Complete inventory — all 17 repositories
+
+Added after inventorying every repo individually. The headline finding changed
+twice while doing this, which is the argument for having done it.
+
+## Tier 1 — harvest before archiving (unique capability)
+
+### `jworden-production` — the superset backend
+104 routers (23,146 lines), 93 services (22,673), 66 tables, plus `jarvis_os`
+(179 abilities, 10,024 lines). Frontend 90,286 lines across 360 files.
+**Does not currently boot** — 3 missing modules (`geocoding`, `google_photos`,
+`google_sheets`) referenced by 5 files. Four of those five are already fixed in
+`codexbuildfreeofbase44`.
+Also contains 10 embedded sub-sites and `scavenged-assets/` (584 files, 14
+copied projects, including backend copy #5).
+
+### `NewRepo` — 15 routers + 10 services that exist nowhere else
+~4,945 lines, all real (no stubs), and disproportionately the licensable ones:
+
+| module | lines / endpoints |
+|---|---|
+| `catalog.py` | 389 / 10 |
+| `gantt.py` | 370 / 8 |
+| `bim.py` | 318 / 8 |
+| `saas_billing.py` | 316 / 8 |
+| `quickbooks.py` | 216 / 5 |
+| `client_portal.py` | 210 / 5 |
+| `pavement_intel.py` | 526 |
+| `parcel_service.py` | 217 |
+| `property_vision.py` | 149 |
+
+### `jworden-jarvis-os` — `client-dashboard/`
+Standalone Next.js app, 9,289 lines, unique. Routes include `/real-estate`,
+`/roofing`, `/saas-client`, `/fsm`, `/fleet`, `/legal`, `/spatial`,
+`/visualizer`, `/jarvis-omni`. This is the multi-trade licensable shell,
+already scaffolded.
+Its 164 abilities are an identical set to production's copy, and production's
+is equal-or-larger in all 64 that differ — nothing to harvest there.
+
+### `doooone` — 533 job-site photographs
+`work/imported/` carries real project photography (brick paver patio, KFC,
+etc.) with Google Photos metadata, plus a compiled build. No source. This is
+portfolio/catalog material, not a codebase.
+
+### `jwordenasphaltantigravity` — dormant local SEO
+Next.js, 25 Virginia city routes, `/insights` with 6 written articles, 540
+image assets, 5,897 lines of src. No deploy config. The copy embedded in
+`jworden-production/jworden-antigravity/` is a different, smaller build (53
+files vs 607).
+
+### `wordenstandard` — two files worth keeping
+Backend copy #3 (88 routers, 86 services, 55 tables) — all subsets of
+production. Unique: `app/routers/forecast.py` and
+`src_wordenstandard/components/TheWordenStandard.tsx`. Everything else in its
+13,944-line `src_wordenstandard/` already exists in `jworden-production`.
+
+## Tier 2 — subsets, archive after Phase 1
+
+| repo | verdict |
+|---|---|
+| `codexbuildfreeofbase44` | Currently deployed to Fly. 0 unique routers, 0 unique services, 0 unique tables. Its value is 6 files improved 2026-07-28: `jarvis`, `weather_service`, `short_memory`, `llm_client`, `tts_service`, `runtime_config`. |
+| `gemini2` | Twin A. 296 files shared with spacexgeminijworden. Package name `react-example`. Source of the stale CLAUDE.md. |
+| `spacexgeminijworden` | Twin B. TanStack Router, Netlify. |
+
+## Tier 3 — small, single-purpose, or empty
+
+| repo | files | code files | note |
+|---|---|---|---|
+| `blueridgeasphaltpaving` | 72 | 29 | Separate live Next.js site |
+| `jwordenasphaltpaving2` | 80 | 3 | Assets and config only |
+| `obxpaving-` | 49 | 35 | Also embedded in production as `obx-paving/` |
+| `next-platform-starter` | 54 | 35 | Netlify's own boilerplate |
+| `atlantapavingandsealing` | 29 | 0 | Static assets only; embedded in production too |
+| `googlebuiltoperatingsystem-` | 26 | 14 | package name `dashboard` |
+| `wordenuniversity` | 16 | 4 | Serves jwordenuniversity.com |
+| `carolinablacktop` | **0** | 0 | **Empty repository** — but a domain and deploy project point at it |
+
+## Backend copies — final count: five
+
+| location | routers | models.py | jarvis.py |
+|---|---|---|---|
+| `jworden-production/app/` | 104 | 2,033 | 1,165 |
+| `codexbuildfreeofbase44/app/` | 92 | 1,847 | **1,675** |
+| `wordenstandard/app/` | 88 | 1,617 | 903 |
+| `NewRepo/apps/api/app/` | 44 | 799 | — |
+| `jworden-production/scavenged-assets/NewRepo/apps/api/app/` | 44 | 799 | — |
+
+Schema is a clean nesting: production's 66 tables ⊃ codexbuild's 58 ⊃
+wordenstandard's 55. Zero tables unique to codexbuild. Merging is additive.
+
+Of 87 services shared between production and codexbuild, **78 are
+byte-identical**. Only 9 differ. The divergence is small and fully understood.
+
+## The plan this produces
+
+1. **One backend.** Base on `jworden-production/app/`. Fix 3 imports, port the
+   6 improved files from codexbuild, +8 tables, deploy to Fly. The SAM.gov bid
+   hunter goes live.
+2. **Harvest.** NewRepo's 25 unique modules, wordenstandard's 2 files.
+   Then archive both, plus the twins and the duplicate backends.
+3. **Product.** `client-dashboard` becomes the licensable frontend — it already
+   has the trade routes. Wire to the one backend, finish `tenant_id`.
+4. **Reclaim.** `doooone`'s 533 job photos into the catalog;
+   `jwordenasphaltantigravity`'s 25 city pages + 6 articles into the SEO estate.
+
+The conclusion worth stating plainly: **very little needs to be written.** What
+is missing is one deployed backend and one wired frontend. Nearly everything
+described as the product already exists in one of these repositories.
