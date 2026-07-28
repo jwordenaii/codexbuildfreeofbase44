@@ -278,6 +278,7 @@ from .routers import foreman as foreman_router
 from .routers import gallery as gallery_router
 from .routers import geo as geo_router
 from .routers import global_platform as global_router
+from .routers import facebook_page as facebook_page_router
 from .routers import google_reporting as google_reporting_router
 from .routers import health as health_router
 from .routers import human_review as human_review_router
@@ -612,6 +613,7 @@ app.include_router(site_metrics_router.router)
 app.include_router(kickserv_router.router)
 
 # Unified Google Reporting (Ads + Search Console + GA4 combined KPI summary)
+app.include_router(facebook_page_router.router)
 app.include_router(google_reporting_router.router)
 
 # Intelligent compaction telemetry (IoT roller pings + density heat map)
