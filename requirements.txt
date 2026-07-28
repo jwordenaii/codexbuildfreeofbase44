@@ -65,3 +65,11 @@ pandas==3.0.2; python_version >= "3.14"
 # ── Testing ──────────────────────────────────────────────────────────────────
 pytest==8.3.5
 pytest-asyncio==0.26.0
+
+# ── Payments ─────────────────────────────────────────────────────────────────
+# Imported unguarded at module scope by app/routers/billing.py and
+# app/routers/portal.py, but was missing from this file. A clean build could
+# not import the app at all (ModuleNotFoundError: stripe); the running
+# container only worked because it was built while the package was still
+# present in the layer cache. Verified against 15.3.1.
+stripe>=15.3.1,<16.0.0
