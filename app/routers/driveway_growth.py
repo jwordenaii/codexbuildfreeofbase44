@@ -7,7 +7,14 @@ Implements a compliance-first Physical-to-Digital funnel:
 - Public opt-in gateway for explicit consent capture
 """
 
-from __future__ import annotations
+# NOTE: `from __future__ import annotations` was removed deliberately.
+# It makes every annotation a string, and the @limiter.limit wrapper below
+# loses the module context FastAPI needs to resolve them. The result was that
+# `payload: DrivewayEstimatePreviewRequest` could not be resolved, FastAPI fell
+# back to treating it as a query parameter, and OpenAPI schema generation raised
+# PydanticUserError — taking /openapi.json, /docs and /redoc down with it.
+# This file has no forward references and no PEP 604 unions, so the import
+# bought nothing. Do not reinstate it while these routes are rate-limited.
 
 import hashlib
 import json
