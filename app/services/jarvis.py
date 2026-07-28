@@ -4,6 +4,7 @@ import os
 import asyncio
 import re
 import time
+from datetime import datetime, timedelta, timezone
 from typing import Dict, Any, List, Optional
 from app.services.quantum_orchestrator import global_quantum_orchestrator
 from app.services import autonomy_state
@@ -165,6 +166,94 @@ JARVIS_TOOLS = [
         "input_schema": {"type": "object", "properties": {}},
     },
     {
+        "name": "get_money_position",
+        "description": (
+            "CASH POSITION: projected income vs expenses over a forward window, money "
+            "already collected, money still owed, and the value sitting in unconverted "
+            "estimates. Use for 'can we make payroll', 'what's coming in', 'how much are "
+            "we owed', 'what did we collect this month', 'cashflow'."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "days_ahead": {
+                    "type": "integer",
+                    "description": "Forward window for projected cashflow (default 30, max 365).",
+                },
+            },
+        },
+    },
+    {
+        "name": "get_follow_ups",
+        "description": (
+            "Follow-up calls and touches that are DUE or OVERDUE, with the lead's name and "
+            "phone number attached so they can be actioned immediately. Use for 'who do I "
+            "need to call', 'what's overdue', 'am I forgetting anyone', 'follow ups'. "
+            "Overdue items are listed first — these are leads going cold."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "limit": {"type": "integer", "description": "How many to return (default 10, max 50)."},
+                "include_upcoming": {
+                    "type": "boolean",
+                    "description": "Also include follow-ups scheduled in the next 48h (default true).",
+                },
+            },
+        },
+    },
+    {
+        "name": "get_lien_deadlines",
+        "description": (
+            "Mechanic's-lien deadlines by project, with days remaining. Missing one of these "
+            "forfeits the right to collect on that job, so treat anything inside 14 days as "
+            "urgent. Use for 'any lien deadlines', 'what am I about to lose the right to "
+            "collect on', 'lien calendar', 'preliminary notice due'."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "within_days": {
+                    "type": "integer",
+                    "description": "Only deadlines falling inside this many days (default 60, max 365).",
+                },
+                "state_code": {"type": "string", "description": "Two-letter state filter, e.g. VA."},
+            },
+        },
+    },
+    {
+        "name": "get_bid_intelligence",
+        "description": (
+            "WIN/LOSS record on proposals: win rate overall and broken out by service and "
+            "region, plus how our price compared to the competitor's on jobs we lost. Use "
+            "for 'what's our win rate', 'why are we losing commercial', 'are we bidding too "
+            "high', 'how did we do on bids this year'."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "service_type": {"type": "string", "description": "Filter to one service, e.g. sealcoating."},
+                "region": {"type": "string", "description": "Filter to one region."},
+            },
+        },
+    },
+    {
+        "name": "get_permit_leads",
+        "description": (
+            "Scraped construction PERMITS that represent unworked paving opportunities, "
+            "ranked HOT / WARM / COOL with project value and address. Use for 'any new "
+            "permits', 'where's the work', 'what should we be bidding', 'hot permits near me'."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "limit": {"type": "integer", "description": "How many to return (default 10, max 50)."},
+                "priority": {"type": "string", "description": "Filter by label: HOT, WARM or COOL."},
+                "state_code": {"type": "string", "description": "Two-letter state filter, e.g. VA."},
+            },
+        },
+    },
+    {
         "name": "code_search",
         "description": (
             "Search the repository for files or lines matching a query. Returns up to 12 matches with file paths and snippets."
@@ -249,6 +338,21 @@ JARVIS_TOOLS = [
 ]
 
 _SENSITIVE_TOOL_NAMES = {"make_phone_call", "send_email", "run_npm"}
+
+# Every tool served by _business_query. Kept as one name so the dispatcher and
+# the implementation cannot drift apart: adding a branch to _business_query
+# without adding it here silently produced "I don't have a tool for that".
+_BUSINESS_TOOL_NAMES = {
+    "get_leads",
+    "get_jobs",
+    "get_business_snapshot",
+    "get_money_position",
+    "get_follow_ups",
+    "get_lien_deadlines",
+    "get_bid_intelligence",
+    "get_permit_leads",
+}
+
 _ROLE_TOOLS: dict[str, set[str]] = {
     # Weather tools are read-only and carry no spend or side effects, so every
     # role gets them. A customer asking "can you pave my lot next week?" is a
@@ -261,6 +365,12 @@ _ROLE_TOOLS: dict[str, set[str]] = {
         # Business data is staff+ only — a public visitor must never be able to
         # enumerate leads, customer names or job sites through the concierge.
         "get_leads", "get_jobs", "get_business_snapshot",
+        "get_follow_ups", "get_lien_deadlines", "get_permit_leads",
+        # NOTE: get_money_position and get_bid_intelligence are deliberately
+        # absent here. Revenue, receivables and win/loss margins are owner-level
+        # facts — a crew lead or office operator has no need for them, and they
+        # are exactly what would hurt most if a staff session were compromised.
+        # ROLE_OWNER_ROOT picks them up automatically from JARVIS_TOOLS.
     },
     ROLE_OWNER_ROOT: {t["name"] for t in JARVIS_TOOLS},
 }
@@ -298,7 +408,19 @@ _CONDITIONS_RE = re.compile(
     # Business questions need the data tools for the same reason: the chat
     # brain has none, and would answer "how many leads" from imagination.
     r"lead|leads|job|jobs|crew|crews|customer|customers|pipeline|"
-    r"booked|scheduled|revenue|receivable|snapshot|how are we doing)\b",
+    r"booked|scheduled|revenue|receivable|snapshot|how are we doing|"
+    # Money, obligations and bid history. Same reasoning as above: without
+    # these words the question never reaches a tool, and Jarvis answers a
+    # cashflow question with a plausible-sounding invention.
+    r"cash\s*flow|cashflow|payroll|invoice\w*|owed|collect\w*|payment\w*|"
+    r"paid|outstanding|estimate\w*|quote\w*|money|"
+    r"follow[\s-]?ups?|overdue|call\s*back|callback|"
+    r"lien\w*|deadline\w*|notice|"
+    # Deliberately NOT bare `won`/`lost`: "who won the world series" is not a
+    # bid question, and dragging trivia into the tool lane costs a round trip
+    # on every one. bid/proposal/win-rate/competitor already catch the real ask.
+    r"bid|bids|bidding|proposal\w*|win\s*rate|competitor\w*|"
+    r"permit\w*)\b",
     re.IGNORECASE,
 )
 
@@ -557,13 +679,37 @@ def _business_query(name: str, args: dict) -> dict:
     Every branch is read-only.
     """
     from ..database import SessionLocal  # noqa: PLC0415
-    from ..models import Customer, Job, Lead  # noqa: PLC0415
+    from ..models import (  # noqa: PLC0415
+        CashFlowEntry,
+        Customer,
+        Estimate,
+        FollowUpTask,
+        Job,
+        Lead,
+        LienCalendarEntry,
+        PaymentTransaction,
+        PermitLead,
+        ProposalOutcome,
+    )
 
     def _clamp(v, default=10, hi=50):
         try:
             return max(1, min(int(v), hi))
         except (TypeError, ValueError):
             return default
+
+    now = datetime.now(timezone.utc)
+
+    def _days_until(dt) -> int | None:
+        """Whole days from now until dt. Negative means it already passed."""
+        if dt is None:
+            return None
+        # Rows written before the timezone-aware columns landed can still come
+        # back naive; treating those as UTC is right for this database and
+        # avoids a TypeError that would take the whole tool down.
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        return (dt - now).days
 
     db = SessionLocal()
     try:
@@ -606,7 +752,266 @@ def _business_query(name: str, args: dict) -> dict:
                 } for r in rows],
             }
 
-        # get_business_snapshot
+        if name == "get_money_position":
+            from sqlalchemy import func  # noqa: PLC0415
+
+            try:
+                horizon = max(1, min(int(args.get("days_ahead") or 30), 365))
+            except (TypeError, ValueError):
+                horizon = 30
+            until = now + timedelta(days=horizon)
+
+            def _sum(q) -> float:
+                return round(float(q.scalar() or 0.0), 2)
+
+            projected_in = _sum(
+                db.query(func.sum(CashFlowEntry.amount)).filter(
+                    CashFlowEntry.entry_type == "income",
+                    CashFlowEntry.expected_date >= now,
+                    CashFlowEntry.expected_date <= until,
+                )
+            )
+            projected_out = _sum(
+                db.query(func.sum(CashFlowEntry.amount)).filter(
+                    CashFlowEntry.entry_type == "expense",
+                    CashFlowEntry.expected_date >= now,
+                    CashFlowEntry.expected_date <= until,
+                )
+            )
+            collected = _sum(
+                db.query(func.sum(PaymentTransaction.amount_usd)).filter(
+                    PaymentTransaction.status == "paid"
+                )
+            )
+            awaiting = _sum(
+                db.query(func.sum(PaymentTransaction.amount_usd)).filter(
+                    PaymentTransaction.status == "pending"
+                )
+            )
+            # Estimates that went out and have not been won or lost yet. Quoted
+            # as a low/high band because that is how the estimator produces
+            # them — collapsing to a midpoint here would invent precision the
+            # underlying number does not have.
+            open_est = db.query(
+                func.count(Estimate.id),
+                func.sum(Estimate.amount_low),
+                func.sum(Estimate.amount_high),
+            ).filter(Estimate.status.in_(("sent", "approved"))).one()
+
+            return {
+                "ok": True,
+                "window_days": horizon,
+                "projected_income": projected_in,
+                "projected_expenses": projected_out,
+                "projected_net": round(projected_in - projected_out, 2),
+                "collected_to_date": collected,
+                "awaiting_payment": awaiting,
+                "open_estimates": {
+                    "count": int(open_est[0] or 0),
+                    "value_low": round(float(open_est[1] or 0.0), 2),
+                    "value_high": round(float(open_est[2] or 0.0), 2),
+                },
+                "note": (
+                    "Projected figures come from cashflow_entries only. If that table is "
+                    "empty the projection is zero — that means nothing has been logged, "
+                    "not that no money is moving."
+                ),
+            }
+
+        if name == "get_follow_ups":
+            include_upcoming = args.get("include_upcoming")
+            include_upcoming = True if include_upcoming is None else bool(include_upcoming)
+            cutoff = now + timedelta(hours=48) if include_upcoming else now
+
+            rows = (
+                db.query(FollowUpTask)
+                .filter(
+                    FollowUpTask.status == "pending",
+                    FollowUpTask.scheduled_at <= cutoff,
+                )
+                .order_by(FollowUpTask.scheduled_at.asc())
+                .limit(_clamp(args.get("limit")))
+                .all()
+            )
+
+            # One extra query for the whole page of leads rather than one per
+            # row — this list is rendered on every morning brief.
+            lead_ids = [r.lead_id for r in rows if r.lead_id]
+            leads = (
+                {l.id: l for l in db.query(Lead).filter(Lead.id.in_(lead_ids)).all()}
+                if lead_ids
+                else {}
+            )
+
+            items = []
+            for r in rows:
+                lead = leads.get(r.lead_id)
+                due_in = _days_until(r.scheduled_at)
+                items.append({
+                    "task_id": r.id,
+                    "type": r.task_type,
+                    "due": str(r.scheduled_at) if r.scheduled_at else None,
+                    "days_until_due": due_in,
+                    "overdue": bool(due_in is not None and due_in < 0),
+                    "lead_id": r.lead_id,
+                    "lead_name": getattr(lead, "name", None),
+                    "phone": getattr(lead, "phone", None),
+                    "email": getattr(lead, "email", None),
+                    "service": getattr(lead, "service_type", None),
+                    "priority": getattr(lead, "score_label", None),
+                })
+
+            overdue = [i for i in items if i["overdue"]]
+            return {
+                "ok": True,
+                "count": len(items),
+                "overdue_count": len(overdue),
+                "follow_ups": items,
+            }
+
+        if name == "get_lien_deadlines":
+            try:
+                within = max(1, min(int(args.get("within_days") or 60), 365))
+            except (TypeError, ValueError):
+                within = 60
+            horizon = now + timedelta(days=within)
+
+            q = db.query(LienCalendarEntry)
+            if args.get("state_code"):
+                q = q.filter(
+                    LienCalendarEntry.state_code == str(args["state_code"]).strip().upper()[:2]
+                )
+            rows = q.order_by(LienCalendarEntry.id.desc()).limit(200).all()
+
+            items = []
+            for r in rows:
+                # A row carries up to three separate deadlines; each is its own
+                # forfeiture risk, so they are surfaced individually rather than
+                # reduced to whichever happens to be soonest.
+                for label, when in (
+                    ("preliminary_notice", r.preliminary_notice_deadline),
+                    ("lien_filing", r.lien_filing_deadline),
+                    ("foreclosure", r.foreclosure_deadline),
+                ):
+                    if when is None:
+                        continue
+                    days = _days_until(when)
+                    if days is None or days > within:
+                        continue
+                    items.append({
+                        "entry_id": r.id,
+                        "deadline_type": label,
+                        "due": str(when),
+                        "days_remaining": days,
+                        "expired": days < 0,
+                        "urgent": 0 <= days <= 14,
+                        "customer": r.customer_name,
+                        "project_address": r.project_address,
+                        "state": r.state_code,
+                    })
+
+            items.sort(key=lambda i: i["days_remaining"])
+            return {
+                "ok": True,
+                "window_days": within,
+                "count": len(items),
+                "urgent_count": sum(1 for i in items if i["urgent"]),
+                "expired_count": sum(1 for i in items if i["expired"]),
+                "deadlines": items[:50],
+                "horizon": str(horizon),
+            }
+
+        if name == "get_bid_intelligence":
+            q = db.query(ProposalOutcome)
+            if args.get("service_type"):
+                q = q.filter(ProposalOutcome.service_type == str(args["service_type"]).strip())
+            if args.get("region"):
+                q = q.filter(ProposalOutcome.region == str(args["region"]).strip())
+            rows = q.all()
+
+            def _rate(subset) -> dict:
+                won = sum(1 for r in subset if r.outcome == "won")
+                lost = sum(1 for r in subset if r.outcome == "lost")
+                decided = won + lost
+                return {
+                    "won": won,
+                    "lost": lost,
+                    "pending": sum(1 for r in subset if r.outcome == "pending"),
+                    # Undecided bids are excluded from the denominator — counting
+                    # them as losses would make an active pipeline look like a
+                    # collapsing one.
+                    "win_rate_percent": round(won / decided * 100, 1) if decided else None,
+                }
+
+            def _group(attr) -> dict:
+                buckets: dict[str, list] = {}
+                for r in rows:
+                    buckets.setdefault(str(getattr(r, attr) or "unspecified"), []).append(r)
+                return {k: _rate(v) for k, v in sorted(buckets.items())}
+
+            # On lost bids, how far above the competitor were we? Positive means
+            # we were the more expensive number.
+            gaps = [
+                r.proposal_amount_low - r.competitor_price
+                for r in rows
+                if r.outcome == "lost"
+                and r.competitor_price
+                and r.proposal_amount_low
+            ]
+            avg_gap = round(sum(gaps) / len(gaps), 2) if gaps else None
+
+            return {
+                "ok": True,
+                "total_proposals": len(rows),
+                "overall": _rate(rows),
+                "by_service": _group("service_type"),
+                "by_region": _group("region"),
+                "lost_bids_with_competitor_price": len(gaps),
+                "avg_amount_over_competitor_on_losses": avg_gap,
+            }
+
+        if name == "get_permit_leads":
+            q = db.query(PermitLead)
+            if args.get("priority"):
+                q = q.filter(
+                    PermitLead.priority_label == str(args["priority"]).strip().upper()
+                )
+            if args.get("state_code"):
+                q = q.filter(
+                    PermitLead.property_state == str(args["state_code"]).strip().upper()[:2]
+                )
+            rows = (
+                q.order_by(PermitLead.priority_score.desc().nullslast(), PermitLead.id.desc())
+                .limit(_clamp(args.get("limit")))
+                .all()
+            )
+            return {
+                "ok": True,
+                "count": len(rows),
+                "permits": [{
+                    "id": r.id,
+                    "permit_number": r.permit_number,
+                    "type": r.permit_type,
+                    "status": r.permit_status,
+                    "contractor": r.contractor_name,
+                    "address": r.property_address,
+                    "city": r.property_city,
+                    "state": r.property_state,
+                    "project_value": r.project_value,
+                    "estimated_sqft": r.estimated_sqft,
+                    "priority": r.priority_label,
+                    "score": r.priority_score,
+                    "permit_date": str(r.permit_date) if r.permit_date else None,
+                } for r in rows],
+            }
+
+        if name != "get_business_snapshot":
+            # Explicit rather than falling through. This function used to end in
+            # an unguarded snapshot return, so a tool listed in
+            # _BUSINESS_TOOL_NAMES but never implemented here would answer a
+            # cashflow question with lead counts and look like it had worked.
+            return {"ok": False, "error": f"No business query implemented for {name!r}"}
+
         def _by(model, column):
             from sqlalchemy import func  # noqa: PLC0415
             return {
@@ -653,7 +1058,7 @@ async def _run_tool(
             deep=bool(args.get("deep", False)),
         )
         return _finalize(result)
-    if name in ("get_leads", "get_jobs", "get_business_snapshot"):
+    if name in _BUSINESS_TOOL_NAMES:
         try:
             result = await asyncio.to_thread(_business_query, name, args)
             return _finalize(result)
