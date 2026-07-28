@@ -68,21 +68,26 @@ logger = logging.getLogger(__name__)
 
 _ROUTES: dict[str, list[tuple[str, str]]] = {
     # task             provider_chain (provider, model)
-    "jarvis":          [("anthropic", "claude-sonnet-4-6"),   ("openai", "gpt-4o"),               ("xai", "grok-4"),                  ("google", "gemini-2.5-pro"),        ("anthropic", "claude-opus-4-6")],
-    "jarvis_fast":     [("openai", "gpt-4o-mini"),            ("anthropic", "claude-sonnet-4-6"), ("xai", "grok-4"),                  ("google", "gemini-2.5-pro"),        ("openai", "gpt-4o")],
-    "reasoning":       [("anthropic", "claude-sonnet-4-6"),   ("openai", "gpt-4o")],
-    "persona":         [("anthropic", "claude-sonnet-4-6"),   ("openai", "gpt-4o")],
-    "proposal":        [("anthropic", "claude-sonnet-4-6"),   ("openai", "gpt-4o")],
-    "review_reply":    [("anthropic", "claude-sonnet-4-6"),   ("openai", "gpt-4o")],
-    "legal":           [("anthropic", "claude-opus-4-6"),     ("anthropic", "claude-sonnet-4-6"), ("openai", "gpt-4o")],
-    "vision":          [("openai", "gpt-4o"),                 ("google", "gemini-2.5-pro")],
-    "math":            [("google", "gemini-2.5-pro"),         ("anthropic", "claude-sonnet-4-6"), ("openai", "gpt-4o")],
-    "long_context":    [("google", "gemini-2.5-pro"),         ("anthropic", "claude-sonnet-4-6")],
+    # Jarvis and the conversational persona run on the flagship. This is the
+    # lane the owner actually talks to: it was pinned to claude-sonnet-4-6, a
+    # full generation behind, while /jarvis/readiness advertised the tool
+    # lane's claude-opus-5 — so the reported model and the answering model
+    # were different things.
+    "jarvis":          [("anthropic", "claude-opus-5"),       ("anthropic", "claude-sonnet-5"),   ("openai", "gpt-4o"),               ("xai", "grok-4"),                   ("google", "gemini-2.5-pro")],
+    "jarvis_fast":     [("anthropic", "claude-sonnet-5"),     ("openai", "gpt-4o-mini"),          ("xai", "grok-4"),                  ("google", "gemini-2.5-pro"),        ("openai", "gpt-4o")],
+    "reasoning":       [("anthropic", "claude-opus-5"),       ("anthropic", "claude-sonnet-5"),   ("openai", "gpt-4o")],
+    "persona":         [("anthropic", "claude-opus-5"),       ("anthropic", "claude-sonnet-5"),   ("openai", "gpt-4o")],
+    "proposal":        [("anthropic", "claude-opus-5"),       ("anthropic", "claude-sonnet-5"),   ("openai", "gpt-4o")],
+    "review_reply":    [("anthropic", "claude-sonnet-5"),     ("openai", "gpt-4o")],
+    "legal":           [("anthropic", "claude-opus-5"),       ("anthropic", "claude-sonnet-5"),   ("openai", "gpt-4o")],
+    "vision":          [("anthropic", "claude-opus-5"),       ("openai", "gpt-4o"),               ("google", "gemini-2.5-pro")],
+    "math":            [("anthropic", "claude-opus-5"),       ("google", "gemini-2.5-pro"),       ("openai", "gpt-4o")],
+    "long_context":    [("anthropic", "claude-opus-5"),       ("google", "gemini-2.5-pro"),       ("anthropic", "claude-sonnet-5")],
     "web_research":    [("perplexity", "sonar-pro"),          ("openai", "gpt-4o")],
     "social_signal":   [("xai", "grok-4")],
-    "fast":            [("openai", "gpt-4o-mini"),            ("anthropic", "claude-haiku-4-5-20251001")],
-    "classification":  [("openai", "gpt-4o-mini"),            ("anthropic", "claude-haiku-4-5-20251001")],
-    "analytics":       [("anthropic", "claude-sonnet-4-6"),   ("openai", "gpt-4o")],
+    "fast":            [("anthropic", "claude-haiku-4-5-20251001"), ("openai", "gpt-4o-mini")],
+    "classification":  [("anthropic", "claude-haiku-4-5-20251001"), ("openai", "gpt-4o-mini")],
+    "analytics":       [("anthropic", "claude-sonnet-5"),     ("openai", "gpt-4o")],
     "city_authority":  [("google", "gemini-2.5-flash"),       ("openai", "gpt-4o")],
 }
 
@@ -142,8 +147,18 @@ def _resolved_chain(task: str) -> list[tuple[str, str]]:
     chain = list(_ROUTES.get(task) or _ROUTES[_DEFAULT_TASK])
 
     # Jarvis spend cap: optionally downgrade Opus → Sonnet.
+    #
+    # This substitution is keyed to the exact model names in _ROUTES. When the
+    # table moved to the Claude 5 family the old pair stopped matching anything,
+    # which made JARVIS_MAX_TIER=sonnet a silent no-op — the cap looked set and
+    # spend carried on at Opus rates. Keeping the historic pair as well means an
+    # older pinned route still downgrades correctly.
     if task == "jarvis" and _jarvis_cap() == "sonnet":
-        chain = [(p, m.replace("claude-opus-4-6", "claude-sonnet-4-6")) for p, m in chain]
+        downgrades = {
+            "claude-opus-5": "claude-sonnet-5",
+            "claude-opus-4-6": "claude-sonnet-4-6",
+        }
+        chain = [(p, downgrades.get(m, m)) for p, m in chain]
 
     if task in {"jarvis", "jarvis_fast", "persona"}:
         if _jarvis_disable_gemini():
@@ -306,6 +321,15 @@ def _call_openai_compatible(
     return resp.choices[0].message.content or ""
 
 
+# Models that reject temperature / top_p / top_k outright. Matched by prefix so
+# a future claude-opus-5-something is covered without another edit here.
+_SAMPLING_FREE_PREFIXES = ("claude-opus-5", "claude-sonnet-5", "claude-fable-5", "claude-mythos-5")
+
+
+def _is_sampling_free(model: str) -> bool:
+    return str(model or "").startswith(_SAMPLING_FREE_PREFIXES)
+
+
 def _call_anthropic(
     client: Any,
     model: str,
@@ -323,13 +347,23 @@ def _call_anthropic(
             if role in ("user", "assistant"):
                 msgs.append({"role": role, "content": m.get("content", "")})
     msgs.append({"role": "user", "content": user})
-    resp = client.messages.create(
-        model=model,
-        system=system or "",
-        messages=msgs,
-        max_tokens=max_tokens,
-        temperature=temperature,
-    )
+
+    kwargs: dict[str, Any] = {
+        "model": model,
+        "system": system or "",
+        "messages": msgs,
+        "max_tokens": max_tokens,
+    }
+    # Claude 5 removed the sampling parameters: sending temperature to
+    # claude-opus-5 / claude-sonnet-5 is a 400, not a warning. The router
+    # catches that and silently moves to the next provider in the chain, so
+    # the visible symptom would be Jarvis quietly answering from GPT-4o while
+    # readiness still reported an Anthropic model. Older Claude models and
+    # every other provider still take it.
+    if not _is_sampling_free(model):
+        kwargs["temperature"] = temperature
+
+    resp = client.messages.create(**kwargs)
     # Anthropic returns a list of content blocks
     parts = []
     for block in getattr(resp, "content", []) or []:
