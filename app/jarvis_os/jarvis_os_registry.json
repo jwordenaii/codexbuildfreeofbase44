@@ -1,0 +1,4259 @@
+[
+  {
+    "module_id": "CapitalAndFinTech.escrow_engine",
+    "category": "CapitalAndFinTech",
+    "file": "jarvis_os\\abilities\\CapitalAndFinTech\\escrow_engine.py",
+    "class_name": "EscrowEngineEngine",
+    "description": "Autonomous Premium Engine for escrow_engine. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "autonomous",
+      "escrow_engine",
+      "logic",
+      "implementation",
+      "concrete",
+      "escrow",
+      "strict",
+      "premium",
+      "no-placeholder"
+    ]
+  },
+  {
+    "module_id": "CapitalAndFinTech.plaid_reconciliation",
+    "category": "CapitalAndFinTech",
+    "file": "jarvis_os\\abilities\\CapitalAndFinTech\\plaid_reconciliation.py",
+    "class_name": "PlaidReconciliationEngine",
+    "description": "Autonomous Premium Engine for plaid_reconciliation. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "reconciliation",
+      "plaid_reconciliation",
+      "autonomous",
+      "logic",
+      "implementation",
+      "concrete",
+      "strict",
+      "plaid",
+      "premium",
+      "no-placeholder"
+    ]
+  },
+  {
+    "module_id": "CapitalAndFinTech.stripe_connect_payout",
+    "category": "CapitalAndFinTech",
+    "file": "jarvis_os\\abilities\\CapitalAndFinTech\\stripe_connect_payout.py",
+    "class_name": "StripeConnectPayoutEngine",
+    "description": "Autonomous Premium Engine for stripe_connect_payout. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "autonomous",
+      "logic",
+      "implementation",
+      "concrete",
+      "strict",
+      "premium",
+      "stripe_connect_payout",
+      "payout",
+      "stripe",
+      "connect",
+      "no-placeholder"
+    ]
+  },
+  {
+    "module_id": "CognitiveAndAutonomous.action_planner",
+    "category": "CognitiveAndAutonomous",
+    "file": "jarvis_os\\abilities\\CognitiveAndAutonomous\\action_planner.py",
+    "class_name": "ActionPlannerEngine",
+    "description": "Autonomous Premium Engine for action_planner. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "action_planner",
+      "engine",
+      "planner",
+      "action",
+      "autonomous",
+      "logic",
+      "implementation",
+      "concrete",
+      "strict",
+      "premium",
+      "no-placeholder"
+    ]
+  },
+  {
+    "module_id": "CognitiveAndAutonomous.ai_agentic_project_manager",
+    "category": "CognitiveAndAutonomous",
+    "file": "jarvis_os\\abilities\\CognitiveAndAutonomous\\ai_agentic_project_manager.py",
+    "class_name": "AiAgenticProjectManagerEngine",
+    "description": "Autonomous Premium Engine for ai_agentic_project_manager. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "ai",
+      "engine",
+      "ai_agentic_project_manager",
+      "project",
+      "agentic",
+      "autonomous",
+      "logic",
+      "implementation",
+      "concrete",
+      "strict",
+      "premium",
+      "no-placeholder",
+      "manager"
+    ]
+  },
+  {
+    "module_id": "CognitiveAndAutonomous.ai_brain",
+    "category": "CognitiveAndAutonomous",
+    "file": "jarvis_os\\abilities\\CognitiveAndAutonomous\\ai_brain.py",
+    "class_name": "AiBrainEngine",
+    "description": "Autonomous Premium Engine for ai_brain. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "ai",
+      "engine",
+      "autonomous",
+      "logic",
+      "implementation",
+      "concrete",
+      "strict",
+      "premium",
+      "no-placeholder",
+      "brain",
+      "ai_brain"
+    ]
+  },
+  {
+    "module_id": "CognitiveAndAutonomous.ai_engine",
+    "category": "CognitiveAndAutonomous",
+    "file": "jarvis_os\\abilities\\CognitiveAndAutonomous\\ai_engine.py",
+    "class_name": "AiEngineEngine",
+    "description": "Autonomous Premium Engine for ai_engine. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "ai",
+      "engine",
+      "autonomous",
+      "logic",
+      "implementation",
+      "concrete",
+      "strict",
+      "premium",
+      "no-placeholder",
+      "ai_engine"
+    ]
+  },
+  {
+    "module_id": "CognitiveAndAutonomous.asphalt_weather_matrix",
+    "category": "CognitiveAndAutonomous",
+    "file": "jarvis_os\\abilities\\CognitiveAndAutonomous\\asphalt_weather_matrix.py",
+    "class_name": "AsphaltWeatherMatrixEngine",
+    "description": "Autonomous Premium Engine for asphalt_weather_matrix. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "asphalt_weather_matrix",
+      "autonomous",
+      "logic",
+      "matrix",
+      "implementation",
+      "concrete",
+      "strict",
+      "premium",
+      "asphalt",
+      "no-placeholder",
+      "weather"
+    ]
+  },
+  {
+    "module_id": "CognitiveAndAutonomous.cognitive_twin",
+    "category": "CognitiveAndAutonomous",
+    "file": "jarvis_os\\abilities\\CognitiveAndAutonomous\\cognitive_twin.py",
+    "class_name": "CognitiveTwinEngine",
+    "description": "Autonomous Premium Engine for cognitive_twin. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "autonomous",
+      "logic",
+      "implementation",
+      "cognitive",
+      "concrete",
+      "strict",
+      "premium",
+      "no-placeholder",
+      "cognitive_twin",
+      "twin"
+    ]
+  },
+  {
+    "module_id": "CognitiveAndAutonomous.conversation_memory",
+    "category": "CognitiveAndAutonomous",
+    "file": "jarvis_os\\abilities\\CognitiveAndAutonomous\\conversation_memory.py",
+    "class_name": "ConversationMemoryEngine",
+    "description": "Autonomous Premium Engine for conversation_memory. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "autonomous",
+      "conversation",
+      "conversation_memory",
+      "logic",
+      "concrete",
+      "implementation",
+      "strict",
+      "memory",
+      "premium",
+      "no-placeholder"
+    ]
+  },
+  {
+    "module_id": "CognitiveAndAutonomous.global_orchestrator",
+    "category": "CognitiveAndAutonomous",
+    "file": "jarvis_os\\abilities\\CognitiveAndAutonomous\\global_orchestrator.py",
+    "class_name": "GlobalOrchestratorEngine",
+    "description": "Autonomous Premium Engine for global_orchestrator. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "autonomous",
+      "logic",
+      "global_orchestrator",
+      "implementation",
+      "global",
+      "concrete",
+      "strict",
+      "premium",
+      "no-placeholder",
+      "orchestrator"
+    ]
+  },
+  {
+    "module_id": "CognitiveAndAutonomous.jarvis",
+    "category": "CognitiveAndAutonomous",
+    "file": "jarvis_os\\abilities\\CognitiveAndAutonomous\\jarvis.py",
+    "class_name": "JarvisEngine",
+    "description": "Autonomous Premium Engine for jarvis. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "autonomous",
+      "logic",
+      "implementation",
+      "concrete",
+      "strict",
+      "premium",
+      "no-placeholder",
+      "jarvis"
+    ]
+  },
+  {
+    "module_id": "CognitiveAndAutonomous.orchestrator",
+    "category": "CognitiveAndAutonomous",
+    "file": "jarvis_os\\abilities\\CognitiveAndAutonomous\\orchestrator.py",
+    "class_name": "OrchestratorEngine",
+    "description": "Autonomous Premium Engine for orchestrator. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "autonomous",
+      "logic",
+      "implementation",
+      "concrete",
+      "strict",
+      "premium",
+      "no-placeholder",
+      "orchestrator"
+    ]
+  },
+  {
+    "module_id": "CognitiveAndAutonomous.quantum_orchestrator",
+    "category": "CognitiveAndAutonomous",
+    "file": "jarvis_os\\abilities\\CognitiveAndAutonomous\\quantum_orchestrator.py",
+    "class_name": "QuantumOrchestratorEngine",
+    "description": "Autonomous Premium Engine for quantum_orchestrator. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "quantum",
+      "autonomous",
+      "logic",
+      "implementation",
+      "concrete",
+      "strict",
+      "premium",
+      "no-placeholder",
+      "orchestrator",
+      "quantum_orchestrator"
+    ]
+  },
+  {
+    "module_id": "CognitiveAndAutonomous.screed_3d_automation",
+    "category": "CognitiveAndAutonomous",
+    "file": "jarvis_os\\abilities\\CognitiveAndAutonomous\\screed_3d_automation.py",
+    "class_name": "Screed3dAutomationEngine",
+    "description": "Autonomous Premium Engine for screed_3d_automation. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "autonomous",
+      "logic",
+      "implementation",
+      "screed_3d_automation",
+      "concrete",
+      "strict",
+      "automation",
+      "premium",
+      "no-placeholder",
+      "3d",
+      "screed"
+    ]
+  },
+  {
+    "module_id": "CognitiveAndAutonomous.self_heal",
+    "category": "CognitiveAndAutonomous",
+    "file": "jarvis_os\\abilities\\CognitiveAndAutonomous\\self_heal.py",
+    "class_name": "SelfHealEngine",
+    "description": "Autonomous Premium Engine for self_heal. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "self_heal",
+      "autonomous",
+      "self",
+      "logic",
+      "implementation",
+      "concrete",
+      "heal",
+      "strict",
+      "premium",
+      "no-placeholder"
+    ]
+  },
+  {
+    "module_id": "CognitiveAndAutonomous.simulation_agent",
+    "category": "CognitiveAndAutonomous",
+    "file": "jarvis_os\\abilities\\CognitiveAndAutonomous\\simulation_agent.py",
+    "class_name": "SimulationAgentEngine",
+    "description": "Autonomous Premium Engine for simulation_agent. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "autonomous",
+      "logic",
+      "implementation",
+      "concrete",
+      "strict",
+      "premium",
+      "simulation_agent",
+      "no-placeholder",
+      "simulation",
+      "agent"
+    ]
+  },
+  {
+    "module_id": "CognitiveAndAutonomous.value_engineering_ai",
+    "category": "CognitiveAndAutonomous",
+    "file": "jarvis_os\\abilities\\CognitiveAndAutonomous\\value_engineering_ai.py",
+    "class_name": "ValueEngineeringAiEngine",
+    "description": "Autonomous Premium Engine for value_engineering_ai. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "ai",
+      "engine",
+      "autonomous",
+      "logic",
+      "implementation",
+      "concrete",
+      "engineering",
+      "strict",
+      "value_engineering_ai",
+      "premium",
+      "no-placeholder",
+      "value"
+    ]
+  },
+  {
+    "module_id": "CognitiveAndAutonomous.vapi_jarvis_bridge",
+    "category": "CognitiveAndAutonomous",
+    "file": "jarvis_os\\abilities\\CognitiveAndAutonomous\\vapi_jarvis_bridge.py",
+    "class_name": "VapiJarvisBridgeEngine",
+    "description": "Autonomous Premium Engine for vapi_jarvis_bridge. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "autonomous",
+      "logic",
+      "implementation",
+      "concrete",
+      "bridge",
+      "strict",
+      "premium",
+      "vapi_jarvis_bridge",
+      "no-placeholder",
+      "vapi",
+      "jarvis"
+    ]
+  },
+  {
+    "module_id": "EverydayAI.evolution_research_daemon",
+    "category": "EverydayAI",
+    "file": "jarvis_os\\abilities\\EverydayAI\\evolution_research_daemon.py",
+    "class_name": "EvolutionResearchDaemon",
+    "description": "Background worker that continually researches the internet for: 1. New AI Technologies (Self-Adaptation) 2. New Municipal Building Permits (Commercial/Residential Lead Generation)",
+    "params": [],
+    "tags": [
+      "research",
+      "continually",
+      "technologies",
+      "self-adaptation",
+      "daemon",
+      "municipal",
+      "building",
+      "evolution",
+      "generation",
+      "internet",
+      "researches",
+      "worker",
+      "commercial/residential",
+      "background",
+      "permits"
+    ]
+  },
+  {
+    "module_id": "EverydayAI.self_healing_daemon",
+    "category": "EverydayAI",
+    "file": "jarvis_os\\abilities\\EverydayAI\\self_healing_daemon.py",
+    "class_name": "SelfHealingDaemon",
+    "description": "",
+    "params": [],
+    "tags": [
+      "self",
+      "healing",
+      "daemon"
+    ]
+  },
+  {
+    "module_id": "EverydayAI.web_research_engine",
+    "category": "EverydayAI",
+    "file": "jarvis_os\\abilities\\EverydayAI\\web_research_engine.py",
+    "class_name": "WebResearchEngine",
+    "description": "",
+    "params": [
+      "query"
+    ],
+    "tags": [
+      "research",
+      "engine",
+      "web"
+    ]
+  },
+  {
+    "module_id": "FinanceAndAccounting.asset_capitalization_engine",
+    "category": "FinanceAndAccounting",
+    "file": "jarvis_os\\abilities\\FinanceAndAccounting\\asset_capitalization_engine.py",
+    "class_name": "AssetCapitalizationEngine",
+    "description": "CPA Accounting Engine. Mathematically determines whether to expense a massive equipment repair  (e.g., a $30,000 CAT engine rebuild) directly against a job's P&L,  or capitalize it as a depreciable asset over 5 years based on IRS guidelines.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "mathematically",
+      "massive",
+      "rebuild",
+      "whether",
+      "equipment",
+      "repair",
+      "capitalize",
+      "capitalization",
+      "determines",
+      "e.g",
+      "job's",
+      "asset",
+      "$30,000",
+      "expense",
+      "against",
+      "directly",
+      "accounting"
+    ]
+  },
+  {
+    "module_id": "FinanceAndAccounting.dot_density_pay_factor",
+    "category": "FinanceAndAccounting",
+    "file": "jarvis_os\\abilities\\FinanceAndAccounting\\dot_density_pay_factor.py",
+    "class_name": "DotDensityPayFactorEngine",
+    "description": "Financial QC Engine. Ingests nuclear density gauge readings from the asphalt mat. Mathematically calculates  if compaction hits DOT thresholds to trigger a financial Bonus (e.g., 105% pay) or a severe Penalty.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "mathematically",
+      "factor",
+      "financial",
+      "calculates",
+      "density",
+      "compaction",
+      "thresholds",
+      "readings",
+      "e.g",
+      "dot",
+      "pay",
+      "nuclear",
+      "gauge",
+      "trigger",
+      "asphalt",
+      "bonus",
+      "ingests"
+    ]
+  },
+  {
+    "module_id": "FinanceAndAccounting.equipment_lease_calculator",
+    "category": "FinanceAndAccounting",
+    "file": "jarvis_os\\abilities\\FinanceAndAccounting\\equipment_lease_calculator.py",
+    "class_name": "EquipmentLeaseCalculatorEngine",
+    "description": "Deep Finance Engine. Calculates complex amortization schedules, interest rates, and MACRS depreciation  to mathematically recommend whether to Lease or Buy a $500,000 CAT milling machine.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "equipment",
+      "rates",
+      "depreciation",
+      "finance",
+      "complex",
+      "calculator",
+      "recommend",
+      "mathematically",
+      "engine",
+      "whether",
+      "calculates",
+      "$500,000",
+      "amortization",
+      "interest",
+      "schedules",
+      "lease",
+      "macrs",
+      "machine",
+      "milling"
+    ]
+  },
+  {
+    "module_id": "FinanceAndAccounting.equipment_macrs_depreciation",
+    "category": "FinanceAndAccounting",
+    "file": "jarvis_os\\abilities\\FinanceAndAccounting\\equipment_macrs_depreciation.py",
+    "class_name": "EquipmentMacrsDepreciationEngine",
+    "description": "Corporate IRS Finance. Calculates strict IRS MACRS (Modified Accelerated Cost Recovery System) depreciation  schedules for heavy yellow iron to maximize multi-year corporate tax shields.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "multi-year",
+      "equipment",
+      "calculates",
+      "corporate",
+      "schedules",
+      "heavy",
+      "maximize",
+      "macrs",
+      "strict",
+      "accelerated",
+      "system",
+      "yellow",
+      "depreciation",
+      "recovery",
+      "modified",
+      "finance",
+      "shields"
+    ]
+  },
+  {
+    "module_id": "FinanceAndAccounting.municipal_tax_calculator",
+    "category": "FinanceAndAccounting",
+    "file": "jarvis_os\\abilities\\FinanceAndAccounting\\municipal_tax_calculator.py",
+    "class_name": "MunicipalTaxCalculatorEngine",
+    "description": "Hyper-localized Financial Engine. Pings county GIS boundaries to calculate exact municipal sales and use tax rates  depending on the precise GPS coordinates of the active paving site.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "calculator",
+      "municipal",
+      "engine",
+      "pings",
+      "boundaries",
+      "financial",
+      "sales",
+      "depending",
+      "precise",
+      "calculate",
+      "coordinates",
+      "active",
+      "tax",
+      "county",
+      "rates",
+      "exact",
+      "hyper-localized"
+    ]
+  },
+  {
+    "module_id": "FinanceAndAccounting.predictive_cashflow_ai",
+    "category": "FinanceAndAccounting",
+    "file": "jarvis_os\\abilities\\FinanceAndAccounting\\predictive_cashflow_ai.py",
+    "class_name": "PredictiveCashflowAiEngine",
+    "description": "Corporate Finance AI. Models the exact 60-to-90 day delay of General Contractor payments and 10%  retainage withholdings to predict if the company will have sufficient liquid cash  to cover a massive multi-crew Friday payroll.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "ai",
+      "sufficient",
+      "contractor",
+      "corporate",
+      "60-to-90",
+      "retainage",
+      "company",
+      "payments",
+      "models",
+      "general",
+      "predictive",
+      "exact",
+      "withholdings",
+      "predict",
+      "cashflow",
+      "finance",
+      "delay"
+    ]
+  },
+  {
+    "module_id": "FinanceAndAccounting.union_prevailing_wage",
+    "category": "FinanceAndAccounting",
+    "file": "jarvis_os\\abilities\\FinanceAndAccounting\\union_prevailing_wage.py",
+    "class_name": "UnionPrevailingWageEngine",
+    "description": "Federal Finance Engine. Calculates strict Davis-Bacon prevailing wage rates (including fringe benefits)  for union equipment operators on federally funded DOT jobs, preventing DOL audits.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "equipment",
+      "rates",
+      "finance",
+      "wage",
+      "davis-bacon",
+      "funded",
+      "preventing",
+      "federal",
+      "engine",
+      "operators",
+      "calculates",
+      "prevailing",
+      "union",
+      "benefits",
+      "strict",
+      "federally",
+      "audits",
+      "jobs",
+      "including",
+      "fringe"
+    ]
+  },
+  {
+    "module_id": "FinTechAndBanking.actuarial_insurance_underwriter",
+    "category": "FinTechAndBanking",
+    "file": "jarvis_os\\abilities\\FinTechAndBanking\\actuarial_insurance_underwriter.py",
+    "class_name": "ActuarialInsuranceUnderwriterEngine",
+    "description": "Autonomous Premium Engine for actuarial_insurance_underwriter. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "actuarial",
+      "autonomous",
+      "logic",
+      "implementation",
+      "concrete",
+      "strict",
+      "premium",
+      "no-placeholder",
+      "actuarial_insurance_underwriter",
+      "underwriter",
+      "insurance"
+    ]
+  },
+  {
+    "module_id": "FinTechAndBanking.bank_underwriting_intelligence",
+    "category": "FinTechAndBanking",
+    "file": "jarvis_os\\abilities\\FinTechAndBanking\\bank_underwriting_intelligence.py",
+    "class_name": "BankUnderwritingIntelligenceEngine",
+    "description": "Autonomous Premium Engine for Real Estate Bank Underwriting. Calculates LTC, DSCR, Cash-on-Cash Return, and Amortization Schedules.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "cash-on-cash",
+      "return",
+      "calculates",
+      "autonomous",
+      "estate",
+      "bank",
+      "schedules",
+      "premium",
+      "underwriting",
+      "dscr",
+      "intelligence",
+      "amortization"
+    ]
+  },
+  {
+    "module_id": "FinTechAndBanking.fintech_hard_money_lender",
+    "category": "FinTechAndBanking",
+    "file": "jarvis_os\\abilities\\FinTechAndBanking\\fintech_hard_money_lender.py",
+    "class_name": "FintechHardMoneyLenderEngine",
+    "description": "Autonomous Premium Engine for fintech_hard_money_lender. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "fintech_hard_money_lender",
+      "autonomous",
+      "logic",
+      "implementation",
+      "concrete",
+      "fintech",
+      "money",
+      "strict",
+      "lender",
+      "hard",
+      "premium",
+      "no-placeholder"
+    ]
+  },
+  {
+    "module_id": "FinTechAndBanking.investment_arbitrage_engine",
+    "category": "FinTechAndBanking",
+    "file": "jarvis_os\\abilities\\FinTechAndBanking\\investment_arbitrage_engine.py",
+    "class_name": "InvestmentArbitrageEngineEngine",
+    "description": "Autonomous Premium Engine for investment_arbitrage_engine. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "arbitrage",
+      "engine",
+      "investment_arbitrage_engine",
+      "autonomous",
+      "logic",
+      "implementation",
+      "concrete",
+      "strict",
+      "premium",
+      "no-placeholder",
+      "investment"
+    ]
+  },
+  {
+    "module_id": "FinTechAndBanking.ledger",
+    "category": "FinTechAndBanking",
+    "file": "jarvis_os\\abilities\\FinTechAndBanking\\ledger.py",
+    "class_name": "LedgerEngine",
+    "description": "",
+    "params": [],
+    "tags": [
+      "ledger"
+    ]
+  },
+  {
+    "module_id": "FinTechAndBanking.parametric_smart_contracts",
+    "category": "FinTechAndBanking",
+    "file": "jarvis_os\\abilities\\FinTechAndBanking\\parametric_smart_contracts.py",
+    "class_name": "ParametricSmartContractsEngine",
+    "description": "Autonomous Premium Engine for parametric_smart_contracts. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "smart",
+      "engine",
+      "parametric_smart_contracts",
+      "autonomous",
+      "logic",
+      "implementation",
+      "concrete",
+      "strict",
+      "contracts",
+      "premium",
+      "parametric",
+      "no-placeholder"
+    ]
+  },
+  {
+    "module_id": "FleetAndLogistics.fleet_acoustic_guardian",
+    "category": "FleetAndLogistics",
+    "file": "jarvis_os\\abilities\\FleetAndLogistics\\fleet_acoustic_guardian.py",
+    "class_name": "FleetAcousticGuardian",
+    "description": "Simulates AI acoustic & vibration analysis for heavy paving equipment. Detects cavitation in hydraulic pumps or bearing whine in vibratory rollers.",
+    "params": [],
+    "tags": [
+      "hydraulic",
+      "equipment",
+      "bearing",
+      "paving",
+      "vibratory",
+      "cavitation",
+      "heavy",
+      "detects",
+      "acoustic",
+      "rollers",
+      "pumps",
+      "analysis",
+      "fleet",
+      "guardian",
+      "vibration",
+      "whine",
+      "simulates"
+    ]
+  },
+  {
+    "module_id": "FleetAndLogistics.telematics",
+    "category": "FleetAndLogistics",
+    "file": "jarvis_os\\abilities\\FleetAndLogistics\\telematics.py",
+    "class_name": "TelematicsEngine",
+    "description": "Simulates real-time V2X telemetry from heavy paving fleet,  crew biometrics, and supply chain pricing.",
+    "params": [],
+    "tags": [
+      "real-time",
+      "pricing",
+      "supply",
+      "paving",
+      "telemetry",
+      "heavy",
+      "telematics",
+      "biometrics",
+      "fleet",
+      "chain",
+      "simulates"
+    ]
+  },
+  {
+    "module_id": "GenerativeDesignAndBIM.highest_best_use_ai",
+    "category": "GenerativeDesignAndBIM",
+    "file": "jarvis_os\\abilities\\GenerativeDesignAndBIM\\highest_best_use_ai.py",
+    "class_name": "HighestBestUseAiEngine",
+    "description": "Generative Real Estate & Development AI Analyzes physical dynamics, weather history, flood zones, and market gaps. Generates Highest and Best Use scenarios with Lifecycle ROI.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "physical",
+      "history",
+      "weather",
+      "analyzes",
+      "gaps",
+      "best",
+      "generative",
+      "ai",
+      "flood",
+      "estate",
+      "highest",
+      "generates",
+      "lifecycle",
+      "market",
+      "dynamics",
+      "zones",
+      "development",
+      "use",
+      "scenarios"
+    ]
+  },
+  {
+    "module_id": "GenerativeDesignAndBIM.ifc_exporter",
+    "category": "GenerativeDesignAndBIM",
+    "file": "jarvis_os\\abilities\\GenerativeDesignAndBIM\\ifc_exporter.py",
+    "class_name": "IfcExporterEngine",
+    "description": "BIM Compiler Engine. Converts 2D layout vectors into a 3D IFC (Industry Foundation Classes) format  compatible with Revit and Civil 3D.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "exporter",
+      "compatible",
+      "layout",
+      "converts",
+      "format",
+      "industry",
+      "revit",
+      "ifc",
+      "foundation",
+      "classes",
+      "civil",
+      "compiler",
+      "vectors"
+    ]
+  },
+  {
+    "module_id": "GenerativeDesignAndBIM.layout_generator",
+    "category": "GenerativeDesignAndBIM",
+    "file": "jarvis_os\\abilities\\GenerativeDesignAndBIM\\layout_generator.py",
+    "class_name": "LayoutGeneratorEngine",
+    "description": "Generative 2D CAD Engine. Auto-drafts parking lot striping layouts based on total square footage,  automatically enforcing ADA-compliant handicap spacing ratios.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "auto-drafts",
+      "engine",
+      "ratios",
+      "layout",
+      "based",
+      "enforcing",
+      "square",
+      "handicap",
+      "total",
+      "ada-compliant",
+      "spacing",
+      "automatically",
+      "footage",
+      "layouts",
+      "striping",
+      "parking",
+      "generator",
+      "generative"
+    ]
+  },
+  {
+    "module_id": "GovernmentAndB2G.autonomous_b2g_bidder",
+    "category": "GovernmentAndB2G",
+    "file": "jarvis_os\\abilities\\GovernmentAndB2G\\autonomous_b2g_bidder.py",
+    "class_name": "AutonomousB2GBidder",
+    "description": "Scrapes SAM.gov and local municipalities. Autonomously generates unsolicited predictive infrastructure proposals using prevailing wage laws.",
+    "params": [],
+    "tags": [
+      "generates",
+      "laws",
+      "sam.gov",
+      "autonomous",
+      "prevailing",
+      "municipalities",
+      "scrapes",
+      "bidder",
+      "local",
+      "autonomously",
+      "unsolicited",
+      "infrastructure",
+      "predictive",
+      "b2g",
+      "proposals",
+      "using"
+    ]
+  },
+  {
+    "module_id": "GovernmentAndB2G.dynamic_auction_bidder",
+    "category": "GovernmentAndB2G",
+    "file": "jarvis_os\\abilities\\GovernmentAndB2G\\dynamic_auction_bidder.py",
+    "class_name": "DynamicAuctionBidder",
+    "description": "A High-Frequency Bidding agent using Thompson Sampling and Upper Confidence Bound (UCB). Maximizes Expected Profit in programmatic B2G auctions.",
+    "params": [],
+    "tags": [
+      "auction",
+      "upper",
+      "maximizes",
+      "profit",
+      "confidence",
+      "programmatic",
+      "thompson",
+      "ucb",
+      "bidder",
+      "using",
+      "dynamic",
+      "high-frequency",
+      "sampling",
+      "bound",
+      "auctions",
+      "bidding",
+      "expected",
+      "agent"
+    ]
+  },
+  {
+    "module_id": "LegalAndCompliance.asphalt_plant_emissions_ai",
+    "category": "LegalAndCompliance",
+    "file": "jarvis_os\\abilities\\LegalAndCompliance\\asphalt_plant_emissions_ai.py",
+    "class_name": "AsphaltPlantEmissionsAiEngine",
+    "description": "Environmental Compliance. Actively monitors the baghouse differential pressure at the asphalt plant.  If the pressure drop indicates a torn Nomex filter bag (which would spew toxic  black dust into the atmosphere), it shuts the plant down to prevent severe EPA fines.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "plant",
+      "ai",
+      "compliance",
+      "emissions",
+      "actively",
+      "nomex",
+      "filter",
+      "environmental",
+      "pressure",
+      "asphalt",
+      "which",
+      "differential",
+      "baghouse",
+      "would",
+      "monitors",
+      "indicates"
+    ]
+  },
+  {
+    "module_id": "LegalAndCompliance.contract_parser_ai",
+    "category": "LegalAndCompliance",
+    "file": "jarvis_os\\abilities\\LegalAndCompliance\\contract_parser_ai.py",
+    "class_name": "ContractParserAiEngine",
+    "description": "Legal NLP Engine. Scans heavy civil PDF contracts, extracting dangerous liability clauses,  retainage percentages, and liquidated damages prior to signature.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "percentages",
+      "heavy",
+      "dangerous",
+      "legal",
+      "damages",
+      "contract",
+      "liability",
+      "ai",
+      "engine",
+      "scans",
+      "liquidated",
+      "retainage",
+      "clauses",
+      "signature",
+      "prior",
+      "extracting",
+      "contracts",
+      "parser",
+      "civil"
+    ]
+  },
+  {
+    "module_id": "LegalAndCompliance.crew_vitals_wearable",
+    "category": "LegalAndCompliance",
+    "file": "jarvis_os\\abilities\\LegalAndCompliance\\crew_vitals_wearable.py",
+    "class_name": "CrewVitalsWearableEngine",
+    "description": "Autonomous Premium Engine for crew_vitals_wearable. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "vitals",
+      "crew_vitals_wearable",
+      "autonomous",
+      "logic",
+      "implementation",
+      "concrete",
+      "strict",
+      "premium",
+      "wearable",
+      "no-placeholder",
+      "crew"
+    ]
+  },
+  {
+    "module_id": "LegalAndCompliance.dot_lane_closure_api",
+    "category": "LegalAndCompliance",
+    "file": "jarvis_os\\abilities\\LegalAndCompliance\\dot_lane_closure_api.py",
+    "class_name": "DotLaneClosureApiEngine",
+    "description": "Automated Dispatch & Legal Engine. Dynamically generates and simulates the filing of municipal right-of-way  lane closure permits based on projected hourly traffic volume (AADT).",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "municipal",
+      "right-of-way",
+      "volume",
+      "dot",
+      "dispatch",
+      "automated",
+      "aadt",
+      "simulates",
+      "legal",
+      "based",
+      "traffic",
+      "api",
+      "projected",
+      "closure",
+      "lane",
+      "engine",
+      "filing",
+      "hourly",
+      "permits",
+      "generates",
+      "dynamically"
+    ]
+  },
+  {
+    "module_id": "LegalAndCompliance.h2a_visa_automation",
+    "category": "LegalAndCompliance",
+    "file": "jarvis_os\\abilities\\LegalAndCompliance\\h2a_visa_automation.py",
+    "class_name": "H2aVisaAutomationEngine",
+    "description": "Legal HR Logic. Simulates the algorithmic assembly and filing of complex federal H-2A Visa  applications to legally import seasonal foreign laborers before the summer paving rush begins.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "seasonal",
+      "complex",
+      "simulates",
+      "legal",
+      "logic",
+      "before",
+      "legally",
+      "import",
+      "summer",
+      "foreign",
+      "federal",
+      "filing",
+      "h2a",
+      "visa",
+      "applications",
+      "paving",
+      "laborers",
+      "algorithmic",
+      "automation",
+      "assembly"
+    ]
+  },
+  {
+    "module_id": "LegalAndCompliance.lawyer_recommender",
+    "category": "LegalAndCompliance",
+    "file": "jarvis_os\\abilities\\LegalAndCompliance\\lawyer_recommender.py",
+    "class_name": "LawyerRecommenderEngine",
+    "description": "Autonomous Premium Engine for lawyer_recommender. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "lawyer",
+      "autonomous",
+      "logic",
+      "implementation",
+      "concrete",
+      "lawyer_recommender",
+      "strict",
+      "premium",
+      "no-placeholder",
+      "recommender"
+    ]
+  },
+  {
+    "module_id": "LegalAndCompliance.license_service",
+    "category": "LegalAndCompliance",
+    "file": "jarvis_os\\abilities\\LegalAndCompliance\\license_service.py",
+    "class_name": "LicenseServiceEngine",
+    "description": "Autonomous Premium Engine for license_service. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "autonomous",
+      "logic",
+      "implementation",
+      "concrete",
+      "strict",
+      "premium",
+      "license_service",
+      "no-placeholder",
+      "service",
+      "license"
+    ]
+  },
+  {
+    "module_id": "LegalAndCompliance.lien_calendar",
+    "category": "LegalAndCompliance",
+    "file": "jarvis_os\\abilities\\LegalAndCompliance\\lien_calendar.py",
+    "class_name": "LienCalendarEngine",
+    "description": "Autonomous Premium Engine for lien_calendar. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "lien",
+      "autonomous",
+      "lien_calendar",
+      "logic",
+      "implementation",
+      "concrete",
+      "strict",
+      "premium",
+      "no-placeholder",
+      "calendar"
+    ]
+  },
+  {
+    "module_id": "LegalAndCompliance.national_permits",
+    "category": "LegalAndCompliance",
+    "file": "jarvis_os\\abilities\\LegalAndCompliance\\national_permits.py",
+    "class_name": "NationalPermitsEngine",
+    "description": "Autonomous Premium Engine for national_permits. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "autonomous",
+      "national",
+      "logic",
+      "national_permits",
+      "concrete",
+      "implementation",
+      "strict",
+      "premium",
+      "no-placeholder",
+      "permits"
+    ]
+  },
+  {
+    "module_id": "LegalAndCompliance.osha_silica_exposure_bot",
+    "category": "LegalAndCompliance",
+    "file": "jarvis_os\\abilities\\LegalAndCompliance\\osha_silica_exposure_bot.py",
+    "class_name": "OshaSilicaExposureBotEngine",
+    "description": "Safety & Compliance AI. Models airborne crystalline silica dust exposure for concrete cutting crews,  ensuring vacuum dust-collection systems keep exposure below the strict OSHA  50 ug/m3 Permissible Exposure Limit (PEL).",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "exposure",
+      "silica",
+      "compliance",
+      "crews",
+      "crystalline",
+      "vacuum",
+      "airborne",
+      "concrete",
+      "osha",
+      "dust-collection",
+      "strict",
+      "bot",
+      "models",
+      "cutting",
+      "ensuring",
+      "below",
+      "safety",
+      "systems"
+    ]
+  },
+  {
+    "module_id": "LegalAndCompliance.osha_vision",
+    "category": "LegalAndCompliance",
+    "file": "jarvis_os\\abilities\\LegalAndCompliance\\osha_vision.py",
+    "class_name": "OshaVisionEngine",
+    "description": "Autonomous Premium Engine for osha_vision. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "vision",
+      "autonomous",
+      "logic",
+      "implementation",
+      "concrete",
+      "osha",
+      "strict",
+      "premium",
+      "no-placeholder",
+      "osha_vision"
+    ]
+  },
+  {
+    "module_id": "LegalAndCompliance.permit_engine",
+    "category": "LegalAndCompliance",
+    "file": "jarvis_os\\abilities\\LegalAndCompliance\\permit_engine.py",
+    "class_name": "PermitEngine",
+    "description": "Autonomous Permitting Engine. Simulates scraping municipal endpoints for right-of-way, excavation,  and environmental permits based on property bounds.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "municipal",
+      "right-of-way",
+      "permitting",
+      "based",
+      "autonomous",
+      "permits",
+      "excavation",
+      "bounds",
+      "environmental",
+      "scraping",
+      "endpoints",
+      "permit",
+      "property",
+      "simulates"
+    ]
+  },
+  {
+    "module_id": "LegalAndCompliance.permit_scraper",
+    "category": "LegalAndCompliance",
+    "file": "jarvis_os\\abilities\\LegalAndCompliance\\permit_scraper.py",
+    "class_name": "PermitScraperEngine",
+    "description": "Headless Browser Simulation Engine. Scrapes municipal government endpoints to locate open excavation and  right-of-way permits in the target region.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "endpoints",
+      "engine",
+      "scraper",
+      "municipal",
+      "right-of-way",
+      "region",
+      "scrapes",
+      "excavation",
+      "government",
+      "target",
+      "browser",
+      "locate",
+      "permit",
+      "simulation",
+      "headless",
+      "permits"
+    ]
+  },
+  {
+    "module_id": "LegalAndCompliance.safety_predictive_ai",
+    "category": "LegalAndCompliance",
+    "file": "jarvis_os\\abilities\\LegalAndCompliance\\safety_predictive_ai.py",
+    "class_name": "SafetyPredictiveAiEngine",
+    "description": "OSHA Risk Assessment Engine. Ingests historical weather data, crew fatigue (shift length), and job complexity  to calculate the statistical probability of a safety incident occurring today.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "ai",
+      "engine",
+      "occurring",
+      "length",
+      "fatigue",
+      "complexity",
+      "calculate",
+      "assessment",
+      "historical",
+      "incident",
+      "predictive",
+      "statistical",
+      "shift",
+      "probability",
+      "data",
+      "safety",
+      "ingests",
+      "weather"
+    ]
+  },
+  {
+    "module_id": "LegalAndCompliance.scc_service",
+    "category": "LegalAndCompliance",
+    "file": "jarvis_os\\abilities\\LegalAndCompliance\\scc_service.py",
+    "class_name": "SccServiceEngine",
+    "description": "Autonomous Premium Engine for scc_service. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "scc",
+      "autonomous",
+      "logic",
+      "implementation",
+      "concrete",
+      "scc_service",
+      "strict",
+      "premium",
+      "no-placeholder",
+      "service"
+    ]
+  },
+  {
+    "module_id": "LegalAndCompliance.staff_compliance",
+    "category": "LegalAndCompliance",
+    "file": "jarvis_os\\abilities\\LegalAndCompliance\\staff_compliance.py",
+    "class_name": "StaffComplianceEngine",
+    "description": "Autonomous Premium Engine for staff_compliance. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "compliance",
+      "engine",
+      "autonomous",
+      "logic",
+      "implementation",
+      "concrete",
+      "strict",
+      "premium",
+      "no-placeholder",
+      "staff_compliance",
+      "staff"
+    ]
+  },
+  {
+    "module_id": "LegalAndCompliance.state_51_compliance_engine",
+    "category": "LegalAndCompliance",
+    "file": "jarvis_os\\abilities\\LegalAndCompliance\\state_51_compliance_engine.py",
+    "class_name": "State51ComplianceEngine",
+    "description": "Autonomous In-House Counsel. Processes state-specific regulations for mechanics liens, prevailing wage, and contractor licensing.",
+    "params": [],
+    "tags": [
+      "compliance",
+      "engine",
+      "state-specific",
+      "processes",
+      "contractor",
+      "autonomous",
+      "51",
+      "in-house",
+      "counsel",
+      "prevailing",
+      "wage",
+      "state",
+      "liens",
+      "licensing",
+      "regulations",
+      "mechanics"
+    ]
+  },
+  {
+    "module_id": "LegalAndCompliance.state_gc_compliance",
+    "category": "LegalAndCompliance",
+    "file": "jarvis_os\\abilities\\LegalAndCompliance\\state_gc_compliance.py",
+    "class_name": "StateGcComplianceEngine",
+    "description": "50-State GC Compliance Engine Simulates local building codes, union prevailing wages, and environmental laws.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "compliance",
+      "engine",
+      "codes",
+      "laws",
+      "50-state",
+      "building",
+      "prevailing",
+      "union",
+      "local",
+      "state",
+      "wages",
+      "environmental",
+      "gc",
+      "simulates"
+    ]
+  },
+  {
+    "module_id": "LegalAndCompliance.subcontractor_lien_waiver",
+    "category": "LegalAndCompliance",
+    "file": "jarvis_os\\abilities\\LegalAndCompliance\\subcontractor_lien_waiver.py",
+    "class_name": "SubcontractorLienWaiverEngine",
+    "description": "Legal Finance Bot. A strict legal gatekeeper that refuses to release a $100,000 progress payment  to a subcontractor until a cryptographically verified, notarized lien waiver  is signed and uploaded to the ledger.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "lien",
+      "legal",
+      "verified",
+      "subcontractor",
+      "gatekeeper",
+      "progress",
+      "payment",
+      "strict",
+      "until",
+      "refuses",
+      "notarized",
+      "finance",
+      "cryptographically",
+      "$100,000",
+      "waiver",
+      "release"
+    ]
+  },
+  {
+    "module_id": "LegalAndCompliance.subsurface_811_gpr",
+    "category": "LegalAndCompliance",
+    "file": "jarvis_os\\abilities\\LegalAndCompliance\\subsurface_811_gpr.py",
+    "class_name": "Subsurface811Engine",
+    "description": "Integrates 811 APIs and Ground Penetrating Radar (GPR) to map underground utilities before grading or digging begins, ensuring 100% OSHA compliance.",
+    "params": [],
+    "tags": [
+      "grading",
+      "gpr",
+      "compliance",
+      "ground",
+      "utilities",
+      "digging",
+      "before",
+      "begins",
+      "underground",
+      "811",
+      "integrates",
+      "subsurface",
+      "ensuring",
+      "radar",
+      "penetrating"
+    ]
+  },
+  {
+    "module_id": "LegalAndCompliance.supreme_court_rag",
+    "category": "LegalAndCompliance",
+    "file": "jarvis_os\\abilities\\LegalAndCompliance\\supreme_court_rag.py",
+    "class_name": "SupremeCourtRagEngine",
+    "description": "Legal RAG (Retrieval Augmented Generation) Engine. Simulates querying historical state/supreme court rulings regarding  mechanics liens and labor disputes to provide unshakeable legal counsel.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "retrieval",
+      "counsel",
+      "rag",
+      "simulates",
+      "legal",
+      "provide",
+      "generation",
+      "liens",
+      "engine",
+      "labor",
+      "unshakeable",
+      "rulings",
+      "state/supreme",
+      "historical",
+      "augmented",
+      "mechanics",
+      "supreme",
+      "court",
+      "querying",
+      "disputes",
+      "regarding"
+    ]
+  },
+  {
+    "module_id": "LegalAndCompliance.swppp_compliance_bot",
+    "category": "LegalAndCompliance",
+    "file": "jarvis_os\\abilities\\LegalAndCompliance\\swppp_compliance_bot.py",
+    "class_name": "SwpppComplianceBotEngine",
+    "description": "Environmental Compliance AI. Auto-generates Stormwater Pollution Prevention Plan (SWPPP) reports and monitors  IoT sensors on silt fences to prevent catastrophic EPA fines.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "swppp",
+      "compliance",
+      "prevention",
+      "sensors",
+      "fences",
+      "fines",
+      "stormwater",
+      "bot",
+      "environmental",
+      "catastrophic",
+      "auto-generates",
+      "pollution",
+      "reports",
+      "monitors",
+      "prevent"
+    ]
+  },
+  {
+    "module_id": "LegalAndCompliance.utility_strike_physics",
+    "category": "LegalAndCompliance",
+    "file": "jarvis_os\\abilities\\LegalAndCompliance\\utility_strike_physics.py",
+    "class_name": "UtilityStrikePhysicsEngine",
+    "description": "Legal & Safety Forensics. Calculates the exact explosive force (PSI) and catastrophic financial liability  if an excavator breaches an underground high-pressure natural gas main.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "high-pressure",
+      "force",
+      "utility",
+      "safety",
+      "main",
+      "natural",
+      "legal",
+      "strike",
+      "liability",
+      "physics",
+      "explosive",
+      "calculates",
+      "forensics",
+      "catastrophic",
+      "psi",
+      "financial",
+      "underground",
+      "excavator",
+      "breaches",
+      "exact"
+    ]
+  },
+  {
+    "module_id": "LegalAndCompliance.zoning_title_automation",
+    "category": "LegalAndCompliance",
+    "file": "jarvis_os\\abilities\\LegalAndCompliance\\zoning_title_automation.py",
+    "class_name": "ZoningTitleAutomationEngine",
+    "description": "Real Estate Logic Engine. Evaluates county parcel data and verifies correct commercial/industrial  zoning for heavy paving operations.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "correct",
+      "engine",
+      "title",
+      "verifies",
+      "paving",
+      "zoning",
+      "estate",
+      "logic",
+      "commercial/industrial",
+      "heavy",
+      "evaluates",
+      "county",
+      "parcel",
+      "automation",
+      "operations"
+    ]
+  },
+  {
+    "module_id": "MarketOrchestration.autonomous_mailer_engine",
+    "category": "MarketOrchestration",
+    "file": "jarvis_os\\abilities\\MarketOrchestration\\autonomous_mailer_engine.py",
+    "class_name": "AutonomousMailerEngineEngine",
+    "description": "Autonomous Premium Engine for autonomous_mailer_engine. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "autonomous_mailer_engine",
+      "autonomous",
+      "logic",
+      "implementation",
+      "concrete",
+      "strict",
+      "premium",
+      "no-placeholder",
+      "mailer"
+    ]
+  },
+  {
+    "module_id": "MarketOrchestration.live_market_intel",
+    "category": "MarketOrchestration",
+    "file": "jarvis_os\\abilities\\MarketOrchestration\\live_market_intel.py",
+    "class_name": "LiveMarketIntelEngine",
+    "description": "Autonomous Engine for scraping live global commodity spot prices. Tracks WTI Crude Oil (CL=F) and US Midwest Hot-Rolled Coil Steel (HRC=F).",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "crude",
+      "midwest",
+      "hot-rolled",
+      "market",
+      "tracks",
+      "steel",
+      "autonomous",
+      "commodity",
+      "hrc=f",
+      "global",
+      "cl=f",
+      "scraping",
+      "prices",
+      "intel",
+      "live"
+    ]
+  },
+  {
+    "module_id": "MarketOrchestration.omni_satellite_scanner",
+    "category": "MarketOrchestration",
+    "file": "jarvis_os\\abilities\\MarketOrchestration\\omni_satellite_scanner.py",
+    "class_name": "OmniSatelliteScannerEngine",
+    "description": "Autonomous Premium Engine for omni_satellite_scanner. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "satellite",
+      "scanner",
+      "autonomous",
+      "omni_satellite_scanner",
+      "logic",
+      "implementation",
+      "concrete",
+      "strict",
+      "premium",
+      "omni",
+      "no-placeholder"
+    ]
+  },
+  {
+    "module_id": "MobileOperations.truck_hud_engine",
+    "category": "MobileOperations",
+    "file": "jarvis_os\\abilities\\MobileOperations\\truck_hud_engine.py",
+    "class_name": "TruckHUDEngine",
+    "description": "",
+    "params": [
+      "query"
+    ],
+    "tags": [
+      "engine",
+      "truck",
+      "hud"
+    ]
+  },
+  {
+    "module_id": "MultiTenantSaaS.billing_meter",
+    "category": "MultiTenantSaaS",
+    "file": "jarvis_os\\abilities\\MultiTenantSaaS\\billing_meter.py",
+    "class_name": "BillingMeterEngine",
+    "description": "SaaS Multi-Tenant Billing Engine. Tracks API utilization and token consumption per client for B2B invoicing.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "meter",
+      "engine",
+      "utilization",
+      "client",
+      "tracks",
+      "consumption",
+      "invoicing",
+      "billing",
+      "multi-tenant",
+      "token"
+    ]
+  },
+  {
+    "module_id": "MultiTenantSaaS.tenant_isolator",
+    "category": "MultiTenantSaaS",
+    "file": "jarvis_os\\abilities\\MultiTenantSaaS\\tenant_isolator.py",
+    "class_name": "TenantIsolatorEngine",
+    "description": "SaaS Cybersecurity Engine. Enforces strict database partitioning using cryptographic tokens to ensure  competing construction companies can never access each other's proprietary data.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "proprietary",
+      "tenant",
+      "cybersecurity",
+      "companies",
+      "database",
+      "enforces",
+      "access",
+      "construction",
+      "using",
+      "competing",
+      "data",
+      "isolator",
+      "engine",
+      "tokens",
+      "strict",
+      "ensure",
+      "other's",
+      "never",
+      "partitioning",
+      "cryptographic"
+    ]
+  },
+  {
+    "module_id": "OperationalAndDispatch.ai_foreman",
+    "category": "OperationalAndDispatch",
+    "file": "jarvis_os\\abilities\\OperationalAndDispatch\\ai_foreman.py",
+    "class_name": "AIForeman",
+    "description": "Autonomous Dispatch Intelligence Engine. Ingests live telematics and biometric data to issue critical safety  and operational dispatch commands.",
+    "params": [],
+    "tags": [
+      "ai",
+      "engine",
+      "foreman",
+      "operational",
+      "critical",
+      "autonomous",
+      "biometric",
+      "issue",
+      "telematics",
+      "dispatch",
+      "safety",
+      "commands",
+      "ingests",
+      "intelligence"
+    ]
+  },
+  {
+    "module_id": "OperationalAndDispatch.asphalt_thermal",
+    "category": "OperationalAndDispatch",
+    "file": "jarvis_os\\abilities\\OperationalAndDispatch\\asphalt_thermal.py",
+    "class_name": "AsphaltThermalEngine",
+    "description": "Advanced Thermodynamics Engine. Calculates Newtonian cooling and heat loss (\u0394T) of Hot Mix Asphalt (HMA)  during transport based on ambient temperature, wind chill, and delay times.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "ambient",
+      "thermodynamics",
+      "calculates",
+      "cooling",
+      "during",
+      "based",
+      "delay",
+      "advanced",
+      "chill",
+      "temperature",
+      "newtonian",
+      "thermal",
+      "hma",
+      "asphalt",
+      "transport"
+    ]
+  },
+  {
+    "module_id": "OperationalAndDispatch.asphalt_thermal_monitor",
+    "category": "OperationalAndDispatch",
+    "file": "jarvis_os\\abilities\\OperationalAndDispatch\\asphalt_thermal_monitor.py",
+    "class_name": "AsphaltThermalMonitorEngine",
+    "description": "Autonomous Premium Engine for asphalt_thermal_monitor. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "autonomous",
+      "logic",
+      "implementation",
+      "concrete",
+      "strict",
+      "thermal",
+      "premium",
+      "monitor",
+      "asphalt",
+      "no-placeholder",
+      "asphalt_thermal_monitor"
+    ]
+  },
+  {
+    "module_id": "OperationalAndDispatch.autonomous_flagger_robot",
+    "category": "OperationalAndDispatch",
+    "file": "jarvis_os\\abilities\\OperationalAndDispatch\\autonomous_flagger_robot.py",
+    "class_name": "AutonomousFlaggerRobotEngine",
+    "description": "Robotics AI. Simulates controlling an automated dual-gate flagging robot in a live DOT work zone,  actively using infrared sensors to track oncoming traffic speed and prevent civilian breaches.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "controlling",
+      "sensors",
+      "flagger",
+      "dual-gate",
+      "autonomous",
+      "actively",
+      "speed",
+      "traffic",
+      "infrared",
+      "track",
+      "using",
+      "robot",
+      "oncoming",
+      "zone",
+      "automated",
+      "flagging",
+      "robotics",
+      "simulates"
+    ]
+  },
+  {
+    "module_id": "OperationalAndDispatch.baghouse_emissions_ai",
+    "category": "OperationalAndDispatch",
+    "file": "jarvis_os\\abilities\\OperationalAndDispatch\\baghouse_emissions_ai.py",
+    "class_name": "BaghouseEmissionsAiEngine",
+    "description": "Plant Operations AI. Tracks the pressure drop (Magnehelic gauge) and particulate matter capture  inside the asphalt plant's baghouse to prevent EPA Title V air quality violations.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "ai",
+      "plant",
+      "title",
+      "plant's",
+      "emissions",
+      "tracks",
+      "capture",
+      "inside",
+      "magnehelic",
+      "gauge",
+      "particulate",
+      "pressure",
+      "matter",
+      "asphalt",
+      "quality",
+      "baghouse",
+      "operations",
+      "prevent"
+    ]
+  },
+  {
+    "module_id": "OperationalAndDispatch.cdl_compliance_tracker",
+    "category": "OperationalAndDispatch",
+    "file": "jarvis_os\\abilities\\OperationalAndDispatch\\cdl_compliance_tracker.py",
+    "class_name": "CdlComplianceTrackerEngine",
+    "description": "Fleet Telematics Monitor. Tracks commercial driver Hours of Service (HOS) logs. Automatically throws a hard stop to prevent federal DOT violations.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "compliance",
+      "service",
+      "tracks",
+      "logs",
+      "commercial",
+      "violations",
+      "hos",
+      "telematics",
+      "federal",
+      "driver",
+      "automatically",
+      "cdl",
+      "tracker",
+      "monitor",
+      "fleet",
+      "hours",
+      "throws",
+      "prevent"
+    ]
+  },
+  {
+    "module_id": "OperationalAndDispatch.crew_skill_matrix",
+    "category": "OperationalAndDispatch",
+    "file": "jarvis_os\\abilities\\OperationalAndDispatch\\crew_skill_matrix.py",
+    "class_name": "CrewSkillMatrixEngine",
+    "description": "HR Deployment AI. Analyzes the certifications of foremen and operators, matching their skill  level (e.g., FAA Drone Certified, OSHA 30) to the complexity of a paving job.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "deployment",
+      "operators",
+      "certifications",
+      "foremen",
+      "level",
+      "drone",
+      "complexity",
+      "matrix",
+      "analyzes",
+      "matching",
+      "e.g",
+      "certified",
+      "skill",
+      "their",
+      "crew"
+    ]
+  },
+  {
+    "module_id": "OperationalAndDispatch.crew_wearables",
+    "category": "OperationalAndDispatch",
+    "file": "jarvis_os\\abilities\\OperationalAndDispatch\\crew_wearables.py",
+    "class_name": "CrewWearablesEngine",
+    "description": "Autonomous Premium Engine for crew_wearables. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "wearables",
+      "autonomous",
+      "logic",
+      "implementation",
+      "concrete",
+      "strict",
+      "premium",
+      "no-placeholder",
+      "crew_wearables",
+      "crew"
+    ]
+  },
+  {
+    "module_id": "OperationalAndDispatch.dispatch_engine",
+    "category": "OperationalAndDispatch",
+    "file": "jarvis_os\\abilities\\OperationalAndDispatch\\dispatch_engine.py",
+    "class_name": "DispatchEngineEngine",
+    "description": "Autonomous Premium Engine for dispatch_engine. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "autonomous",
+      "logic",
+      "implementation",
+      "concrete",
+      "strict",
+      "premium",
+      "no-placeholder",
+      "dispatch",
+      "dispatch_engine"
+    ]
+  },
+  {
+    "module_id": "OperationalAndDispatch.drum_burner_thermodynamics",
+    "category": "OperationalAndDispatch",
+    "file": "jarvis_os\\abilities\\OperationalAndDispatch\\drum_burner_thermodynamics.py",
+    "class_name": "DrumBurnerThermodynamicsEngine",
+    "description": "Plant Operations Physics. Calculates the exact fuel-to-air combustion ratio inside the asphalt plant's  100-million BTU rotary drum burner, dynamically adjusting VFDs to prevent unburned fuel waste.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "combustion",
+      "inside",
+      "asphalt",
+      "adjusting",
+      "operations",
+      "plant",
+      "thermodynamics",
+      "rotary",
+      "ratio",
+      "physics",
+      "prevent",
+      "calculates",
+      "fuel-to-air",
+      "drum",
+      "burner",
+      "100-million",
+      "dynamically",
+      "unburned",
+      "exact",
+      "plant's"
+    ]
+  },
+  {
+    "module_id": "OperationalAndDispatch.dynamic_routing_engine",
+    "category": "OperationalAndDispatch",
+    "file": "jarvis_os\\abilities\\OperationalAndDispatch\\dynamic_routing_engine.py",
+    "class_name": "DynamicRoutingEngine",
+    "description": "Logistical AI Override. Calculates the fastest routes for heavy haulers from the asphalt plant to the paver,  specifically avoiding low bridges, steep grades, and weight-restricted roads.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "logistical",
+      "heavy",
+      "specifically",
+      "routes",
+      "asphalt",
+      "plant",
+      "dynamic",
+      "grades",
+      "engine",
+      "override",
+      "routing",
+      "paver",
+      "calculates",
+      "weight-restricted",
+      "avoiding",
+      "fastest",
+      "haulers",
+      "bridges",
+      "steep"
+    ]
+  },
+  {
+    "module_id": "OperationalAndDispatch.fema_disaster_deployment",
+    "category": "OperationalAndDispatch",
+    "file": "jarvis_os\\abilities\\OperationalAndDispatch\\fema_disaster_deployment.py",
+    "class_name": "FemaDisasterDeploymentEngine",
+    "description": "Autonomous Premium Engine for fema_disaster_deployment. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "fema",
+      "engine",
+      "disaster",
+      "deployment",
+      "autonomous",
+      "logic",
+      "implementation",
+      "concrete",
+      "strict",
+      "fema_disaster_deployment",
+      "premium",
+      "no-placeholder"
+    ]
+  },
+  {
+    "module_id": "OperationalAndDispatch.fema_disaster_radar",
+    "category": "OperationalAndDispatch",
+    "file": "jarvis_os\\abilities\\OperationalAndDispatch\\fema_disaster_radar.py",
+    "class_name": "FEMADisasterRadar",
+    "description": "Market Orchestration Engine. Tracks incoming severe weather and automatically redirects the sales engine to prioritize emergency repair bids in affected zip codes.",
+    "params": [],
+    "tags": [
+      "fema",
+      "engine",
+      "disaster",
+      "sales",
+      "market",
+      "tracks",
+      "repair",
+      "codes",
+      "incoming",
+      "automatically",
+      "orchestration",
+      "prioritize",
+      "affected",
+      "redirects",
+      "severe",
+      "radar",
+      "weather",
+      "emergency"
+    ]
+  },
+  {
+    "module_id": "OperationalAndDispatch.fleet_fuel_logistics",
+    "category": "OperationalAndDispatch",
+    "file": "jarvis_os\\abilities\\OperationalAndDispatch\\fleet_fuel_logistics.py",
+    "class_name": "FleetFuelLogisticsEngine",
+    "description": "Logistical AI. Tracks live diesel consumption of the heavy fleet. Autonomously routes mobile  refueling trucks to the exact GPS coordinates of pavers running low.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "fuel",
+      "logistics",
+      "logistical",
+      "tracks",
+      "coordinates",
+      "diesel",
+      "heavy",
+      "routes",
+      "autonomously",
+      "trucks",
+      "mobile",
+      "refueling",
+      "fleet",
+      "exact",
+      "consumption",
+      "running",
+      "pavers"
+    ]
+  },
+  {
+    "module_id": "OperationalAndDispatch.foreman_ai_client",
+    "category": "OperationalAndDispatch",
+    "file": "jarvis_os\\abilities\\OperationalAndDispatch\\foreman_ai_client.py",
+    "class_name": "ForemanAIClient",
+    "description": "Client wrapper for the Foreman AI (Cornerstone PM) BYOA API. Handles authentication and orchestrates workflows across construction systems.",
+    "params": [],
+    "tags": [
+      "ai",
+      "foreman",
+      "across",
+      "systems",
+      "authentication",
+      "workflows",
+      "handles",
+      "wrapper",
+      "cornerstone",
+      "orchestrates",
+      "client",
+      "construction"
+    ]
+  },
+  {
+    "module_id": "OperationalAndDispatch.heavy_fleet_router",
+    "category": "OperationalAndDispatch",
+    "file": "jarvis_os\\abilities\\OperationalAndDispatch\\heavy_fleet_router.py",
+    "class_name": "HeavyFleetRouterEngine",
+    "description": "V2X Logistics Engine. Simulates real-time multi-agent routing for heavy dump trucks to optimize  paving train arrival times and prevent paving halts.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "real-time",
+      "engine",
+      "logistics",
+      "optimize",
+      "routing",
+      "train",
+      "times",
+      "paving",
+      "prevent",
+      "heavy",
+      "router",
+      "halts",
+      "multi-agent",
+      "arrival",
+      "trucks",
+      "fleet",
+      "simulates"
+    ]
+  },
+  {
+    "module_id": "OperationalAndDispatch.hydraulic_oil_spectroscopy",
+    "category": "OperationalAndDispatch",
+    "file": "jarvis_os\\abilities\\OperationalAndDispatch\\hydraulic_oil_spectroscopy.py",
+    "class_name": "HydraulicOilSpectroscopyEngine",
+    "description": "Predictive Asset Forensics Engine. Analyzes fluid samples from excavator hydraulics, detecting microscopic copper  and iron shavings in parts-per-million (PPM) to predict catastrophic pump failure.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "asset",
+      "samples",
+      "shavings",
+      "oil",
+      "hydraulic",
+      "analyzes",
+      "predictive",
+      "hydraulics",
+      "spectroscopy",
+      "copper",
+      "ppm",
+      "engine",
+      "microscopic",
+      "forensics",
+      "catastrophic",
+      "detecting",
+      "failure",
+      "fluid",
+      "excavator",
+      "predict",
+      "parts-per-million"
+    ]
+  },
+  {
+    "module_id": "OperationalAndDispatch.igrade_engine",
+    "category": "OperationalAndDispatch",
+    "file": "jarvis_os\\abilities\\OperationalAndDispatch\\igrade_engine.py",
+    "class_name": "IgradeEngineEngine",
+    "description": "Autonomous Premium Engine for igrade_engine. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "autonomous",
+      "logic",
+      "igrade",
+      "implementation",
+      "concrete",
+      "strict",
+      "premium",
+      "no-placeholder",
+      "igrade_engine"
+    ]
+  },
+  {
+    "module_id": "OperationalAndDispatch.intelligent_compaction_mapping",
+    "category": "OperationalAndDispatch",
+    "file": "jarvis_os\\abilities\\OperationalAndDispatch\\intelligent_compaction_mapping.py",
+    "class_name": "IntelligentCompactionMappingEngine",
+    "description": "Autonomous Premium Engine for intelligent_compaction_mapping. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "intelligent_compaction_mapping",
+      "mapping",
+      "autonomous",
+      "compaction",
+      "logic",
+      "concrete",
+      "implementation",
+      "intelligent",
+      "strict",
+      "premium",
+      "no-placeholder"
+    ]
+  },
+  {
+    "module_id": "OperationalAndDispatch.material_yield_optimizer",
+    "category": "OperationalAndDispatch",
+    "file": "jarvis_os\\abilities\\OperationalAndDispatch\\material_yield_optimizer.py",
+    "class_name": "MaterialYieldOptimizerEngine",
+    "description": "Field Operations AI. Cross-references the exact tonnage of asphalt passing through the paver's screed  against the GPS square footage of the job to prevent over-yielding (laying too thick and losing profit).",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "prevent",
+      "cross-references",
+      "paver's",
+      "optimizer",
+      "passing",
+      "field",
+      "tonnage",
+      "square",
+      "through",
+      "yield",
+      "against",
+      "footage",
+      "asphalt",
+      "exact",
+      "over-yielding",
+      "operations",
+      "screed",
+      "material"
+    ]
+  },
+  {
+    "module_id": "OperationalAndDispatch.predictive_maintenance_ai",
+    "category": "OperationalAndDispatch",
+    "file": "jarvis_os\\abilities\\OperationalAndDispatch\\predictive_maintenance_ai.py",
+    "class_name": "PredictiveMaintenanceAiEngine",
+    "description": "OBD-II Diagnostic AI. Ingests fleet engine telemetry (oil pressure, transmission temp) to predict  mechanical failures before they occur, scheduling downtime intelligently.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "telemetry",
+      "fleet",
+      "diagnostic",
+      "intelligently",
+      "before",
+      "scheduling",
+      "pressure",
+      "predictive",
+      "ai",
+      "engine",
+      "maintenance",
+      "obd-ii",
+      "failures",
+      "downtime",
+      "transmission",
+      "ingests",
+      "temp",
+      "mechanical",
+      "occur",
+      "predict"
+    ]
+  },
+  {
+    "module_id": "OperationalAndDispatch.quantum_route_optimizer",
+    "category": "OperationalAndDispatch",
+    "file": "jarvis_os\\abilities\\OperationalAndDispatch\\quantum_route_optimizer.py",
+    "class_name": "QuantumRouteOptimizerEngine",
+    "description": "Heuristic Pathfinding Engine. Simulates solving the Traveling Salesperson Problem (TSP) for massive dump truck  fleets across urban grids to minimize total drive time and emissions.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "solving",
+      "tsp",
+      "minimize",
+      "total",
+      "truck",
+      "simulates",
+      "massive",
+      "optimizer",
+      "heuristic",
+      "route",
+      "traveling",
+      "salesperson",
+      "engine",
+      "emissions",
+      "grids",
+      "quantum",
+      "problem",
+      "fleets",
+      "urban",
+      "across",
+      "pathfinding",
+      "drive"
+    ]
+  },
+  {
+    "module_id": "OperationalAndDispatch.rap_thermodynamics_engine",
+    "category": "OperationalAndDispatch",
+    "file": "jarvis_os\\abilities\\OperationalAndDispatch\\rap_thermodynamics_engine.py",
+    "class_name": "RapThermodynamicsEngine",
+    "description": "Advanced Plant Physics. Calculates the exact super-heating required for virgin stone aggregate to successfully  conduct heat and melt Recycled Asphalt Pavement (RAP) inside the drum without scorching the liquid AC.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "advanced",
+      "inside",
+      "rap",
+      "asphalt",
+      "plant",
+      "aggregate",
+      "thermodynamics",
+      "virgin",
+      "successfully",
+      "pavement",
+      "required",
+      "super-heating",
+      "physics",
+      "engine",
+      "calculates",
+      "conduct",
+      "stone",
+      "recycled",
+      "exact"
+    ]
+  },
+  {
+    "module_id": "OperationalAndDispatch.roller_telemetry",
+    "category": "OperationalAndDispatch",
+    "file": "jarvis_os\\abilities\\OperationalAndDispatch\\roller_telemetry.py",
+    "class_name": "RollerTelemetryEngine",
+    "description": "Intelligent Compaction (IC) Engine. Tracks heavy roller vibration frequency (Hz), amplitude, and pass counts  to mathematically ensure asphalt achieves 95% structural density.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "frequency",
+      "engine",
+      "mathematically",
+      "tracks",
+      "counts",
+      "density",
+      "achieves",
+      "amplitude",
+      "compaction",
+      "telemetry",
+      "heavy",
+      "intelligent",
+      "roller",
+      "ensure",
+      "asphalt",
+      "hz",
+      "vibration",
+      "structural"
+    ]
+  },
+  {
+    "module_id": "OperationalAndDispatch.subcontractor_monitor",
+    "category": "OperationalAndDispatch",
+    "file": "jarvis_os\\abilities\\OperationalAndDispatch\\subcontractor_monitor.py",
+    "class_name": "SubcontractorMonitorEngine",
+    "description": "Autonomous Premium Engine for subcontractor_monitor. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "autonomous",
+      "logic",
+      "subcontractor",
+      "implementation",
+      "concrete",
+      "strict",
+      "premium",
+      "monitor",
+      "no-placeholder",
+      "subcontractor_monitor"
+    ]
+  },
+  {
+    "module_id": "OperationalAndDispatch.telematics_ingestion",
+    "category": "OperationalAndDispatch",
+    "file": "jarvis_os\\abilities\\OperationalAndDispatch\\telematics_ingestion.py",
+    "class_name": "TelematicsIngestionEngine",
+    "description": "Autonomous Premium Engine for telematics_ingestion. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "ingestion",
+      "telematics_ingestion",
+      "autonomous",
+      "logic",
+      "implementation",
+      "concrete",
+      "telematics",
+      "strict",
+      "premium",
+      "no-placeholder"
+    ]
+  },
+  {
+    "module_id": "OperationalAndDispatch.thermal_mix_optimizer",
+    "category": "OperationalAndDispatch",
+    "file": "jarvis_os\\abilities\\OperationalAndDispatch\\thermal_mix_optimizer.py",
+    "class_name": "ThermalMixOptimizer",
+    "description": "Predicts asphalt temperature decay during transit to ensure mix arrives above  the minimum required temperature (250F) for 96% Marshall compaction.",
+    "params": [
+      "start_temp",
+      "transit_minutes",
+      "ambient_temp",
+      "wind_speed_mph"
+    ],
+    "tags": [
+      "minimum",
+      "during",
+      "transit",
+      "optimizer",
+      "250f",
+      "marshall",
+      "compaction",
+      "temperature",
+      "ensure",
+      "predicts",
+      "thermal",
+      "required",
+      "asphalt",
+      "decay",
+      "arrives",
+      "mix",
+      "above"
+    ]
+  },
+  {
+    "module_id": "OperationalAndDispatch.v2x_traffic_orchestrator",
+    "category": "OperationalAndDispatch",
+    "file": "jarvis_os\\abilities\\OperationalAndDispatch\\v2x_traffic_orchestrator.py",
+    "class_name": "V2xTrafficOrchestratorEngine",
+    "description": "Autonomous Premium Engine for v2x_traffic_orchestrator. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "autonomous",
+      "logic",
+      "v2x",
+      "traffic",
+      "concrete",
+      "implementation",
+      "strict",
+      "v2x_traffic_orchestrator",
+      "premium",
+      "no-placeholder",
+      "orchestrator"
+    ]
+  },
+  {
+    "module_id": "OperationalAndDispatch.vibratory_seismic_monitor",
+    "category": "OperationalAndDispatch",
+    "file": "jarvis_os\\abilities\\OperationalAndDispatch\\vibratory_seismic_monitor.py",
+    "class_name": "VibratorySeismicMonitorEngine",
+    "description": "Seismic Telemetry Simulator. Tracks the resonance frequency (Hz) and Ground Peak Particle Velocity (PPV)  of heavy vibratory rollers to ensure shockwaves do not cause structural damage  to adjacent historical buildings.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "frequency",
+      "velocity",
+      "tracks",
+      "ground",
+      "cause",
+      "telemetry",
+      "heavy",
+      "rollers",
+      "particle",
+      "ensure",
+      "monitor",
+      "seismic",
+      "simulator",
+      "shockwaves",
+      "resonance",
+      "vibratory",
+      "ppv",
+      "structural"
+    ]
+  },
+  {
+    "module_id": "OperationalAndDispatch.weather_disruption_ai",
+    "category": "OperationalAndDispatch",
+    "file": "jarvis_os\\abilities\\OperationalAndDispatch\\weather_disruption_ai.py",
+    "class_name": "WeatherDisruptionAiEngine",
+    "description": "Operational Safety AI. Analyzes live micro-climate barometric pressure drops to predict lightning strikes  within a 5-mile radius, automatically halting all crane and paver operations to prevent electrocution.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "drops",
+      "within",
+      "safety",
+      "operations",
+      "weather",
+      "disruption",
+      "analyzes",
+      "radius",
+      "automatically",
+      "pressure",
+      "micro-climate",
+      "ai",
+      "paver",
+      "operational",
+      "5-mile",
+      "lightning",
+      "halting",
+      "barometric",
+      "strikes",
+      "crane",
+      "predict"
+    ]
+  },
+  {
+    "module_id": "OperationalAndDispatch.yield_sentinel",
+    "category": "OperationalAndDispatch",
+    "file": "jarvis_os\\abilities\\OperationalAndDispatch\\yield_sentinel.py",
+    "class_name": "YieldSentinel",
+    "description": "Protects the 35% net margin floor by catching material overruns in real-time. Compares budgeted tonnage (from takeoff) vs actual scale tickets.",
+    "params": [],
+    "tags": [
+      "sentinel",
+      "real-time",
+      "compares",
+      "actual",
+      "floor",
+      "tickets",
+      "tonnage",
+      "from",
+      "overruns",
+      "yield",
+      "budgeted",
+      "catching",
+      "protects",
+      "takeoff",
+      "scale",
+      "margin",
+      "material"
+    ]
+  },
+  {
+    "module_id": "QuantFinance.quant_monte_carlo",
+    "category": "QuantFinance",
+    "file": "jarvis_os\\abilities\\QuantFinance\\quant_monte_carlo.py",
+    "class_name": "QuantMonteCarlo",
+    "description": "A pure Python implementation for Monte Carlo simulations  using Geometric Brownian Motion (GBM).",
+    "params": [],
+    "tags": [
+      "gbm",
+      "quant",
+      "implementation",
+      "geometric",
+      "using",
+      "carlo",
+      "simulations",
+      "brownian",
+      "motion",
+      "monte",
+      "python"
+    ]
+  },
+  {
+    "module_id": "SaaSAndLicensing.realtor_saas_license_engine",
+    "category": "SaaSAndLicensing",
+    "file": "jarvis_os\\abilities\\SaaSAndLicensing\\realtor_saas_license_engine.py",
+    "class_name": "RealtorSaasLicenseEngineEngine",
+    "description": "Autonomous Premium Engine for realtor_saas_license_engine. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "saas",
+      "engine",
+      "realtor_saas_license_engine",
+      "realtor",
+      "autonomous",
+      "logic",
+      "implementation",
+      "concrete",
+      "strict",
+      "premium",
+      "no-placeholder",
+      "license"
+    ]
+  },
+  {
+    "module_id": "SalesAndEstimation.ai_brain",
+    "category": "SalesAndEstimation",
+    "file": "jarvis_os\\abilities\\SalesAndEstimation\\ai_brain.py",
+    "class_name": "AiBrainEngine",
+    "description": "Master AI Estimation Logic Engine. Simulates parsing raw architectural PDF blueprints and autonomously  generating highly accurate cost-of-materials estimates based on regional supply data.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "estimation",
+      "supply",
+      "regional",
+      "autonomously",
+      "brain",
+      "accurate",
+      "simulates",
+      "based",
+      "logic",
+      "master",
+      "cost-of-materials",
+      "data",
+      "generating",
+      "ai",
+      "engine",
+      "highly",
+      "blueprints",
+      "estimates",
+      "parsing",
+      "architectural"
+    ]
+  },
+  {
+    "module_id": "SalesAndEstimation.commercial_bid_hunter",
+    "category": "SalesAndEstimation",
+    "file": "jarvis_os\\abilities\\SalesAndEstimation\\commercial_bid_hunter.py",
+    "class_name": "CommercialBidHunter",
+    "description": "Exa AI Integration - The \"Hunter-Killer\" B2B Engine. Hunts the web for private commercial paving and construction contracts using meaning-based search queries.",
+    "params": [],
+    "tags": [
+      "engine",
+      "search",
+      "queries",
+      "paving",
+      "commercial",
+      "hunter",
+      "using",
+      "meaning-based",
+      "contracts",
+      "integration",
+      "hunts",
+      "\"hunter-killer\"",
+      "private",
+      "bid",
+      "construction"
+    ]
+  },
+  {
+    "module_id": "SalesAndEstimation.contractor_ranker",
+    "category": "SalesAndEstimation",
+    "file": "jarvis_os\\abilities\\SalesAndEstimation\\contractor_ranker.py",
+    "class_name": "ContractorRankerEngine",
+    "description": "NLP Subcontractor Scoring Engine. Scrapes and analyzes subcontractor reliability, safety history, and past performance  reviews before awarding them work.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "work",
+      "engine",
+      "reviews",
+      "contractor",
+      "before",
+      "subcontractor",
+      "ranker",
+      "analyzes",
+      "scrapes",
+      "performance",
+      "reliability",
+      "awarding",
+      "scoring",
+      "safety",
+      "history"
+    ]
+  },
+  {
+    "module_id": "SalesAndEstimation.crm_lead_scorer",
+    "category": "SalesAndEstimation",
+    "file": "jarvis_os\\abilities\\SalesAndEstimation\\crm_lead_scorer.py",
+    "class_name": "CrmLeadScorerEngine",
+    "description": "Sales Intelligence Model. Ingests inbound web leads, dynamically scoring them from 0-100 based on  square footage, zip code demographics, and historical margin potential.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "0-100",
+      "scoring",
+      "margin",
+      "demographics",
+      "based",
+      "potential",
+      "leads",
+      "intelligence",
+      "crm",
+      "historical",
+      "inbound",
+      "ingests",
+      "sales",
+      "dynamically",
+      "square",
+      "lead",
+      "footage",
+      "scorer",
+      "model"
+    ]
+  },
+  {
+    "module_id": "SalesAndEstimation.email_triage",
+    "category": "SalesAndEstimation",
+    "file": "jarvis_os\\abilities\\SalesAndEstimation\\email_triage.py",
+    "class_name": "EmailTriageEngine",
+    "description": "Advanced IMAP AI Triage Engine. Connects to Gmail, reads 8 years of history, uses AI logic to classify emails,  moves important ones to folders, and deletes junk/spam.",
+    "params": [],
+    "tags": [
+      "classify",
+      "engine",
+      "moves",
+      "triage",
+      "logic",
+      "gmail",
+      "advanced",
+      "folders",
+      "important",
+      "connects",
+      "emails",
+      "reads",
+      "email",
+      "history",
+      "years"
+    ]
+  },
+  {
+    "module_id": "SalesAndEstimation.estimate_approval",
+    "category": "SalesAndEstimation",
+    "file": "jarvis_os\\abilities\\SalesAndEstimation\\estimate_approval.py",
+    "class_name": "EstimateApprovalEngine",
+    "description": "Autonomous Premium Engine for estimate_approval. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "autonomous",
+      "logic",
+      "implementation",
+      "approval",
+      "concrete",
+      "estimate_approval",
+      "strict",
+      "premium",
+      "no-placeholder",
+      "estimate"
+    ]
+  },
+  {
+    "module_id": "SalesAndEstimation.lead_qualifier",
+    "category": "SalesAndEstimation",
+    "file": "jarvis_os\\abilities\\SalesAndEstimation\\lead_qualifier.py",
+    "class_name": "LeadQualifierEngine",
+    "description": "",
+    "params": [],
+    "tags": [
+      "lead",
+      "qualifier"
+    ]
+  },
+  {
+    "module_id": "SalesAndEstimation.lead_scorer",
+    "category": "SalesAndEstimation",
+    "file": "jarvis_os\\abilities\\SalesAndEstimation\\lead_scorer.py",
+    "class_name": "LeadScorerEngine",
+    "description": "Autonomous Premium Engine for lead_scorer. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "autonomous",
+      "logic",
+      "implementation",
+      "concrete",
+      "strict",
+      "lead",
+      "premium",
+      "lead_scorer",
+      "no-placeholder",
+      "scorer"
+    ]
+  },
+  {
+    "module_id": "SalesAndEstimation.market_intelligence",
+    "category": "SalesAndEstimation",
+    "file": "jarvis_os\\abilities\\SalesAndEstimation\\market_intelligence.py",
+    "class_name": "MarketIntelligenceEngine",
+    "description": "Dynamic Bidding Intelligence Engine. Analyzes local competitor pricing density to calculate exact bid-win probabilities  and recommends precision margin adjustments.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "pricing",
+      "bid-win",
+      "recommends",
+      "market",
+      "density",
+      "calculate",
+      "analyzes",
+      "precision",
+      "local",
+      "dynamic",
+      "probabilities",
+      "adjustments",
+      "exact",
+      "intelligence",
+      "bidding",
+      "competitor",
+      "margin"
+    ]
+  },
+  {
+    "module_id": "SalesAndEstimation.material_prices",
+    "category": "SalesAndEstimation",
+    "file": "jarvis_os\\abilities\\SalesAndEstimation\\material_prices.py",
+    "class_name": "MaterialPricesEngine",
+    "description": "Autonomous Premium Engine for material_prices. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "material_prices",
+      "autonomous",
+      "logic",
+      "implementation",
+      "concrete",
+      "strict",
+      "premium",
+      "no-placeholder",
+      "prices",
+      "material"
+    ]
+  },
+  {
+    "module_id": "SalesAndEstimation.monte_carlo_bid_simulator",
+    "category": "SalesAndEstimation",
+    "file": "jarvis_os\\abilities\\SalesAndEstimation\\monte_carlo_bid_simulator.py",
+    "class_name": "MonteCarloBidSimulatorEngine",
+    "description": "Advanced Estimation AI. Runs 10,000 Monte Carlo simulations on bid variables (rain delays, material price spikes,  labor overtime) to determine the exact statistical probability of winning a bid while maintaining margin.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "estimation",
+      "advanced",
+      "simulator",
+      "bid",
+      "probability",
+      "spikes",
+      "carlo",
+      "simulations",
+      "statistical",
+      "delays",
+      "10,000",
+      "rain",
+      "labor",
+      "price",
+      "variables",
+      "determine",
+      "overtime",
+      "monte",
+      "exact",
+      "material"
+    ]
+  },
+  {
+    "module_id": "SalesAndEstimation.openai_rfp_estimator",
+    "category": "SalesAndEstimation",
+    "file": "jarvis_os\\abilities\\SalesAndEstimation\\openai_rfp_estimator.py",
+    "class_name": "OpenAIRFPEstimator",
+    "description": "OpenAI Deep Reasoning RFP Estimator Utilizes the newest ChatGPT models (gpt-4o / o1-ready) to deeply analyze heavy commercial paving RFPs and generate calculated cost estimates.",
+    "params": [],
+    "tags": [
+      "deeply",
+      "newest",
+      "chatgpt",
+      "commercial",
+      "paving",
+      "calculated",
+      "estimator",
+      "heavy",
+      "openai",
+      "estimates",
+      "models",
+      "rfp",
+      "analyze",
+      "reasoning",
+      "o1-ready",
+      "utilizes",
+      "gpt-4o",
+      "generate"
+    ]
+  },
+  {
+    "module_id": "SalesAndEstimation.proposal_generator",
+    "category": "SalesAndEstimation",
+    "file": "jarvis_os\\abilities\\SalesAndEstimation\\proposal_generator.py",
+    "class_name": "ProposalGeneratorEngine",
+    "description": "Autonomous Premium Engine for proposal_generator. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "autonomous",
+      "proposal_generator",
+      "logic",
+      "implementation",
+      "concrete",
+      "strict",
+      "proposal",
+      "premium",
+      "no-placeholder",
+      "generator"
+    ]
+  },
+  {
+    "module_id": "SalesAndEstimation.roofing_ai",
+    "category": "SalesAndEstimation",
+    "file": "jarvis_os\\abilities\\SalesAndEstimation\\roofing_ai.py",
+    "class_name": "RoofingAiEngine",
+    "description": "Autonomous Premium Engine for Omni-Roofing Analysis. Calculates material takeoffs (Squares), waste factors, and localized pricing for 4 major roof types.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "ai",
+      "engine",
+      "waste",
+      "pricing",
+      "roofing",
+      "omni-roofing",
+      "calculates",
+      "major",
+      "autonomous",
+      "takeoffs",
+      "squares",
+      "types",
+      "analysis",
+      "premium",
+      "localized",
+      "factors",
+      "material"
+    ]
+  },
+  {
+    "module_id": "SalesAndEstimation.state_data",
+    "category": "SalesAndEstimation",
+    "file": "jarvis_os\\abilities\\SalesAndEstimation\\state_data.py",
+    "class_name": "StateDataEngine",
+    "description": "Provides real-time, state-level pricing indices and cost adjustments.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "real-time",
+      "pricing",
+      "indices",
+      "provides",
+      "state",
+      "adjustments",
+      "data",
+      "state-level"
+    ]
+  },
+  {
+    "module_id": "SecurityAndInfrastructure.ai_red_team_hacker",
+    "category": "SecurityAndInfrastructure",
+    "file": "jarvis_os\\abilities\\SecurityAndInfrastructure\\ai_red_team_hacker.py",
+    "class_name": "AiRedTeamHackerEngine",
+    "description": "Autonomous Premium Engine for ai_red_team_hacker. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "ai",
+      "engine",
+      "team",
+      "ai_red_team_hacker",
+      "autonomous",
+      "logic",
+      "implementation",
+      "concrete",
+      "strict",
+      "premium",
+      "no-placeholder",
+      "red",
+      "hacker"
+    ]
+  },
+  {
+    "module_id": "SecurityAndInfrastructure.iot_smart_cone_network",
+    "category": "SecurityAndInfrastructure",
+    "file": "jarvis_os\\abilities\\SecurityAndInfrastructure\\iot_smart_cone_network.py",
+    "class_name": "IotSmartConeNetworkEngine",
+    "description": "V2X (Vehicle-to-Everything) IoT Simulator. Models a mesh network of 'smart traffic cones' equipped with GPS.  Dynamically calculates lane closure parameters and broadcasts warnings to autonomous vehicles.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "smart",
+      "cone",
+      "calculates",
+      "autonomous",
+      "'smart",
+      "traffic",
+      "dynamically",
+      "warnings",
+      "equipped",
+      "models",
+      "closure",
+      "parameters",
+      "simulator",
+      "network",
+      "cones'",
+      "iot",
+      "vehicle-to-everything",
+      "broadcasts"
+    ]
+  },
+  {
+    "module_id": "SecurityAndInfrastructure.redis_hyper_cache_engine",
+    "category": "SecurityAndInfrastructure",
+    "file": "jarvis_os\\abilities\\SecurityAndInfrastructure\\redis_hyper_cache_engine.py",
+    "class_name": "RedisHyperCacheEngine",
+    "description": "Infrastructure AI Simulator. Models high-speed Redis caching layers ensuring that heavy AI calculations  run with sub-millisecond latency under massive load.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "layers",
+      "engine",
+      "massive",
+      "redis",
+      "hyper",
+      "cache",
+      "heavy",
+      "calculations",
+      "caching",
+      "infrastructure",
+      "models",
+      "sub-millisecond",
+      "simulator",
+      "high-speed",
+      "ensuring",
+      "load",
+      "under",
+      "latency"
+    ]
+  },
+  {
+    "module_id": "SecurityAndInfrastructure.self_healing_orchestrator",
+    "category": "SecurityAndInfrastructure",
+    "file": "jarvis_os\\abilities\\SecurityAndInfrastructure\\self_healing_orchestrator.py",
+    "class_name": "SelfHealingOrchestratorEngine",
+    "description": "K8s / Docker Master Orchestrator. Monitors the active container health of the J.A.R.V.I.S ecosystem.  Autonomously triggers pod restarts and heals the network if a module fails.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "triggers",
+      "docker",
+      "restarts",
+      "active",
+      "self",
+      "healing",
+      "health",
+      "ecosystem",
+      "autonomously",
+      "master",
+      "module",
+      "container",
+      "network",
+      "orchestrator",
+      "j.a.r.v.i.s",
+      "monitors",
+      "heals"
+    ]
+  },
+  {
+    "module_id": "SecurityAndInfrastructure.zero_trust_encryption",
+    "category": "SecurityAndInfrastructure",
+    "file": "jarvis_os\\abilities\\SecurityAndInfrastructure\\zero_trust_encryption.py",
+    "class_name": "ZeroTrustEncryptionEngine",
+    "description": "Cybersecurity Mesh Engine. Validates payload signatures and actively blocks untrusted network traffic.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "blocks",
+      "validates",
+      "signatures",
+      "cybersecurity",
+      "actively",
+      "traffic",
+      "trust",
+      "zero",
+      "network",
+      "untrusted",
+      "payload",
+      "encryption"
+    ]
+  },
+  {
+    "module_id": "SupplyChainProcurement.asphalt_mix_optimizer",
+    "category": "SupplyChainProcurement",
+    "file": "jarvis_os\\abilities\\SupplyChainProcurement\\asphalt_mix_optimizer.py",
+    "class_name": "AsphaltMixOptimizerEngine",
+    "description": "Material Science Engine. Mathematically tweaks the bitumen binder percentage and aggregate size based  on the specific load-bearing requirements of a project.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "requirements",
+      "engine",
+      "mathematically",
+      "binder",
+      "aggregate",
+      "optimizer",
+      "tweaks",
+      "based",
+      "project",
+      "material",
+      "percentage",
+      "bitumen",
+      "specific",
+      "asphalt",
+      "mix",
+      "load-bearing",
+      "science"
+    ]
+  },
+  {
+    "module_id": "SupplyChainProcurement.autonomous_scale_house",
+    "category": "SupplyChainProcurement",
+    "file": "jarvis_os\\abilities\\SupplyChainProcurement\\autonomous_scale_house.py",
+    "class_name": "AutonomousScaleHouseEngine",
+    "description": "AI Weighbridge Integration. Simulates automated RFID scanning of heavy haulers at the asphalt plant,  computing Gross, Tare, and Net weights to generate instantaneous electronic scale tickets (e-ticketing).",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "heavy",
+      "weights",
+      "instantaneous",
+      "asphalt",
+      "automated",
+      "tare",
+      "simulates",
+      "plant",
+      "computing",
+      "scanning",
+      "integration",
+      "weighbridge",
+      "house",
+      "autonomous",
+      "electronic",
+      "gross",
+      "generate",
+      "haulers",
+      "scale"
+    ]
+  },
+  {
+    "module_id": "SupplyChainProcurement.carbon_credit_ledger",
+    "category": "SupplyChainProcurement",
+    "file": "jarvis_os\\abilities\\SupplyChainProcurement\\carbon_credit_ledger.py",
+    "class_name": "CarbonCreditLedgerEngine",
+    "description": "Supply Chain FinTech. Tracks the reduction in greenhouse gases achieved by paving with Warm Mix Asphalt (WMA)  and RAP, calculating the tons of CO2 offset to mint and sell Carbon Credits on the open market.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "credit",
+      "ledger",
+      "supply",
+      "tracks",
+      "paving",
+      "reduction",
+      "achieved",
+      "gases",
+      "offset",
+      "calculating",
+      "greenhouse",
+      "fintech",
+      "wma",
+      "asphalt",
+      "chain",
+      "carbon"
+    ]
+  },
+  {
+    "module_id": "SupplyChainProcurement.fuel_hedging_algorithm",
+    "category": "SupplyChainProcurement",
+    "file": "jarvis_os\\abilities\\SupplyChainProcurement\\fuel_hedging_algorithm.py",
+    "class_name": "FuelHedgingAlgorithmEngine",
+    "description": "Predictive Finance Engine. Analyzes NYMEX ultra-low sulfur diesel spot prices and simulates purchasing  bulk fuel futures contracts to lock in operational margins.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "fuel",
+      "engine",
+      "futures",
+      "margins",
+      "algorithm",
+      "hedging",
+      "operational",
+      "analyzes",
+      "diesel",
+      "ultra-low",
+      "contracts",
+      "sulfur",
+      "predictive",
+      "nymex",
+      "finance",
+      "prices",
+      "purchasing",
+      "simulates"
+    ]
+  },
+  {
+    "module_id": "SupplyChainProcurement.liquid_asphalt_hedging",
+    "category": "SupplyChainProcurement",
+    "file": "jarvis_os\\abilities\\SupplyChainProcurement\\liquid_asphalt_hedging.py",
+    "class_name": "LiquidAsphaltHedgingEngine",
+    "description": "Supply Chain FinTech. Simulates purchasing futures contracts on liquid asphalt cement (directly tied  to global crude oil indices) to hedge against volatile summer market spikes.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "crude",
+      "supply",
+      "hedging",
+      "asphalt",
+      "directly",
+      "simulates",
+      "indices",
+      "spikes",
+      "fintech",
+      "against",
+      "hedge",
+      "summer",
+      "chain",
+      "futures",
+      "global",
+      "liquid",
+      "volatile",
+      "market",
+      "contracts",
+      "cement",
+      "purchasing"
+    ]
+  },
+  {
+    "module_id": "SupplyChainProcurement.po_automation",
+    "category": "SupplyChainProcurement",
+    "file": "jarvis_os\\abilities\\SupplyChainProcurement\\po_automation.py",
+    "class_name": "POAutomationEngine",
+    "description": "Autonomous Procurement Engine. Monitors takeoff quantities and automatically drafts Purchase Orders to regional suppliers for asphalt, stone, and sealcoat.",
+    "params": [],
+    "tags": [
+      "engine",
+      "purchase",
+      "orders",
+      "suppliers",
+      "autonomous",
+      "sealcoat",
+      "quantities",
+      "po",
+      "drafts",
+      "regional",
+      "automatically",
+      "stone",
+      "takeoff",
+      "asphalt",
+      "procurement",
+      "automation",
+      "monitors"
+    ]
+  },
+  {
+    "module_id": "SupplyChainProcurement.silo_inventory_management",
+    "category": "SupplyChainProcurement",
+    "file": "jarvis_os\\abilities\\SupplyChainProcurement\\silo_inventory_management.py",
+    "class_name": "SiloInventoryManagementEngine",
+    "description": "Supply Chain Telemetry Simulator. Tracks the exact live tonnage of aggregates, sand, and boiling liquid asphalt binder  inside 60-foot plant silos, autonomously triggering re-orders before material runs out.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "supply",
+      "tracks",
+      "tonnage",
+      "telemetry",
+      "inside",
+      "silos",
+      "autonomously",
+      "silo",
+      "simulator",
+      "asphalt",
+      "plant",
+      "before",
+      "management",
+      "chain",
+      "re-orders",
+      "triggering",
+      "aggregates",
+      "liquid",
+      "inventory",
+      "60-foot",
+      "binder",
+      "exact",
+      "sand",
+      "boiling"
+    ]
+  },
+  {
+    "module_id": "SupplyChainProcurement.supplier_erp_client",
+    "category": "SupplyChainProcurement",
+    "file": "jarvis_os\\abilities\\SupplyChainProcurement\\supplier_erp_client.py",
+    "class_name": "SupplierErpClientEngine",
+    "description": "Supply Chain EDI Connector Engine. Reaches out to external asphalt/concrete plant ERP systems via API  to autonomously reserve bulk tonnage.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "plant",
+      "erp",
+      "engine",
+      "reaches",
+      "supply",
+      "asphalt/concrete",
+      "connector",
+      "reserve",
+      "tonnage",
+      "autonomously",
+      "supplier",
+      "chain",
+      "external",
+      "client",
+      "systems"
+    ]
+  },
+  {
+    "module_id": "SupplyChainProcurement.supply_chain_predictive_ai",
+    "category": "SupplyChainProcurement",
+    "file": "jarvis_os\\abilities\\SupplyChainProcurement\\supply_chain_predictive_ai.py",
+    "class_name": "SupplyChainPredictiveAiEngine",
+    "description": "Global Logistics AI. Mathematically predicts the global spot price of liquid petroleum (Bitumen) by  analyzing OPEC crude oil barrel futures, allowing you to hedge and buy thousands  of tons before prices spike.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "ai",
+      "futures",
+      "logistics",
+      "mathematically",
+      "supply",
+      "crude",
+      "petroleum",
+      "global",
+      "price",
+      "barrel",
+      "allowing",
+      "bitumen",
+      "predicts",
+      "analyzing",
+      "predictive",
+      "hedge",
+      "chain",
+      "liquid"
+    ]
+  },
+  {
+    "module_id": "SwarmRouting.swarm_router",
+    "category": "SwarmRouting",
+    "file": "jarvis_os\\abilities\\SwarmRouting\\swarm_router.py",
+    "class_name": "SwarmRouterEngine",
+    "description": "",
+    "params": [],
+    "tags": [
+      "swarm",
+      "router"
+    ]
+  },
+  {
+    "module_id": "VisionAndIntelligence.age_decay_simulator",
+    "category": "VisionAndIntelligence",
+    "file": "jarvis_os\\abilities\\VisionAndIntelligence\\age_decay_simulator.py",
+    "class_name": "AgeDecaySimulatorEngine",
+    "description": "Predictive ML Simulation Engine. Models asphalt oxidation and degradation rates over a 15-year lifecycle. Calculates exact timelines for crack propagation and structural failure.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "degradation",
+      "simulator",
+      "oxidation",
+      "asphalt",
+      "rates",
+      "timelines",
+      "predictive",
+      "decay",
+      "15-year",
+      "engine",
+      "calculates",
+      "propagation",
+      "failure",
+      "crack",
+      "lifecycle",
+      "models",
+      "exact",
+      "simulation",
+      "age",
+      "structural"
+    ]
+  },
+  {
+    "module_id": "VisionAndIntelligence.autonomous_gpr_rover_fleet",
+    "category": "VisionAndIntelligence",
+    "file": "jarvis_os\\abilities\\VisionAndIntelligence\\autonomous_gpr_rover_fleet.py",
+    "class_name": "AutonomousGprRoverFleetEngine",
+    "description": "Autonomous Premium Engine for autonomous_gpr_rover_fleet. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "gpr",
+      "autonomous",
+      "logic",
+      "implementation",
+      "concrete",
+      "strict",
+      "rover",
+      "premium",
+      "autonomous_gpr_rover_fleet",
+      "no-placeholder",
+      "fleet"
+    ]
+  },
+  {
+    "module_id": "VisionAndIntelligence.bim_vs_reality_drone",
+    "category": "VisionAndIntelligence",
+    "file": "jarvis_os\\abilities\\VisionAndIntelligence\\bim_vs_reality_drone.py",
+    "class_name": "BimVsRealityDroneEngine",
+    "description": "BIM/CAD Comparator Engine. Analyzes engineered 3D CAD/BIM models against live drone topological scans  to flag deviations in physical laydown geometry.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "scans",
+      "engine",
+      "cad/bim",
+      "drone",
+      "vs",
+      "bim",
+      "reality",
+      "comparator",
+      "analyzes",
+      "bim/cad",
+      "physical",
+      "deviations",
+      "laydown",
+      "models",
+      "against",
+      "topological",
+      "engineered",
+      "geometry"
+    ]
+  },
+  {
+    "module_id": "VisionAndIntelligence.compaction_density_profiler",
+    "category": "VisionAndIntelligence",
+    "file": "jarvis_os\\abilities\\VisionAndIntelligence\\compaction_density_profiler.py",
+    "class_name": "CompactionDensityProfilerEngine",
+    "description": "Advanced Quality Control. Uses Intelligent Compaction (IC) telemetry from the rollers to map the exact  stiffness of the asphalt mat in real-time, preventing lethal under-compaction penalties.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "real-time",
+      "stiffness",
+      "profiler",
+      "density",
+      "advanced",
+      "compaction",
+      "telemetry",
+      "intelligent",
+      "under-compaction",
+      "lethal",
+      "quality",
+      "asphalt",
+      "control",
+      "exact",
+      "rollers",
+      "preventing"
+    ]
+  },
+  {
+    "module_id": "VisionAndIntelligence.concrete_curing_thermodynamics",
+    "category": "VisionAndIntelligence",
+    "file": "jarvis_os\\abilities\\VisionAndIntelligence\\concrete_curing_thermodynamics.py",
+    "class_name": "ConcreteCuringThermodynamicsEngine",
+    "description": "Civil Engineering QC Engine. Calculates the exothermic hydration heat of massive structural concrete pours,  tracking internal core temperatures to prevent thermal cracking.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "prevent",
+      "massive",
+      "thermodynamics",
+      "calculates",
+      "curing",
+      "structural",
+      "cracking",
+      "internal",
+      "temperatures",
+      "concrete",
+      "hydration",
+      "engineering",
+      "tracking",
+      "thermal",
+      "pours",
+      "civil",
+      "exothermic"
+    ]
+  },
+  {
+    "module_id": "VisionAndIntelligence.core_sample_lab_analyzer",
+    "category": "VisionAndIntelligence",
+    "file": "jarvis_os\\abilities\\VisionAndIntelligence\\core_sample_lab_analyzer.py",
+    "class_name": "CoreSampleLabAnalyzerEngine",
+    "description": "Civil Engineering Lab Simulator. Calculates the bulk specific gravity and air void percentages of drilled  asphalt cores to ensure the mix design meets municipal/DOT standards.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "standards",
+      "percentages",
+      "design",
+      "engineering",
+      "simulator",
+      "asphalt",
+      "municipal/dot",
+      "core",
+      "meets",
+      "gravity",
+      "calculates",
+      "sample",
+      "lab",
+      "ensure",
+      "specific",
+      "cores",
+      "analyzer",
+      "drilled",
+      "civil"
+    ]
+  },
+  {
+    "module_id": "VisionAndIntelligence.crack_enhancer",
+    "category": "VisionAndIntelligence",
+    "file": "jarvis_os\\abilities\\VisionAndIntelligence\\crack_enhancer.py",
+    "class_name": "CrackEnhancer",
+    "description": "",
+    "params": [],
+    "tags": [
+      "enhancer",
+      "crack"
+    ]
+  },
+  {
+    "module_id": "VisionAndIntelligence.document_intelligence",
+    "category": "VisionAndIntelligence",
+    "file": "jarvis_os\\abilities\\VisionAndIntelligence\\document_intelligence.py",
+    "class_name": "DocumentIntelligenceEngine",
+    "description": "Autonomous Premium Engine for document_intelligence. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "autonomous",
+      "logic",
+      "implementation",
+      "concrete",
+      "document",
+      "strict",
+      "premium",
+      "no-placeholder",
+      "intelligence",
+      "document_intelligence"
+    ]
+  },
+  {
+    "module_id": "VisionAndIntelligence.doppler_precipitation_ai",
+    "category": "VisionAndIntelligence",
+    "file": "jarvis_os\\abilities\\VisionAndIntelligence\\doppler_precipitation_ai.py",
+    "class_name": "DopplerPrecipitationAiEngine",
+    "description": "Meteorological Engine. Ingests live Doppler radar telemetry to compute storm cell trajectory and velocity. Predicts the exact minute rain will hit the job site, throwing a PAVING_HALT order.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "ai",
+      "engine",
+      "storm",
+      "velocity",
+      "throwing",
+      "site",
+      "radar",
+      "telemetry",
+      "compute",
+      "minute",
+      "predicts",
+      "ingests",
+      "exact",
+      "doppler",
+      "trajectory",
+      "precipitation",
+      "meteorological"
+    ]
+  },
+  {
+    "module_id": "VisionAndIntelligence.drone_capture",
+    "category": "VisionAndIntelligence",
+    "file": "jarvis_os\\abilities\\VisionAndIntelligence\\drone_capture.py",
+    "class_name": "DroneCaptureEngine",
+    "description": "Autonomous Drone Photogrammetry Engine. Simulates generating a massive sweeping lawnmower flight path across a job site  and capturing high-res optical data.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "massive",
+      "drone",
+      "sweeping",
+      "across",
+      "capturing",
+      "autonomous",
+      "capture",
+      "lawnmower",
+      "high-res",
+      "photogrammetry",
+      "data",
+      "flight",
+      "optical",
+      "generating",
+      "simulates"
+    ]
+  },
+  {
+    "module_id": "VisionAndIntelligence.drone_lidar_topology",
+    "category": "VisionAndIntelligence",
+    "file": "jarvis_os\\abilities\\VisionAndIntelligence\\drone_lidar_topology.py",
+    "class_name": "DroneLidarTopologyEngine",
+    "description": "Vision & Intelligence Engine. Simulates bouncing millions of laser pulses off the earth (LiDAR) to create a  sub-centimeter Digital Elevation Model (DEM), mathematically stripping away dense  forest canopies to reveal the bare earth.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "dem",
+      "lidar",
+      "simulates",
+      "mathematically",
+      "stripping",
+      "intelligence",
+      "engine",
+      "drone",
+      "bouncing",
+      "create",
+      "sub-centimeter",
+      "pulses",
+      "elevation",
+      "digital",
+      "vision",
+      "millions",
+      "earth",
+      "laser",
+      "topology",
+      "model"
+    ]
+  },
+  {
+    "module_id": "VisionAndIntelligence.drone_volumetric_survey",
+    "category": "VisionAndIntelligence",
+    "file": "jarvis_os\\abilities\\VisionAndIntelligence\\drone_volumetric_survey.py",
+    "class_name": "DroneVolumetricSurveyEngine",
+    "description": "Vision & Intelligence Engine. Simulates a drone photogrammetry flight over the asphalt plant, calculating the  exact cubic yardage and tonnage of aggregate stockpiles (Stone, Sand, RAP).",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "cubic",
+      "tonnage",
+      "photogrammetry",
+      "asphalt",
+      "flight",
+      "simulates",
+      "plant",
+      "aggregate",
+      "survey",
+      "calculating",
+      "volumetric",
+      "intelligence",
+      "engine",
+      "drone",
+      "stone",
+      "stockpiles",
+      "vision",
+      "yardage",
+      "exact",
+      "sand"
+    ]
+  },
+  {
+    "module_id": "VisionAndIntelligence.environmental_time_machine",
+    "category": "VisionAndIntelligence",
+    "file": "jarvis_os\\abilities\\VisionAndIntelligence\\environmental_time_machine.py",
+    "class_name": "EnvironmentalTimeMachineEngine",
+    "description": "Simulates historical weather decay patterns over a 10-year period. Aggregates freeze/thaw cycles and severe precipitation events to  determine unseen structural subgrade damage.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "damage",
+      "events",
+      "cycles",
+      "weather",
+      "freeze/thaw",
+      "simulates",
+      "unseen",
+      "subgrade",
+      "decay",
+      "patterns",
+      "severe",
+      "time",
+      "historical",
+      "aggregates",
+      "environmental",
+      "period",
+      "10-year",
+      "precipitation",
+      "determine",
+      "machine",
+      "structural"
+    ]
+  },
+  {
+    "module_id": "VisionAndIntelligence.fwd_deflection_analysis",
+    "category": "VisionAndIntelligence",
+    "file": "jarvis_os\\abilities\\VisionAndIntelligence\\fwd_deflection_analysis.py",
+    "class_name": "FwdDeflectionAnalysisEngine",
+    "description": "Advanced Geotech. Simulates a Falling Weight Deflectometer (FWD) dropping a massive impact load  on the highway, measuring the resulting elastic deflection bowl (in mils) to  determine the structural modulus of the deep subgrade.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "falling",
+      "mils",
+      "measuring",
+      "massive",
+      "deflection",
+      "dropping",
+      "deflectometer",
+      "highway",
+      "fwd",
+      "impact",
+      "advanced",
+      "resulting",
+      "analysis",
+      "weight",
+      "elastic",
+      "geotech",
+      "simulates"
+    ]
+  },
+  {
+    "module_id": "VisionAndIntelligence.gpr_analyzer",
+    "category": "VisionAndIntelligence",
+    "file": "jarvis_os\\abilities\\VisionAndIntelligence\\gpr_analyzer.py",
+    "class_name": "GPRAnalyzer",
+    "description": "",
+    "params": [],
+    "tags": [
+      "gpr",
+      "analyzer"
+    ]
+  },
+  {
+    "module_id": "VisionAndIntelligence.ground_penetrating_radar",
+    "category": "VisionAndIntelligence",
+    "file": "jarvis_os\\abilities\\VisionAndIntelligence\\ground_penetrating_radar.py",
+    "class_name": "GroundPenetratingRadarEngine",
+    "description": "Geotechnical Forensics Engine. Simulates GPR scans to detect buried fiber-optic utilities and sub-surface  sinkholes/voids before dangerous excavation begins.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "scans",
+      "engine",
+      "dangerous",
+      "ground",
+      "utilities",
+      "geotechnical",
+      "sinkholes/voids",
+      "forensics",
+      "before",
+      "begins",
+      "sub-surface",
+      "excavation",
+      "detect",
+      "buried",
+      "simulates",
+      "radar",
+      "fiber-optic",
+      "penetrating"
+    ]
+  },
+  {
+    "module_id": "VisionAndIntelligence.hopper_vision_routing",
+    "category": "VisionAndIntelligence",
+    "file": "jarvis_os\\abilities\\VisionAndIntelligence\\hopper_vision_routing.py",
+    "class_name": "HopperVisionRoutingEngine",
+    "description": "Computer Vision Logistics Router. Monitors paver hopper material tonnage levels via optical feeds.  Autonomously signals waiting haul units to engage when levels reach critical threshold.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "critical",
+      "tonnage",
+      "signals",
+      "waiting",
+      "reach",
+      "router",
+      "engage",
+      "autonomously",
+      "levels",
+      "threshold",
+      "units",
+      "optical",
+      "logistics",
+      "routing",
+      "paver",
+      "hopper",
+      "feeds",
+      "monitors",
+      "vision",
+      "computer",
+      "material"
+    ]
+  },
+  {
+    "module_id": "VisionAndIntelligence.iot_fleet_geofencing",
+    "category": "VisionAndIntelligence",
+    "file": "jarvis_os\\abilities\\VisionAndIntelligence\\iot_fleet_geofencing.py",
+    "class_name": "IotFleetGeofencingEngine",
+    "description": "GPS Operations AI. Installs a strict virtual geofence around a 500-acre job site. If a $500,000  articulated dump truck breaches the invisible boundary, it instantly kills the  engine via CAN bus to prevent theft.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "virtual",
+      "500-acre",
+      "operations",
+      "around",
+      "breaches",
+      "site",
+      "instantly",
+      "articulated",
+      "strict",
+      "truck",
+      "$500,000",
+      "boundary",
+      "installs",
+      "fleet",
+      "invisible",
+      "iot",
+      "geofencing",
+      "geofence"
+    ]
+  },
+  {
+    "module_id": "VisionAndIntelligence.jarvis_4d_remodeler",
+    "category": "VisionAndIntelligence",
+    "file": "jarvis_os\\abilities\\VisionAndIntelligence\\jarvis_4d_remodeler.py",
+    "class_name": "Jarvis4dRemodelerEngine",
+    "description": "Autonomous Premium Engine for jarvis_4d_remodeler. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "remodeler",
+      "engine",
+      "autonomous",
+      "logic",
+      "implementation",
+      "4d",
+      "jarvis_4d_remodeler",
+      "concrete",
+      "strict",
+      "premium",
+      "no-placeholder",
+      "jarvis"
+    ]
+  },
+  {
+    "module_id": "VisionAndIntelligence.lidar_ingest",
+    "category": "VisionAndIntelligence",
+    "file": "jarvis_os\\abilities\\VisionAndIntelligence\\lidar_ingest.py",
+    "class_name": "LidarIngestEngine",
+    "description": "Volumetric LiDAR Processing Engine. Simulates ingesting millions of 3D point cloud nodes to calculate millimeter  deviations in subgrade elevation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "millions",
+      "cloud",
+      "point",
+      "processing",
+      "calculate",
+      "nodes",
+      "subgrade",
+      "ingesting",
+      "volumetric",
+      "deviations",
+      "lidar",
+      "elevation",
+      "millimeter",
+      "ingest",
+      "simulates"
+    ]
+  },
+  {
+    "module_id": "VisionAndIntelligence.neural_net_mix_design",
+    "category": "VisionAndIntelligence",
+    "file": "jarvis_os\\abilities\\VisionAndIntelligence\\neural_net_mix_design.py",
+    "class_name": "NeuralNetMixDesignEngine",
+    "description": "Material Science AI. Simulates a deep neural network processing thousands of historical lab tests to  hallucinate entirely new Hot Mix Asphalt (HMA) aggregate structures, maximizing  tensile strength while minimizing expensive liquid bitumen.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "design",
+      "entirely",
+      "maximizing",
+      "hma",
+      "asphalt",
+      "structures",
+      "simulates",
+      "hallucinate",
+      "aggregate",
+      "neural",
+      "material",
+      "processing",
+      "historical",
+      "mix",
+      "thousands",
+      "network",
+      "net",
+      "tests",
+      "science"
+    ]
+  },
+  {
+    "module_id": "VisionAndIntelligence.pci_degradation_matrix",
+    "category": "VisionAndIntelligence",
+    "file": "jarvis_os\\abilities\\VisionAndIntelligence\\pci_degradation_matrix.py",
+    "class_name": "PciDegradationMatrixEngine",
+    "description": "Civil Engineering Compliance AI. Calculates the Pavement Condition Index (PCI) using strict ASTM D6433 logic  to assign a 0-100 structural score based on the mathematical severity of alligator cracking and rutting.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "compliance",
+      "index",
+      "0-100",
+      "degradation",
+      "engineering",
+      "mathematical",
+      "based",
+      "logic",
+      "using",
+      "pavement",
+      "condition",
+      "calculates",
+      "pci",
+      "assign",
+      "strict",
+      "score",
+      "matrix",
+      "d6433",
+      "civil",
+      "structural"
+    ]
+  },
+  {
+    "module_id": "VisionAndIntelligence.satellite_scanner",
+    "category": "VisionAndIntelligence",
+    "file": "jarvis_os\\abilities\\VisionAndIntelligence\\satellite_scanner.py",
+    "class_name": "SatelliteScanner",
+    "description": "",
+    "params": [],
+    "tags": [
+      "scanner",
+      "satellite"
+    ]
+  },
+  {
+    "module_id": "VisionAndIntelligence.stormwater_runoff_ai",
+    "category": "VisionAndIntelligence",
+    "file": "jarvis_os\\abilities\\VisionAndIntelligence\\stormwater_runoff_ai.py",
+    "class_name": "StormwaterRunoffAiEngine",
+    "description": "Civil Engineering Hydrology Engine. Calculates the exact gallons of water displaced during a simulated 100-year rain event  by newly paved impermeable asphalt surfaces, determining if a retention pond is required.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "gallons",
+      "water",
+      "engineering",
+      "stormwater",
+      "paved",
+      "displaced",
+      "asphalt",
+      "determining",
+      "event",
+      "runoff",
+      "100-year",
+      "ai",
+      "engine",
+      "impermeable",
+      "during",
+      "calculates",
+      "newly",
+      "simulated",
+      "surfaces",
+      "hydrology",
+      "exact",
+      "civil"
+    ]
+  },
+  {
+    "module_id": "VisionAndIntelligence.thermal_profile_optimizer",
+    "category": "VisionAndIntelligence",
+    "file": "jarvis_os\\abilities\\VisionAndIntelligence\\thermal_profile_optimizer.py",
+    "class_name": "ThermalProfileOptimizerEngine",
+    "description": "Advanced Quality Control (QC) Engine. Simulates ingesting thermal camera arrays from the rear of the paver to detect  \"cold spots\" in the asphalt mat that lead to premature unraveling.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "camera",
+      "engine",
+      "arrays",
+      "paver",
+      "profile",
+      "optimizer",
+      "spots\"",
+      "advanced",
+      "\"cold",
+      "ingesting",
+      "detect",
+      "thermal",
+      "quality",
+      "asphalt",
+      "control",
+      "simulates"
+    ]
+  },
+  {
+    "module_id": "VisionAndIntelligence.vision_inspector",
+    "category": "VisionAndIntelligence",
+    "file": "jarvis_os\\abilities\\VisionAndIntelligence\\vision_inspector.py",
+    "class_name": "VisionInspectorEngine",
+    "description": "Autonomous Premium Engine for vision_inspector. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "vision",
+      "autonomous",
+      "logic",
+      "vision_inspector",
+      "implementation",
+      "concrete",
+      "strict",
+      "premium",
+      "no-placeholder",
+      "inspector"
+    ]
+  },
+  {
+    "module_id": "VisionAndIntelligence.vision_takeoff",
+    "category": "VisionAndIntelligence",
+    "file": "jarvis_os\\abilities\\VisionAndIntelligence\\vision_takeoff.py",
+    "class_name": "VisionTakeoffEngine",
+    "description": "Autonomous Premium Engine for vision_takeoff. Strict, no-placeholder concrete logic implementation.",
+    "params": [
+      "params"
+    ],
+    "tags": [
+      "engine",
+      "vision",
+      "autonomous",
+      "logic",
+      "implementation",
+      "concrete",
+      "strict",
+      "premium",
+      "takeoff",
+      "no-placeholder",
+      "vision_takeoff"
+    ]
+  }
+]

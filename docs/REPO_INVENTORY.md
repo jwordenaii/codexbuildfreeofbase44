@@ -204,3 +204,83 @@ byte-identical**. Only 9 differ. The divergence is small and fully understood.
 The conclusion worth stating plainly: **very little needs to be written.** What
 is missing is one deployed backend and one wired frontend. Nearly everything
 described as the product already exists in one of these repositories.
+
+---
+
+## Consolidation log — 2026-07-28
+
+Step 1 above is done, with one deliberate reversal.
+
+**The plan said "base on `jworden-production/app/`". That was wrong and was
+changed.** Production's backend has the larger superset, which is what made it
+look like the right base — but it has never deployed: it does not boot, and
+there is no Fly pipeline pointed at it. `codexbuildfreeofbase44` is the copy
+that is actually running at `https://jworden-api.fly.dev`. Rebasing onto the
+never-deployed superset would have traded a working deployment for a bigger
+file listing. So the port ran the other direction: production's unique code was
+brought **into** codexbuild.
+
+### What moved
+
+| Kind | Count | Detail |
+|------|-------|--------|
+| Routers | 12 | abilities, b2g_bids, bid_hunter, billing, factory, lms, market_orchestration, owner_auth, portal, superadmin, supply_chain, system |
+| Services | 6 | commercial_bid_hunter, email_intake, email_sync, gce_service, os_ability_service, planhub_scraper |
+| `app/jarvis_os/` | 168 py files | copied wholesale, `__pycache__` stripped |
+| Model classes | 8 | `app/models.py` 1847 → 2017 lines, 58 → 66 tables |
+
+`ForeignKey` and `JSON` had to be added to codexbuild's SQLAlchemy import block
+— the ported models use both and the module raised `NameError` on boot without
+them.
+
+Migration `r6s9t4u0v3w8` (down_revision `q5r8s3t9u2v7`) was generated from model
+metadata and verified to run clean from an empty database to head: 63 tables,
+all 8 new ones present.
+
+### Verification
+
+- Boots clean: **433 routes**, up from 421.
+- `/api/v1/hunter/commercial-bids`, `/api/v1/liens/*`, `/api/v1/cashflow/alert`,
+  `/api/v1/tenants`, `/api/v1/abilities/execute` and
+  `/api/v1/bid-intelligence/outcomes` all mounted.
+- Backend suite: **4 failed, 125 passed**. All 4 failures reproduce identically
+  on a clean tree with the port stashed, so the port introduced no regressions.
+  They are pre-existing: `test_admin_web_router_hidden_from_openapi` and three
+  `test_voice_driveway_persistence` cases.
+
+### A test-environment trap worth knowing about
+
+Partway through this work the suite jumped to 20 failures and the runtime went
+from ~200s to ~1850s. The cause was not the port. `app/main.py` hard-overrides
+`os.environ` from `.env.local`, and a stray `.env.local` (a copy of
+`.env.example`) was sitting in the repo root. `tests/backend/conftest.py`
+monkeypatches its env and then *reloads* `app.main`, so every test value was
+being replaced by the placeholders — `JWORDEN_MASTER_KEY` became
+`change-me-to-a-long-random-secret`, and a `REDIS_URL` was injected that made
+every test wait on a connection that did not exist.
+
+It surfaced as bare 403s with no hint of the cause. `app/main.py` now honours
+`JWORDEN_SKIP_LOCAL_ENV`, and conftest sets it before the reload, so a developer
+with a real `.env.local` can no longer get mystery failures.
+
+### Fabricated data removed at the same time
+
+Two ported services manufactured convincing fake results and returned them as
+real. Both are fixed, with 13 regression tests in
+`tests/backend/test_bid_hunter_honesty.py`:
+
+- `commercial_bid_hunter.hunt_sam_gov_contracts` returned a hand-written
+  placeholder solicitation (`RFP-2026-PAVE-{ST}01`) on every failure path, with
+  nothing marking it synthetic. With the API key defaulting to `DEMO_KEY` and a
+  1.5s timeout, that was the normal path — the endpoint invented one plausible
+  federal contract per state, every call. The sweep also advertised PlanHub,
+  BuildingConnected, Dodge and "All 51 State DOTs" as monitored while calling
+  only SAM.gov.
+- `planhub_scraper` fell back to five hardcoded projects with invented GC names
+  and budgets under `ok: True`, including when a genuine scrape found nothing.
+  Its docstring called them "authentic". It also carried a hardcoded personal
+  email as the default login.
+
+Consequence to be aware of: **the bid hunter now returns zero bids** until
+`SAM_GOV_API_KEY` is set as a Fly secret. That is the honest state of it, and
+the frontend surfaces it as a setup banner rather than an empty table.

@@ -80,23 +80,42 @@ from dotenv import (  # noqa: E402 — must run before other imports
 )
 
 # Load local env files from repo root in deterministic order.
-# In production (Railway/Render), environment variables are injected directly.
+# In production (Fly.io), environment variables are injected directly as secrets
+# and none of these files exist, so this block is a no-op there.
+#
+# The `.env.local` loop below is a HARD override — it wins over whatever is
+# already in os.environ. That is deliberate for local development (a developer's
+# .env.local should beat a stale exported shell variable), but it is wrong under
+# test: tests/backend/conftest.py monkeypatches JWORDEN_MASTER_KEY, DATABASE_URL
+# and friends and then reloads this module, at which point the loop would
+# silently replace every one of them with the placeholder values from a
+# developer's .env.local. That failure mode is very hard to read from the far
+# end — it surfaces as a bare 403 on authenticated tests, with the real cause
+# (expected key len=33, "change-me-to-a-long-random-secret") never mentioned.
+# So conftest sets JWORDEN_SKIP_LOCAL_ENV=1 and this block stands down.
 _REPO_ROOT = Path(__file__).resolve().parents[1]
-_base_env = _REPO_ROOT / ".env"
-if _base_env.exists():
-    load_dotenv(dotenv_path=_base_env, override=False)
+_SKIP_LOCAL_ENV = os.getenv("JWORDEN_SKIP_LOCAL_ENV", "").strip().lower() in {
+    "1",
+    "true",
+    "yes",
+}
 
-for _name in (".env.local", ".env.ops.local"):
-    _path = _REPO_ROOT / _name
-    if not _path.exists():
-        continue
-    for _key, _raw in dotenv_values(_path).items():
-        if _raw is None:
+if not _SKIP_LOCAL_ENV:
+    _base_env = _REPO_ROOT / ".env"
+    if _base_env.exists():
+        load_dotenv(dotenv_path=_base_env, override=False)
+
+    for _name in (".env.local", ".env.ops.local"):
+        _path = _REPO_ROOT / _name
+        if not _path.exists():
             continue
-        _value = str(_raw).strip()
-        if not _value:
-            continue
-        os.environ[_key] = _value
+        for _key, _raw in dotenv_values(_path).items():
+            if _raw is None:
+                continue
+            _value = str(_raw).strip()
+            if not _value:
+                continue
+            os.environ[_key] = _value
 
 # ── Structured logging ────────────────────────────────────────────────────────
 # Use JSON formatter in production (LOG_FORMAT=json) for log aggregation.
@@ -306,6 +325,22 @@ from .routers import visualizer as visualizer_router
 from .routers import voice as voice_router
 from .routers import weather as weather_router
 from .routers import workforce as workforce_router
+
+# ── Ported from jworden-production 2026-07-28 ────────────────────────────────
+# Twelve routers that existed only in that repo. Imported and mounted the same
+# way it did, so behaviour matches the source rather than being re-invented.
+from .routers import abilities as abilities_router
+from .routers import b2g_bids as b2g_bids_router
+from .routers import bid_hunter_router
+from .routers import billing as billing_router
+from .routers import factory as factory_router
+from .routers import lms as lms_router
+from .routers import market_orchestration as market_orchestration_router
+from .routers import owner_auth as owner_auth_router
+from .routers import portal as portal_router
+from .routers import superadmin as superadmin_router
+from .routers import supply_chain as supply_chain_router
+from .routers import system as system_router
 from .routers.websocket_events import sio
 from .services.ai_brain import SupremeCourtAI
 from .services.monitoring_service import monitoring
@@ -690,6 +725,20 @@ _rebuild_router_models()
 # Neural TTS for Jarvis / Mr. Worden voice (OpenAI / ElevenLabs)
 app.include_router(tts_router.router)
 app.include_router(local_proof_router.router)
+
+# Ported routers (see import block above).
+app.include_router(abilities_router.router)
+app.include_router(b2g_bids_router.router)
+app.include_router(bid_hunter_router.router)
+app.include_router(billing_router.router)
+app.include_router(factory_router.router)
+app.include_router(lms_router.router)
+app.include_router(market_orchestration_router.router)
+app.include_router(owner_auth_router.router)
+app.include_router(portal_router.router)
+app.include_router(superadmin_router.router)
+app.include_router(supply_chain_router.router)
+app.include_router(system_router.router)
 
 
 # ── Socket.IO ASGI mount ──────────────────────────────────────────────────────
