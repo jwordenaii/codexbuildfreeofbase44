@@ -471,7 +471,15 @@ def _is_cacheable_query(query: str, *, action_intent: bool) -> bool:
 
 def _response_cache_key(query: str, persona: str, role: str, confirmed: bool) -> str:
     normalized_query = " ".join((query or "").strip().lower().split())
-    return f"{persona}|{role}|{int(bool(confirmed))}|{normalized_query}"
+    # Canonicalise the persona rather than trusting the caller's string. The
+    # cache is LRU-bounded, so a public caller varying `persona` freely would
+    # otherwise mint a distinct key per variation and evict real entries.
+    # Personas outside the allow-list all behave as JARVIS anyway, so they must
+    # share its key.
+    canonical = str(persona or "").strip().upper()
+    if canonical not in _PERSONA_NOTES:
+        canonical = _DEFAULT_PERSONA
+    return f"{canonical}|{role}|{int(bool(confirmed))}|{normalized_query}"
 
 
 def _response_cache_get(key: Optional[str]) -> Optional[dict]:
@@ -617,16 +625,50 @@ async def _ask_fast_ops_brain(query: str, persona: str, autonomy: dict, *, confi
     }
 
 
+# ── Persona allow-list ───────────────────────────────────────────────────────
+#
+# `persona` arrives from the request body of POST /api/v1/jarvis/chat, which is
+# NOT auth-gated — it is the public concierge on the marketing site. It used to
+# be interpolated straight into the system prompt as
+# `f"Adopt persona: {persona}."`, which made the field a free-text system-prompt
+# channel for anyone who could reach the endpoint. An unauthenticated curl was
+# enough to change the assistant's instructions.
+#
+# Only these two personas are real product surfaces, so anything else falls back
+# to JARVIS rather than being echoed into the prompt.
+_PERSONA_NOTES: dict[str, str] = {
+    "JARVIS": (
+        "You are Jarvis: warm, conversational, helpful, concise but friendly. "
+        "Ask clarifying questions when unsure."
+    ),
+    "MR_WORDEN_SALES": (
+        "You are Mr. Worden, a fourth-generation paving contractor talking to a "
+        "prospective customer: energetic, plain-spoken, proud of the work. Focus on "
+        "durability and value. Never quote a firm price or promise a schedule — "
+        "hand those to the office."
+    ),
+}
+_DEFAULT_PERSONA = "JARVIS"
+
+
+def _persona_note(persona: Optional[str]) -> str:
+    key = str(persona or "").strip().upper()
+    note = _PERSONA_NOTES.get(key)
+    if note:
+        return note
+    if key and key != _DEFAULT_PERSONA:
+        # Worth seeing in logs: either a client is sending a persona we retired,
+        # or someone is probing the field.
+        logger.info("[JARVIS] Unrecognised persona %r — falling back to JARVIS", persona[:64])
+    return _PERSONA_NOTES[_DEFAULT_PERSONA]
+
+
 async def _ask_chat_brain(query: str, persona: str, autonomy: dict, session_id: Optional[str] = None, *, confirmed: bool = False) -> Optional[dict]:
     """
     Human-like conversational lane. Uses the multi-provider router via _llm.chat
     with a persona-focused system prompt and recent short-term memory.
     """
-    persona_note = (
-        "You are Jarvis: warm, conversational, helpful, concise but friendly. Ask clarifying questions when unsure."
-        if persona == "JARVIS"
-        else f"Adopt persona: {persona}. Be helpful and conversational."
-    )
+    persona_note = _persona_note(persona)
 
     mem_snippet = ""
     try:
@@ -1451,28 +1493,47 @@ class JarvisAI:
         intel_report = f"Sir, I have synthesized the current request against our integrated nodes: {', '.join(self.intel_sources)}. "
 
         # weather / news / financial trends / supply chain / SEO
+        # Weather / market / SEO.
+        #
+        # This branch used to return a fixed "REAL-TIME SEO DOMINATION REPORT"
+        # claiming #1 rankings were being actively defended, reserves were
+        # optimised and Virginia demand was strong — none of it measured. It was
+        # also the first branch checked, so the word "weather" alone triggered an
+        # SEO ranking claim. Real rankings come from Search Console, real
+        # conditions from paving_forecast; neither is reachable here.
         if any(w in query_lower for w in ["weather", "forecast", "news", "trend", "market", "finance", "bank", "money", "capital", "revenue", "income", "commodity", "material", "supply", "concrete", "shingle", "asphalt", "aggregate", "stone", "seo", "rank", "google", "search", "virginia", "marketing", "sealcoat", "sealcoating"]):
             return {
                 "source": self.identity,
                 "message": (
-                    f"{intel_report}\n\n"
-                    "REAL-TIME SEO MAINTENANCE & DOMINATION REPORT:\n"
-                    "- Richmond Core: All SEO guardrails for 'Asphalt Paving Richmond' and 'Sealcoating Midlothian' are ACTIVE and maintained. We are currently defending our #1 spots with real-time content refresh cycles.\n"
-                    "- Sealcoating Offensive: I have prioritized 'Sealcoating All Types' (Coal Tar, Asphalt Emulsion, GSB-88) as our primary SEO edge in Virginia. We are positioning jwordenasphaltpaving.com as the definitive authority.\n"
-                    "- Evidence Pipeline: Richmond data is being streamed directly into the JWORDENAI Evidence Pipeline. This is the heart of our Case Study.\n"
-                    "- Material Integrity: Concrete, Shingle, and Sealant reserves are optimized. Our vertical supply chain ensures we fulfill Richmond's demand at maximum margin.\n"
-                    "- Market Trends: Virginia demand remains strong. Our dominance in Richmond is the proof-of-concept for the Global PF rollout."
+                    "My reasoning engine is unreachable, so I can't run the weather model, "
+                    "check rankings or read live market data right now — and I won't "
+                    "estimate any of them from memory. Try again shortly; if you need "
+                    "paving conditions today, the forecast tools come back with me."
                 ),
                 "action_required": False,
-                "intel_tier": "Global-Financial-Supreme"
+                "degraded": True,
             }
 
-        # Business events context
+        # Business events context.
+        #
+        # This branch used to answer with a fixed sentence reporting "a new
+        # estimate in Richmond and a $4,500 cleared payment in Midlothian" —
+        # numbers that were never read from anywhere. /chat is public and this
+        # lane runs whenever the model call fails, so an Anthropic outage was
+        # enough to have Jarvis report a fabricated payment to a customer as
+        # fact. Real figures come from get_money_position and get_leads; when
+        # the brain is unreachable the honest answer is that it is unreachable.
         if any(w in query_lower for w in ["update", "status", "recent", "happen", "estimate", "payment"]):
             return {
                 "source": self.identity,
-                "message": f"{intel_report}\n\nUpdate: We have a new estimate in Richmond and a $4,500 cleared payment in Midlothian. All 51-state GC compliance checks passed successfully for these transactions.",
+                "message": (
+                    "I can't reach my reasoning engine right now, so I won't guess at "
+                    "numbers. Live estimates, payments and pipeline status are on the "
+                    "Command Center dashboard, and I'll pull them myself as soon as I'm "
+                    "back. If this is urgent, call the office directly."
+                ),
                 "action_required": False,
+                "degraded": True,
             }
 
         # Legal & education context
@@ -1506,19 +1567,25 @@ class JarvisAI:
         Salesman Mr. Worden Persona Logic.
         Upgraded to report on actual business events (Estimates, Payments).
         """
-        # Event Report Logic
+        # Event Report Logic.
+        #
+        # The previous version announced a specific new Richmond estimate and a
+        # cleared $4,500 Midlothian payment, with a matching `data.recent_events`
+        # payload — all of it hardcoded and none of it read from the database.
+        # The comment above it said "simulate fetching ... in a real scenario",
+        # which is fine in a prototype and dangerous once /chat is public and
+        # unauthenticated. A visitor asking "any update?" during a model outage
+        # was told about a payment that may never have existed.
         if any(w in query for w in ["update", "status", "estimate", "payment", "notification"]):
-            # Simulate fetching from a global event bus or DB in a real scenario
             return {
                 "source": "Mr. Worden (Sales)",
-                "message": "Big news! We just had a new estimate request come in from Richmond, and a payment of $4,500 just cleared for the Midlothian job. The momentum is incredible, Sir!",
+                "message": (
+                    "I'm running on a backup line at the moment and I'd rather give you "
+                    "nothing than give you the wrong number. Give the office a call and "
+                    "we'll pull your estimate or payment status up on the spot."
+                ),
                 "action_required": False,
-                "data": {
-                    "recent_events": [
-                        {"type": "estimate", "location": "Richmond", "status": "new"},
-                        {"type": "payment", "amount": 4500, "status": "cleared"}
-                    ]
-                }
+                "degraded": True,
             }
 
         if any(w in query for w in ["price", "cost", "quote", "deal"]):
