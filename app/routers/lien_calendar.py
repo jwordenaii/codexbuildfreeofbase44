@@ -22,11 +22,42 @@ from ..core.limiter import limiter
 from ..core.security import verify_premium_security
 from ..database import get_db
 from ..models import LienCalendarEntry
-from ..services.lien_calendar import calculate_deadlines, get_upcoming_deadlines
+from ..services.lien_calendar import (
+    _LIEN_LAWS,
+    calculate_deadlines,
+    get_upcoming_deadlines,
+)
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/v1/liens", tags=["lien-calendar"])
+
+
+@router.get("/states", summary="Which states have researched lien statutes on file")
+@limiter.limit("60/minute")
+async def lien_state_coverage(request: Request):
+    """
+    Report which states this service has real statute data for.
+
+    Every calculate/track response already carries ``used_default_rules``, which
+    is the authoritative per-result signal. This endpoint exists so a client can
+    warn the user *before* they enter dates, and so the coverage list is read
+    from the table rather than duplicated in frontend code where it would drift
+    the moment a state is added to ``_LIEN_LAWS``.
+
+    Public on purpose — it discloses no project data, only which states we have
+    done the legal research for.
+    """
+    researched = sorted(_LIEN_LAWS.keys())
+    return {
+        "researched_states": researched,
+        "researched_count": len(researched),
+        "fallback_note": (
+            "States not listed fall back to generic timing and are flagged with "
+            "used_default_rules=true on every result. Verify those with a licensed "
+            "attorney in that state before relying on them."
+        ),
+    }
 
 
 class LienCalcRequest(BaseModel):

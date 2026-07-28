@@ -14,6 +14,11 @@ if str(REPO_ROOT) not in sys.path:
 @pytest.fixture()
 def app_modules(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
     db_path = tmp_path / "test.db"
+    # app.main hard-overrides os.environ from .env.local / .env.ops.local when
+    # it is imported. Reloading mainmod below would therefore wipe every value
+    # monkeypatched here on any machine that has one of those files. Tell it to
+    # stand down before the reload happens.
+    monkeypatch.setenv("JWORDEN_SKIP_LOCAL_ENV", "1")
     monkeypatch.setenv("DATABASE_URL", f"sqlite:///{db_path}")
     monkeypatch.setenv("JWORDEN_MASTER_KEY", "test-master-key-for-ci-use-only-not-prod")
     monkeypatch.setenv("JWT_SECRET_KEY", "test-jwt-secret")

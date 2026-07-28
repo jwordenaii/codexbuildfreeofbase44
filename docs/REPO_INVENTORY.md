@@ -1,0 +1,286 @@
+# Repository Index — J. Worden & Sons / JWordenAI
+
+Generated 2026-07-28 by inspecting every repository in the working set. This
+file exists because the same inventory had been requested several times and
+re-derived from scratch each time. If it goes stale, regenerate it rather than
+guessing.
+
+## The headline finding: three copies of the backend
+
+`app/services/jarvis.py` exists in three repositories, all different:
+
+| repo | jarvis.py | routers | services | deploy target (verified) |
+|---|---|---|---|---|
+| `codexbuildfreeofbase44` | **1,675 lines** | 92 | 87 | Fly.io — `jworden-api` |
+| `jworden-production` | **1,165 lines** | 104 | 93 | Vercel — frontend only; backend unused |
+| `wordenstandard` | **903 lines** | — | — | Netlify — `thewordenstandardcom` |
+
+Different MD5s, different line counts, different behaviour. `jworden-production`
+carries *more* routers (104) but an *older* Jarvis. A fix applied to one is
+absent from the other two.
+
+**Canonical backend: `codexbuildfreeofbase44`.** It is the one Fly serves at
+`https://jworden-api.fly.dev`, confirmed by deploying to it and reading
+`/api/v1/jarvis/readiness` back. The other two are forks that diverged.
+
+**Canonical frontend: `jworden-production`.** It is the one Vercel serves at
+`https://www.jwordenasphaltpaving.com`, confirmed by `server: Vercel` response
+headers and by watching sitemap changes from this repo appear live.
+
+## The frontend twin
+
+`gemini2` and `spacexgeminijworden` share **296 files** and carry identical
+`CLAUDE.md` and `AGENTS.md`. Both describe themselves as the live marketing
+site, on TanStack Router with Netlify Functions. Neither is live —
+`jworden-production` (React Router, Vercel) is. `gemini2`'s package name is
+`react-example`.
+
+Those two stale docs are the reason agent sessions kept being told the stack
+was Netlify + TanStack when production is Vercel + React Router.
+
+## Netlify projects (5, all on a paid `nf_team_pro` team)
+
+Verified by reading each project's current deploy record:
+
+| Netlify project | source repo | branch | last published | notes |
+|---|---|---|---|---|
+| `wordenproduction` | `genewgeorge76/jworden-production` | main | **2026-06-09** | Holds `www.jwordenasphaltpaving.com` as primary URL and serves `main.jwordenandsonspaving.com`. 6 functions live incl. `chat-lead-capture`, `estimate-request` — a seven-week-old build that can still take customer leads. |
+| `thewordenstandardcom` | `jwordenaii/wordenstandard` | main | 2026-05-16 | 12 functions, 2 cron schedules (`health-monitor` every 30 min, `scheduled-ingest` daily). |
+| `gorgeous-tarsier-417c66` | `jwordenaii/codexbuildfreeofbase44` | — | — | Posts deploy previews on that repo's PRs. Primary URL `app.jwordenasphaltpaving.com` (does not resolve). |
+| `jwordenuniveristy` *(sic)* | — | — | — | Primary URL `jwordenuniversity.com`. |
+| `jwordenlaunch1` | — | — | — | `jwordenlaunch1.netlify.app`. |
+
+Live traffic for `www.jwordenasphaltpaving.com`, `thewordenstandard.com` and
+`jwordenuniversity.com` is served by **Vercel**, not Netlify — checked via
+response headers. The Netlify copies are dormant but still published, still
+holding domains, and still running scheduled functions.
+
+## Full inventory
+
+| repo | origin | files | last commit | stack | router | deploy cfg | backend .py | src files |
+|---|---|---|---|---|---|---|---|---|
+| `NewRepo` | genewgeorge76/NewRepo | 202 | 2026-07-25 | node | none | vercel | 0 | 0 |
+| `atlantapavingandsealing` | jwordenaii/atlantapavingandsealing | 29 | 2026-05-11 | ? | none | netlify | 0 | 0 |
+| `blueridgeasphaltpaving` | genewgeorge76/blueridgeasphaltpaving | 72 | 2026-06-17 | node | none | none | 0 | 26 |
+| `carolinablacktop` | jwordenaii/carolinablacktop | 0 |  | ? | none | none | 0 | 0 |
+| `codexbuildfreeofbase44` | jwordenaii/codexbuildfreeofbase44 | 1448 | 2026-07-28 | node+python | react-router-dom | netlify | 207 | 314 |
+| `doooone` | genewgeorge76/doooone | 729 | 2026-05-27 | ? | none | netlify | 0 | 0 |
+| `gemini2` | genewgeorge76/gemini2 | 301 | 2026-07-25 | node | none | netlify | 0 | 196 |
+| `googlebuiltoperatingsystem-` | genewgeorge76/googlebuiltoperatingsystem- | 26 | 2026-06-22 | node | none | none | 0 | 12 |
+| `jworden-jarvis-os` | genewgeorge76/jworden-jarvis-os | 359 | 2026-07-25 | ?+python | none | vercel | 0 | 0 |
+| `jworden-production` | genewgeorge76/jworden-production | 3371 | 2026-07-28 | node | react-router-dom | vercel | 395 | 360 |
+| `jwordenasphaltantigravity` | genewgeorge76/jwordenasphaltantigravity | 607 | 2026-07-24 | node | none | none | 0 | 50 |
+| `jwordenasphaltpaving2` | genewgeorge76/jwordenasphaltpaving2 | 80 | 2026-07-25 | node | none | netlify | 0 | 0 |
+| `next-platform-starter` | genewgeorge76/next-platform-starter | 54 | 2026-02-23 | node/next | none | netlify | 0 | 0 |
+| `obxpaving-` | jwordenaii/obxpaving- | 49 | 2026-07-25 | node | react-router-dom | netlify | 0 | 33 |
+| `spacexgeminijworden` | genewgeorge76/spacexgeminijworden | 310 | 2026-07-25 | node | react-router | netlify | 0 | 206 |
+| `wordenstandard` | jwordenaii/wordenstandard | 1391 | 2026-07-25 | node+python | react-router-dom | netlify | 198 | 337 |
+| `wordenuniversity` | jwordenaii/wordenuniversity | 16 | 2026-05-25 | node | none | netlify | 0 | 5 |
+## Reading the table
+
+- **deploy cfg** is which config file is present, not where it actually
+  deploys. Eleven of seventeen repos carry a `netlify.toml`; two are actually
+  served by Netlify today.
+- **backend .py** counts files under `app/`. Only three repos have one.
+- `carolinablacktop` has 0 tracked files — an empty repository.
+
+## What is NOT resolved
+
+- Which repo `jwordenuniveristy` and `jwordenlaunch1` build from. The Netlify
+  API exposes it per-deploy; those two were not queried.
+- Whether Netlify hosts the **DNS zone** for `jwordenasphaltpaving.com` as well
+  as the site. This decides whether deleting `wordenproduction` is safe.
+  Check Netlify → Domains before deleting anything.
+- `jwordenandsonspaving.com` was unreachable from the audit environment.
+  It is served by the June 9 `wordenproduction` build; confirm in a browser.
+
+---
+
+# Complete inventory — all 17 repositories
+
+Added after inventorying every repo individually. The headline finding changed
+twice while doing this, which is the argument for having done it.
+
+## Tier 1 — harvest before archiving (unique capability)
+
+### `jworden-production` — the superset backend
+104 routers (23,146 lines), 93 services (22,673), 66 tables, plus `jarvis_os`
+(179 abilities, 10,024 lines). Frontend 90,286 lines across 360 files.
+**Does not currently boot** — 3 missing modules (`geocoding`, `google_photos`,
+`google_sheets`) referenced by 5 files. Four of those five are already fixed in
+`codexbuildfreeofbase44`.
+Also contains 10 embedded sub-sites and `scavenged-assets/` (584 files, 14
+copied projects, including backend copy #5).
+
+### `NewRepo` — 15 routers + 10 services that exist nowhere else
+~4,945 lines, all real (no stubs), and disproportionately the licensable ones:
+
+| module | lines / endpoints |
+|---|---|
+| `catalog.py` | 389 / 10 |
+| `gantt.py` | 370 / 8 |
+| `bim.py` | 318 / 8 |
+| `saas_billing.py` | 316 / 8 |
+| `quickbooks.py` | 216 / 5 |
+| `client_portal.py` | 210 / 5 |
+| `pavement_intel.py` | 526 |
+| `parcel_service.py` | 217 |
+| `property_vision.py` | 149 |
+
+### `jworden-jarvis-os` — `client-dashboard/`
+Standalone Next.js app, 9,289 lines, unique. Routes include `/real-estate`,
+`/roofing`, `/saas-client`, `/fsm`, `/fleet`, `/legal`, `/spatial`,
+`/visualizer`, `/jarvis-omni`. This is the multi-trade licensable shell,
+already scaffolded.
+Its 164 abilities are an identical set to production's copy, and production's
+is equal-or-larger in all 64 that differ — nothing to harvest there.
+
+### `doooone` — 533 job-site photographs
+`work/imported/` carries real project photography (brick paver patio, KFC,
+etc.) with Google Photos metadata, plus a compiled build. No source. This is
+portfolio/catalog material, not a codebase.
+
+### `jwordenasphaltantigravity` — dormant local SEO
+Next.js, 25 Virginia city routes, `/insights` with 6 written articles, 540
+image assets, 5,897 lines of src. No deploy config. The copy embedded in
+`jworden-production/jworden-antigravity/` is a different, smaller build (53
+files vs 607).
+
+### `wordenstandard` — two files worth keeping
+Backend copy #3 (88 routers, 86 services, 55 tables) — all subsets of
+production. Unique: `app/routers/forecast.py` and
+`src_wordenstandard/components/TheWordenStandard.tsx`. Everything else in its
+13,944-line `src_wordenstandard/` already exists in `jworden-production`.
+
+## Tier 2 — subsets, archive after Phase 1
+
+| repo | verdict |
+|---|---|
+| `codexbuildfreeofbase44` | Currently deployed to Fly. 0 unique routers, 0 unique services, 0 unique tables. Its value is 6 files improved 2026-07-28: `jarvis`, `weather_service`, `short_memory`, `llm_client`, `tts_service`, `runtime_config`. |
+| `gemini2` | Twin A. 296 files shared with spacexgeminijworden. Package name `react-example`. Source of the stale CLAUDE.md. |
+| `spacexgeminijworden` | Twin B. TanStack Router, Netlify. |
+
+## Tier 3 — small, single-purpose, or empty
+
+| repo | files | code files | note |
+|---|---|---|---|
+| `blueridgeasphaltpaving` | 72 | 29 | Separate live Next.js site |
+| `jwordenasphaltpaving2` | 80 | 3 | Assets and config only |
+| `obxpaving-` | 49 | 35 | Also embedded in production as `obx-paving/` |
+| `next-platform-starter` | 54 | 35 | Netlify's own boilerplate |
+| `atlantapavingandsealing` | 29 | 0 | Static assets only; embedded in production too |
+| `googlebuiltoperatingsystem-` | 26 | 14 | package name `dashboard` |
+| `wordenuniversity` | 16 | 4 | Serves jwordenuniversity.com |
+| `carolinablacktop` | **0** | 0 | **Empty repository** — but a domain and deploy project point at it |
+
+## Backend copies — final count: five
+
+| location | routers | models.py | jarvis.py |
+|---|---|---|---|
+| `jworden-production/app/` | 104 | 2,033 | 1,165 |
+| `codexbuildfreeofbase44/app/` | 92 | 1,847 | **1,675** |
+| `wordenstandard/app/` | 88 | 1,617 | 903 |
+| `NewRepo/apps/api/app/` | 44 | 799 | — |
+| `jworden-production/scavenged-assets/NewRepo/apps/api/app/` | 44 | 799 | — |
+
+Schema is a clean nesting: production's 66 tables ⊃ codexbuild's 58 ⊃
+wordenstandard's 55. Zero tables unique to codexbuild. Merging is additive.
+
+Of 87 services shared between production and codexbuild, **78 are
+byte-identical**. Only 9 differ. The divergence is small and fully understood.
+
+## The plan this produces
+
+1. **One backend.** Base on `jworden-production/app/`. Fix 3 imports, port the
+   6 improved files from codexbuild, +8 tables, deploy to Fly. The SAM.gov bid
+   hunter goes live.
+2. **Harvest.** NewRepo's 25 unique modules, wordenstandard's 2 files.
+   Then archive both, plus the twins and the duplicate backends.
+3. **Product.** `client-dashboard` becomes the licensable frontend — it already
+   has the trade routes. Wire to the one backend, finish `tenant_id`.
+4. **Reclaim.** `doooone`'s 533 job photos into the catalog;
+   `jwordenasphaltantigravity`'s 25 city pages + 6 articles into the SEO estate.
+
+The conclusion worth stating plainly: **very little needs to be written.** What
+is missing is one deployed backend and one wired frontend. Nearly everything
+described as the product already exists in one of these repositories.
+
+---
+
+## Consolidation log — 2026-07-28
+
+Step 1 above is done, with one deliberate reversal.
+
+**The plan said "base on `jworden-production/app/`". That was wrong and was
+changed.** Production's backend has the larger superset, which is what made it
+look like the right base — but it has never deployed: it does not boot, and
+there is no Fly pipeline pointed at it. `codexbuildfreeofbase44` is the copy
+that is actually running at `https://jworden-api.fly.dev`. Rebasing onto the
+never-deployed superset would have traded a working deployment for a bigger
+file listing. So the port ran the other direction: production's unique code was
+brought **into** codexbuild.
+
+### What moved
+
+| Kind | Count | Detail |
+|------|-------|--------|
+| Routers | 12 | abilities, b2g_bids, bid_hunter, billing, factory, lms, market_orchestration, owner_auth, portal, superadmin, supply_chain, system |
+| Services | 6 | commercial_bid_hunter, email_intake, email_sync, gce_service, os_ability_service, planhub_scraper |
+| `app/jarvis_os/` | 168 py files | copied wholesale, `__pycache__` stripped |
+| Model classes | 8 | `app/models.py` 1847 → 2017 lines, 58 → 66 tables |
+
+`ForeignKey` and `JSON` had to be added to codexbuild's SQLAlchemy import block
+— the ported models use both and the module raised `NameError` on boot without
+them.
+
+Migration `r6s9t4u0v3w8` (down_revision `q5r8s3t9u2v7`) was generated from model
+metadata and verified to run clean from an empty database to head: 63 tables,
+all 8 new ones present.
+
+### Verification
+
+- Boots clean: **433 routes**, up from 421.
+- `/api/v1/hunter/commercial-bids`, `/api/v1/liens/*`, `/api/v1/cashflow/alert`,
+  `/api/v1/tenants`, `/api/v1/abilities/execute` and
+  `/api/v1/bid-intelligence/outcomes` all mounted.
+- Backend suite: **4 failed, 125 passed**. All 4 failures reproduce identically
+  on a clean tree with the port stashed, so the port introduced no regressions.
+  They are pre-existing: `test_admin_web_router_hidden_from_openapi` and three
+  `test_voice_driveway_persistence` cases.
+
+### A test-environment trap worth knowing about
+
+Partway through this work the suite jumped to 20 failures and the runtime went
+from ~200s to ~1850s. The cause was not the port. `app/main.py` hard-overrides
+`os.environ` from `.env.local`, and a stray `.env.local` (a copy of
+`.env.example`) was sitting in the repo root. `tests/backend/conftest.py`
+monkeypatches its env and then *reloads* `app.main`, so every test value was
+being replaced by the placeholders — `JWORDEN_MASTER_KEY` became
+`change-me-to-a-long-random-secret`, and a `REDIS_URL` was injected that made
+every test wait on a connection that did not exist.
+
+It surfaced as bare 403s with no hint of the cause. `app/main.py` now honours
+`JWORDEN_SKIP_LOCAL_ENV`, and conftest sets it before the reload, so a developer
+with a real `.env.local` can no longer get mystery failures.
+
+### Fabricated data removed at the same time
+
+Two ported services manufactured convincing fake results and returned them as
+real. Both are fixed, with 13 regression tests in
+`tests/backend/test_bid_hunter_honesty.py`:
+
+- `commercial_bid_hunter.hunt_sam_gov_contracts` returned a hand-written
+  placeholder solicitation (`RFP-2026-PAVE-{ST}01`) on every failure path, with
+  nothing marking it synthetic. With the API key defaulting to `DEMO_KEY` and a
+  1.5s timeout, that was the normal path — the endpoint invented one plausible
+  federal contract per state, every call. The sweep also advertised PlanHub,
+  BuildingConnected, Dodge and "All 51 State DOTs" as monitored while calling
+  only SAM.gov.
+- `planhub_scraper` fell back to five hardcoded projects with invented GC names
+  and budgets under `ok: True`, including when a genuine scrape found nothing.
+  Its docstring called them "authentic". It also carried a hardcoded personal
+  email as the default login.
+
+Consequence to be aware of: **the bid hunter now returns zero bids** until
+`SAM_GOV_API_KEY` is set as a Fly secret. That is the honest state of it, and
+the frontend surfaces it as a setup banner rather than an empty table.

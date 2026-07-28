@@ -38,6 +38,44 @@ DEFAULT_ELEVENLABS_VOICE = os.getenv("ELEVENLABS_VOICE_ID", "pNInz6obpgDQGcFmaJg
 DEFAULT_ELEVENLABS_MODEL = os.getenv("ELEVENLABS_MODEL", "eleven_turbo_v2_5")
 
 
+def _env_float(name: str, default: float, lo: float = 0.0, hi: float = 1.0) -> float:
+    """Read a 0..1 tuning knob from the environment, clamped. Never raises."""
+    try:
+        return max(lo, min(float(os.getenv(name, "").strip()), hi))
+    except (TypeError, ValueError):
+        return default
+
+
+# ── Delivery tuning ──────────────────────────────────────────────────────────
+#
+# These were previously written out twice — once in _synthesize_elevenlabs and
+# once in _stream_elevenlabs — so the buffered and streamed paths could drift
+# into sounding different. One definition, used by both.
+#
+# The defaults target the register the product is going for: composed,
+# measured, dry. That is mostly a function of these two numbers.
+#
+#   stability   0.45 -> 0.65   Higher is steadier and less emotionally
+#                              variable. Low stability reads as expressive or
+#                              theatrical, which is the opposite of a butler
+#                              who never sounds surprised.
+#   style       0.30 -> 0.05   Style exaggerates the source voice's delivery
+#                              quirks. Near zero keeps the read neutral and
+#                              unhurried. It also lowers latency.
+#
+# similarity_boost stays high so the voice does not wander off-model, and
+# speaker_boost stays on for presence.
+#
+# All four are env-overridable so the voice can be re-tuned without a deploy.
+def _voice_settings() -> dict:
+    return {
+        "stability": _env_float("ELEVENLABS_STABILITY", 0.65),
+        "similarity_boost": _env_float("ELEVENLABS_SIMILARITY", 0.85),
+        "style": _env_float("ELEVENLABS_STYLE", 0.05),
+        "use_speaker_boost": (os.getenv("ELEVENLABS_SPEAKER_BOOST", "1").strip() != "0"),
+    }
+
+
 def _has_elevenlabs() -> bool:
     return bool(os.getenv("ELEVENLABS_API_KEY", "").strip())
 
@@ -77,12 +115,7 @@ def _synthesize_elevenlabs(text: str, voice_id: Optional[str] = None) -> bytes:
     payload = {
         "text": text,
         "model_id": DEFAULT_ELEVENLABS_MODEL,
-        "voice_settings": {
-            "stability": 0.45,
-            "similarity_boost": 0.85,
-            "style": 0.30,
-            "use_speaker_boost": True,
-        },
+        "voice_settings": _voice_settings(),
     }
     with httpx.Client(timeout=_http_timeout()) as client:
         resp = client.post(url, headers=headers, json=payload)
@@ -105,12 +138,7 @@ def _stream_elevenlabs(text: str, voice_id: Optional[str] = None) -> Iterator[by
     payload = {
         "text": text,
         "model_id": DEFAULT_ELEVENLABS_MODEL,
-        "voice_settings": {
-            "stability": 0.45,
-            "similarity_boost": 0.85,
-            "style": 0.30,
-            "use_speaker_boost": True,
-        },
+        "voice_settings": _voice_settings(),
     }
 
     with httpx.Client(timeout=_http_timeout()) as client:

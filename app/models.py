@@ -18,7 +18,11 @@ from sqlalchemy import (
     Column,
     DateTime,
     Float,
+    # ForeignKey and JSON arrived with the eight tables ported from
+    # jworden-production on 2026-07-28 — the User/LMS models use both.
+    ForeignKey,
     Integer,
+    JSON,
     String,
     Text,
     UniqueConstraint,
@@ -1845,3 +1849,173 @@ class DrivewayOptIn(Base):
 
     def __repr__(self) -> str:
         return f"<DrivewayOptIn token={self.token!r} property={self.property_id!r}>"
+
+
+# ── Ported from jworden-production 2026-07-28 ────────────────────────────────
+#
+# These eight tables existed only in that repo's models.py. The two schemas
+# nested cleanly — 66 tables there, 58 here, zero unique to this side — so this
+# is purely additive: nothing is dropped or altered. LMS is six of the eight.
+
+class InboxMessage(Base):
+    """
+    Every email synced from IMAP is logged here, triaged, and ranked by AI.
+    """
+    __tablename__ = "inbox_messages"
+
+    id = Column(Integer, primary_key=True, index=True)
+    email_account = Column(String(254), nullable=False, index=True)
+    sender_name = Column(String(120), nullable=True)
+    sender_email = Column(String(254), nullable=False)
+    subject = Column(String(500), nullable=True)
+    body_summary = Column(Text, nullable=True)
+    category = Column(String(60), nullable=False, default="General") # Lead, Urgent, Vendor, General, Junk
+    importance_score = Column(Integer, nullable=False, default=1) # 1-10
+    is_lead = Column(Boolean, nullable=False, default=False)
+    created_at = Column(DateTime(timezone=True), default=_utcnow, nullable=False)
+
+    def __repr__(self) -> str:
+        return f"<InboxMessage subject={self.subject!r} category={self.category!r}>"
+
+
+
+class User(Base):
+    """
+    Team members (Seats) associated with a Tenant. Supports Role-Based Access Control (RBAC).
+    """
+
+    __tablename__ = "users"
+    __table_args__ = (UniqueConstraint("email", name="uq_users_email"),)
+
+    id = Column(Integer, primary_key=True, index=True)
+    tenant_id = Column(String(60), ForeignKey("tenants.tenant_id"), nullable=False, index=True)
+    email = Column(String(254), nullable=False, index=True)
+    hashed_password = Column(String(200), nullable=False)
+    full_name = Column(String(150), nullable=True)
+    role = Column(String(30), nullable=False, default="admin")  # admin | dispatcher | foreman | pilot
+    is_active = Column(Integer, nullable=False, default=1)
+    last_login_at = Column(DateTime(timezone=True), nullable=True)
+    created_at = Column(DateTime(timezone=True), default=_utcnow, nullable=False)
+    updated_at = Column(
+        DateTime(timezone=True), default=_utcnow, onupdate=_utcnow, nullable=False
+    )
+
+    def __repr__(self) -> str:
+        return f"<User email={self.email!r} role={self.role!r} tenant={self.tenant_id!r}>"
+
+
+
+class MarketSite(Base):
+    """
+    Dynamically generated SEO market sites for a given Tenant.
+    Replacing the hardcoded siteFactoryManifest.json.
+    """
+
+    __tablename__ = "market_sites"
+    __table_args__ = (UniqueConstraint("hostname", name="uq_market_sites_hostname"),)
+
+    id = Column(Integer, primary_key=True, index=True)
+    tenant_id = Column(String(60), nullable=False, index=True)
+    hostname = Column(String(200), nullable=False, index=True)
+    route_mode = Column(String(50), nullable=False, default="market-landing")
+    site_title = Column(String(200), nullable=True)
+    site_description = Column(Text, nullable=True)
+    primary_color = Column(String(20), nullable=True)
+    accent_color = Column(String(20), nullable=True)
+    hero_headline = Column(String(300), nullable=True)
+    hero_subheadline = Column(Text, nullable=True)
+    local_weather_copy = Column(Text, nullable=True)  # e.g. "Built for Florida heat"
+    city_target = Column(String(100), nullable=True)
+    state_target = Column(String(2), nullable=True)
+    phone_override = Column(String(30), nullable=True)
+    is_active = Column(Integer, nullable=False, default=1)
+    created_at = Column(DateTime(timezone=True), default=_utcnow, nullable=False)
+    updated_at = Column(
+        DateTime(timezone=True), default=_utcnow, onupdate=_utcnow, nullable=False
+    )
+
+    def __repr__(self) -> str:
+        return f"<MarketSite hostname={self.hostname!r} tenant={self.tenant_id!r}>"
+
+
+# ── Real-time chat messages ───────────────────────────────────────────────────
+
+
+
+class Course(Base):
+    """High-level training track in the Starbase LMS."""
+    __tablename__ = "lms_courses"
+
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(200), nullable=False)
+    slug = Column(String(200), nullable=False, unique=True, index=True)
+    description = Column(Text, nullable=False)
+    category = Column(String(100), nullable=False)  # e.g., 'Safety', 'Engineering', 'Software'
+    difficulty = Column(String(50), nullable=False, default="beginner")
+    estimated_hours = Column(Float, nullable=True)
+    thumbnail_url = Column(String(500), nullable=True)
+    is_published = Column(Boolean, default=False)
+    tenant_id = Column(String(60), nullable=True, index=True, default="default")
+    created_at = Column(DateTime(timezone=True), default=_utcnow, nullable=False)
+
+    def __repr__(self) -> str:
+        return f"<Course slug={self.slug!r} title={self.title!r}>"
+
+
+
+class CourseModule(Base):
+    """Grouping of lessons within a course."""
+    __tablename__ = "lms_course_modules"
+
+    id = Column(Integer, primary_key=True, index=True)
+    course_id = Column(Integer, ForeignKey("lms_courses.id"), nullable=False, index=True)
+    title = Column(String(200), nullable=False)
+    order_index = Column(Integer, nullable=False, default=0)
+    description = Column(Text, nullable=True)
+    created_at = Column(DateTime(timezone=True), default=_utcnow, nullable=False)
+
+
+
+class Lesson(Base):
+    """Individual lesson content (video/markdown)."""
+    __tablename__ = "lms_lessons"
+
+    id = Column(Integer, primary_key=True, index=True)
+    module_id = Column(Integer, ForeignKey("lms_course_modules.id"), nullable=False, index=True)
+    title = Column(String(200), nullable=False)
+    order_index = Column(Integer, nullable=False, default=0)
+    video_url = Column(String(500), nullable=True)
+    body_markdown = Column(Text, nullable=True)
+    quiz_json = Column(Text, nullable=True)  # JSON array of questions/answers
+    created_at = Column(DateTime(timezone=True), default=_utcnow, nullable=False)
+
+
+
+class Enrollment(Base):
+    """Tracks which user (employee/subcontractor) is taking which course."""
+    __tablename__ = "lms_enrollments"
+
+    id = Column(Integer, primary_key=True, index=True)
+    course_id = Column(Integer, ForeignKey("lms_courses.id"), nullable=False, index=True)
+    user_email = Column(String(254), nullable=False, index=True)
+    status = Column(String(50), nullable=False, default="active")  # active | completed
+    enrolled_at = Column(DateTime(timezone=True), default=_utcnow, nullable=False)
+    completed_at = Column(DateTime(timezone=True), nullable=True)
+    certificate_url = Column(String(500), nullable=True)
+    
+    __table_args__ = (UniqueConstraint("course_id", "user_email", name="uq_enrollment"),)
+
+
+
+class Progress(Base):
+    """Tracks individual lesson completion for an enrollment."""
+    __tablename__ = "lms_progress"
+
+    id = Column(Integer, primary_key=True, index=True)
+    enrollment_id = Column(Integer, ForeignKey("lms_enrollments.id"), nullable=False, index=True)
+    lesson_id = Column(Integer, ForeignKey("lms_lessons.id"), nullable=False, index=True)
+    is_completed = Column(Boolean, default=False)
+    score = Column(Float, nullable=True)  # If it had a quiz
+    completed_at = Column(DateTime(timezone=True), nullable=True)
+    
+    __table_args__ = (UniqueConstraint("enrollment_id", "lesson_id", name="uq_progress"),)
