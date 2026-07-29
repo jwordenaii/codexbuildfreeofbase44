@@ -96,6 +96,8 @@ MANAGED_KEYS: tuple[str, ...] = (
     "WEARABLE_HR_SPIKE_BPM", "WEARABLE_HR_SUSTAINED_BPM",
     "WEARABLE_SPO2_LOW", "WEARABLE_SPO2_CRITICAL",
     "WEARABLE_SKIN_TEMP_HIGH_F", "WEARABLE_HRV_LOW_MS",
+    # Property scan + direct-mail engine (market orchestration)
+    "REGRID_API_KEY", "LOB_API_KEY",
 )
 
 # Tier-gated feature catalogue. Used by the frontend + admin UI to decide which
