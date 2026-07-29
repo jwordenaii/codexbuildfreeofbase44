@@ -483,6 +483,8 @@ class Customer(Base):
     brand = Column(String(60), nullable=True)  # KFC | Taco Bell | etc.
     notes = Column(Text, nullable=True)
     tags = Column(String(500), nullable=True)
+    services = Column(Text, nullable=True)  # services this customer buys (e.g. Paving, Sealcoating)
+    maintenance_agreement = Column(Text, nullable=True)  # plan/cadence/renewal/terms
     external_id = Column(String(100), nullable=True)
     source = Column(String(60), nullable=True, default="manual")
     total_jobs = Column(Integer, nullable=False, default=0)

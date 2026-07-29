@@ -64,6 +64,8 @@ class CustomerCreate(BaseModel):
     customer_type: Optional[str]  = Field(default=None, max_length=30)
     is_franchise:  int            = Field(default=0, ge=0, le=1)
     brand:         Optional[str]  = Field(default=None, max_length=60)
+    services:      Optional[str]  = Field(default=None, max_length=1000)
+    maintenance_agreement: Optional[str] = Field(default=None, max_length=4000)
     notes:         Optional[str]  = Field(default=None, max_length=2000)
     tags:          Optional[str]  = Field(default=None, max_length=500)
     external_id:   Optional[str]  = Field(default=None, max_length=100)
@@ -81,6 +83,10 @@ class CustomerOut(BaseModel):
     customer_type: Optional[str]
     is_franchise:  int
     brand:         Optional[str]
+    services:      Optional[str] = None
+    maintenance_agreement: Optional[str] = None
+    address:       Optional[str] = None
+    zip_code:      Optional[str] = None
     total_jobs:    int
     total_revenue: float
     ltv_score:     Optional[float]
