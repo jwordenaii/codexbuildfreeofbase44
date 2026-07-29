@@ -1,0 +1,43 @@
+# Fly.io config for the JWordenAI backend (app: jworden-api).
+#
+# This file was added so the app can be deployed from GitHub Actions
+# (flyctl deploy --remote-only) instead of only from a laptop with the CLI.
+#
+# Deliberately conservative:
+#   - No [[vm]] block, so `fly deploy` preserves each machine's existing size
+#     (it does not shrink memory — avoids OOM on the 2 gunicorn workers).
+#   - Rolling strategy + a /health check gate: a new release that fails the
+#     health check is NOT promoted; the current healthy machines keep serving,
+#     so a bad deploy cannot cause an outage.
+#   - release_command runs the DB migration before traffic shifts.
+#
+# App-level Fly *secrets* (ANTHROPIC_API_KEY, DATABASE_URL, JWORDEN_MASTER_KEY,
+# STRIPE_*, etc.) live on the app and are NOT in this file — they persist
+# across deploys and are unaffected by it.
+
+app = "jworden-api"
+primary_region = "iad"
+
+[build]
+
+[deploy]
+  strategy = "rolling"
+  release_command = "alembic upgrade head"
+
+[env]
+  PORT = "8000"
+
+[http_service]
+  internal_port = 8000
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 1
+
+  [[http_service.checks]]
+    grace_period = "20s"
+    interval = "15s"
+    method = "GET"
+    path = "/health"
+    protocol = "http"
+    timeout = "3s"
