@@ -101,7 +101,17 @@ def auth_status():
         os.getenv("ADMIN_PIN")
         or (os.getenv("ADMIN_USERNAME") and os.getenv("ADMIN_PASSWORD"))
     )
-    token_endpoint = "/.netlify/functions/get-token" if auth_required else None
+    # No credential-less bootstrap endpoint exists on this backend. Auth is
+    # PIN-gated: the frontend posts the PIN to /api/v1/auth/pin-token directly.
+    #
+    # This used to advertise "/.netlify/functions/get-token" — a Netlify Function
+    # that no longer exists, on an account being decommissioned. On every page
+    # load the frontend POSTed to that dead URL trying to bootstrap a token
+    # before the PIN gate ever appeared, so the whole auth flow broke at the
+    # front door with nothing on screen to explain it. None makes the frontend
+    # skip the bootstrap and go straight to the PIN gate, which is the only
+    # auth path that actually works.
+    token_endpoint = None
     return AuthStatusResponse(
         auth_required=auth_required,
         auth_mode=mode,

@@ -439,22 +439,21 @@ _EXTRA_ORIGINS = [
     o.strip() for o in os.getenv("EXTRA_CORS_ORIGINS", "").split(",") if o.strip()
 ]
 _ALLOWED_ORIGINS = [
-    "https://jworden.netlify.app",
     "https://jwordenasphaltpaving.com",
     "https://www.jwordenasphaltpaving.com",
     "https://thewordenstandard.com",
     "https://www.thewordenstandard.com",
-    "https://doooone.netlify.app",
     "https://app.jwordenasphaltpaving.com",
     "http://localhost:5173",  # Vite dev server
     "http://localhost:3000",
 ] + _EXTRA_ORIGINS
 
-# Allow Netlify deploy-preview origins (e.g. https://deploy-preview-42--jworden.netlify.app)
-# AND any *.netlify.app subdomain (so renamed Netlify sites and branch deploys keep
-# working without redeploying the backend).  Override or extend via EXTRA_CORS_ORIGINS
-# env var on Railway for additional origins.
-_DEPLOY_PREVIEW_ORIGIN_REGEX = r"https://([\w-]+--)?[\w-]+\.netlify\.app"
+# Allow Vercel preview origins (e.g. https://jworden-production-git-<branch>-<team>.vercel.app)
+# so PR/branch deploys keep working without redeploying the backend. The
+# frontend moved from Netlify to Vercel; the old *.netlify.app allow-list and
+# deploy-preview regex were removed with the rest of the Netlify decommission.
+# Override or extend via the EXTRA_CORS_ORIGINS env var.
+_DEPLOY_PREVIEW_ORIGIN_REGEX = r"https://[\w-]+\.vercel\.app"
 
 app.add_middleware(
     CORSMiddleware,

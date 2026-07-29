@@ -9,7 +9,14 @@ import os
 from app.database import get_db
 from app.models import Estimate
 
-router = APIRouter(prefix="/portal", tags=["Customer Portal"])
+# Mounted at /api/v1/portal (not /portal) so the frontend can reach it through
+# the Vercel /api/* -> Fly proxy. The customer estimate portal page
+# (EstimatePortal, /portal/:public_token on the web app) calls
+# /api/v1/portal/estimates/{token}; with the old /portal prefix those calls
+# 404'd and customers could not view, e-sign, or pay their estimate. Nothing
+# else consumes this router's path (billing.py's /portal is the separate Stripe
+# customer-portal route; vercel.json's /portal(.*) is only a noindex header).
+router = APIRouter(prefix="/api/v1/portal", tags=["Customer Portal"])
 
 # ── Pydantic Schemas ──────────────────────────────────────────────────────────
 
