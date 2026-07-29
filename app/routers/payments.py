@@ -11,7 +11,7 @@ from sqlalchemy.orm import Session
 from ..core.limiter import limiter
 from ..core.security import verify_premium_security
 from ..database import get_db
-from ..models import Lead, PaymentTransaction
+from ..models import Lead, PaymentTransaction, Tenant
 from ..services.pricing import estimate_price
 
 logger = logging.getLogger(__name__)
@@ -131,6 +131,28 @@ async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
             if lead and lead.pipeline_stage in {'new', 'contacted'}:
                 lead.pipeline_stage = 'proposal_sent'
             db.commit()
+
+    # SaaS subscription activation. billing.py creates Stripe *subscription*
+    # checkouts (mode='subscription') carrying metadata {tenant_id, plan} for
+    # thewordenstandard.com signups. Nothing was flipping the tenant on when
+    # that payment completed, so a paying subscriber's account never activated.
+    # This closes that gap using only the existing Tenant.is_active column — no
+    # schema change, so it is safe to deploy before/without a migration.
+    #
+    # Full lifecycle (persist stripe_customer_id / stripe_subscription_id to
+    # match cancellations, and store subscription_tier) needs three new Tenant
+    # columns; that is a deliberate follow-up migration, intentionally NOT bundled
+    # into this deploy because fly.toml has no release_command (migrations run by
+    # hand) and a code/DB mismatch on a live billing endpoint must be avoided.
+    if event_type == 'checkout.session.completed':
+        metadata = data_obj.get('metadata') or {}
+        tenant_id = metadata.get('tenant_id')
+        if tenant_id:
+            tenant = db.query(Tenant).filter(Tenant.tenant_id == tenant_id).first()
+            if tenant and not tenant.is_active:
+                tenant.is_active = 1
+                db.commit()
+                logger.info('Tenant %s activated via Stripe subscription checkout.', tenant_id)
 
     return {'received': True, 'type': event_type}
 
