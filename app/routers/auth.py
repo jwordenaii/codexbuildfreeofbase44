@@ -268,8 +268,16 @@ def issue_pin_token(
             detail="PIN authentication is not configured. Set ADMIN_PIN.",
         )
 
-    if not request.pin or not request.pin.isdigit() or len(request.pin) != 4:
-        raise HTTPException(status_code=400, detail="A 4-digit PIN is required.")
+    # 4 to 8 digits, matching the frontend gate (App.jsx: /^\d{4,8}$/) exactly.
+    #
+    # This used to demand len == 4. The frontend accepts up to 8, so any account
+    # whose ADMIN_PIN was set to 5-8 digits was permanently locked out: the real
+    # PIN failed the length check with a 400 ("A 4-digit PIN is required") while
+    # every 4-digit guess failed the equality check with a 403. Two different
+    # errors, no possible success, and nothing on screen explained why. Widening
+    # the ceiling can only raise the entropy floor, never lower it.
+    if not request.pin or not request.pin.isdigit() or not (4 <= len(request.pin) <= 8):
+        raise HTTPException(status_code=400, detail="A 4 to 8-digit PIN is required.")
 
     if request.pin != admin_pin:
         logger.warning(
