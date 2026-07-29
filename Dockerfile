@@ -31,4 +31,9 @@ COPY --from=builder /usr/local/bin /usr/local/bin
 COPY --from=builder /app /app
 
 EXPOSE 8000
-CMD ["gunicorn", "-k", "uvicorn.workers.UvicornWorker", "-b", "0.0.0.0:${PORT:-8000}", "app.main:app"]
+# Use the gunicorn config file for binding instead of an exec-form -b flag.
+# Exec-form CMD does NOT run a shell, so "${PORT:-8000}" was passed to gunicorn
+# as a literal string and never expanded — a latent bind failure. gunicorn.conf.py
+# reads the PORT env var itself (bind = f"0.0.0.0:{os.getenv('PORT','8000')}"),
+# so this binds correctly whether PORT is set (Fly) or not (local).
+CMD ["gunicorn", "-k", "uvicorn.workers.UvicornWorker", "-c", "gunicorn.conf.py", "app.main:app"]
