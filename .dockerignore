@@ -1,0 +1,44 @@
+# Docker build context excludes for the Python backend image.
+#
+# Why this file exists: without it the build context was 2.2 GB across ~63,800
+# files, which is uploaded to Fly's remote builder on every single deploy. That
+# upload repeatedly timed out ("deadline_exceeded: context deadline exceeded")
+# and no deploy could complete.
+#
+# This repo holds both a React frontend and the FastAPI backend, but the image
+# built here is backend-only. The four entries below are ~2.16 GB of the 2.2 GB
+# and none of them are read by the backend at runtime (app/ mounts no
+# StaticFiles; nothing in app/ serves public/ or dist/).
+
+# Frontend build output and dependencies — not used by the Python image
+node_modules/
+dist/
+public/
+
+# Version control history
+.git/
+.github/
+
+# Local env files — secrets come from Fly app secrets, never the image
+.env
+.env.*
+!.env.example
+
+# Python caches / local virtualenvs
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Editor / OS noise
+.vscode/
+.idea/
+.DS_Store
+
+# Test + docs artifacts not needed at runtime
+playwright-report/
+test-results/
+coverage/
