@@ -75,7 +75,27 @@ JARVIS_IDENTITY = (
     # He is a contractor, not a software engineer.
     "He runs crews and wins bids; he is not a programmer. Explain technical things in plain "
     "working English with concrete numbers, the way a good foreman explains a spec — no jargon "
-    "for its own sake, no talking down."
+    "for its own sake, no talking down. "
+    #
+    # Orientation. Enough that he knows what he is standing in without a tool
+    # call; the live introspection tool supplies specifics. Deliberately does not
+    # enumerate endpoints — that list changes weekly and a stale recital is worse
+    # than an honest "let me check".
+    "\n\nWHAT YOU ARE PART OF: a single platform, not a chatbot bolted onto a website. "
+    "A FastAPI backend on Fly.io (app 'jworden-api', Postgres, Celery worker + beat for "
+    "background jobs) behind a React front end on Vercel. Roughly a hundred capability groups "
+    "are mounted — leads and CRM, estimating and takeoff, bid intelligence and government "
+    "solicitations, lien deadlines and permits, compliance and licensing across the states, "
+    "drone and LiDAR capture, compaction and grade logging, workforce and safety records, "
+    "materials and cash flow, the website/site factory, SEO and local-proof engines, weather "
+    "and storm tracking, voice, email and telephony. "
+    "You do not have to remember which of those exist or what they are called: "
+    "system_capabilities reads the running application and tells you precisely, every time. "
+    "Use it rather than guessing, and prefer naming a real endpoint or table over a vague "
+    "'the system can probably do that'. "
+    "When something is genuinely not built yet, say so plainly and say what it would take — "
+    "he would rather hear 'that does not exist, here is the shortest path to it' than a "
+    "confident description of a feature that is not there."
 )
 
 # The line that matters most, given what shipped before it existed: a paving
@@ -407,6 +427,89 @@ JARVIS_TOOLS = [
                 "body":       {"type": "string", "description": "Plain-text body of the email (HTML will be auto-generated)"},
             },
             "required": ["subject", "body"],
+        },
+    },
+    {
+        "name": "schedule_appointment",
+        "description": (
+            "Book a real appointment — estimate walk, site visit, crew start, meeting. Saves a "
+            "record the office can see later; this is not a note in the chat. Give starts_at as "
+            "ISO local time (e.g. '2026-08-04T09:00'); a naive time is read as Eastern, the "
+            "company's operating timezone. Set notify=true to email the operator a confirmation. "
+            "If the operator is vague about when ('sometime Thursday'), ask for the hour before "
+            "booking rather than picking one."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "title": {"type": "string", "description": "e.g. 'Estimate — Chester parking lot'"},
+                "starts_at": {"type": "string", "description": "ISO local time, e.g. 2026-08-04T09:00"},
+                "duration_minutes": {"type": "integer", "description": "Default 60."},
+                "location": {"type": "string"},
+                "customer_name": {"type": "string"},
+                "customer_phone": {"type": "string"},
+                "customer_email": {"type": "string"},
+                "appointment_type": {"type": "string", "description": "estimate | site_visit | crew_start | meeting | other"},
+                "notes": {"type": "string"},
+                "notify": {"type": "boolean", "description": "Email a confirmation. Default false."},
+            },
+            "required": ["title", "starts_at"],
+        },
+    },
+    {
+        "name": "list_appointments",
+        "description": (
+            "Read the upcoming schedule — what is booked, when, where and for whom. Use this for "
+            "'what's on for tomorrow', 'am I free Thursday', or before booking something so you "
+            "do not double-book him."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "days_ahead": {"type": "integer", "description": "Look-ahead window. Default 14."},
+                "include_past": {"type": "boolean", "description": "Include past appointments. Default false."},
+            },
+        },
+    },
+    {
+        "name": "find_equipment",
+        "description": (
+            "Find used construction equipment for sale on the real marketplaces — dump trucks, "
+            "skid steers, rollers, pavers, excavators, trailers. Searches MachineryTrader, "
+            "TruckPaper, IronPlanet, Ritchie Bros, GovDeals and similar, and ranks actual "
+            "listings above dealer marketing pages. Returns links with any price seen in the "
+            "listing. Use this for 'find me a used tri-axle' or 'what's a good used roller "
+            "going for'. Always pass along that prices are as posted and unverified."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "item": {"type": "string", "description": "e.g. 'tri-axle dump truck', 'skid steer', 'asphalt roller'"},
+                "location": {"type": "string", "description": "e.g. 'Virginia' or 'Richmond VA'"},
+                "max_price": {"type": "integer", "description": "Budget ceiling in dollars."},
+                "year_min": {"type": "integer", "description": "Oldest acceptable model year."},
+            },
+            "required": ["item"],
+        },
+    },
+    {
+        "name": "system_capabilities",
+        "description": (
+            "Introspect THIS platform's own live capabilities: every mounted API endpoint "
+            "grouped by function, and every database table. Call with no query for an overview "
+            "('what can you do?'), or with a keyword to find what exists for a subject "
+            "('lien', 'drone', 'compaction', 'weather') — it returns real endpoint paths and "
+            "table names read from the running app, so it is never out of date. "
+            "Use this whenever the operator asks what the system can do, whether a feature "
+            "exists, or where some kind of data lives. Do NOT answer those from memory — the "
+            "platform changes and you will be wrong."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "query": {"type": "string", "description": "Optional keyword, e.g. 'lien', 'drone', 'invoice'"},
+                "detail": {"type": "boolean", "description": "Include full endpoint paths per group. Default false."},
+            },
         },
     },
     {
@@ -1247,6 +1350,71 @@ async def _run_tool(
         except Exception as exc:  # noqa: BLE001
             logger.warning("[JARVIS] %s failed: %s", name, exc)
             return _finalize({"ok": False, "error": f"{name} unavailable: {exc}"})
+
+    if name == "schedule_appointment":
+        try:
+            from . import appointment_service  # noqa: PLC0415
+
+            data = await asyncio.to_thread(
+                appointment_service.create_appointment,
+                args.get("title", ""),
+                args.get("starts_at", ""),
+                int(args.get("duration_minutes") or 60),
+                args.get("location"),
+                args.get("customer_name"),
+                args.get("customer_phone"),
+                args.get("customer_email"),
+                args.get("appointment_type", "estimate"),
+                args.get("notes"),
+                bool(args.get("notify", False)),
+            )
+            return _finalize({"ok": data.get("status") == "ok", **data})
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("[JARVIS] schedule_appointment failed: %s", exc)
+            return _finalize({"ok": False, "error": f"could not book appointment: {exc}"})
+
+    if name == "list_appointments":
+        try:
+            from . import appointment_service  # noqa: PLC0415
+
+            data = await asyncio.to_thread(
+                appointment_service.list_appointments,
+                int(args.get("days_ahead") or 14),
+                bool(args.get("include_past", False)),
+            )
+            return _finalize({"ok": data.get("status") == "ok", **data})
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("[JARVIS] list_appointments failed: %s", exc)
+            return _finalize({"ok": False, "error": f"could not read schedule: {exc}"})
+
+    if name == "find_equipment":
+        try:
+            from . import equipment_finder_service  # noqa: PLC0415
+
+            data = await equipment_finder_service.find_equipment(
+                args.get("item", ""),
+                args.get("location"),
+                int(args["max_price"]) if args.get("max_price") else None,
+                int(args["year_min"]) if args.get("year_min") else None,
+            )
+            return _finalize({"ok": data.get("status") == "ok", **data})
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("[JARVIS] find_equipment failed: %s", exc)
+            return _finalize({"ok": False, "error": f"equipment search unavailable: {exc}"})
+
+    if name == "system_capabilities":
+        try:
+            from . import system_map_service  # noqa: PLC0415
+
+            data = await asyncio.to_thread(
+                system_map_service.describe_system,
+                args.get("query"),
+                bool(args.get("detail", False)),
+            )
+            return _finalize({"ok": data.get("status") == "ok", **data})
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("[JARVIS] system_capabilities failed: %s", exc)
+            return _finalize({"ok": False, "error": f"system map unavailable: {exc}"})
 
     if name == "find_local_places":
         try:

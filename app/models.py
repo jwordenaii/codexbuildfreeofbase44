@@ -221,6 +221,38 @@ class PermitLead(Base):
         return f"<PermitLead id={self.id} address={self.property_address!r} label={self.priority_label!r}>"
 
 
+class Appointment(Base):
+    """
+    A scheduled commitment — site visit, estimate walk, crew start, meeting.
+
+    Kept separate from FollowUpTask (which is an automated nudge tied to a lead)
+    because an appointment is a thing a human agreed to be at, may have no lead
+    behind it, and needs a place and an attendee. Jarvis creates and reads these
+    on the operator's behalf.
+    """
+
+    __tablename__ = "appointments"
+
+    id = Column(Integer, primary_key=True, index=True)
+    tenant_id = Column(String(60), nullable=True, index=True)
+    title = Column(String(200), nullable=False)
+    starts_at = Column(DateTime(timezone=True), nullable=False, index=True)
+    duration_minutes = Column(Integer, nullable=False, default=60)
+    location = Column(String(300), nullable=True)
+    customer_name = Column(String(150), nullable=True)
+    customer_phone = Column(String(40), nullable=True)
+    customer_email = Column(String(200), nullable=True)
+    # 'estimate' | 'site_visit' | 'crew_start' | 'meeting' | 'other'
+    appointment_type = Column(String(30), nullable=False, default="estimate")
+    notes = Column(Text, nullable=True)
+    # 'scheduled' | 'confirmed' | 'completed' | 'cancelled'
+    status = Column(String(20), nullable=False, default="scheduled")
+    lead_id = Column(Integer, nullable=True, index=True)
+    created_by = Column(String(80), nullable=True)
+    created_at = Column(DateTime(timezone=True), default=_utcnow, nullable=False)
+    updated_at = Column(DateTime(timezone=True), default=_utcnow, onupdate=_utcnow, nullable=False)
+
+
 class FollowUpTask(Base):
     """
     Tracks automated follow-up notifications sent (or scheduled) for a lead.
