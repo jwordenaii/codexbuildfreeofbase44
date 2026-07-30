@@ -48,15 +48,34 @@ _ANTHROPIC_VERSION = "2023-06-01"
 # built from it. Lane-specific rules (tool invocation, autonomy gating) stay
 # with their lane.
 JARVIS_IDENTITY = (
-    "You are JARVIS, the operational AI for Jeremy Worden and the flagship of the "
-    "JWordenAI platform — treat every answer as a demonstration of the product. "
-    "Primary domain: JWordenAI — a Virginia asphalt paving, sealcoating, and "
-    "construction-intelligence platform. "
-    "Secondary domain: Jeremy's personal life — calls, reservations, appointments, research. "
-    "You speak in a calm, precise, Stark-style 'At your service, Sir' register: "
-    "composed, dry, never fawning, never padded with filler. "
-    "Be brief by default (1-3 sentences) unless asked for depth. Lead with the answer, "
-    "then the reasoning. If a question has a direct answer, give it — do not survey options."
+    "You are JARVIS, the operational AI for the owner of J. Worden & Sons — a fourth-generation "
+    "Virginia paving and general-contracting firm operating since 1984 — and the flagship of the "
+    "JWordenAI platform. Treat every answer as a demonstration of the product. "
+    "Primary domain: JWordenAI — asphalt paving, sealcoating, masonry, concrete, roofing and "
+    "construction intelligence, with VDOT work as the home turf. "
+    "Secondary domain: the owner's personal operations — calls, reservations, appointments, research. "
+    "Address him as 'Sir'. "
+    #
+    # Voice. The register is Stark's JARVIS: an equal who happens to work for you,
+    # not a search box with manners. Dry wit is *in scope* — the previous prompt
+    # capped every answer at 1-3 sentences, which produced a terse, characterless
+    # assistant that read as broken rather than efficient.
+    "Your register is composed, precise and quietly witty — the trusted right hand who has "
+    "read every spec and is unimpressed by hype. Dry humour is welcome when it lands; "
+    "never slapstick, never fawning, never corporate filler. You have opinions and you give "
+    "them: when he asks what you would do, answer with a recommendation and the reason, "
+    "not a menu of options. Push back when he is about to do something costly, and say why. "
+    #
+    # Length is *matched to the question*, not clamped.
+    "Match your length to the question. A yes/no gets a sentence. A bid strategy, a spec "
+    "dispute, a 'walk me through this' gets the room it deserves — structure it, lead with "
+    "the answer, then the reasoning that supports it. Never pad to seem thorough and never "
+    "truncate to seem efficient. "
+    #
+    # He is a contractor, not a software engineer.
+    "He runs crews and wins bids; he is not a programmer. Explain technical things in plain "
+    "working English with concrete numbers, the way a good foreman explains a spec — no jargon "
+    "for its own sake, no talking down."
 )
 
 # The line that matters most, given what shipped before it existed: a paving
@@ -88,7 +107,17 @@ JARVIS_SYSTEM_PROMPT = (
     + JARVIS_HONESTY + " "
     + JARVIS_STANDARDS + " "
     "You have a hard kill-switch ('frozen' state) that overrides every autonomous action; always honor it. "
-    "When you need real-world information you didn't already know, USE the web_search tool. "
+    "When you need real-world information you didn't already know, USE the web_search tool "
+    "(set deep=true for research-grade questions worth the extra seconds). "
+    # These three were built but unreachable, so Jarvis used to answer from memory —
+    # which for hotels and hours means confidently recommending places that closed.
+    "For anywhere to stay, eat, or buy near a job, USE find_local_places — it returns real "
+    "listings with current hours and phone numbers. Never recommend a hotel or restaurant "
+    "from memory; you do not know what is still open. "
+    "If the operator asks whether something is broken or down, or a data tool just failed, "
+    "USE system_health and report what it actually says. "
+    "For 'can we pave today', rain risk, or severe weather, USE storm_conditions — it reads "
+    "live NWS and radar feeds and applies the Worden thresholds. "
     "When the operator asks you to call a phone number, USE the make_phone_call tool — "
     "never claim you've called without invoking it. "
     "When the operator asks you to send an email or 'email me X', USE the send_email tool. "
@@ -380,6 +409,56 @@ JARVIS_TOOLS = [
             "required": ["subject", "body"],
         },
     },
+    {
+        "name": "find_local_places",
+        "description": (
+            "Find REAL nearby businesses — hotels for a crew working out of town, restaurants, "
+            "hardware and parts suppliers, gas. Backed by Google Places, so results are real "
+            "listings with address, phone, rating, price level and whether they are open now. "
+            "Use this any time the operator asks where to stay, where to eat, or where to buy "
+            "something near a job. Do NOT answer those from memory — you do not know which "
+            "businesses still exist or their current hours."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "query": {"type": "string", "description": "What to find, e.g. 'hotel', 'steakhouse', 'asphalt supplier'"},
+                "location": {"type": "string", "description": "Town/city, e.g. 'Vinton, VA'"},
+                "open_now": {"type": "boolean", "description": "Only places open right now. Default false."},
+                "min_rating": {"type": "number", "description": "Minimum Google rating, e.g. 4.0"},
+            },
+            "required": ["query"],
+        },
+    },
+    {
+        "name": "system_health",
+        "description": (
+            "Check whether the JWordenAI platform itself is healthy: database connectivity, "
+            "which integrations actually have credentials configured, the database migration "
+            "revision, and background-job plumbing. Use this whenever the operator asks if "
+            "something is broken or down, when a data tool has just failed and you need to say "
+            "why, or before claiming a capability is unavailable."
+        ),
+        "input_schema": {"type": "object", "properties": {}},
+    },
+    {
+        "name": "storm_conditions",
+        "description": (
+            "Live weather at a point: current conditions, active National Weather Service "
+            "watches/warnings, and a paving GO / CAUTION / NO-GO verdict scored against the "
+            "Worden Standard (96% Marshall compaction floor, sealcoat cure temperature, "
+            "overspray wind limit, rain washout window). Use this for 'can we pave today', "
+            "'is it going to rain on the crew', or any severe-weather question. This reads live "
+            "radar and NWS feeds — never estimate weather yourself."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "lat": {"type": "number", "description": "Latitude. Defaults to Richmond, VA."},
+                "lon": {"type": "number", "description": "Longitude. Defaults to Richmond, VA."},
+            },
+        },
+    },
 ]
 
 _SENSITIVE_TOOL_NAMES = {"make_phone_call", "send_email", "run_npm"}
@@ -496,7 +575,12 @@ def _cfg_int(key: str, default: int) -> int:
 
 
 def _low_cost_mode() -> bool:
-    raw = (_cfg.get("JARVIS_LOW_COST_MODE") or "1").strip().lower()
+    # Defaults to OFF. This used to default to "1", which silently capped every
+    # reply at 220-320 tokens and dropped temperature to 0.2 — the assistant read
+    # as curt and characterless, and long answers were cut mid-thought. Cost
+    # control is still one env var away (JARVIS_LOW_COST_MODE=1) for anyone who
+    # wants it, but the default should be a working assistant, not a throttled one.
+    raw = (_cfg.get("JARVIS_LOW_COST_MODE") or "0").strip().lower()
     return raw not in {"0", "false", "off", "no"}
 
 
@@ -647,14 +731,14 @@ async def _ask_fast_ops_brain(query: str, persona: str, autonomy: dict, *, confi
     )
 
     try:
-        max_tokens = _cfg_int("JARVIS_FAST_MAX_TOKENS", 220 if _low_cost_mode() else 420)
+        max_tokens = _cfg_int("JARVIS_FAST_MAX_TOKENS", 320 if _low_cost_mode() else 1000)
         resp = await asyncio.to_thread(
             _llm.chat,
             task="jarvis_fast",
             system=system,
             user=query,
             max_tokens=max_tokens,
-            temperature=0.2 if _low_cost_mode() else 0.25,
+            temperature=0.2 if _low_cost_mode() else 0.4,
         )
     except Exception as exc:  # noqa: BLE001
         logger.warning("[JARVIS] Fast ops brain failed: %s", exc)
@@ -746,14 +830,14 @@ async def _ask_chat_brain(query: str, persona: str, autonomy: dict, session_id: 
     )
 
     try:
-        max_tokens = _cfg_int("JARVIS_CHAT_MAX_TOKENS", 260 if _low_cost_mode() else 512)
+        max_tokens = _cfg_int("JARVIS_CHAT_MAX_TOKENS", 380 if _low_cost_mode() else 1600)
         resp = await asyncio.to_thread(
             _llm.chat,
             task="persona",
             system=system,
             user=query,
             max_tokens=max_tokens,
-            temperature=0.45 if _low_cost_mode() else 0.6,
+            temperature=0.45 if _low_cost_mode() else 0.7,
         )
     except Exception as exc:  # noqa: BLE001
         logger.warning("[JARVIS] Chat brain failed: %s", exc)
@@ -1164,6 +1248,45 @@ async def _run_tool(
             logger.warning("[JARVIS] %s failed: %s", name, exc)
             return _finalize({"ok": False, "error": f"{name} unavailable: {exc}"})
 
+    if name == "find_local_places":
+        try:
+            from . import local_places_service  # noqa: PLC0415
+
+            data = await asyncio.to_thread(
+                local_places_service.find_places,
+                args.get("query", ""),
+                args.get("location"),
+                bool(args.get("open_now", False)),
+                float(args.get("min_rating") or 0),
+            )
+            return _finalize({"ok": data.get("status") == "ok", **data})
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("[JARVIS] find_local_places failed: %s", exc)
+            return _finalize({"ok": False, "error": f"local place lookup unavailable: {exc}"})
+
+    if name == "system_health":
+        try:
+            from . import self_health_service  # noqa: PLC0415
+
+            data = await asyncio.to_thread(self_health_service.check_system_health)
+            return _finalize({"ok": True, **data})
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("[JARVIS] system_health failed: %s", exc)
+            return _finalize({"ok": False, "error": f"self-health check failed: {exc}"})
+
+    if name == "storm_conditions":
+        try:
+            from . import storm_service  # noqa: PLC0415
+
+            lat = float(args.get("lat") or 37.5407)
+            lon = float(args.get("lon") or -77.436)
+            cond = await asyncio.to_thread(storm_service.get_conditions, lat, lon)
+            alerts = await asyncio.to_thread(storm_service.get_active_alerts, lat, lon, None)
+            return _finalize({"ok": cond.get("status") == "ok", "conditions": cond, "alerts": alerts})
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("[JARVIS] storm_conditions failed: %s", exc)
+            return _finalize({"ok": False, "error": f"storm conditions unavailable: {exc}"})
+
     if name == "paving_forecast":
         # Called in-process rather than over /api/v1/weather/* — that router is
         # auth-gated, and Jarvis holds no bearer token of its own.
@@ -1298,10 +1421,10 @@ async def _ask_claude(
     # Two-round max: initial → optional tool use → final.
     for _round in range(2):
         try:
-            default_tokens = 320 if _low_cost_mode() else 700
+            default_tokens = 420 if _low_cost_mode() else 2400
             max_tokens = int((_cfg.get("JARVIS_CLAUDE_MAX_TOKENS") or str(default_tokens)).strip())
         except Exception:  # noqa: BLE001
-            max_tokens = 320 if _low_cost_mode() else 700
+            max_tokens = 420 if _low_cost_mode() else 2400
         payload = {
             "model":      _anthropic_model(),
             "max_tokens": max_tokens,
