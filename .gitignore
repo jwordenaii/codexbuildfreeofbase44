@@ -88,3 +88,7 @@ playwright-fix-check.txt
 build_check.txt
 staging-compare.txt
 temp_view.txt
+
+# Sandbox proxy CA staged into the Docker build context for deploys.
+# Build-time only — must never be committed or shipped in the image.
+ccr-ca-bundle.crt
