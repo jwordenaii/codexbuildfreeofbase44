@@ -221,6 +221,64 @@ class PermitLead(Base):
         return f"<PermitLead id={self.id} address={self.property_address!r} label={self.priority_label!r}>"
 
 
+class AgentMemory(Base):
+    """
+    What JARVIS has learned and should still know next week.
+
+    DESIGN RULE — this table holds *judgment*, not business facts. Lead counts,
+    payments, job status and schedules live in their own tables and are read
+    through tools every time. If they were cached here, a memory written in
+    April would be quoted as fact in August; a stale second source of truth is
+    worse than no memory at all.
+
+    What belongs here: the operator's preferences and standing orders, how
+    people and companies actually behave, equipment and crew context, and the
+    reasoning behind past decisions — the things that are true across
+    conversations and are written down nowhere else.
+
+    Every row carries provenance and confidence so he can say "you told me in
+    April" rather than asserting it bare, and can be corrected. Memory is
+    superseded rather than silently overwritten, so a correction leaves a trail.
+    """
+
+    __tablename__ = "agent_memories"
+
+    id = Column(Integer, primary_key=True, index=True)
+    tenant_id = Column(String(60), nullable=True, index=True)
+
+    # 'preference' | 'standing_order' | 'person' | 'company' | 'equipment'
+    # | 'crew' | 'decision' | 'context'
+    kind = Column(String(30), nullable=False, index=True, default="context")
+
+    # Who/what this is about ("KBP Foods", "Mauldin 690"). Null = about the
+    # operator or the business generally.
+    subject = Column(String(150), nullable=True, index=True)
+
+    # The memory itself, in plain language, written to be read back aloud.
+    content = Column(Text, nullable=False)
+
+    # Space-separated lowercase tags for retrieval ("pricing sealcoat winter").
+    tags = Column(String(300), nullable=True)
+
+    # How it was learned: 'stated' (the operator said so — highest trust),
+    # 'observed' (derived from real data), 'inferred' (Jarvis's own read).
+    source = Column(String(20), nullable=False, default="stated")
+    confidence = Column(Float, nullable=False, default=1.0)
+
+    # 1-10. Drives what gets surfaced when there is more memory than context.
+    importance = Column(Integer, nullable=False, default=5)
+
+    # Supersession instead of overwrite, so corrections keep a trail.
+    superseded_by = Column(Integer, nullable=True)
+    active = Column(Integer, nullable=False, default=1, index=True)
+
+    last_used_at = Column(DateTime(timezone=True), nullable=True)
+    use_count = Column(Integer, nullable=False, default=0)
+
+    created_at = Column(DateTime(timezone=True), default=_utcnow, nullable=False)
+    updated_at = Column(DateTime(timezone=True), default=_utcnow, onupdate=_utcnow, nullable=False)
+
+
 class Appointment(Base):
     """
     A scheduled commitment — site visit, estimate walk, crew start, meeting.

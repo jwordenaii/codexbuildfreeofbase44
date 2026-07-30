@@ -430,6 +430,63 @@ JARVIS_TOOLS = [
         },
     },
     {
+        "name": "remember",
+        "description": (
+            "Store something worth knowing in future conversations: a preference, a standing "
+            "order, how a person or company behaves, equipment context, or the reasoning behind "
+            "a decision. Use it whenever the operator tells you how he wants things done, or "
+            "you learn something durable about a customer, GC, supplier or crew. "
+            "Do NOT use it for live business facts — lead counts, balances, invoice numbers, "
+            "job status. Those are read from their tables every time so they cannot go stale; "
+            "storing them would create a second, ageing source of truth and the tool will "
+            "refuse them. Store the judgement instead: not 'KBP owes $12,400' but 'KBP pays "
+            "slow, usually 50-60 days'. Set supersedes to correct an earlier memory."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "content": {"type": "string", "description": "The durable point, in plain language."},
+                "kind": {"type": "string", "description": "preference | standing_order | person | company | equipment | crew | decision | context"},
+                "subject": {"type": "string", "description": "Who/what it is about, e.g. 'KBP Foods'"},
+                "tags": {"type": "string", "description": "Space-separated keywords for retrieval."},
+                "source": {"type": "string", "description": "stated (he said so) | observed (from data) | inferred (your read). Default stated."},
+                "importance": {"type": "integer", "description": "1-10. Default 5."},
+                "supersedes": {"type": "integer", "description": "Memory id this corrects."},
+            },
+            "required": ["content"],
+        },
+    },
+    {
+        "name": "recall",
+        "description": (
+            "Search long-term memory for what you know about a subject or topic. The most "
+            "load-bearing memories are already in your context; use this for specifics — "
+            "'what do I know about this GC', 'what did he say about winter sealcoating'. "
+            "Always attribute what you rely on ('you told me in April...') so he can correct it."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "query": {"type": "string", "description": "Topic or keywords."},
+                "subject": {"type": "string", "description": "Narrow to a person/company/thing."},
+                "kind": {"type": "string", "description": "Narrow to one memory kind."},
+                "limit": {"type": "integer", "description": "Default 12."},
+            },
+        },
+    },
+    {
+        "name": "forget",
+        "description": (
+            "Retire a memory that is wrong or no longer true. Use it as soon as he corrects "
+            "you — a wrong memory repeated confidently is worse than having none."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {"memory_id": {"type": "integer"}},
+            "required": ["memory_id"],
+        },
+    },
+    {
         "name": "schedule_appointment",
         "description": (
             "Book a real appointment — estimate walk, site visit, crew start, meeting. Saves a "
@@ -1351,6 +1408,36 @@ async def _run_tool(
             logger.warning("[JARVIS] %s failed: %s", name, exc)
             return _finalize({"ok": False, "error": f"{name} unavailable: {exc}"})
 
+    if name in {"remember", "recall", "forget"}:
+        try:
+            from . import memory_service  # noqa: PLC0415
+
+            if name == "remember":
+                data = await asyncio.to_thread(
+                    memory_service.remember,
+                    args.get("content", ""),
+                    args.get("kind", "context"),
+                    args.get("subject"),
+                    args.get("tags"),
+                    args.get("source", "stated"),
+                    int(args.get("importance") or 5),
+                    int(args["supersedes"]) if args.get("supersedes") else None,
+                )
+            elif name == "recall":
+                data = await asyncio.to_thread(
+                    memory_service.recall,
+                    args.get("query"),
+                    args.get("subject"),
+                    args.get("kind"),
+                    int(args.get("limit") or 12),
+                )
+            else:
+                data = await asyncio.to_thread(memory_service.forget, int(args.get("memory_id") or 0))
+            return _finalize({"ok": data.get("status") == "ok", **data})
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("[JARVIS] %s failed: %s", name, exc)
+            return _finalize({"ok": False, "error": f"memory unavailable: {exc}"})
+
     if name == "schedule_appointment":
         try:
             from . import appointment_service  # noqa: PLC0415
@@ -1574,7 +1661,18 @@ async def _ask_claude(
             f"{advisory_context}\n"
         )
 
-    system = f"{JARVIS_SYSTEM_PROMPT}\n\n{persona_note}\n{state_note}{advisory_note}"
+    # Long-term memory is injected rather than left behind a tool call. Memory
+    # he has to remember to look up is barely memory — the standing orders and
+    # strong preferences should already be in the room; `recall` is for specifics.
+    try:
+        from . import memory_service  # noqa: PLC0415
+
+        _memory_block = await asyncio.to_thread(memory_service.briefing)
+    except Exception as exc:  # noqa: BLE001 — never let memory break a reply
+        logger.warning("[JARVIS] memory briefing unavailable: %s", exc)
+        _memory_block = ""
+
+    system = f"{JARVIS_SYSTEM_PROMPT}{_memory_block}\n\n{persona_note}\n{state_note}{advisory_note}"
 
     headers = {
         "x-api-key":         _anthropic_key(),
