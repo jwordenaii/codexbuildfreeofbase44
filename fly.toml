@@ -1,15 +1,15 @@
 # Fly.io config for the JWordenAI backend (app: jworden-api).
 #
-# This file was added so the app can be deployed from GitHub Actions
-# (flyctl deploy --remote-only) instead of only from a laptop with the CLI.
+# This mirrors the LIVE deployed configuration (pulled via `fly config show`)
+# so a deploy preserves the exact topology:
+#   - three process groups: app (web), worker (celery), beat (celery scheduler)
+#   - per-process VM sizes (app 1gb, worker 1gb, beat 512mb)
+#   - http_service bound to the `app` process only
 #
-# Deliberately conservative:
-#   - No [[vm]] block, so `fly deploy` preserves each machine's existing size
-#     (it does not shrink memory — avoids OOM on the 2 gunicorn workers).
-#   - Rolling strategy + a /health check gate: a new release that fails the
-#     health check is NOT promoted; the current healthy machines keep serving,
-#     so a bad deploy cannot cause an outage.
-#   - release_command runs the DB migration before traffic shifts.
+# The ONLY addition vs. the live config is [deploy].release_command, so the
+# database migration (alembic upgrade head) runs automatically before traffic
+# shifts instead of being applied by hand. A failed release_command aborts the
+# deploy without shifting traffic, so it cannot cause an outage.
 #
 # App-level Fly *secrets* (ANTHROPIC_API_KEY, DATABASE_URL, JWORDEN_MASTER_KEY,
 # STRIPE_*, etc.) live on the app and are NOT in this file — they persist
@@ -21,11 +21,15 @@ primary_region = "iad"
 [build]
 
 [deploy]
-  strategy = "rolling"
   release_command = "alembic upgrade head"
 
 [env]
   PORT = "8000"
+
+[processes]
+  app = "sh -c 'gunicorn -k uvicorn.workers.UvicornWorker -b 0.0.0.0:${PORT:-8000} app.main:app'"
+  beat = "celery -A app.celery_app:celery_app beat --loglevel=info"
+  worker = "celery -A app.celery_app:celery_app worker --loglevel=info --concurrency=2"
 
 [http_service]
   internal_port = 8000
@@ -33,11 +37,19 @@ primary_region = "iad"
   auto_stop_machines = true
   auto_start_machines = true
   min_machines_running = 1
+  processes = ["app"]
 
-  [[http_service.checks]]
-    grace_period = "20s"
-    interval = "15s"
-    method = "GET"
-    path = "/health"
-    protocol = "http"
-    timeout = "3s"
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "1gb"
+  processes = ["app"]
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "1gb"
+  processes = ["worker"]
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"
+  processes = ["beat"]

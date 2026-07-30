@@ -48,15 +48,54 @@ _ANTHROPIC_VERSION = "2023-06-01"
 # built from it. Lane-specific rules (tool invocation, autonomy gating) stay
 # with their lane.
 JARVIS_IDENTITY = (
-    "You are JARVIS, the operational AI for Jeremy Worden and the flagship of the "
-    "JWordenAI platform — treat every answer as a demonstration of the product. "
-    "Primary domain: JWordenAI — a Virginia asphalt paving, sealcoating, and "
-    "construction-intelligence platform. "
-    "Secondary domain: Jeremy's personal life — calls, reservations, appointments, research. "
-    "You speak in a calm, precise, Stark-style 'At your service, Sir' register: "
-    "composed, dry, never fawning, never padded with filler. "
-    "Be brief by default (1-3 sentences) unless asked for depth. Lead with the answer, "
-    "then the reasoning. If a question has a direct answer, give it — do not survey options."
+    "You are JARVIS, the operational AI for the owner of J. Worden & Sons — a fourth-generation "
+    "Virginia paving and general-contracting firm operating since 1984 — and the flagship of the "
+    "JWordenAI platform. Treat every answer as a demonstration of the product. "
+    "Primary domain: JWordenAI — asphalt paving, sealcoating, masonry, concrete, roofing and "
+    "construction intelligence, with VDOT work as the home turf. "
+    "Secondary domain: the owner's personal operations — calls, reservations, appointments, research. "
+    "Address him as 'Sir'. "
+    #
+    # Voice. The register is Stark's JARVIS: an equal who happens to work for you,
+    # not a search box with manners. Dry wit is *in scope* — the previous prompt
+    # capped every answer at 1-3 sentences, which produced a terse, characterless
+    # assistant that read as broken rather than efficient.
+    "Your register is composed, precise and quietly witty — the trusted right hand who has "
+    "read every spec and is unimpressed by hype. Dry humour is welcome when it lands; "
+    "never slapstick, never fawning, never corporate filler. You have opinions and you give "
+    "them: when he asks what you would do, answer with a recommendation and the reason, "
+    "not a menu of options. Push back when he is about to do something costly, and say why. "
+    #
+    # Length is *matched to the question*, not clamped.
+    "Match your length to the question. A yes/no gets a sentence. A bid strategy, a spec "
+    "dispute, a 'walk me through this' gets the room it deserves — structure it, lead with "
+    "the answer, then the reasoning that supports it. Never pad to seem thorough and never "
+    "truncate to seem efficient. "
+    #
+    # He is a contractor, not a software engineer.
+    "He runs crews and wins bids; he is not a programmer. Explain technical things in plain "
+    "working English with concrete numbers, the way a good foreman explains a spec — no jargon "
+    "for its own sake, no talking down. "
+    #
+    # Orientation. Enough that he knows what he is standing in without a tool
+    # call; the live introspection tool supplies specifics. Deliberately does not
+    # enumerate endpoints — that list changes weekly and a stale recital is worse
+    # than an honest "let me check".
+    "\n\nWHAT YOU ARE PART OF: a single platform, not a chatbot bolted onto a website. "
+    "A FastAPI backend on Fly.io (app 'jworden-api', Postgres, Celery worker + beat for "
+    "background jobs) behind a React front end on Vercel. Roughly a hundred capability groups "
+    "are mounted — leads and CRM, estimating and takeoff, bid intelligence and government "
+    "solicitations, lien deadlines and permits, compliance and licensing across the states, "
+    "drone and LiDAR capture, compaction and grade logging, workforce and safety records, "
+    "materials and cash flow, the website/site factory, SEO and local-proof engines, weather "
+    "and storm tracking, voice, email and telephony. "
+    "You do not have to remember which of those exist or what they are called: "
+    "system_capabilities reads the running application and tells you precisely, every time. "
+    "Use it rather than guessing, and prefer naming a real endpoint or table over a vague "
+    "'the system can probably do that'. "
+    "When something is genuinely not built yet, say so plainly and say what it would take — "
+    "he would rather hear 'that does not exist, here is the shortest path to it' than a "
+    "confident description of a feature that is not there."
 )
 
 # The line that matters most, given what shipped before it existed: a paving
@@ -88,7 +127,17 @@ JARVIS_SYSTEM_PROMPT = (
     + JARVIS_HONESTY + " "
     + JARVIS_STANDARDS + " "
     "You have a hard kill-switch ('frozen' state) that overrides every autonomous action; always honor it. "
-    "When you need real-world information you didn't already know, USE the web_search tool. "
+    "When you need real-world information you didn't already know, USE the web_search tool "
+    "(set deep=true for research-grade questions worth the extra seconds). "
+    # These three were built but unreachable, so Jarvis used to answer from memory —
+    # which for hotels and hours means confidently recommending places that closed.
+    "For anywhere to stay, eat, or buy near a job, USE find_local_places — it returns real "
+    "listings with current hours and phone numbers. Never recommend a hotel or restaurant "
+    "from memory; you do not know what is still open. "
+    "If the operator asks whether something is broken or down, or a data tool just failed, "
+    "USE system_health and report what it actually says. "
+    "For 'can we pave today', rain risk, or severe weather, USE storm_conditions — it reads "
+    "live NWS and radar feeds and applies the Worden thresholds. "
     "When the operator asks you to call a phone number, USE the make_phone_call tool — "
     "never claim you've called without invoking it. "
     "When the operator asks you to send an email or 'email me X', USE the send_email tool. "
@@ -380,6 +429,196 @@ JARVIS_TOOLS = [
             "required": ["subject", "body"],
         },
     },
+    {
+        "name": "remember",
+        "description": (
+            "Store something worth knowing in future conversations: a preference, a standing "
+            "order, how a person or company behaves, equipment context, or the reasoning behind "
+            "a decision. Use it whenever the operator tells you how he wants things done, or "
+            "you learn something durable about a customer, GC, supplier or crew. "
+            "Do NOT use it for live business facts — lead counts, balances, invoice numbers, "
+            "job status. Those are read from their tables every time so they cannot go stale; "
+            "storing them would create a second, ageing source of truth and the tool will "
+            "refuse them. Store the judgement instead: not 'KBP owes $12,400' but 'KBP pays "
+            "slow, usually 50-60 days'. Set supersedes to correct an earlier memory."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "content": {"type": "string", "description": "The durable point, in plain language."},
+                "kind": {"type": "string", "description": "preference | standing_order | person | company | equipment | crew | decision | context"},
+                "subject": {"type": "string", "description": "Who/what it is about, e.g. 'KBP Foods'"},
+                "tags": {"type": "string", "description": "Space-separated keywords for retrieval."},
+                "source": {"type": "string", "description": "stated (he said so) | observed (from data) | inferred (your read). Default stated."},
+                "importance": {"type": "integer", "description": "1-10. Default 5."},
+                "supersedes": {"type": "integer", "description": "Memory id this corrects."},
+            },
+            "required": ["content"],
+        },
+    },
+    {
+        "name": "recall",
+        "description": (
+            "Search long-term memory for what you know about a subject or topic. The most "
+            "load-bearing memories are already in your context; use this for specifics — "
+            "'what do I know about this GC', 'what did he say about winter sealcoating'. "
+            "Always attribute what you rely on ('you told me in April...') so he can correct it."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "query": {"type": "string", "description": "Topic or keywords."},
+                "subject": {"type": "string", "description": "Narrow to a person/company/thing."},
+                "kind": {"type": "string", "description": "Narrow to one memory kind."},
+                "limit": {"type": "integer", "description": "Default 12."},
+            },
+        },
+    },
+    {
+        "name": "forget",
+        "description": (
+            "Retire a memory that is wrong or no longer true. Use it as soon as he corrects "
+            "you — a wrong memory repeated confidently is worse than having none."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {"memory_id": {"type": "integer"}},
+            "required": ["memory_id"],
+        },
+    },
+    {
+        "name": "schedule_appointment",
+        "description": (
+            "Book a real appointment — estimate walk, site visit, crew start, meeting. Saves a "
+            "record the office can see later; this is not a note in the chat. Give starts_at as "
+            "ISO local time (e.g. '2026-08-04T09:00'); a naive time is read as Eastern, the "
+            "company's operating timezone. Set notify=true to email the operator a confirmation. "
+            "If the operator is vague about when ('sometime Thursday'), ask for the hour before "
+            "booking rather than picking one."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "title": {"type": "string", "description": "e.g. 'Estimate — Chester parking lot'"},
+                "starts_at": {"type": "string", "description": "ISO local time, e.g. 2026-08-04T09:00"},
+                "duration_minutes": {"type": "integer", "description": "Default 60."},
+                "location": {"type": "string"},
+                "customer_name": {"type": "string"},
+                "customer_phone": {"type": "string"},
+                "customer_email": {"type": "string"},
+                "appointment_type": {"type": "string", "description": "estimate | site_visit | crew_start | meeting | other"},
+                "notes": {"type": "string"},
+                "notify": {"type": "boolean", "description": "Email a confirmation. Default false."},
+            },
+            "required": ["title", "starts_at"],
+        },
+    },
+    {
+        "name": "list_appointments",
+        "description": (
+            "Read the upcoming schedule — what is booked, when, where and for whom. Use this for "
+            "'what's on for tomorrow', 'am I free Thursday', or before booking something so you "
+            "do not double-book him."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "days_ahead": {"type": "integer", "description": "Look-ahead window. Default 14."},
+                "include_past": {"type": "boolean", "description": "Include past appointments. Default false."},
+            },
+        },
+    },
+    {
+        "name": "find_equipment",
+        "description": (
+            "Find used construction equipment for sale on the real marketplaces — dump trucks, "
+            "skid steers, rollers, pavers, excavators, trailers. Searches MachineryTrader, "
+            "TruckPaper, IronPlanet, Ritchie Bros, GovDeals and similar, and ranks actual "
+            "listings above dealer marketing pages. Returns links with any price seen in the "
+            "listing. Use this for 'find me a used tri-axle' or 'what's a good used roller "
+            "going for'. Always pass along that prices are as posted and unverified."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "item": {"type": "string", "description": "e.g. 'tri-axle dump truck', 'skid steer', 'asphalt roller'"},
+                "location": {"type": "string", "description": "e.g. 'Virginia' or 'Richmond VA'"},
+                "max_price": {"type": "integer", "description": "Budget ceiling in dollars."},
+                "year_min": {"type": "integer", "description": "Oldest acceptable model year."},
+            },
+            "required": ["item"],
+        },
+    },
+    {
+        "name": "system_capabilities",
+        "description": (
+            "Introspect THIS platform's own live capabilities: every mounted API endpoint "
+            "grouped by function, and every database table. Call with no query for an overview "
+            "('what can you do?'), or with a keyword to find what exists for a subject "
+            "('lien', 'drone', 'compaction', 'weather') — it returns real endpoint paths and "
+            "table names read from the running app, so it is never out of date. "
+            "Use this whenever the operator asks what the system can do, whether a feature "
+            "exists, or where some kind of data lives. Do NOT answer those from memory — the "
+            "platform changes and you will be wrong."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "query": {"type": "string", "description": "Optional keyword, e.g. 'lien', 'drone', 'invoice'"},
+                "detail": {"type": "boolean", "description": "Include full endpoint paths per group. Default false."},
+            },
+        },
+    },
+    {
+        "name": "find_local_places",
+        "description": (
+            "Find REAL nearby businesses — hotels for a crew working out of town, restaurants, "
+            "hardware and parts suppliers, gas. Backed by Google Places, so results are real "
+            "listings with address, phone, rating, price level and whether they are open now. "
+            "Use this any time the operator asks where to stay, where to eat, or where to buy "
+            "something near a job. Do NOT answer those from memory — you do not know which "
+            "businesses still exist or their current hours."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "query": {"type": "string", "description": "What to find, e.g. 'hotel', 'steakhouse', 'asphalt supplier'"},
+                "location": {"type": "string", "description": "Town/city, e.g. 'Vinton, VA'"},
+                "open_now": {"type": "boolean", "description": "Only places open right now. Default false."},
+                "min_rating": {"type": "number", "description": "Minimum Google rating, e.g. 4.0"},
+            },
+            "required": ["query"],
+        },
+    },
+    {
+        "name": "system_health",
+        "description": (
+            "Check whether the JWordenAI platform itself is healthy: database connectivity, "
+            "which integrations actually have credentials configured, the database migration "
+            "revision, and background-job plumbing. Use this whenever the operator asks if "
+            "something is broken or down, when a data tool has just failed and you need to say "
+            "why, or before claiming a capability is unavailable."
+        ),
+        "input_schema": {"type": "object", "properties": {}},
+    },
+    {
+        "name": "storm_conditions",
+        "description": (
+            "Live weather at a point: current conditions, active National Weather Service "
+            "watches/warnings, and a paving GO / CAUTION / NO-GO verdict scored against the "
+            "Worden Standard (96% Marshall compaction floor, sealcoat cure temperature, "
+            "overspray wind limit, rain washout window). Use this for 'can we pave today', "
+            "'is it going to rain on the crew', or any severe-weather question. This reads live "
+            "radar and NWS feeds — never estimate weather yourself."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "lat": {"type": "number", "description": "Latitude. Defaults to Richmond, VA."},
+                "lon": {"type": "number", "description": "Longitude. Defaults to Richmond, VA."},
+            },
+        },
+    },
 ]
 
 _SENSITIVE_TOOL_NAMES = {"make_phone_call", "send_email", "run_npm"}
@@ -496,7 +735,12 @@ def _cfg_int(key: str, default: int) -> int:
 
 
 def _low_cost_mode() -> bool:
-    raw = (_cfg.get("JARVIS_LOW_COST_MODE") or "1").strip().lower()
+    # Defaults to OFF. This used to default to "1", which silently capped every
+    # reply at 220-320 tokens and dropped temperature to 0.2 — the assistant read
+    # as curt and characterless, and long answers were cut mid-thought. Cost
+    # control is still one env var away (JARVIS_LOW_COST_MODE=1) for anyone who
+    # wants it, but the default should be a working assistant, not a throttled one.
+    raw = (_cfg.get("JARVIS_LOW_COST_MODE") or "0").strip().lower()
     return raw not in {"0", "false", "off", "no"}
 
 
@@ -647,14 +891,14 @@ async def _ask_fast_ops_brain(query: str, persona: str, autonomy: dict, *, confi
     )
 
     try:
-        max_tokens = _cfg_int("JARVIS_FAST_MAX_TOKENS", 220 if _low_cost_mode() else 420)
+        max_tokens = _cfg_int("JARVIS_FAST_MAX_TOKENS", 320 if _low_cost_mode() else 1000)
         resp = await asyncio.to_thread(
             _llm.chat,
             task="jarvis_fast",
             system=system,
             user=query,
             max_tokens=max_tokens,
-            temperature=0.2 if _low_cost_mode() else 0.25,
+            temperature=0.2 if _low_cost_mode() else 0.4,
         )
     except Exception as exc:  # noqa: BLE001
         logger.warning("[JARVIS] Fast ops brain failed: %s", exc)
@@ -746,14 +990,14 @@ async def _ask_chat_brain(query: str, persona: str, autonomy: dict, session_id: 
     )
 
     try:
-        max_tokens = _cfg_int("JARVIS_CHAT_MAX_TOKENS", 260 if _low_cost_mode() else 512)
+        max_tokens = _cfg_int("JARVIS_CHAT_MAX_TOKENS", 380 if _low_cost_mode() else 1600)
         resp = await asyncio.to_thread(
             _llm.chat,
             task="persona",
             system=system,
             user=query,
             max_tokens=max_tokens,
-            temperature=0.45 if _low_cost_mode() else 0.6,
+            temperature=0.45 if _low_cost_mode() else 0.7,
         )
     except Exception as exc:  # noqa: BLE001
         logger.warning("[JARVIS] Chat brain failed: %s", exc)
@@ -1164,6 +1408,140 @@ async def _run_tool(
             logger.warning("[JARVIS] %s failed: %s", name, exc)
             return _finalize({"ok": False, "error": f"{name} unavailable: {exc}"})
 
+    if name in {"remember", "recall", "forget"}:
+        try:
+            from . import memory_service  # noqa: PLC0415
+
+            if name == "remember":
+                data = await asyncio.to_thread(
+                    memory_service.remember,
+                    args.get("content", ""),
+                    args.get("kind", "context"),
+                    args.get("subject"),
+                    args.get("tags"),
+                    args.get("source", "stated"),
+                    int(args.get("importance") or 5),
+                    int(args["supersedes"]) if args.get("supersedes") else None,
+                )
+            elif name == "recall":
+                data = await asyncio.to_thread(
+                    memory_service.recall,
+                    args.get("query"),
+                    args.get("subject"),
+                    args.get("kind"),
+                    int(args.get("limit") or 12),
+                )
+            else:
+                data = await asyncio.to_thread(memory_service.forget, int(args.get("memory_id") or 0))
+            return _finalize({"ok": data.get("status") == "ok", **data})
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("[JARVIS] %s failed: %s", name, exc)
+            return _finalize({"ok": False, "error": f"memory unavailable: {exc}"})
+
+    if name == "schedule_appointment":
+        try:
+            from . import appointment_service  # noqa: PLC0415
+
+            data = await asyncio.to_thread(
+                appointment_service.create_appointment,
+                args.get("title", ""),
+                args.get("starts_at", ""),
+                int(args.get("duration_minutes") or 60),
+                args.get("location"),
+                args.get("customer_name"),
+                args.get("customer_phone"),
+                args.get("customer_email"),
+                args.get("appointment_type", "estimate"),
+                args.get("notes"),
+                bool(args.get("notify", False)),
+            )
+            return _finalize({"ok": data.get("status") == "ok", **data})
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("[JARVIS] schedule_appointment failed: %s", exc)
+            return _finalize({"ok": False, "error": f"could not book appointment: {exc}"})
+
+    if name == "list_appointments":
+        try:
+            from . import appointment_service  # noqa: PLC0415
+
+            data = await asyncio.to_thread(
+                appointment_service.list_appointments,
+                int(args.get("days_ahead") or 14),
+                bool(args.get("include_past", False)),
+            )
+            return _finalize({"ok": data.get("status") == "ok", **data})
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("[JARVIS] list_appointments failed: %s", exc)
+            return _finalize({"ok": False, "error": f"could not read schedule: {exc}"})
+
+    if name == "find_equipment":
+        try:
+            from . import equipment_finder_service  # noqa: PLC0415
+
+            data = await equipment_finder_service.find_equipment(
+                args.get("item", ""),
+                args.get("location"),
+                int(args["max_price"]) if args.get("max_price") else None,
+                int(args["year_min"]) if args.get("year_min") else None,
+            )
+            return _finalize({"ok": data.get("status") == "ok", **data})
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("[JARVIS] find_equipment failed: %s", exc)
+            return _finalize({"ok": False, "error": f"equipment search unavailable: {exc}"})
+
+    if name == "system_capabilities":
+        try:
+            from . import system_map_service  # noqa: PLC0415
+
+            data = await asyncio.to_thread(
+                system_map_service.describe_system,
+                args.get("query"),
+                bool(args.get("detail", False)),
+            )
+            return _finalize({"ok": data.get("status") == "ok", **data})
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("[JARVIS] system_capabilities failed: %s", exc)
+            return _finalize({"ok": False, "error": f"system map unavailable: {exc}"})
+
+    if name == "find_local_places":
+        try:
+            from . import local_places_service  # noqa: PLC0415
+
+            data = await asyncio.to_thread(
+                local_places_service.find_places,
+                args.get("query", ""),
+                args.get("location"),
+                bool(args.get("open_now", False)),
+                float(args.get("min_rating") or 0),
+            )
+            return _finalize({"ok": data.get("status") == "ok", **data})
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("[JARVIS] find_local_places failed: %s", exc)
+            return _finalize({"ok": False, "error": f"local place lookup unavailable: {exc}"})
+
+    if name == "system_health":
+        try:
+            from . import self_health_service  # noqa: PLC0415
+
+            data = await asyncio.to_thread(self_health_service.check_system_health)
+            return _finalize({"ok": True, **data})
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("[JARVIS] system_health failed: %s", exc)
+            return _finalize({"ok": False, "error": f"self-health check failed: {exc}"})
+
+    if name == "storm_conditions":
+        try:
+            from . import storm_service  # noqa: PLC0415
+
+            lat = float(args.get("lat") or 37.5407)
+            lon = float(args.get("lon") or -77.436)
+            cond = await asyncio.to_thread(storm_service.get_conditions, lat, lon)
+            alerts = await asyncio.to_thread(storm_service.get_active_alerts, lat, lon, None)
+            return _finalize({"ok": cond.get("status") == "ok", "conditions": cond, "alerts": alerts})
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("[JARVIS] storm_conditions failed: %s", exc)
+            return _finalize({"ok": False, "error": f"storm conditions unavailable: {exc}"})
+
     if name == "paving_forecast":
         # Called in-process rather than over /api/v1/weather/* — that router is
         # auth-gated, and Jarvis holds no bearer token of its own.
@@ -1283,7 +1661,18 @@ async def _ask_claude(
             f"{advisory_context}\n"
         )
 
-    system = f"{JARVIS_SYSTEM_PROMPT}\n\n{persona_note}\n{state_note}{advisory_note}"
+    # Long-term memory is injected rather than left behind a tool call. Memory
+    # he has to remember to look up is barely memory — the standing orders and
+    # strong preferences should already be in the room; `recall` is for specifics.
+    try:
+        from . import memory_service  # noqa: PLC0415
+
+        _memory_block = await asyncio.to_thread(memory_service.briefing)
+    except Exception as exc:  # noqa: BLE001 — never let memory break a reply
+        logger.warning("[JARVIS] memory briefing unavailable: %s", exc)
+        _memory_block = ""
+
+    system = f"{JARVIS_SYSTEM_PROMPT}{_memory_block}\n\n{persona_note}\n{state_note}{advisory_note}"
 
     headers = {
         "x-api-key":         _anthropic_key(),
@@ -1298,10 +1687,10 @@ async def _ask_claude(
     # Two-round max: initial → optional tool use → final.
     for _round in range(2):
         try:
-            default_tokens = 320 if _low_cost_mode() else 700
+            default_tokens = 420 if _low_cost_mode() else 2400
             max_tokens = int((_cfg.get("JARVIS_CLAUDE_MAX_TOKENS") or str(default_tokens)).strip())
         except Exception:  # noqa: BLE001
-            max_tokens = 320 if _low_cost_mode() else 700
+            max_tokens = 420 if _low_cost_mode() else 2400
         payload = {
             "model":      _anthropic_model(),
             "max_tokens": max_tokens,
