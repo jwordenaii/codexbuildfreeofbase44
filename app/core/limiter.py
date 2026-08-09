@@ -38,3 +38,5 @@ ANALYTICS_LIMIT: str = "30/minute"
 CRM_LIMIT: str = "60/minute"
 HEALTH_LIMIT: str = "300/minute"
 ADMIN_LIMIT: str = "100/minute"
+SCAN_LIMIT: str = "30/minute"     # scan-campaign CRUD/export (admin/premium)
+SCAN_RUN_LIMIT: str = "5/minute"  # scan-campaign pipeline run — hits Regrid/Maps/GPT-4o/Lob

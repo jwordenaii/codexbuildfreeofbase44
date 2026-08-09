@@ -63,8 +63,11 @@ async def push_gbp_post(location_id: str, content: str) -> dict:
     token = _cfg.get("GBP_OAUTH_TOKEN")
     if not token:
          return {"ok": False, "reason": "GBP_OAUTH_TOKEN missing"}
-         
-    url = f"https://mybusiness.googleapis.com/v4/accounts/ACCOUNT_ID/locations/{location_id}/localPosts"
+    account_id = _cfg.get("GBP_ACCOUNT_ID")
+    if not account_id:
+        return {"ok": False, "reason": "GBP_ACCOUNT_ID missing"}
+
+    url = f"https://mybusiness.googleapis.com/v4/accounts/{account_id}/locations/{location_id}/localPosts"
     payload = {
         "languageCode": "en-US",
         "summary": content,
@@ -95,8 +98,11 @@ async def fetch_gbp_reviews(location_id: str) -> dict:
     token = _cfg.get("GBP_OAUTH_TOKEN")
     if not token:
         return {"ok": False, "reason": "GBP_OAUTH_TOKEN missing"}
-        
-    url = f"https://mybusiness.googleapis.com/v4/accounts/ACCOUNT_ID/locations/{location_id}/reviews"
+    account_id = _cfg.get("GBP_ACCOUNT_ID")
+    if not account_id:
+        return {"ok": False, "reason": "GBP_ACCOUNT_ID missing"}
+
+    url = f"https://mybusiness.googleapis.com/v4/accounts/{account_id}/locations/{location_id}/reviews"
     try:
         async with httpx.AsyncClient() as client:
             resp = await client.get(

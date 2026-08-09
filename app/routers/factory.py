@@ -1,26 +1,74 @@
 """
-factory.py - The SaaS Site Factory Engine
+factory.py — the SaaS Site Factory: hostname resolution, tenant self-serve
+signup, owner-side tenant/billing management, and the market-site tooling.
 
 Routes:
-  GET  /api/v1/factory/resolve?hostname=...  - Fast client-side resolution of tenant config
-  POST /api/v1/factory/sites                 - Create a new MarketSite
-"""
-import logging
-from typing import Optional, List
+  GET  /api/v1/factory/resolve                    — public hostname -> tenant config
+  POST /api/v1/factory/saas/provision             — public self-serve signup + Stripe checkout
+  GET  /api/v1/factory/saas/tenants               — [owner] tenant list + MRR
+  GET  /api/v1/factory/saas/tenants/{id}          — [owner] one tenant's billing detail
+  POST /api/v1/factory/saas/tenants/{id}/upgrade  — [owner] change plan
+  POST /api/v1/factory/saas/tenants/{id}/cancel   — [owner] cancel subscription
+  GET  /api/v1/factory/saas/analytics             — [owner] platform MRR/ARR
+  POST /api/v1/factory/sites                      — launch a MarketSite
+  POST /api/v1/factory/blog/generate              — AI blog generator
+  POST /api/v1/factory/indexnow/submit            — instant search-engine indexing
 
-from fastapi import APIRouter, Depends, HTTPException, Request
-from pydantic import BaseModel
-from sqlalchemy.orm import Session
+MERGE NOTE (this file was added independently on two branches):
+
+/saas/provision existed on both sides with opposite intent. One version was
+gated behind verify_premium_security and rejected any caller whose tenant_id
+was not "default" — but the thing that actually calls it is the public signup
+form in SaaSPlatformPortal.jsx, which posts with no Authorization header at
+all. Public signup therefore could not succeed. The public, rate-limited
+version is kept, since that is the one the frontend is written against; it
+still only writes a narrow field set and prices the plan inline.
+
+/resolve also existed on both sides. The richer version is kept — it carries
+MARKET_PROFILES, branding tier and theme colours, which host-based routing and
+SiteFactoryPanel read. The simpler subdomain-only lookup is preserved as
+_extract_tenant_slug and used as the fallback path.
+
+Billing mirrors app/routers/payments.py: no STRIPE_SECRET_KEY -> mock checkout
+URL so the flow stays testable end to end; key present -> a real Stripe
+Checkout session in subscription mode, priced inline (no pre-created Products).
+"""
+
+
+import logging
+import os
+import re
+import uuid
+from datetime import datetime, timedelta, timezone
+from typing import List, Optional
+
+from fastapi import APIRouter, Body, Depends, HTTPException, Query, Request
+from pydantic import BaseModel, EmailStr, Field
 from sqlalchemy import func
+from sqlalchemy.orm import Session
 
 from ..core.limiter import limiter
 from ..core.security import verify_premium_security
 from ..database import get_db
-from ..models import Tenant, MarketSite
+from ..models import MarketSite, Tenant, TenantBillingEvent
+from ..routers.admin_integrations import _require_owner
+from ..services.tenant_service import create_tenant, get_tenant
+
+TENANT_ROOT_DOMAIN = "thewordenstandard.com"
+TRIAL_PERIOD_DAYS = 14
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/v1/factory", tags=["factory"])
+
+VALID_TIERS = {"starter", "pro", "enterprise"}
+TIER_MONTHLY_USD = {"starter": 299, "pro": 599, "enterprise": 1299}
+TIER_FEATURES = {
+    "starter": ["Jarvis AI", "Estimates", "CRM", "Weather", "5 crew"],
+    "pro": ["Everything in Starter", "Dispatch", "Crew wearables", "White-label subdomain", "25 crew"],
+    "enterprise": ["Everything in Pro", "Custom domain", "Drone/lidar capture", "SLA support", "Unlimited crew"],
+}
+
 
 class SiteResolution(BaseModel):
     tenant_id: str
@@ -125,6 +173,151 @@ MARKET_PROFILES = {
         "primary_color": "#22c55e" # Coastal Green
     }
 }
+
+class SaasProvisionRequest(BaseModel):
+    company_name: str = Field(..., min_length=2, max_length=200)
+    contact_email: EmailStr
+    contact_phone: str = Field("", max_length=30)
+    subdomain_slug: str = Field(..., min_length=2, max_length=63)
+    subscription_tier: str = Field("pro")
+    success_url: str | None = None
+    cancel_url: str | None = None
+
+
+def _slugify(raw: str) -> str:
+    slug = re.sub(r"[^a-z0-9-]+", "-", raw.strip().lower())
+    slug = re.sub(r"-{2,}", "-", slug).strip("-")
+    return slug[:63]
+
+
+def _create_subscription_checkout(tenant, tier: str, contact_email: str, success_url: str, cancel_url: str) -> dict:
+    """
+    Returns {"checkout_url": str, "checkout_session_id": str, "mode": "live"|"mock"}.
+    Mirrors payments.create_checkout_session's mock-when-unconfigured pattern.
+    """
+    stripe_secret = os.getenv("STRIPE_SECRET_KEY", "").strip()
+    mock_id = f"mock_sub_{tenant.tenant_id}_{int(datetime.now(timezone.utc).timestamp())}"
+
+    if not stripe_secret:
+        return {
+            "checkout_url": f"{success_url}&session_id={mock_id}",
+            "checkout_session_id": mock_id,
+            "mode": "mock",
+        }
+
+    try:
+        import stripe  # noqa: PLC0415
+
+        stripe.api_key = stripe_secret
+        session = stripe.checkout.Session.create(
+            mode="subscription",
+            success_url=success_url,
+            cancel_url=cancel_url,
+            payment_method_types=["card"],
+            customer_email=contact_email,
+            metadata={"tenant_id": tenant.tenant_id, "subscription_tier": tier},
+            subscription_data={"metadata": {"tenant_id": tenant.tenant_id, "subscription_tier": tier}},
+            line_items=[
+                {
+                    "quantity": 1,
+                    "price_data": {
+                        "currency": "usd",
+                        "product_data": {"name": f"JWordenAI {tier.capitalize()} — {tenant.company_name}"},
+                        "unit_amount": TIER_MONTHLY_USD[tier] * 100,
+                        "recurring": {"interval": "month"},
+                    },
+                }
+            ],
+        )
+        return {"checkout_url": session.url, "checkout_session_id": session.id, "mode": "live"}
+    except Exception as exc:  # noqa: BLE001
+        logger.exception("Stripe subscription checkout failed for tenant %s: %s", tenant.tenant_id, exc)
+        raise HTTPException(status_code=502, detail=f"Unable to create checkout session: {exc}") from exc
+
+
+@router.post("/saas/provision", summary="Self-serve SaaS tenant signup")
+@limiter.limit("5/minute")
+async def provision_saas_tenant(
+    request: Request,
+    body: SaasProvisionRequest,
+    db: Session = Depends(get_db),
+):
+    tier = body.subscription_tier.strip().lower()
+    if tier not in VALID_TIERS:
+        raise HTTPException(status_code=400, detail=f"subscription_tier must be one of {sorted(VALID_TIERS)}")
+
+    slug = _slugify(body.subdomain_slug)
+    if not slug:
+        raise HTTPException(status_code=400, detail="subdomain_slug must contain at least one letter or number")
+
+    try:
+        existing = get_tenant(slug, db)
+        if existing:
+            # Slug collision — append a short suffix instead of failing the
+            # signup outright, since the slug is user-chosen and collisions
+            # are expected once there are enough tenants.
+            slug = f"{slug}-{uuid.uuid4().hex[:5]}"
+
+        tenant = create_tenant(
+            {
+                "tenant_id": slug,
+                "company_name": body.company_name.strip(),
+                "contact_email": str(body.contact_email),
+                "contact_phone": body.contact_phone.strip(),
+                "subscription_tier": tier,
+            },
+            db,
+        )
+
+        portal_url = f"https://{tenant.tenant_id}.thewordenstandard.com"
+        success_url = body.success_url or f"{portal_url}/welcome?payment=success"
+        cancel_url = body.cancel_url or f"{portal_url}/welcome?payment=cancel"
+
+        checkout = _create_subscription_checkout(tenant, tier, str(body.contact_email), success_url, cancel_url)
+
+        tenant.subscription_status = "mock" if checkout["mode"] == "mock" else "pending_payment"
+        tenant.trial_ends_at = datetime.now(timezone.utc) + timedelta(days=TRIAL_PERIOD_DAYS)
+        db.commit()
+        db.refresh(tenant)
+
+        logger.info(
+            "SaaS tenant provisioned: %s (%s tier, checkout mode=%s)",
+            tenant.tenant_id, tier, checkout["mode"],
+        )
+
+        return {
+            "status": "provisioned",
+            "tenant_id": tenant.tenant_id,
+            "company_name": tenant.company_name,
+            "subscription_tier": tenant.subscription_tier,
+            "subscription_status": tenant.subscription_status,
+            "monthly_price_usd": TIER_MONTHLY_USD[tier],
+            "portal_url": portal_url,
+            "checkout_url": checkout["checkout_url"],
+            "checkout_session_id": checkout["checkout_session_id"],
+            "next_step": "complete_checkout" if checkout["mode"] == "live" else "mock_checkout_no_stripe_key_configured",
+        }
+    except HTTPException:
+        raise
+    except Exception as exc:  # noqa: BLE001
+        logger.exception("SaaS provisioning failed: %s", exc)
+        raise HTTPException(status_code=500, detail="Provisioning failed. Please try again.") from exc
+
+
+def _extract_tenant_slug(hostname: str) -> str | None:
+    """
+    'testpavingco.thewordenstandard.com' -> 'testpavingco'
+    'thewordenstandard.com', 'www.thewordenstandard.com', anything else -> None
+    """
+    host = (hostname or "").strip().lower()
+    suffix = f".{TENANT_ROOT_DOMAIN}"
+    if not host.endswith(suffix):
+        return None
+    slug = host[: -len(suffix)]
+    if not slug or slug == "www":
+        return None
+    return slug
+
 
 @router.get("/resolve", response_model=SiteResolution, summary="Resolve tenant by hostname")
 @limiter.limit("200/minute")
@@ -251,104 +444,148 @@ async def resolve_hostname(request: Request, hostname: str, db: Session = Depend
 
 # ── SaaS Tenant Provisioning ──────────────────────────────────────────────────
 
-class SaasProvisionRequest(BaseModel):
-    company_name: str
-    contact_email: str
-    contact_phone: Optional[str] = None
-    custom_domain: Optional[str] = None      # e.g. smithpaving.com
-    subdomain_slug: Optional[str] = None     # e.g. smith  →  smith.thewordenstandard.com
-    primary_color: Optional[str] = "#f59e0b"
-    branding_tier: Optional[str] = "jarvis" # jarvis | worden_standard | white_label
-    logo_url: Optional[str] = None
-    subscription_tier: Optional[str] = "pro"
-
-@router.post("/saas/provision", summary="Provision a new SaaS white-label tenant")
-@limiter.limit("5/minute")
-async def provision_saas_tenant(
-    request: Request,
-    req: SaasProvisionRequest,
-    db: Session = Depends(get_db),
-    auth_data: dict = Depends(verify_premium_security),
-):
-    """
-    Provision a brand-new SaaS client.
-    - Creates a Tenant row.
-    - Registers their custom domain AND/OR subdomain as MarketSite rows
-      with route_mode='saas-client'.
-    - Returns the tenant_id and all registered hostnames.
-    """
-    import uuid
-    from datetime import datetime, timezone
-
-    caller_tenant_id = auth_data.get("tenant_id", "default")
-    # Only the master Worden Standard account can provision SaaS tenants.
-    if caller_tenant_id != "default":
-        raise HTTPException(status_code=403, detail="Only the platform owner can provision tenants.")
-
-    if not req.custom_domain and not req.subdomain_slug:
-        raise HTTPException(status_code=422, detail="Provide at least one of: custom_domain or subdomain_slug.")
-
-    # Slug validation
-    slug = req.subdomain_slug or req.company_name.lower().replace(" ", "-")
-    safe_slug = "".join(c for c in slug if c.isalnum() or c == "-")[:40]
-
-    new_tenant_id = str(uuid.uuid4())
-
-    tenant_kwargs = dict(
-        tenant_id=new_tenant_id,
-        company_name=req.company_name,
-        contact_email=req.contact_email,
-        contact_phone=req.contact_phone,
-        subscription_tier=req.subscription_tier,
-        primary_color=req.primary_color,
-    )
-    # Inject optional columns only if the model has them (future-safe)
-    for col, val in [("branding_tier", req.branding_tier), ("logo_url", req.logo_url), ("subdomain_slug", safe_slug)]:
-        if hasattr(Tenant, col):
-            tenant_kwargs[col] = val
-
-    tenant = Tenant(**tenant_kwargs)
-    db.add(tenant)
-
-    registered_hostnames = []
-
-    def _add_site(hostname: str):
-        existing = db.query(MarketSite).filter(MarketSite.hostname == hostname).first()
-        if existing:
-            return  # idempotent
-        site = MarketSite(
-            tenant_id=new_tenant_id,
-            hostname=hostname,
-            route_mode="saas-client",
-            site_title=req.company_name,
-            primary_color=req.primary_color,
-        )
-        db.add(site)
-        registered_hostnames.append(hostname)
-
-    # Custom domain
-    if req.custom_domain:
-        _add_site(req.custom_domain.lower().strip())
-
-    # Subdomain on thewordenstandard.com
-    subdomain_hostname = f"{safe_slug}.thewordenstandard.com"
-    _add_site(subdomain_hostname)
-
-    db.commit()
-
-    logger.info(f"[SaaS] Provisioned tenant {new_tenant_id} ({req.company_name}) → {registered_hostnames}")
-
+def _tenant_out(t: Tenant) -> dict:
     return {
-        "status": "provisioned",
-        "tenant_id": new_tenant_id,
-        "company_name": req.company_name,
-        "subdomain": subdomain_hostname,
-        "custom_domain": req.custom_domain,
-        "registered_hostnames": registered_hostnames,
-        "cockpit_url": f"https://{subdomain_hostname}/dashboard",
-        "branding_tier": req.branding_tier,
+        "id": t.id,
+        "tenant_id": t.tenant_id,
+        "company_name": t.company_name,
+        "contact_email": t.contact_email,
+        "contact_phone": t.contact_phone,
+        "subscription_tier": t.subscription_tier,
+        "subscription_status": t.subscription_status,
+        "monthly_price_usd": TIER_MONTHLY_USD.get(t.subscription_tier, 0),
+        "trial_ends_at": t.trial_ends_at.isoformat() if t.trial_ends_at else None,
+        "current_period_end": t.current_period_end.isoformat() if t.current_period_end else None,
+        "stripe_customer_id": t.stripe_customer_id,
+        "custom_domain": t.custom_domain,
+        "features": TIER_FEATURES.get(t.subscription_tier, []),
+        "created_at": t.created_at.isoformat() if t.created_at else None,
     }
 
+
+@router.get("/saas/tenants", summary="[owner] List provisioned SaaS tenants + MRR")
+async def list_saas_tenants(
+    subscription_status: str | None = Query(None),
+    subscription_tier: str | None = Query(None),
+    limit: int = Query(50, le=200),
+    db: Session = Depends(get_db),
+    _: str = Depends(_require_owner),
+):
+    qs = db.query(Tenant).filter(Tenant.is_active == 1)
+    if subscription_status:
+        qs = qs.filter(Tenant.subscription_status == subscription_status)
+    if subscription_tier:
+        qs = qs.filter(Tenant.subscription_tier == subscription_tier)
+    tenants = qs.order_by(Tenant.id.desc()).limit(limit).all()
+    active_mrr = sum(
+        TIER_MONTHLY_USD.get(t.subscription_tier, 0)
+        for t in tenants
+        if t.subscription_status == "active"
+    )
+    return {
+        "tenants": [_tenant_out(t) for t in tenants],
+        "total": len(tenants),
+        "active_mrr_usd": active_mrr,
+    }
+
+
+@router.get("/saas/tenants/{tenant_id_str}", summary="[owner] Get one tenant's full billing detail")
+async def get_saas_tenant(tenant_id_str: str, db: Session = Depends(get_db), _: str = Depends(_require_owner)):
+    tenant = get_tenant(tenant_id_str, db)
+    if not tenant:
+        raise HTTPException(status_code=404, detail="Tenant not found")
+    return _tenant_out(tenant)
+
+
+@router.post("/saas/tenants/{tenant_id_str}/upgrade", summary="[owner] Change a tenant's plan")
+async def upgrade_saas_tenant(
+    tenant_id_str: str,
+    tier: str = Body(..., embed=True),
+    db: Session = Depends(get_db),
+    _: str = Depends(_require_owner),
+):
+    tenant = get_tenant(tenant_id_str, db)
+    if not tenant:
+        raise HTTPException(status_code=404, detail="Tenant not found")
+    tier = tier.strip().lower()
+    if tier not in VALID_TIERS:
+        raise HTTPException(status_code=400, detail=f"tier must be one of {sorted(VALID_TIERS)}")
+
+    stripe_secret = os.getenv("STRIPE_SECRET_KEY", "").strip()
+    if stripe_secret and tenant.stripe_subscription_id:
+        try:
+            import stripe  # noqa: PLC0415
+
+            stripe.api_key = stripe_secret
+            sub = stripe.Subscription.retrieve(tenant.stripe_subscription_id)
+            stripe.Subscription.modify(
+                tenant.stripe_subscription_id,
+                items=[
+                    {
+                        "id": sub["items"]["data"][0]["id"],
+                        "price_data": {
+                            "currency": "usd",
+                            "product": sub["items"]["data"][0]["price"]["product"],
+                            "unit_amount": TIER_MONTHLY_USD[tier] * 100,
+                            "recurring": {"interval": "month"},
+                        },
+                    }
+                ],
+                proration_behavior="always_invoice",
+            )
+        except Exception as exc:  # noqa: BLE001
+            logger.exception("Stripe plan-change failed for tenant %s: %s", tenant_id_str, exc)
+            raise HTTPException(status_code=502, detail=f"Stripe plan change failed: {exc}") from exc
+
+    tenant.subscription_tier = tier
+    db.commit()
+    db.refresh(tenant)
+    return _tenant_out(tenant)
+
+
+@router.post("/saas/tenants/{tenant_id_str}/cancel", summary="[owner] Cancel a tenant's subscription")
+async def cancel_saas_tenant(tenant_id_str: str, db: Session = Depends(get_db), _: str = Depends(_require_owner)):
+    tenant = get_tenant(tenant_id_str, db)
+    if not tenant:
+        raise HTTPException(status_code=404, detail="Tenant not found")
+
+    stripe_secret = os.getenv("STRIPE_SECRET_KEY", "").strip()
+    if stripe_secret and tenant.stripe_subscription_id:
+        try:
+            import stripe  # noqa: PLC0415
+
+            stripe.api_key = stripe_secret
+            stripe.Subscription.cancel(tenant.stripe_subscription_id)
+        except Exception as exc:  # noqa: BLE001
+            logger.exception("Stripe cancel failed for tenant %s: %s", tenant_id_str, exc)
+            # Still mark canceled locally — the owner explicitly asked to cancel;
+            # a Stripe-side failure shouldn't leave the tenant looking active.
+
+    tenant.subscription_status = "canceled"
+    db.commit()
+    db.refresh(tenant)
+    return _tenant_out(tenant)
+
+
+@router.get("/saas/analytics", summary="[owner] Platform-level SaaS metrics")
+async def saas_analytics(db: Session = Depends(get_db), _: str = Depends(_require_owner)):
+    tenants = db.query(Tenant).filter(Tenant.is_active == 1).all()
+    by_tier: dict[str, int] = {}
+    by_status: dict[str, int] = {}
+    mrr = 0
+    for t in tenants:
+        by_tier[t.subscription_tier] = by_tier.get(t.subscription_tier, 0) + 1
+        by_status[t.subscription_status] = by_status.get(t.subscription_status, 0) + 1
+        if t.subscription_status == "active":
+            mrr += TIER_MONTHLY_USD.get(t.subscription_tier, 0)
+
+    return {
+        "total_tenants": len(tenants),
+        "by_tier": by_tier,
+        "by_status": by_status,
+        "mrr_usd": mrr,
+        "arr_usd": mrr * 12,
+    }
 class MarketSiteCreate(BaseModel):
     hostname: str
     route_mode: str = "market-landing"
@@ -484,4 +721,3 @@ async def submit_indexnow_urls(
         "submitted_urls_count": len(req.urls),
         "host": req.host
     }
-

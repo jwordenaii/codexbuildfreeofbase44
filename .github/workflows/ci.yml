@@ -94,6 +94,9 @@ jobs:
           JWT_SECRET_KEY: test-jwt-secret
           AUTO_CREATE_TABLES: "true"
 
+      - name: Guard against fabricated data in API responses
+        run: python scripts/guard_no_fabrication.py
+
   docker:
     name: Docker — Build Validation
     runs-on: ubuntu-latest

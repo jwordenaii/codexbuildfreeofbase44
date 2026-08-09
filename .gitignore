@@ -92,3 +92,7 @@ temp_view.txt
 # Sandbox proxy CA staged into the Docker build context for deploys.
 # Build-time only — must never be committed or shipped in the image.
 ccr-ca-bundle.crt
+# Sandbox-only: proxy CA copied into the Docker build context for local
+# image builds (see AGENTS.md "Deploying from a sandboxed/proxied environment").
+# Never commit — it is environment-specific and irrelevant to production.
+ca-bundle.crt

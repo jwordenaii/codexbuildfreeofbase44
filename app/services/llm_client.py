@@ -12,29 +12,36 @@ Routing philosophy
 ────────────────────────────────────────────────────────────────────────────
 Every model has ONE job it does better than the others. No redundancy.
 
-  TASK                    → PRIMARY                          → FALLBACK
+  TASK                    → PRIMARY              → FALLBACKS
   ──────────────────────────────────────────────────────────────────────
-    jarvis                  → claude-sonnet-4-6                → gpt-4o → grok-4 → gemini-2.5-pro → claude-opus-4-6
-  reasoning / persona     → claude-sonnet-4-6                → gpt-4o
-  proposals / contracts   → claude-sonnet-4-6                → gpt-4o
-  review_reply            → claude-sonnet-4-6                → gpt-4o
-  legal / compliance      → claude-opus-4-6                  → claude-sonnet-4-6
-  vision                  → gpt-4o                           → gemini-2.5-pro
-  math / long_context     → gemini-2.5-pro                   → claude-sonnet-4-6
-  web_research            → perplexity-sonar-pro             → gpt-4o
-  social_signal (X)       → grok-4                           → (none)
-    fast / classification   → gpt-4o-mini                      → claude-sonnet-4-6
-  analytics               → claude-sonnet-4-6                → gpt-4o
+  jarvis                  → claude-opus-5        → gpt-4o → gemini-2.5-pro
+  reasoning / persona     → claude-opus-5        → gpt-4o
+  legal / compliance      → claude-opus-5        → gpt-4o
+  proposals / contracts   → claude-opus-5        → gpt-4o
+  review_reply            → claude-opus-5        → gpt-4o
+  analytics               → claude-opus-5        → gpt-4o
+  vision                  → gpt-4o               → gemini-2.5-pro
+  math / long_context     → gemini-2.5-pro       → claude-opus-5
+  web_research            → perplexity-sonar-pro → gpt-4o
+  social_signal (X)       → grok-4               → (none)
+  fast / classification   → gpt-4o-mini          → claude-haiku-4-5
 
-Note on Opus 4.6 vs 4.7: 4.6 is the default because 4.7's updated tokenizer
-can produce up to ~35% more tokens for the same input → higher effective
-cost. Set JARVIS_MODEL_OVERRIDE=claude-opus-4-7 to upgrade Jarvis only.
+Jarvis is the product surface customers see and judge, so it runs on the
+flagship model rather than a cost-tier one. Two knobs exist if that ever needs
+to change: JARVIS_MAX_TIER=sonnet downgrades the Jarvis lanes to
+claude-sonnet-5, and JARVIS_MODEL_OVERRIDE pins any single model by name.
+
+claude-fable-5 is the one tier above claude-opus-5. It is deliberately NOT the
+default: it costs 2x ($10/$50 per Mtok vs $5/$25), it cannot be used by an
+organization on zero data retention (every request 400s), and its safety
+classifiers decline more often. Set JARVIS_MODEL_OVERRIDE=claude-fable-5 to
+try it on the Jarvis lanes only.
 
 ────────────────────────────────────────────────────────────────────────────
 Environment variables (set in Railway → Variables)
 ────────────────────────────────────────────────────────────────────────────
   OPENAI_API_KEY        — OpenAI (GPT-4o, GPT-4o-mini, embeddings)
-  ANTHROPIC_API_KEY     — Anthropic (Claude Opus 4, Sonnet 4.5, Haiku 4)
+  ANTHROPIC_API_KEY     — Anthropic (Claude Opus 5, Sonnet 5, Haiku 4.5)
   GOOGLE_API_KEY        — Google AI Studio (Gemini 2.5 Pro)
   PERPLEXITY_API_KEY    — Perplexity (Sonar Pro — live web + citations)
   XAI_API_KEY           — xAI (Grok 4 — X firehose)
@@ -42,7 +49,7 @@ Environment variables (set in Railway → Variables)
                            "0": raise on primary failure.
   JARVIS_MAX_TIER       — "opus" (default) | "sonnet". Caps Jarvis spend.
     JARVIS_MODEL_OVERRIDE — Optional model name for jarvis/persona/jarvis_fast,
-                                                     e.g. "claude-opus-4-7" or "gpt-4o".
+                                                     e.g. "claude-opus-5" or "gpt-4o".
     JARVIS_DISABLE_GEMINI — "1" disables Google/Gemini in jarvis lanes only.
     LLM_DISABLED_PROVIDERS — Comma-separated global provider denylist,
                                                      e.g. "google,xai".
@@ -74,11 +81,11 @@ _ROUTES: dict[str, list[tuple[str, str]]] = {
     # lane's claude-opus-5 — so the reported model and the answering model
     # were different things.
     "jarvis":          [("anthropic", "claude-opus-5"),       ("anthropic", "claude-sonnet-5"),   ("openai", "gpt-4o"),               ("xai", "grok-4"),                   ("google", "gemini-2.5-pro")],
-    "jarvis_fast":     [("anthropic", "claude-sonnet-5"),     ("openai", "gpt-4o-mini"),          ("xai", "grok-4"),                  ("google", "gemini-2.5-pro"),        ("openai", "gpt-4o")],
+    "jarvis_fast":     [("anthropic", "claude-opus-5"),       ("anthropic", "claude-sonnet-5"),     ("openai", "gpt-4o-mini"),          ("xai", "grok-4"),                  ("google", "gemini-2.5-pro"),        ("openai", "gpt-4o")],
     "reasoning":       [("anthropic", "claude-opus-5"),       ("anthropic", "claude-sonnet-5"),   ("openai", "gpt-4o")],
     "persona":         [("anthropic", "claude-opus-5"),       ("anthropic", "claude-sonnet-5"),   ("openai", "gpt-4o")],
     "proposal":        [("anthropic", "claude-opus-5"),       ("anthropic", "claude-sonnet-5"),   ("openai", "gpt-4o")],
-    "review_reply":    [("anthropic", "claude-sonnet-5"),     ("openai", "gpt-4o")],
+    "review_reply":    [("anthropic", "claude-opus-5"),       ("anthropic", "claude-sonnet-5"),   ("openai", "gpt-4o")],
     "legal":           [("anthropic", "claude-opus-5"),       ("anthropic", "claude-sonnet-5"),   ("openai", "gpt-4o")],
     "vision":          [("anthropic", "claude-opus-5"),       ("openai", "gpt-4o"),               ("google", "gemini-2.5-pro")],
     "math":            [("anthropic", "claude-opus-5"),       ("google", "gemini-2.5-pro"),       ("openai", "gpt-4o")],
@@ -87,7 +94,7 @@ _ROUTES: dict[str, list[tuple[str, str]]] = {
     "social_signal":   [("xai", "grok-4")],
     "fast":            [("anthropic", "claude-haiku-4-5-20251001"), ("openai", "gpt-4o-mini")],
     "classification":  [("anthropic", "claude-haiku-4-5-20251001"), ("openai", "gpt-4o-mini")],
-    "analytics":       [("anthropic", "claude-sonnet-5"),     ("openai", "gpt-4o")],
+    "analytics":       [("anthropic", "claude-opus-5"),       ("anthropic", "claude-sonnet-5"),   ("openai", "gpt-4o")],
     "city_authority":  [("google", "gemini-2.5-flash"),       ("openai", "gpt-4o")],
 }
 
@@ -297,6 +304,40 @@ def _get_xai() -> Any:
 
 # ── Per-provider call shims ──────────────────────────────────────────────────
 
+# ── Current-generation Claude behaviour ──────────────────────────────────────
+# Sampling parameters (`temperature`, `top_p`, `top_k`) were REMOVED on these
+# models — sending one returns a 400, so the routing table below cannot be
+# pointed at them without _call_anthropic() stripping it first.
+# Models that reject temperature / top_p / top_k outright. Matched by prefix, so
+# a future claude-opus-5-something is covered without another edit here.
+#
+# There were briefly two copies of this tuple after a branch merge and the
+# shorter one won by being defined later, which quietly dropped claude-opus-4-8
+# and made every call to it a 400. One definition only.
+_SAMPLING_FREE_PREFIXES = (
+    "claude-opus-5",
+    "claude-sonnet-5",
+    "claude-fable-5",
+    "claude-mythos-5",
+    "claude-opus-4-8",
+)
+
+# These models think by default and `max_tokens` bounds thinking + answer
+# together, so a small budget silently truncates the reply.
+_MIN_THINKING_HEADROOM = 8000
+
+
+def _rejects_sampling_params(model: str) -> bool:
+    m = (model or "").strip().lower()
+    return any(m.startswith(p) for p in _SAMPLING_FREE_PREFIXES)
+
+
+def _anthropic_effort() -> str:
+    """low | medium | high | xhigh | max — depth vs latency for a chat turn."""
+    raw = (_cfg.get("JARVIS_EFFORT") or "medium").strip().lower()
+    return raw if raw in {"low", "medium", "high", "xhigh", "max"} else "medium"
+
+
 def _call_openai_compatible(
     client: Any,
     model: str,
@@ -320,14 +361,6 @@ def _call_openai_compatible(
     )
     return resp.choices[0].message.content or ""
 
-
-# Models that reject temperature / top_p / top_k outright. Matched by prefix so
-# a future claude-opus-5-something is covered without another edit here.
-_SAMPLING_FREE_PREFIXES = ("claude-opus-5", "claude-sonnet-5", "claude-fable-5", "claude-mythos-5")
-
-
-def _is_sampling_free(model: str) -> bool:
-    return str(model or "").startswith(_SAMPLING_FREE_PREFIXES)
 
 
 def _call_anthropic(
@@ -354,16 +387,31 @@ def _call_anthropic(
         "messages": msgs,
         "max_tokens": max_tokens,
     }
-    # Claude 5 removed the sampling parameters: sending temperature to
-    # claude-opus-5 / claude-sonnet-5 is a 400, not a warning. The router
-    # catches that and silently moves to the next provider in the chain, so
-    # the visible symptom would be Jarvis quietly answering from GPT-4o while
-    # readiness still reported an Anthropic model. Older Claude models and
-    # every other provider still take it.
-    if not _is_sampling_free(model):
+
+    # Sampling parameters were REMOVED on the current Claude generation — sending
+    # `temperature` to claude-opus-5 / sonnet-5 / opus-4-7+ returns a 400 and the
+    # call fails outright, which is why the model string cannot be bumped without
+    # this branch. Older models still accept it, so keep passing it there.
+    if not _rejects_sampling_params(model):
         kwargs["temperature"] = temperature
+    else:
+        # These models think by default, and `max_tokens` caps thinking AND the
+        # visible answer together. A budget sized for "just the reply" gets spent
+        # on reasoning and the response truncates mid-sentence, which reads as the
+        # model being broken. Give it real headroom.
+        kwargs["max_tokens"] = max(max_tokens, _MIN_THINKING_HEADROOM)
+        # `effort` trades depth against latency/cost; medium keeps a chat turn
+        # responsive without the long pauses `high` (the API default) produces.
+        kwargs["output_config"] = {"effort": _anthropic_effort()}
 
     resp = client.messages.create(**kwargs)
+
+    # A safety classifier can decline with HTTP 200 + stop_reason "refusal" and an
+    # empty content list. Surface it as an error rather than returning "" — an
+    # empty string here would look like a silent model failure.
+    if getattr(resp, "stop_reason", None) == "refusal":
+        raise RuntimeError("anthropic declined this request (stop_reason=refusal)")
+
     # Anthropic returns a list of content blocks
     parts = []
     for block in getattr(resp, "content", []) or []:

@@ -4,8 +4,6 @@ tech_intelligence.py — Internal technology intelligence queue endpoints.
 Serves the imported tech-radar intelligence payload for Command Center.
 """
 
-from __future__ import annotations
-
 import json
 from datetime import datetime, timezone
 from pathlib import Path

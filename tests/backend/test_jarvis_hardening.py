@@ -176,12 +176,12 @@ def test_no_route_references_a_previous_generation_claude():
 
 
 def test_sampling_free_models_are_recognised():
-    assert llm._is_sampling_free("claude-opus-5")
-    assert llm._is_sampling_free("claude-sonnet-5")
+    assert llm._rejects_sampling_params("claude-opus-5")
+    assert llm._rejects_sampling_params("claude-sonnet-5")
     # Older Claude models still accept temperature.
-    assert not llm._is_sampling_free("claude-sonnet-4-6")
-    assert not llm._is_sampling_free("gpt-4o")
-    assert not llm._is_sampling_free("")
+    assert not llm._rejects_sampling_params("claude-sonnet-4-6")
+    assert not llm._rejects_sampling_params("gpt-4o")
+    assert not llm._rejects_sampling_params("")
 
 
 def test_temperature_is_withheld_from_claude_5(monkeypatch):

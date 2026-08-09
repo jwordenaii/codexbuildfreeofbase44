@@ -225,6 +225,18 @@ def dashboard_preflight():
     if not tts_ready:
         jarvis_blockers.append("No TTS provider configured")
 
+    # Uploaded files (staff photos, signed compliance documents, drone/lidar
+    # captures) are only durable when object storage is attached. Surface it
+    # here so "are my uploads safe?" is answerable at a glance instead of being
+    # discovered after a redeploy has already eaten them.
+    try:
+        from ..services import object_storage  # noqa: PLC0415
+
+        storage_status = object_storage.storage_status()
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("object storage preflight failed: %s", exc)
+        storage_status = {"enabled": False, "error": str(exc)}
+
     infra_ok = bool(redis_status.get("ok") and db_status.get("ok"))
     jarvis_full_capacity = len(jarvis_blockers) == 0
     elapsed_ms = round((time.monotonic() - start) * 1000, 2)
@@ -237,11 +249,12 @@ def dashboard_preflight():
             "database": db_status,
             "celery": celery_status,
             "queue": queue_status,
+            "object_storage": storage_status,
         },
         "jarvis": {
             "full_capacity": jarvis_full_capacity,
             "engine": "anthropic-claude" if anthropic_ready else "heuristic-fallback",
-            "model": (_cfg.anthropic_model()) if anthropic_ready else None,
+            "model": _cfg.anthropic_model() if anthropic_ready else None,
             "tools": {
                 "web_search": web_ready,
                 "make_phone_call": call_ready,

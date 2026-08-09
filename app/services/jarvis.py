@@ -6,7 +6,6 @@ import re
 import time
 from datetime import datetime, timedelta, timezone
 from typing import Dict, Any, List, Optional
-from app.services.quantum_orchestrator import global_quantum_orchestrator
 from app.services import autonomy_state
 from app.services import web_search as _web_search
 from app.services import vapi_caller as _vapi
@@ -32,7 +31,20 @@ logger = logging.getLogger(__name__)
 # queries through Claude with a JWordenAI-aware system prompt. Falls back
 # gracefully to canned responses when the key is missing or the call fails.
 def _anthropic_key()   -> str: return _cfg.get("ANTHROPIC_API_KEY")
-def _anthropic_model() -> str: return _cfg.anthropic_model()
+def _effort() -> str:
+    """low | medium | high | xhigh | max — depth vs latency for a chat turn."""
+    raw = (_cfg.get("JARVIS_EFFORT") or "medium").strip().lower()
+    return raw if raw in {"low", "medium", "high", "xhigh", "max"} else "medium"
+
+
+def _anthropic_model() -> str:
+    """Model for the direct tool-calling path (raw HTTP, not via llm_client).
+
+    This is the lane the operator actually converses with, so it runs the
+    flagship. Note this payload never sends `temperature` — sampling params
+    return a 400 on the current generation, which is why the swap is safe
+    here but required stripping the parameter in llm_client first."""
+    return _cfg.anthropic_model()
 _ANTHROPIC_URL = "https://api.anthropic.com/v1/messages"
 _ANTHROPIC_VERSION = "2023-06-01"
 
@@ -891,7 +903,7 @@ async def _ask_fast_ops_brain(query: str, persona: str, autonomy: dict, *, confi
     )
 
     try:
-        max_tokens = _cfg_int("JARVIS_FAST_MAX_TOKENS", 320 if _low_cost_mode() else 1000)
+        max_tokens = _cfg_int("JARVIS_FAST_MAX_TOKENS", 2000 if _low_cost_mode() else 4000)
         resp = await asyncio.to_thread(
             _llm.chat,
             task="jarvis_fast",
@@ -990,7 +1002,7 @@ async def _ask_chat_brain(query: str, persona: str, autonomy: dict, session_id: 
     )
 
     try:
-        max_tokens = _cfg_int("JARVIS_CHAT_MAX_TOKENS", 380 if _low_cost_mode() else 1600)
+        max_tokens = _cfg_int("JARVIS_CHAT_MAX_TOKENS", 4000 if _low_cost_mode() else 8000)
         resp = await asyncio.to_thread(
             _llm.chat,
             task="persona",
@@ -1687,22 +1699,25 @@ async def _ask_claude(
     # Two-round max: initial → optional tool use → final.
     for _round in range(2):
         try:
-            default_tokens = 420 if _low_cost_mode() else 2400
+            # Thinking + answer share this budget on the current generation;
+            # 320 left nothing for the reply once reasoning ran.
+            default_tokens = 4000 if _low_cost_mode() else 8000
             max_tokens = int((_cfg.get("JARVIS_CLAUDE_MAX_TOKENS") or str(default_tokens)).strip())
         except Exception:  # noqa: BLE001
-            max_tokens = 420 if _low_cost_mode() else 2400
+            max_tokens = 4000 if _low_cost_mode() else 8000
         payload = {
             "model":      _anthropic_model(),
             "max_tokens": max_tokens,
             "system":     system,
             "tools":      tools,
             "messages":   messages,
+            "output_config": {"effort": _effort()},
         }
         try:
             try:
-                timeout_s = float((_cfg.get("JARVIS_CLAUDE_TIMEOUT_SECONDS") or "14").strip())
+                timeout_s = float((_cfg.get("JARVIS_CLAUDE_TIMEOUT_SECONDS") or "90").strip())
             except Exception:  # noqa: BLE001
-                timeout_s = 14.0
+                timeout_s = 90.0
             async with httpx.AsyncClient(timeout=timeout_s) as client:
                 r = await client.post(_ANTHROPIC_URL, json=payload, headers=headers)
             if r.status_code != 200:
@@ -1933,9 +1948,18 @@ class JarvisAI:
         if persona == "MR_WORDEN_SALES":
             return await self._converse_mr_worden_sales(query_lower, context)
 
-        # ── Unified Intelligence Harmonization ─────────────────────────────────
-        # This catch-all block synthesizes all available logic layers.
-        intel_report = f"Sir, I have synthesized the current request against our integrated nodes: {', '.join(self.intel_sources)}. "
+        # ── Degraded-mode fallback ───────────────────────────────────────────
+        # Reached only when no LLM brain (Claude / chat / fast-ops) answered —
+        # e.g. no API key configured or every provider call failed. This path
+        # must NEVER assert specific business facts (dollar amounts, ranking
+        # positions, compliance-check results) it has no data behind — say so
+        # plainly instead and point at the real source of truth.
+        degraded_notice = (
+            "Sir, my language-model brain is unavailable right now (no configured "
+            "provider responded), so I'm running in degraded mode. I won't fabricate "
+            "specific figures or statuses here — please check the Command Center "
+            "dashboards directly for live data. "
+        )
 
         # weather / news / financial trends / supply chain / SEO
         # Weather / market / SEO.
@@ -1986,25 +2010,21 @@ class JarvisAI:
             return {
                 "source": self.identity,
                 "message": (
-                    f"{intel_report}\n\n"
-                    "ADVISORY ANSWER:\n"
-                    "Using our 51-jurisdiction advisory matrix (50 states + DC), I can give an operations-grade legal/compliance answer for licensing, civil risk, and safety posture.\n\n"
-                    "IMPACT:\n"
-                    "- Scope, schedule, and cost shift when licensing, wage, OSHA, lien, or utility constraints differ by jurisdiction.\n"
-                    "- Bid strategy and risk controls should be state-specific before commitment.\n\n"
-                    "VERIFICATION NEEDED:\n"
-                    "- Treat this as advisory guidance, not legal advice.\n"
-                    "- Confirm jurisdiction-specific statutes and permit terms before execution."
+                    f"{degraded_notice}\n\n"
+                    "For licensing/compliance questions, use the /api/v1/compliance endpoints "
+                    "directly (real 50-state + DC license matrix) rather than relying on this "
+                    "degraded chat fallback — that data is real; this response path is not."
                 ),
                 "action_required": False,
-                "intel_tier": "Supreme-Unified-Global"
+                "degraded": True,
             }
 
-        # Catch-all synthesis
+        # Catch-all
         return {
             "source": self.identity,
-            "message": f"Understood, Sir. {intel_report}\n\nI am monitoring all lifestyle, business, and legal systems. How would you like to scale the world today?",
+            "message": degraded_notice,
             "action_required": False,
+            "degraded": True,
         }
 
     async def _converse_mr_worden_sales(self, query: str, context: Dict[str, Any]) -> Dict[str, Any]:

@@ -26,6 +26,7 @@ from sqlalchemy import text
 from ..core.cache import warm_cache
 from ..database import SessionLocal, create_all_tables, engine
 from . import autonomy_state
+from .durable_storage import durable_data_dir
 from .celery_health import check_queue_depth, check_redis_connection
 from .monitoring_service import monitoring
 
@@ -47,9 +48,9 @@ def _state_path() -> Path:
     configured = (os.getenv("SELF_HEAL_STATE_PATH") or "").strip()
     if configured:
         return Path(configured)
-    if os.name == "nt":
-        return Path.cwd() / ".runtime" / "jworden_self_heal_state.json"
-    return Path("/tmp/jworden_self_heal_state.json")
+    # /tmp is ephemeral on Fly — self-heal history vanished on every redeploy,
+    # defeating the "sustained degradation" detection this module is built on.
+    return durable_data_dir() / "jworden_self_heal_state.json"
 
 
 def _utc_now() -> str:

@@ -28,14 +28,13 @@ from collections import deque
 from pathlib import Path
 from typing import Optional
 
+from .durable_storage import durable_data_dir
+
 logger = logging.getLogger(__name__)
 
 _STATE_PATH = Path(
-    os.environ.get(
-        "ROLLER_STATE_PATH",
-        str(Path(os.environ.get("RUNTIME_CONFIG_PATH", "/tmp/jworden_runtime_config.json")).parent
-            / "jworden_roller_state.json"),
-    )
+    os.environ.get("ROLLER_STATE_PATH")
+    or str(durable_data_dir() / "jworden_roller_state.json")
 )
 _LOCK = threading.Lock()
 _STATE: dict | None = None
