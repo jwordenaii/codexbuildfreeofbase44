@@ -311,7 +311,7 @@ def _worker_anomaly_responder(task: TaskNode) -> dict:
                     }
                     for r in results
                 ],
-                "source": "live",
+                "source": "live",  # guard: allow (db.query happens inside anomaly_detector.run_all_checks, a different file)
             }
     except Exception as exc:  # noqa: BLE001
         logger.warning("anomaly_responder live call failed: %s", exc)

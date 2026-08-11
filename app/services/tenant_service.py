@@ -74,6 +74,7 @@ def create_tenant(data: dict, db) -> object:
         logo_url=data.get("logo_url"),
         contact_email=data.get("contact_email"),
         contact_phone=data.get("contact_phone"),
+        subscription_tier=data.get("subscription_tier", "starter"),
         is_active=1,
     )
     db.add(tenant)

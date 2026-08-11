@@ -4,7 +4,20 @@ async def test_auth_status_defaults_to_required(client):
     body = res.json()
     assert body["auth_required"] is True
     assert body["auth_mode"] == "required"
-    assert body["token_endpoint"] == "/.netlify/functions/get-token"
+    # This used to assert "/.netlify/functions/get-token", pinning a value that
+    # was wrong in production: the frontend runs on Vercel, where that path is
+    # not a function and POSTing it returns 405, so the client's token
+    # bootstrap threw on every cold start. There is deliberately no
+    # unauthenticated bootstrap endpoint on this backend, so null is the honest
+    # answer and the client falls through to PIN login.
+    assert body["token_endpoint"] is None
+
+
+async def test_auth_status_token_endpoint_is_overridable(client, monkeypatch):
+    """A deployment that really does run a bootstrap shim can still declare it."""
+    monkeypatch.setenv("AUTH_TOKEN_ENDPOINT", "/api/internal/bootstrap")
+    res = await client.get("/api/v1/auth/status")
+    assert res.json()["token_endpoint"] == "/api/internal/bootstrap"
 
 
 async def test_token_issuance_writes_audit_event(client, app_modules):

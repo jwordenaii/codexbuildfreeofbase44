@@ -42,3 +42,19 @@ venv/
 playwright-report/
 test-results/
 coverage/
+
+# Additional paths excluded by the backend-only image: none of these are
+# read at runtime, and dropping them cut the context to ~7.9 MB.
+docs/
+src/
+tests/
+data/
+db/
+field-app/
+ai-page-blueprints/
+site-blueprints/
+templates/
+*.md
+.env*
+!requirements.txt
+*.pyc

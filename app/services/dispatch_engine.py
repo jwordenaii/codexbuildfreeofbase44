@@ -37,15 +37,13 @@ from typing import Any, Optional
 import httpx
 
 from . import runtime_config
+from .durable_storage import durable_data_dir
 
 logger = logging.getLogger(__name__)
 
 _STATE_PATH = Path(
-    os.environ.get(
-        "DISPATCH_STATE_PATH",
-        str(Path(os.environ.get("RUNTIME_CONFIG_PATH", "/tmp/jworden_runtime_config.json")).parent
-            / "jworden_dispatch_state.json"),
-    )
+    os.environ.get("DISPATCH_STATE_PATH")
+    or str(durable_data_dir() / "jworden_dispatch_state.json")
 )
 _LOCK = threading.Lock()
 _STATE: dict[str, dict[str, dict]] | None = None  # {trucks:{id:row}, drivers:{...}, jobs:{...}}

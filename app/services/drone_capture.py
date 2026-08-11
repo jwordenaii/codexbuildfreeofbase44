@@ -11,8 +11,9 @@ stitching is delegated to an external worker (e.g., OpenDroneMap, WebODM,
 or the Maps Platform) and is triggered by a future job runner. We just
 collect the inputs and track state.
 
-Storage: DRONE_STORAGE_PATH (default /tmp/jworden_drone). One folder per
-job_id. Manifest is jworden_drone_manifest.json next to runtime config.
+Storage: DRONE_STORAGE_PATH (defaults to a mounted volume at /data if one
+exists, else /tmp — see durable_storage.py). One folder per job_id.
+Manifest is jworden_drone_manifest.json alongside it.
 """
 
 from __future__ import annotations
@@ -27,15 +28,15 @@ import uuid
 from pathlib import Path
 from typing import Optional
 
+from . import object_storage
+from .durable_storage import durable_data_dir
+
 logger = logging.getLogger(__name__)
 
-_STORAGE = Path(os.environ.get("DRONE_STORAGE_PATH", "/tmp/jworden_drone"))
+_STORAGE = Path(os.environ.get("DRONE_STORAGE_PATH") or str(durable_data_dir() / "jworden_drone"))
 _MANIFEST = Path(
-    os.environ.get(
-        "DRONE_MANIFEST_PATH",
-        str(Path(os.environ.get("RUNTIME_CONFIG_PATH", "/tmp/jworden_runtime_config.json")).parent
-            / "jworden_drone_manifest.json"),
-    )
+    os.environ.get("DRONE_MANIFEST_PATH")
+    or str(durable_data_dir() / "jworden_drone_manifest.json")
 )
 _LOCK = threading.Lock()
 _STATE: dict | None = None  # {captures: {job_id: [row]}, jobs: {job_id: meta}}
@@ -114,13 +115,18 @@ def store_capture(
     if ct not in ALLOWED_CT:
         raise ValueError(f"content_type {ct} not allowed")
 
-    job_dir = _STORAGE / _safe_filename(job_id)
-    job_dir.mkdir(parents=True, exist_ok=True)
     cap_id = uuid.uuid4().hex[:12]
     safe = _safe_filename(filename)
     fname = f"{cap_id}_{safe}"
-    path = job_dir / fname
-    path.write_bytes(body)
+    # Object storage, not local disk: there is no volume on this app, so the
+    # old path resolved to /tmp and captures were destroyed on every redeploy.
+    key = f"drone/{_safe_filename(job_id)}/{fname}"
+    if not object_storage.put(key, body, ct):
+        logger.warning(
+            "drone capture %s stored on local disk — object storage not "
+            "configured, it will be lost on the next redeploy", cap_id,
+        )
+    path = key
 
     row = {
         "id": cap_id,

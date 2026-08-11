@@ -5,8 +5,8 @@ router = APIRouter(prefix="/api/v1/schema", tags=["schema"])
 
 # All contact/location fields read from environment variables so that
 # the backend can be deployed once and configured per environment without
-# touching source code.  The TODO values here are the fallback strings
-# that make the dev server useful out-of-the-box.
+# touching source code. The values below are fallback defaults that make
+# the dev server useful out-of-the-box.
 
 def _build_schema() -> dict:
     return {

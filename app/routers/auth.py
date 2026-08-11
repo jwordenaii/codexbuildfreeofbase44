@@ -101,17 +101,21 @@ def auth_status():
         os.getenv("ADMIN_PIN")
         or (os.getenv("ADMIN_USERNAME") and os.getenv("ADMIN_PASSWORD"))
     )
-    # No credential-less bootstrap endpoint exists on this backend. Auth is
-    # PIN-gated: the frontend posts the PIN to /api/v1/auth/pin-token directly.
+    # This used to hardcode "/.netlify/functions/get-token" — a Netlify
+    # function that held the master key server-side and minted a bootstrap
+    # token. The frontend moved to Vercel and that function does not exist
+    # there: verified 2026-07-26, POST to that path on the live site returns
+    # 405, so client.js:fetchBootstrapToken() threw on every cold start.
     #
-    # This used to advertise "/.netlify/functions/get-token" — a Netlify Function
-    # that no longer exists, on an account being decommissioned. On every page
-    # load the frontend POSTed to that dead URL trying to bootstrap a token
-    # before the PIN gate ever appeared, so the whole auth flow broke at the
-    # front door with nothing on screen to explain it. None makes the frontend
-    # skip the bootstrap and go straight to the PIN gate, which is the only
-    # auth path that actually works.
-    token_endpoint = None
+    # There is deliberately no unauthenticated bootstrap endpoint on this
+    # backend — /auth/token requires the master key and /auth/pin-token
+    # requires the admin PIN, and neither should be callable with an empty
+    # body from the browser. So the honest answer is None, and the frontend
+    # falls through to its normal PIN login. AUTH_TOKEN_ENDPOINT is left as an
+    # override for deployments that do run such a shim.
+    token_endpoint = (os.getenv("AUTH_TOKEN_ENDPOINT") or "").strip() or None
+    if not auth_required:
+        token_endpoint = None
     return AuthStatusResponse(
         auth_required=auth_required,
         auth_mode=mode,
@@ -289,7 +293,9 @@ def issue_pin_token(
     if not request.pin or not request.pin.isdigit() or not (4 <= len(request.pin) <= 8):
         raise HTTPException(status_code=400, detail="A 4 to 8-digit PIN is required.")
 
-    if request.pin != admin_pin:
+    # Constant-time comparison — a plain != leaks the PIN a character at a time
+    # through response timing, which matters for a short numeric secret.
+    if not secrets.compare_digest(request.pin, admin_pin):
         logger.warning(
             "PIN token issuance rejected — incorrect PIN presented (presented=%s expected=%s)",
             _secret_fingerprint(request.pin),

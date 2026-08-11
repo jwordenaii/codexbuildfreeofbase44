@@ -26,9 +26,37 @@ Workers must be running for scheduled follow-ups to execute:
 from __future__ import annotations
 
 import logging
-from datetime import datetime, timezone
+import os
+from datetime import datetime, timedelta, timezone
 
 logger = logging.getLogger(__name__)
+
+
+def _stale_grace() -> timedelta:
+    """
+    How late a follow-up may be and still be worth sending.
+
+    Two days is deliberately generous on one side and firm on the other: a
+    worker restart, a deploy, or a broker blip should not silently drop a
+    customer's follow-up, but nothing beyond a couple of days should reach an
+    inbox — by then the enquiry is stale and a late "just following up" reads
+    worse than no email at all.
+
+    Override with FOLLOW_UP_STALE_GRACE_HOURS; a non-numeric or negative value
+    falls back to the default rather than disabling the guard, because the
+    failure mode of a broken value here is mass-emailing customers.
+    """
+    raw = (os.getenv("FOLLOW_UP_STALE_GRACE_HOURS") or "").strip()
+    try:
+        hours = float(raw)
+        if hours > 0:
+            return timedelta(hours=hours)
+    except (TypeError, ValueError):
+        pass
+    return timedelta(hours=48)
+
+
+_STALE_FOLLOW_UP_GRACE = _stale_grace()
 
 
 def _execute_follow_up(lead_id: int, task_type: str) -> dict:
@@ -76,6 +104,50 @@ def _execute_follow_up(lead_id: int, task_type: str) -> dict:
             )
             result["status"] = "task_not_found"
             return result
+
+        # Staleness guard — do not send follow-ups that are wildly overdue.
+        #
+        # These are queued with apply_async(countdown=3600 / 3d / 7d), and the
+        # countdown lives in the READY queue, so if no worker is consuming, the
+        # messages simply pile up with their ETAs already elapsed. The moment a
+        # worker connects it pulls the whole backlog at once and every overdue
+        # ETA fires immediately.
+        #
+        # That happened here: the worker crashed on 2026-07-30 and beat kept
+        # publishing for nine days, leaving 5,937 messages queued. Draining that
+        # without this guard would send a "just following up on your enquiry"
+        # email to every lead from the past nine days, some of them several,
+        # all at once. For a paving company that is worse than silence — the
+        # customer has already hired someone else, and the email says nobody
+        # was paying attention.
+        #
+        # A short delay is fine and should still send: a worker restart or a
+        # brief broker blip is exactly what retries are for. Being days late is
+        # not recoverable, so past the grace window the task retires itself and
+        # says so, rather than sending or failing.
+        now = datetime.now(timezone.utc)
+        scheduled_at = follow_up_task.scheduled_at
+        if scheduled_at is not None:
+            # Postgres returns tz-aware, SQLite naive; normalise before comparing.
+            if scheduled_at.tzinfo is None:
+                scheduled_at = scheduled_at.replace(tzinfo=timezone.utc)
+            overdue = now - scheduled_at
+            if overdue > _STALE_FOLLOW_UP_GRACE:
+                logger.warning(
+                    "send_follow_up_email: SKIPPING stale follow-up — lead_id=%d "
+                    "task_type=%r was due %s (%.1f days overdue, grace %.1f days). "
+                    "Marking skipped_stale rather than emailing the customer late.",
+                    lead_id,
+                    task_type,
+                    scheduled_at.isoformat(),
+                    overdue.total_seconds() / 86400,
+                    _STALE_FOLLOW_UP_GRACE.total_seconds() / 86400,
+                )
+                follow_up_task.status = "skipped_stale"
+                db.commit()
+                result["status"] = "skipped_stale"
+                result["overdue_days"] = round(overdue.total_seconds() / 86400, 2)
+                return result
 
         # Send the email
         email_sent = send_follow_up(lead, task_type)

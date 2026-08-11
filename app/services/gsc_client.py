@@ -26,6 +26,8 @@ import os
 from datetime import date, timedelta
 from typing import Any
 
+from . import runtime_config as _cfg
+
 logger = logging.getLogger(__name__)
 
 # ── Credential helpers ────────────────────────────────────────────────────────
@@ -38,7 +40,7 @@ def _load_credentials() -> Any | None:
     Decode GSC_SERVICE_ACCOUNT_JSON (base64) and return a google-auth
     ServiceAccountCredentials object, or None if the env var is absent.
     """
-    raw = os.getenv("GSC_SERVICE_ACCOUNT_JSON", "").strip()
+    raw = (_cfg.get("GSC_SERVICE_ACCOUNT_JSON") or "").strip()
     if not raw:
         return None
     try:
@@ -70,7 +72,12 @@ def _build_service() -> Any | None:
 
 
 def _site_url() -> str:
-    return _cfg.get("GSC_SITE_URL")
+    # `_cfg` was referenced here but never defined or imported, so every public
+    # function in this module raised NameError on its first call — get_gsc_data()
+    # has no try/except around it, so it propagated to the caller. This module
+    # had therefore never executed successfully. Now bound to runtime_config,
+    # which is this codebase's config layer and falls back to os.environ.
+    return (_cfg.get("GSC_SITE_URL") or "").strip()
 
 
 def _date_range(days: int = 28) -> tuple[str, str]:

@@ -277,7 +277,6 @@ from .routers import follow_ups as follow_ups_router
 from .routers import foreman as foreman_router
 from .routers import gallery as gallery_router
 from .routers import geo as geo_router
-from .routers import global_platform as global_router
 from .routers import facebook_page as facebook_page_router
 from .routers import google_reporting as google_reporting_router
 from .routers import health as health_router
@@ -305,9 +304,8 @@ from .routers import proposals as proposals_router
 from .routers import public_chat as public_chat_router
 from .routers import quotes as quotes_router
 from .routers import retrospectives as retrospectives_router
-from .routers import revenue as revenue_router
 from .routers import safety as safety_router
-from .routers import scaling as scaling_router
+from .routers import scan_campaign as scan_campaign_router
 from .routers import scc as scc_router
 from .routers import schedule_sim as schedule_sim_router
 from .routers import search as search_router
@@ -335,6 +333,7 @@ from .routers import b2g_bids as b2g_bids_router
 from .routers import bid_hunter_router
 from .routers import billing as billing_router
 from .routers import factory as factory_router
+from .routers import revenue as revenue_router
 from .routers import lms as lms_router
 from .routers import market_orchestration as market_orchestration_router
 from .routers import owner_auth as owner_auth_router
@@ -345,7 +344,6 @@ from .routers import system as system_router
 from .routers.websocket_events import sio
 from .services.ai_brain import SupremeCourtAI
 from .services.monitoring_service import monitoring
-from .services.quantum_orchestrator import global_quantum_orchestrator
 from .services.state_data import verify_state_logic_integrity
 from .services.telemetry import FleetOperations
 
@@ -439,21 +437,55 @@ _EXTRA_ORIGINS = [
     o.strip() for o in os.getenv("EXTRA_CORS_ORIGINS", "").split(",") if o.strip()
 ]
 _ALLOWED_ORIGINS = [
+    # Main site (both apex and www — the bundle calls this API cross-origin
+    # for checkout, portal estimate signing, and superadmin).
     "https://jwordenasphaltpaving.com",
     "https://www.jwordenasphaltpaving.com",
+    "https://app.jwordenasphaltpaving.com",
     "https://thewordenstandard.com",
     "https://www.thewordenstandard.com",
-    "https://app.jwordenasphaltpaving.com",
+    # Regional money domains. These were previously reaching the API only via
+    # EXTRA_CORS_ORIGINS; listed explicitly so that removing the wildcard
+    # regex below cannot silently break checkout or estimate signing on them.
+    "https://richmondasphaltpaving.com",
+    "https://www.richmondasphaltpaving.com",
+    "https://atlantaasphaltpavingpros.com",
+    "https://www.atlantaasphaltpavingpros.com",
+    "https://asphaltpavingkansascity.com",
+    "https://www.asphaltpavingkansascity.com",
+    "https://savannahasphaltpaving.com",
+    "https://www.savannahasphaltpaving.com",
+    "https://carolinablacktop.com",
+    "https://www.carolinablacktop.com",
     "http://localhost:5173",  # Vite dev server
     "http://localhost:3000",
 ] + _EXTRA_ORIGINS
 
-# Allow Vercel preview origins (e.g. https://jworden-production-git-<branch>-<team>.vercel.app)
-# so PR/branch deploys keep working without redeploying the backend. The
-# frontend moved from Netlify to Vercel; the old *.netlify.app allow-list and
-# deploy-preview regex were removed with the rest of the Netlify decommission.
-# Override or extend via the EXTRA_CORS_ORIGINS env var.
-_DEPLOY_PREVIEW_ORIGIN_REGEX = r"https://[\w-]+\.vercel\.app"
+# SECURITY: this used to be r"https://([\w-]+--)?[\w-]+\.netlify\.app" — i.e.
+# ANY *.netlify.app subdomain, combined with allow_credentials=True below.
+# netlify.app subdomains are free and self-service, so any attacker could
+# register one and hold a credentialed cross-origin grant against this API.
+# Verified 2026-07-26 against production: a preflight from the invented origin
+# https://evil-attacker-site.netlify.app came back with
+# `access-control-allow-origin: https://evil-attacker-site.netlify.app`.
+#
+# It was then replaced with r"https://[\w-]+\.vercel\.app" to keep preview
+# deploys working after the move to Vercel. That is the SAME hole wearing a
+# different apex: vercel.app subdomains are also free and self-service, so the
+# credentialed grant was never actually closed, only relocated.
+#
+# So it now defaults to off. Note the honest cost, because an earlier version
+# of this comment got it wrong: previews DO call this API cross-origin. The
+# frontend defaults to `https://jworden-api.fly.dev` (see
+# src/config/integration.js and the components that fall back to it), so it
+# does not go through the same-origin /api/* rewrite in vercel.json. Preview
+# deploys therefore lose API access until CORS_ORIGIN_REGEX is set. Production
+# is unaffected — every live domain is allow-listed explicitly above.
+#
+# If you set it, it MUST be fully anchored to hostnames you control, including
+# the Vercel team slug — never a whole shared apex:
+#   CORS_ORIGIN_REGEX=^https://jworden-production-[\w-]+-<team-slug>\.vercel\.app$
+_DEPLOY_PREVIEW_ORIGIN_REGEX = (os.getenv("CORS_ORIGIN_REGEX") or "").strip() or None
 
 app.add_middleware(
     CORSMiddleware,
@@ -564,9 +596,6 @@ app.include_router(subcontractors_router.router)
 app.include_router(market_intelligence_router.router)
 app.include_router(materials_router.router)
 app.include_router(tenants_router.router)
-app.include_router(global_router.router)
-app.include_router(scaling_router.router)
-app.include_router(revenue_router.router)
 app.include_router(jarvis_router.router)
 app.include_router(blog_router.router)
 app.include_router(vector_search_router.router)
@@ -683,6 +712,7 @@ app.include_router(audit_admin_router.router)
 app.include_router(tech_intelligence_router.router)
 app.include_router(predictive_capital_router.router)
 app.include_router(driveway_growth_router.router)
+app.include_router(scan_campaign_router.router)
 
 
 # ── Resolve Pydantic forward references ──────────────────────────────────────
@@ -733,6 +763,7 @@ app.include_router(b2g_bids_router.router)
 app.include_router(bid_hunter_router.router)
 app.include_router(billing_router.router)
 app.include_router(factory_router.router)
+app.include_router(revenue_router.router)
 app.include_router(lms_router.router)
 app.include_router(market_orchestration_router.router)
 app.include_router(owner_auth_router.router)

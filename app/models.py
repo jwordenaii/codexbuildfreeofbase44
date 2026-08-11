@@ -1410,6 +1410,15 @@ class Tenant(Base):
     logo_url = Column(String(500), nullable=True)
     contact_email = Column(String(254), nullable=True)
     contact_phone = Column(String(30), nullable=True)
+    subscription_tier = Column(String(20), nullable=False, default="starter")
+    stripe_customer_id = Column(String(120), nullable=True, index=True)
+    stripe_subscription_id = Column(String(120), nullable=True, index=True)
+    subscription_status = Column(String(20), nullable=False, default="pending_payment")
+    # pending_payment | active | past_due | canceled | mock (no STRIPE_SECRET_KEY configured)
+    trial_ends_at = Column(DateTime(timezone=True), nullable=True)
+    current_period_end = Column(DateTime(timezone=True), nullable=True)
+    custom_domain = Column(String(200), nullable=True)
+    feature_flags = Column(Text, nullable=True)  # JSON: {"catalog": true, "drone": false}
     is_active = Column(Integer, nullable=False, default=1)
     created_at = Column(DateTime(timezone=True), default=_utcnow, nullable=False)
     updated_at = Column(
@@ -1418,6 +1427,29 @@ class Tenant(Base):
 
     def __repr__(self) -> str:
         return f"<Tenant tenant_id={self.tenant_id!r} company={self.company_name!r}>"
+
+
+class TenantBillingEvent(Base):
+    """Audit log of Stripe webhook events per tenant subscription.
+
+    tenant_id here stores Tenant.id (int PK), not the string tenant_id slug —
+    matches this file's existing convention of plain partition-key columns
+    rather than ORM relationships/ForeignKey (see Tenant's own docstring).
+    """
+
+    __tablename__ = "tenant_billing_events"
+
+    id = Column(Integer, primary_key=True, index=True)
+    tenant_id = Column(Integer, nullable=False, index=True)
+    stripe_event_id = Column(String(120), nullable=False, unique=True)
+    event_type = Column(String(100), nullable=False)
+    amount_cents = Column(Integer, nullable=True)
+    status = Column(String(30), nullable=True)
+    raw_json = Column(Text, nullable=True)
+    created_at = Column(DateTime(timezone=True), default=_utcnow, nullable=False)
+
+    def __repr__(self) -> str:
+        return f"<TenantBillingEvent tenant_id={self.tenant_id} type={self.event_type!r}>"
 
 
 # ── Real-time chat messages ───────────────────────────────────────────────────
@@ -2111,3 +2143,106 @@ class Progress(Base):
     completed_at = Column(DateTime(timezone=True), nullable=True)
     
     __table_args__ = (UniqueConstraint("enrollment_id", "lesson_id", name="uq_progress"),)
+
+class ScanCampaign(Base):
+    """ZIP-code property scan -> direct-mail campaign (parent record).
+
+    Ported from NewRepo's Worden Standard prototype. Pipeline stages are
+    driven by app/tasks/scan_tasks.py: Regrid parcel lookup -> Google Maps
+    satellite imagery -> GPT-4o Vision condition assessment -> pricing
+    estimate -> mailer HTML -> optional Lob physical mail send.
+    """
+
+    __tablename__ = "scan_campaigns"
+
+    id = Column(Integer, primary_key=True, index=True)
+    zip_code = Column(String(10), nullable=False, index=True)
+    label = Column(String(200), nullable=False)
+    status = Column(String(20), nullable=False, default="pending")  # pending|queued|running|done|failed
+    max_properties = Column(Integer, nullable=False, default=50)
+    auto_mail = Column(Boolean, nullable=False, default=False)
+    total_properties = Column(Integer, nullable=False, default=0)
+    scanned = Column(Integer, nullable=False, default=0)
+    mailed = Column(Integer, nullable=False, default=0)
+    created_at = Column(DateTime(timezone=True), default=_utcnow, nullable=False)
+    completed_at = Column(DateTime(timezone=True), nullable=True)
+
+    def __repr__(self) -> str:
+        return f"<ScanCampaign id={self.id} zip={self.zip_code!r} status={self.status!r}>"
+
+
+class ScanProperty(Base):
+    """A single parcel discovered by a ScanCampaign's Regrid lookup."""
+
+    __tablename__ = "scan_properties"
+
+    id = Column(Integer, primary_key=True, index=True)
+    campaign_id = Column(Integer, nullable=False, index=True)
+    parcel_id = Column(String(120), nullable=True, index=True)
+    address = Column(String(256), nullable=False)
+    city = Column(String(120), nullable=True)
+    state = Column(String(2), nullable=True)
+    zip_code = Column(String(10), nullable=True)
+    owner_name = Column(String(200), nullable=True)
+    owner_type = Column(String(40), nullable=True)
+    land_use_code = Column(String(40), nullable=True)
+    lot_size_sqft = Column(Float, nullable=True)
+    year_built = Column(Integer, nullable=True)
+    latitude = Column(Float, nullable=True)
+    longitude = Column(Float, nullable=True)
+    status = Column(String(20), nullable=False, default="pending")  # pending|scanning|scanned|mailed
+    created_at = Column(DateTime(timezone=True), default=_utcnow, nullable=False)
+
+    def __repr__(self) -> str:
+        return f"<ScanProperty id={self.id} campaign_id={self.campaign_id} address={self.address!r}>"
+
+
+class ScanResult(Base):
+    """GPT-4o Vision condition assessment + pricing estimate for a ScanProperty."""
+
+    __tablename__ = "scan_results"
+
+    id = Column(Integer, primary_key=True, index=True)
+    property_id = Column(Integer, nullable=False, index=True)
+    roof_condition = Column(String(10), nullable=True)       # good|fair|poor
+    driveway_condition = Column(String(10), nullable=True)
+    drainage_condition = Column(String(10), nullable=True)
+    overall_score = Column(Integer, nullable=True)
+    condition_narrative = Column(Text, nullable=True)
+    services_recommended = Column(Text, nullable=True)       # JSON-encoded list[str]
+    service_type = Column(String(80), nullable=True)
+    estimated_sqft = Column(Float, nullable=True)
+    estimate_low = Column(Float, nullable=True)
+    estimate_high = Column(Float, nullable=True)
+    mailer_html = Column(Text, nullable=True)
+    lob_letter_id = Column(String(80), nullable=True)
+    lob_status = Column(String(30), nullable=True)
+    mailed_at = Column(DateTime(timezone=True), nullable=True)
+    created_at = Column(DateTime(timezone=True), default=_utcnow, nullable=False)
+
+    def __repr__(self) -> str:
+        return f"<ScanResult id={self.id} property_id={self.property_id} score={self.overall_score}>"
+
+
+class DurableKV(Base):
+    """
+    Small control-plane state that must survive a redeploy AND be identical on
+    every machine — the Jarvis kill switch and the runtime API-key store.
+
+    This lives in Postgres rather than on disk because the live Fly app has no
+    volume mounted (so file state lands on ephemeral /tmp) and runs two
+    machines (so a volume would give each its own diverging copy). See
+    app/services/durable_kv.py for the full reasoning.
+
+    Values are opaque strings; each consumer serialises its own JSON document
+    under a single key. Not a blob store — uploaded files do not belong here.
+    """
+
+    __tablename__ = "durable_kv"
+
+    key = Column(String(200), primary_key=True, index=True)
+    value = Column(Text, nullable=False, default="")
+    updated_at = Column(DateTime(timezone=True), default=_utcnow, onupdate=_utcnow, nullable=False)
+
+    def __repr__(self) -> str:
+        return f"<DurableKV key={self.key!r} bytes={len(self.value or '')}>"

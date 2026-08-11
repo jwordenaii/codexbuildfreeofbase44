@@ -3,7 +3,7 @@ runtime_config.py — Hot-reloadable secret/config store, owner-only.
 
 Lets the Command Center owner paste API keys into a UI instead of editing
 Railway env vars and redeploying. Values are persisted to a JSON file at
-RUNTIME_CONFIG_PATH (default /tmp/jworden_runtime_config.json) and shadow
+RUNTIME_CONFIG_PATH (default: the durable data dir, see durable_storage.py) and shadow
 the corresponding os.environ values when read via `get(name)`.
 
 Usage from any service:
@@ -28,29 +28,33 @@ import threading
 from pathlib import Path
 from typing import Iterable
 
+from . import durable_kv
+from .durable_storage import durable_data_dir
+
 logger = logging.getLogger(__name__)
+
+# Key under which the whole config document is stored in the Postgres KV.
+# One document, exactly mirroring the JSON file it replaces.
+_KV_KEY = "runtime_config"
+
+# The Claude model every surface reports and uses. This default was
+# previously copy-pasted into 6 files, so upgrading the model updated some
+# call sites and silently left others on the old one — production kept
+# reporting claude-sonnet-4-5 after the model had "been upgraded".
+# Override per-deployment with the ANTHROPIC_MODEL key.
+DEFAULT_ANTHROPIC_MODEL = "claude-opus-5"
+
+
+def anthropic_model() -> str:
+    """Configured Claude model, or the flagship default."""
+    return (get("ANTHROPIC_MODEL") or "").strip() or DEFAULT_ANTHROPIC_MODEL
 
 
 def _default_state_path() -> Path:
     configured = (os.environ.get("RUNTIME_CONFIG_PATH") or "").strip()
     if configured:
         return Path(configured)
-
-    railway_mount = (os.environ.get("RAILWAY_VOLUME_MOUNT_PATH") or "").strip()
-    if railway_mount:
-        return Path(railway_mount) / "jworden_runtime_config.json"
-
-    data_dir = Path("/data")
-    try:
-        if data_dir.exists() and os.access(data_dir, os.W_OK):
-            return data_dir / "jworden_runtime_config.json"
-    except Exception:  # noqa: BLE001
-        pass
-
-    if os.name == "nt":
-        return Path.cwd() / ".runtime" / "jworden_runtime_config.json"
-
-    return Path("/tmp/jworden_runtime_config.json")
+    return durable_data_dir() / "jworden_runtime_config.json"
 
 
 _STATE_PATH = _default_state_path()
@@ -67,8 +71,15 @@ MANAGED_KEYS: tuple[str, ...] = (
     "GOOGLE_API_KEY", "GEMINI_API_KEY",
     "LLM_FALLBACK_SILENT", "JARVIS_MAX_TIER",
     "JARVIS_MODEL_OVERRIDE", "JARVIS_DISABLE_GEMINI", "LLM_DISABLED_PROVIDERS",
-    # Web search
-    "TAVILY_API_KEY", "TAVILY_MAX_RESULTS",
+    "JARVIS_LOW_COST_MODE", "JARVIS_EFFORT",
+    "JARVIS_CHAT_MAX_TOKENS", "JARVIS_FAST_MAX_TOKENS", "JARVIS_CLAUDE_MAX_TOKENS",
+    # Voice — ElevenLabs is the premium TTS tier and outranks OpenAI whenever a
+    # key is present (see tts_service.py). Managed here so the owner can paste
+    # the key into the Command Center rather than redeploying.
+    "ELEVENLABS_API_KEY", "ELEVENLABS_VOICE_ID", "ELEVENLABS_MODEL",
+    "JARVIS_TTS_VOICE", "JARVIS_TTS_MODEL",
+    # Web search (Tavily preferred; Exa used automatically as a fallback)
+    "TAVILY_API_KEY", "TAVILY_MAX_RESULTS", "EXA_API_KEY",
     # Voice / phone
     "VAPI_API_KEY", "VAPI_PHONE_NUMBER_ID", "VAPI_ASSISTANT_ID",
     # SMS verification
@@ -85,6 +96,9 @@ MANAGED_KEYS: tuple[str, ...] = (
     "GOOGLE_ADS_DEVELOPER_TOKEN", "GOOGLE_ADS_SITE_DOMAIN",
     "GOOGLE_ADS_REFRESH_TOKEN", "GOOGLE_ADS_CUSTOMER_ID", "GOOGLE_ADS_LOGIN_CUSTOMER_ID",
     "GOOGLE_MAPS_API_KEY", "GOOGLE_PAGESPEED_API_KEY",
+    "GOOGLE_PLACES_API_KEY", "GOOGLE_PLACE_ID",
+    # Google Business Profile automation (posts + review sync)
+    "GBP_OAUTH_TOKEN", "GBP_ACCOUNT_ID", "GBP_REVIEW_LINK",
     # Live search intelligence (Google Trends / SerpAPI for hotspot heatmap)
     "SERPAPI_KEY", "GOOGLE_TRENDS_GEO", "SEARCH_PULSE_TERMS",
     # Licensing / tier (controls which premium features are exposed)
@@ -96,7 +110,9 @@ MANAGED_KEYS: tuple[str, ...] = (
     "WEARABLE_HR_SPIKE_BPM", "WEARABLE_HR_SUSTAINED_BPM",
     "WEARABLE_SPO2_LOW", "WEARABLE_SPO2_CRITICAL",
     "WEARABLE_SKIN_TEMP_HIGH_F", "WEARABLE_HRV_LOW_MS",
-    # Property scan + direct-mail engine (market orchestration)
+    # Zip-code property scan -> direct-mail campaign pipeline
+    # (Regrid parcel lookup + Lob physical mail send; both honest-mock
+    # when unset — see app/services/parcel_service.py + mailer_service.py)
     "REGRID_API_KEY", "LOB_API_KEY",
 )
 
@@ -155,32 +171,58 @@ def enabled_features() -> dict[str, bool]:
 
 # Keys that should NEVER be returned as plaintext on read — only last 4 chars.
 SENSITIVE_KEYS: frozenset[str] = frozenset({
-    "ANTHROPIC_API_KEY", "OPENAI_API_KEY", "TAVILY_API_KEY",
+    "ANTHROPIC_API_KEY", "OPENAI_API_KEY", "TAVILY_API_KEY", "EXA_API_KEY",
     "GOOGLE_API_KEY", "GEMINI_API_KEY",
     "VAPI_API_KEY", "TWILIO_AUTH_TOKEN",
     "SENDGRID_API_KEY", "GOOGLE_ADS_DEVELOPER_TOKEN", "SERPAPI_KEY",
     "GA4_SERVICE_ACCOUNT_JSON", "GSC_SERVICE_ACCOUNT_JSON",
     "GOOGLE_ADS_REFRESH_TOKEN", "GOOGLE_MAPS_API_KEY", "GOOGLE_PAGESPEED_API_KEY",
+    "GOOGLE_PLACES_API_KEY", "GBP_OAUTH_TOKEN",
     "WEARABLE_APPLE_HEALTH_SECRET", "WEARABLE_FITBIT_SECRET",
     "WEARABLE_GARMIN_SECRET", "WEARABLE_WHOOP_SECRET", "WEARABLE_OURA_SECRET",
+    "REGRID_API_KEY", "LOB_API_KEY",
+    "ELEVENLABS_API_KEY",
 })
 
 
+def _sanitize(data: object) -> dict[str, str]:
+    """Keep only whitelisted keys with non-empty string values."""
+    if not isinstance(data, dict):
+        raise ValueError("runtime config root must be an object")
+    return {k: str(v) for k, v in data.items() if k in MANAGED_KEYS and v not in (None, "")}
+
+
 def _load() -> dict[str, str]:
-    """Load + cache the JSON state file. Lock must be held by caller."""
+    """
+    Load + cache the config document. Lock must be held by caller.
+
+    Order: Postgres KV (durable across redeploys AND shared by both Fly
+    machines) → local JSON file → empty. The file is only authoritative when
+    the database is unreachable or not configured; see durable_kv.py for why
+    the file alone is not enough in production.
+    """
     global _CACHE
     if _CACHE is not None:
         return _CACHE
+
+    raw_db = durable_kv.get(_KV_KEY)
+    if raw_db:
+        try:
+            _CACHE = _sanitize(json.loads(raw_db or "{}"))
+            return _CACHE
+        except Exception as exc:  # noqa: BLE001
+            logger.exception("runtime_config: KV document unreadable, trying file: %s", exc)
+
     if not _STATE_PATH.exists():
         _CACHE = {}
         return _CACHE
     try:
         raw = _STATE_PATH.read_text(encoding="utf-8")
-        data = json.loads(raw or "{}")
-        if not isinstance(data, dict):
-            raise ValueError("runtime config root must be an object")
-        # Keep only string values + whitelisted keys
-        _CACHE = {k: str(v) for k, v in data.items() if k in MANAGED_KEYS and v not in (None, "")}
+        _CACHE = _sanitize(json.loads(raw or "{}"))
+        # One-time promotion: keys that predate the KV store (or were written
+        # while the DB was down) get copied up so the next redeploy keeps them.
+        if _CACHE and raw_db is None:
+            durable_kv.set(_KV_KEY, json.dumps(_CACHE, sort_keys=True))
     except Exception as exc:
         logger.exception("runtime_config load failed; starting empty: %s", exc)
         _CACHE = {}
@@ -188,23 +230,40 @@ def _load() -> dict[str, str]:
 
 
 def _save(data: dict[str, str]) -> None:
-    """Atomic write. Lock must be held by caller."""
-    _STATE_PATH.parent.mkdir(parents=True, exist_ok=True)
-    fd, tmp_path = tempfile.mkstemp(prefix=".runtime_config_", dir=str(_STATE_PATH.parent))
+    """
+    Persist to Postgres (primary) and the local file (cache/fallback).
+    Lock must be held by caller.
+    """
+    stored = durable_kv.set(_KV_KEY, json.dumps(data, sort_keys=True))
+
+    # The local file is a cache/fallback. If Postgres accepted the write, a
+    # failure here is not fatal, so don't let it surface as a 500 on an
+    # otherwise-successful key update.
     try:
-        with os.fdopen(fd, "w", encoding="utf-8") as f:
-            json.dump(data, f, indent=2, sort_keys=True)
-        os.replace(tmp_path, _STATE_PATH)
+        _STATE_PATH.parent.mkdir(parents=True, exist_ok=True)
+        fd, tmp_path = tempfile.mkstemp(prefix=".runtime_config_", dir=str(_STATE_PATH.parent))
         try:
-            os.chmod(_STATE_PATH, 0o600)
-        except (OSError, PermissionError):
-            pass  # best-effort on Windows
-    finally:
-        if os.path.exists(tmp_path):
+            with os.fdopen(fd, "w", encoding="utf-8") as f:
+                json.dump(data, f, indent=2, sort_keys=True)
+            os.replace(tmp_path, _STATE_PATH)
             try:
-                os.unlink(tmp_path)
-            except OSError:
-                pass
+                os.chmod(_STATE_PATH, 0o600)
+            except (OSError, PermissionError):
+                pass  # best-effort on Windows
+        finally:
+            if os.path.exists(tmp_path):
+                try:
+                    os.unlink(tmp_path)
+                except OSError:
+                    pass
+    except OSError:
+        if not stored:
+            # Neither store took it — the value only lives in this process's
+            # memory and will be lost. Loud, because it means a key the owner
+            # just pasted into the UI is not actually saved.
+            logger.error("runtime_config: BOTH Postgres and file writes failed; value not persisted")
+        else:
+            logger.warning("runtime_config: file cache write failed; Postgres holds the value")
 
 
 # The flagship model, defined ONCE. This literal was previously copy-pasted

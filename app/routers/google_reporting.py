@@ -29,6 +29,8 @@ Environment variables (set in Railway):
 import json
 import logging
 import os
+
+from ..services import runtime_config as _cfg
 from datetime import date, timedelta
 from typing import Optional
 
@@ -49,14 +51,51 @@ _ADS_CLIENT_SECRET = os.getenv("GOOGLE_ADS_CLIENT_SECRET", "")
 _ADS_REFRESH_TOKEN = os.getenv("GOOGLE_ADS_REFRESH_TOKEN", "")
 _ADS_CUSTOMER_ID = os.getenv("GOOGLE_ADS_CUSTOMER_ID", "")
 
-_GSC_SA_JSON = os.getenv("GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT_JSON", "")
-_GSC_SITE_URL = os.getenv("GOOGLE_SEARCH_CONSOLE_SITE_URL", "")
+# WHY THESE ARE FUNCTIONS, NOT CONSTANTS
+#
+# These were module-level os.getenv() calls, which failed two ways at once:
+#
+#  1. Wrong names. This file read GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT_JSON,
+#     GOOGLE_SEARCH_CONSOLE_SITE_URL and GOOGLE_ANALYTICS_PROPERTY_ID, while
+#     the rest of the codebase (18 and 15 call sites respectively) and
+#     MANAGED_KEYS use GSC_SERVICE_ACCOUNT_JSON, GSC_SITE_URL and
+#     GA4_PROPERTY_ID. Setting the credential the documented way left this
+#     router seeing nothing, and it reported "not configured" rather than
+#     erroring — so the failure was silent.
+#
+#  2. Read once at import. Even under the right name, a key pasted into the
+#     Command Center integrations panel could not take effect without a
+#     redeploy, because _GSC_READY was computed at module load.
+#
+# Reading through runtime_config at request time fixes both: the Postgres-
+# backed store is consulted first, then os.environ. Legacy names are still
+# accepted so an existing deployment that set them keeps working.
 
-_GA4_PROPERTY_ID = os.getenv("GOOGLE_ANALYTICS_PROPERTY_ID", "")
+def _gsc_sa_json() -> str:
+    return (_cfg.get("GSC_SERVICE_ACCOUNT_JSON")
+            or _cfg.get("GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT_JSON")
+            or _cfg.get("GSC_SA_JSON") or "").strip()
+
+
+def _gsc_site_url() -> str:
+    return (_cfg.get("GSC_SITE_URL")
+            or _cfg.get("GOOGLE_SEARCH_CONSOLE_SITE_URL") or "").strip()
+
+
+def _ga4_property_id() -> str:
+    return (_cfg.get("GA4_PROPERTY_ID")
+            or _cfg.get("GOOGLE_ANALYTICS_PROPERTY_ID") or "").strip()
+
+
+def _gsc_ready() -> bool:
+    return bool(_gsc_sa_json() and _gsc_site_url())
+
+
+def _ga4_ready() -> bool:
+    return bool(_ga4_property_id())
+
 
 _ADS_READY = bool(_ADS_DEV_TOKEN and _ADS_CLIENT_ID and _ADS_REFRESH_TOKEN and _ADS_CUSTOMER_ID)
-_GSC_READY = bool(_GSC_SA_JSON and _GSC_SITE_URL)
-_GA4_READY = bool(_GA4_PROPERTY_ID)
 
 
 # ── Schemas ────────────────────────────────────────────────────────────────────
@@ -173,12 +212,12 @@ def _fetch_ads_metrics(days: int = 30) -> AdsMetrics:
 
 def _fetch_gsc_metrics(days: int = 30) -> SearchConsoleMetrics:
     """Pull Search Console data via Google API client."""
-    if not _GSC_READY:
+    if not _gsc_ready():
         return _stub_gsc()
     try:
         from google.oauth2 import service_account  # type: ignore[import]
         from googleapiclient.discovery import build  # type: ignore[import]
-        sa_info = json.loads(_GSC_SA_JSON)
+        sa_info = json.loads(_gsc_sa_json())
         creds = service_account.Credentials.from_service_account_info(
             sa_info, scopes=["https://www.googleapis.com/auth/webmasters.readonly"]
         )
@@ -192,7 +231,7 @@ def _fetch_gsc_metrics(days: int = 30) -> SearchConsoleMetrics:
             "rowLimit": 1,
             "orderBy": [{"fieldName": "clicks", "sortOrder": "DESCENDING"}],
         }
-        response = service.searchanalytics().query(siteUrl=_GSC_SITE_URL, body=payload).execute()
+        response = service.searchanalytics().query(siteUrl=_gsc_site_url(), body=payload).execute()
         rows = response.get("rows", [])
         # Aggregate totals with a second call (no dimensions)
         agg_body = {
@@ -200,7 +239,7 @@ def _fetch_gsc_metrics(days: int = 30) -> SearchConsoleMetrics:
             "endDate": end.isoformat(),
             "dimensions": [],
         }
-        agg = service.searchanalytics().query(siteUrl=_GSC_SITE_URL, body=agg_body).execute()
+        agg = service.searchanalytics().query(siteUrl=_gsc_site_url(), body=agg_body).execute()
         agg_rows = agg.get("rows", [{}])
         totals = agg_rows[0] if agg_rows else {}
         return SearchConsoleMetrics(
@@ -217,7 +256,7 @@ def _fetch_gsc_metrics(days: int = 30) -> SearchConsoleMetrics:
 
 def _fetch_ga4_metrics(days: int = 30) -> GA4Metrics:
     """Pull GA4 session/user/conversion data via Google Analytics Data API."""
-    if not _GA4_READY:
+    if not _ga4_ready():
         return _stub_ga4()
     try:
         from google.analytics.data_v1beta import BetaAnalyticsDataClient  # type: ignore[import]
@@ -228,7 +267,7 @@ def _fetch_ga4_metrics(days: int = 30) -> GA4Metrics:
         end = date.today()
         start = end - timedelta(days=days)
         req = RunReportRequest(
-            property=f"properties/{_GA4_PROPERTY_ID}",
+            property=f"properties/{_ga4_property_id()}",
             date_ranges=[DateRange(start_date=start.isoformat(), end_date=end.isoformat())],
             metrics=[
                 Metric(name="sessions"),
@@ -276,10 +315,10 @@ def reporting_status():
     """Return which Google credentials are configured."""
     return {
         "google_ads": _ADS_READY,
-        "search_console": _GSC_READY,
-        "analytics_ga4": _GA4_READY,
+        "search_console": _gsc_ready(),
+        "analytics_ga4": _ga4_ready(),
         "note": (
-            "All sources active" if (_ADS_READY and _GSC_READY and _GA4_READY)
+            "All sources active" if (_ADS_READY and _gsc_ready() and _ga4_ready())
             else "Unconfigured sources return stub data — see .env.example for required keys"
         ),
     }

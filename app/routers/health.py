@@ -35,6 +35,11 @@ from ..services.state_data import (
 
 logger = logging.getLogger(__name__)
 
+# Backlog size above which /health/ready reports the background stack degraded.
+# A healthy worker at concurrency 2 keeps the ready queue near zero, so a few
+# hundred pending means consumption has stopped rather than merely lagged.
+_QUEUE_DEPTH_WARN = 500
+
 router = APIRouter(tags=["ops"])
 
 
@@ -151,17 +156,72 @@ def health_ready():
     # Elasticsearch connectivity — optional, does not affect readiness
     es_status = _elasticsearch_health()
 
+    # Serving readiness — can this process answer HTTP? Redis and Postgres are
+    # the only hard dependencies of the web tier, so only they gate the code.
     all_ok = redis_status["ok"] and db_status["ok"]
-    # Celery workers are optional — warn but don't fail readiness if no workers
-    # are running (e.g. during initial deploy before worker pod starts).
+
+    # Background-stack health is reported SEPARATELY from the status code, and
+    # this split is deliberate in both directions.
+    #
+    # It must not 503: nothing routes on this path today, but the moment someone
+    # points a Fly health check at it, a dead worker would start evicting healthy
+    # web machines — an outage caused by the monitoring, not the fault.
+    #
+    # It must also not keep reporting "ready", which is what it did before. The
+    # old code computed celery_ok, logged a warning nobody reads, and dropped it
+    # on the floor; queue depth was returned in the payload but never consulted.
+    # check_celery_workers() reports ok=True with an empty worker list, so a
+    # permanently dead worker looked identical to a healthy one.
+    #
+    # That is not hypothetical. Measured in production 2026-08-09: zero workers,
+    # 5,937 messages in the ready queue, this endpoint answering 200 "ready".
+    # The worker had been gone about two weeks. Nothing alarmed, because there
+    # was nothing an alarm could key on.
     celery_ok = celery_status.get("ok", False)
-    if background_configured and not celery_ok:
-        logger.warning("Celery workers unavailable during readiness check")
+    active_workers = celery_status.get("active_workers")
+    queue_depth = queue_status.get("queue_depth")
+
+    degraded_reasons: list[str] = []
+    if background_configured:
+        if not celery_ok:
+            degraded_reasons.append("celery: broker unreachable or worker probe failed")
+        elif not active_workers:
+            # The case the old check could not see.
+            degraded_reasons.append(
+                "celery: 0 active workers — queued tasks are accumulating and "
+                "nothing is executing them"
+            )
+        # llen('celery') is the READY queue, so everything counted here is pulled
+        # the instant a worker connects — including lead follow-up emails whose
+        # countdown has already elapsed. A large backlog is a hazard to drain,
+        # not just a number: see app/routers/leads.py where follow-ups are
+        # scheduled with apply_async(countdown=...).
+        if isinstance(queue_depth, int) and queue_depth > _QUEUE_DEPTH_WARN:
+            degraded_reasons.append(
+                f"queue: {queue_depth} tasks pending (warn above {_QUEUE_DEPTH_WARN}) — "
+                "all of it dispatches at once when a worker starts"
+            )
+
+    if degraded_reasons:
+        logger.warning("Background stack degraded: %s", "; ".join(degraded_reasons))
 
     elapsed_ms = round((time.monotonic() - start) * 1000, 2)
 
+    if not all_ok:
+        status = "degraded"
+    elif degraded_reasons:
+        status = "serving_background_degraded"
+    else:
+        status = "ready"
+
     payload = {
-        "status": "ready" if all_ok else "degraded",
+        "status": status,
+        # Serving and background health are separate verdicts on purpose — a
+        # caller deciding whether to send traffic wants the first; a caller
+        # deciding whether to alarm wants the second.
+        "serving_ok": all_ok,
+        "background_ok": not degraded_reasons,
+        "degraded_reasons": degraded_reasons,
         "checks": {
             "redis": redis_status,
             "database": db_status,
@@ -225,6 +285,18 @@ def dashboard_preflight():
     if not tts_ready:
         jarvis_blockers.append("No TTS provider configured")
 
+    # Uploaded files (staff photos, signed compliance documents, drone/lidar
+    # captures) are only durable when object storage is attached. Surface it
+    # here so "are my uploads safe?" is answerable at a glance instead of being
+    # discovered after a redeploy has already eaten them.
+    try:
+        from ..services import object_storage  # noqa: PLC0415
+
+        storage_status = object_storage.storage_status()
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("object storage preflight failed: %s", exc)
+        storage_status = {"enabled": False, "error": str(exc)}
+
     infra_ok = bool(redis_status.get("ok") and db_status.get("ok"))
     jarvis_full_capacity = len(jarvis_blockers) == 0
     elapsed_ms = round((time.monotonic() - start) * 1000, 2)
@@ -237,11 +309,12 @@ def dashboard_preflight():
             "database": db_status,
             "celery": celery_status,
             "queue": queue_status,
+            "object_storage": storage_status,
         },
         "jarvis": {
             "full_capacity": jarvis_full_capacity,
             "engine": "anthropic-claude" if anthropic_ready else "heuristic-fallback",
-            "model": (_cfg.anthropic_model()) if anthropic_ready else None,
+            "model": _cfg.anthropic_model() if anthropic_ready else None,
             "tools": {
                 "web_search": web_ready,
                 "make_phone_call": call_ready,

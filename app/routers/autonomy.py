@@ -18,8 +18,10 @@ from typing import Any, Optional
 
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
+from sqlalchemy.orm import Session
 
 from ..core.security import verify_premium_security
+from ..database import get_db
 from ..services.orchestrator import GoalType, GoalResult, execute_goal, get_rl_weights
 from ..services.cognitive_twin import get_twin_status, snapshot_project
 from ..services import autonomy_state
@@ -148,7 +150,7 @@ def autonomy_status():
     summary="Submit a high-level goal for autonomous orchestration",
     status_code=201,
 )
-def submit_goal(req: GoalRequest):
+def submit_goal(req: GoalRequest, db: Session = Depends(get_db)):
     """
     Decomposes the goal into worker tasks, executes via the
     Orchestrator-Reflexion loop, and returns the full GoalResult.
@@ -165,7 +167,7 @@ def submit_goal(req: GoalRequest):
     if req.project_id:
         context["project_id"] = req.project_id
 
-    result: GoalResult = execute_goal(goal_type, context)
+    result: GoalResult = execute_goal(goal_type, context, db=db)
     result_dict = result.to_dict()
 
     # Cache so GET /goals/{goal_id} works
@@ -189,7 +191,7 @@ def get_goal(goal_id: str):
     "/twin/{project_id}",
     summary="Live Cognitive Digital Twin status for a project",
 )
-def twin_status(project_id: str):
+def twin_status(project_id: str, db: Session = Depends(get_db)):
     """
     Returns the full drift report for the project including:
       - All 6 state dimensions (timeline, cost, quality, safety, materials, crew)
@@ -197,7 +199,7 @@ def twin_status(project_id: str):
       - Auto-triggered remediation actions (if HIGH/CRITICAL)
       - Current intelligence level label
     """
-    return get_twin_status(project_id)
+    return get_twin_status(project_id, db=db)
 
 
 @router.post(
@@ -205,9 +207,9 @@ def twin_status(project_id: str):
     summary="Force an on-demand twin snapshot without remediation",
     status_code=201,
 )
-def force_snapshot(project_id: str):
+def force_snapshot(project_id: str, db: Session = Depends(get_db)):
     """Takes a fresh snapshot and returns the raw DriftReport (no side effects)."""
-    report = snapshot_project(project_id)
+    report = snapshot_project(project_id, db)
     return report.to_dict()
 
 

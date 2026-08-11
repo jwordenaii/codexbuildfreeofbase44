@@ -6,7 +6,8 @@ the backend will refuse autonomous action when frozen.
 
 Design:
   - Persisted to a JSON file (path from env JARVIS_AUTONOMY_STATE_PATH,
-    default /tmp/jarvis_autonomy.json) so freeze survives process restart.
+    default: the durable data dir, see durable_storage.py) so a freeze
+    survives both a process restart and a redeploy.
   - Thread-safe via a single module-level lock.
   - Read is cheap; check before any autonomous side-effect.
   - "frozen" forces master=False and disables all per-domain switches.
@@ -18,7 +19,25 @@ import threading
 from datetime import datetime, timezone
 from typing import Any
 
-_STATE_PATH = os.environ.get("JARVIS_AUTONOMY_STATE_PATH", "/tmp/jarvis_autonomy.json")
+from . import durable_kv
+from .durable_storage import durable_data_dir
+
+# SAFETY: this holds the Jarvis kill switch (`frozen`), so losing it is not a
+# cosmetic bug — it silently re-enables autonomous action that an operator
+# deliberately stopped.
+#
+# Two distinct ways that used to happen, both fixed here:
+#   1. Redeploy. The state file lived on /tmp, and jworden-api has no volume
+#      mounted, so every deploy reset `frozen` back to False.
+#   2. Divergence. jworden-api runs two machines. Any file-based store gives
+#      each machine its own copy, so a freeze issued against machine A would
+#      leave machine B happily acting on its own.
+# Postgres is durable AND shared, so it is the source of truth. The file is
+# kept only as a fallback for when the database is unreachable.
+_KV_KEY = "jarvis_autonomy"
+_STATE_PATH = os.environ.get("JARVIS_AUTONOMY_STATE_PATH") or str(
+    durable_data_dir() / "jarvis_autonomy.json"
+)
 _LOCK = threading.Lock()
 
 _DEFAULT: dict[str, Any] = {
@@ -31,14 +50,40 @@ _DEFAULT: dict[str, Any] = {
 }
 
 
+def _merged(data: Any) -> dict[str, Any] | None:
+    if not isinstance(data, dict):
+        return None
+    merged = dict(_DEFAULT)
+    merged.update(data)
+    return merged
+
+
 def _read_disk() -> dict[str, Any]:
+    """
+    Read current state. Postgres wins; the file is consulted only when the
+    database is unreachable or has never been written.
+
+    Fail-safe direction matters here: if BOTH stores are unreadable we return
+    _DEFAULT, which has frozen=False *and* master=False. So a storage outage
+    degrades to "autonomy off", never to "autonomy on".
+    """
+    raw = durable_kv.get(_KV_KEY)
+    if raw:
+        try:
+            merged = _merged(json.loads(raw))
+            if merged is not None:
+                return merged
+        except json.JSONDecodeError:
+            pass
+
     try:
         with open(_STATE_PATH, "r", encoding="utf-8") as f:
-            data = json.load(f)
-        if not isinstance(data, dict):
+            merged = _merged(json.load(f))
+        if merged is None:
             return dict(_DEFAULT)
-        merged = dict(_DEFAULT)
-        merged.update(data)
+        # Promote pre-KV state so the next redeploy keeps it.
+        if raw is None:
+            durable_kv.set(_KV_KEY, json.dumps(merged))
         return merged
     except FileNotFoundError:
         return dict(_DEFAULT)
@@ -47,6 +92,7 @@ def _read_disk() -> dict[str, Any]:
 
 
 def _write_disk(state: dict[str, Any]) -> None:
+    durable_kv.set(_KV_KEY, json.dumps(state))
     try:
         os.makedirs(os.path.dirname(_STATE_PATH) or ".", exist_ok=True)
         tmp = _STATE_PATH + ".tmp"
@@ -54,7 +100,8 @@ def _write_disk(state: dict[str, Any]) -> None:
             json.dump(state, f)
         os.replace(tmp, _STATE_PATH)
     except OSError:
-        # Persistence failed — state still lives in-memory for this process.
+        # File cache failed — Postgres (if reachable) still holds the state,
+        # and it is the authoritative store.
         pass
 
 
