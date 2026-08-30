@@ -246,3 +246,63 @@ except ImportError:
     def send_follow_up_email(lead_id: int, task_type: str) -> dict:  # type: ignore[misc]
         """Synchronous fallback when Celery is not installed."""
         return _execute_follow_up(lead_id, task_type)
+
+
+# ── Multi-mailbox lead intake ────────────────────────────────────────────────
+#
+# sync_gmail_accounts() reads every configured mailbox over IMAP and files the
+# leads it finds. It was previously callable only by hand — which meant, in
+# practice, never. Registered on Celery Beat it becomes what the owner actually
+# needs: unread mail in ANY of the business inboxes turning into CRM leads
+# without anyone remembering to look.
+#
+# Configuration is the EMAIL_ACCOUNTS_JSON secret; with none set the task logs
+# once and returns, so an unconfigured deployment is quiet rather than noisy.
+
+def _run_email_intake() -> dict:
+    """Read unread mail in every active mailbox and create leads.
+
+    Plain function so it is testable and callable without a broker; the Celery
+    task below is a thin wrapper around it.
+    """
+    from ..services.email_sync import sync_gmail_accounts  # noqa: PLC0415
+
+    try:
+        result = sync_gmail_accounts()
+    except Exception as exc:  # noqa: BLE001
+        logger.error("email intake failed: %s", exc, exc_info=True)
+        return {"status": "error", "detail": str(exc)}
+
+    if result.get("status") == "error":
+        # An unconfigured deployment is quiet, not noisy.
+        logger.info("email intake idle: %s", result.get("detail"))
+        return result
+
+    logger.info(
+        "email intake: %s account(s), %s email(s) read, %s lead(s) created",
+        result.get("accounts_processed"),
+        result.get("emails_read"),
+        result.get("leads_created"),
+    )
+    return result
+
+
+# Registered the same guarded way as send_follow_up_email above, so this module
+# still imports cleanly when Celery is not installed or configured.
+try:
+    from ..celery_app import celery_app  # noqa: PLC0415
+
+    @celery_app.task(
+        name="app.tasks.email_tasks.sync_email_accounts",
+        acks_late=True,
+        ignore_result=True,
+    )
+    def sync_email_accounts() -> dict:
+        """Celery task: multi-mailbox lead intake."""
+        return _run_email_intake()
+
+except Exception:  # noqa: BLE001
+    logger.info("Celery unavailable — email intake registered as a plain call only")
+
+    def sync_email_accounts() -> dict:  # type: ignore[misc]
+        return _run_email_intake()

@@ -273,6 +273,7 @@ from .routers import documents as documents_router
 from .routers import driveway_growth as driveway_growth_router
 from .routers import drone_scan as drone_scan_router
 from .routers import email as email_router
+from .routers import email_sync as email_sync_router
 from .routers import features as features_router
 from .routers import follow_ups as follow_ups_router
 from .routers import foreman as foreman_router
@@ -631,6 +632,7 @@ app.include_router(chat_router.router)
 
 # Email management (SendGrid transactional + follow-up)
 app.include_router(email_router.router)
+app.include_router(email_sync_router.router)
 
 # Mathematical AI (pavement scoring, cost estimation, lead quality, maintenance)
 app.include_router(math_ai_router.router)
