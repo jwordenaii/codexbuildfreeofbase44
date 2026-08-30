@@ -33,41 +33,33 @@ def generate_proposal_text(lead: dict) -> str:
     Call GPT-4o to generate a professional proposal text.
     Falls back to a formatted template if OpenAI is unavailable.
     """
-    openai_key = os.getenv("OPENAI_API_KEY", "")
-    if not openai_key:
-        return _template_proposal(lead)
-
     try:
-        from openai import OpenAI  # type: ignore
+        from .llm_client import chat as llm_chat
 
-        client = OpenAI(api_key=openai_key)
         prompt = _build_gpt_prompt(lead)
 
-        response = client.chat.completions.create(
-            model="gpt-4o",
-            messages=[
-                {
-                    "role": "system",
-                    "content": (
-                        "You are a senior estimator and project manager at J. Worden & Sons, "
-                        "a VA Class A General Contractor and Best of Houzz–recognized firm. "
-                        "The company provides: asphalt paving, sealcoating, crack filling, "
-                        "parking lot construction, general contracting (new builds, QSR/franchise "
-                        "ground-up construction), interior design & decorating, cobblestone & brick "
-                        "paver patios, and natural stone masonry. "
-                        "Write polished, client-ready project proposals. Be specific, confident, "
-                        "and professional. Include all sections requested. Tailor the scope of work, "
-                        "materials, and specifications to the exact service type requested."
-                    ),
-                },
-                {"role": "user", "content": prompt},
-            ],
+        result = llm_chat(
+            task="proposal",
+            system=(
+                "You are a senior estimator and project manager at J. Worden & Sons, "
+                "a VA Class A General Contractor and Best of Houzz–recognized firm. "
+                "The company provides: asphalt paving, sealcoating, crack filling, "
+                "parking lot construction, general contracting (new builds, QSR/franchise "
+                "ground-up construction), interior design & decorating, cobblestone & brick "
+                "paver patios, and natural stone masonry. "
+                "Write polished, client-ready project proposals. Be specific, confident, "
+                "and professional. Include all sections requested. Tailor the scope of work, "
+                "materials, and specifications to the exact service type requested."
+            ),
+            user=prompt,
             max_tokens=1400,
             temperature=0.4,
         )
-        return response.choices[0].message.content or _template_proposal(lead)
+        if result.error or not result.text.strip():
+            return _template_proposal(lead)
+        return result.text
     except Exception as exc:  # noqa: BLE001
-        logger.error("GPT-4o proposal generation failed: %s", exc)
+        logger.error("LLM proposal generation failed: %s", exc)
         return _template_proposal(lead)
 
 

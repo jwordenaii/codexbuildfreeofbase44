@@ -134,12 +134,7 @@ def _generate_blog_draft_openai(
     target_length: int,
 ) -> dict:
     """Call GPT-4o to generate a full blog post. Returns dict with title, excerpt, body."""
-    openai_key = os.getenv("OPENAI_API_KEY", "")
-    if not openai_key:
-        raise ValueError("OPENAI_API_KEY not set")
-
-    from openai import OpenAI  # type: ignore
-    client = OpenAI(api_key=openai_key)
+    from ..services.llm_client import chat as llm_chat
 
     keyword_line = f"Focus keyword: {focus_keyword}" if focus_keyword else ""
     category_line = f"Category: {category}" if category else ""
@@ -159,17 +154,17 @@ EXCERPT: [2–3 sentence teaser paragraph]
 [Full article body in Markdown]
 """
 
-    response = client.chat.completions.create(
-        model="gpt-4o",
-        messages=[
-            {"role": "system", "content": _BLOG_SYSTEM_PROMPT},
-            {"role": "user", "content": prompt},
-        ],
+    result = llm_chat(
+        task="reasoning",
+        system=_BLOG_SYSTEM_PROMPT,
+        user=prompt,
         max_tokens=2500,
         temperature=0.7,
     )
+    if result.error:
+        raise ValueError(f"No LLM provider available for blog generation: {result.error_detail}")
 
-    raw = response.choices[0].message.content or ""
+    raw = result.text or ""
 
     # Parse structured response
     title = topic
