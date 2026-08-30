@@ -262,6 +262,7 @@ from .routers import bid_intelligence as bid_intelligence_router
 from .routers import blog as blog_router
 from .routers import cashflow as cashflow_router
 from .routers import chat as chat_router
+from .routers import commercial_assessment as commercial_assessment_router
 from .routers import compaction as compaction_router
 from .routers import compliance as compliance_router
 from .routers import content as content_router
@@ -645,6 +646,7 @@ app.include_router(facebook_page_router.router)
 app.include_router(google_reporting_router.router)
 
 # Intelligent compaction telemetry (IoT roller pings + density heat map)
+app.include_router(commercial_assessment_router.router)
 app.include_router(compaction_router.router)
 
 # Drone scan ingest (photogrammetry / LiDAR / thermal per project site)
