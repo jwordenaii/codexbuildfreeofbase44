@@ -18,11 +18,12 @@ this endpoint scores whatever inputs it is given and never fabricates them.
 import logging
 from typing import Optional
 
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel, Field
 
 from ..core.limiter import limiter
 from ..services.commercial_assessment import Lot, assess_property, assess_portfolio
+from ..services.property_timeline import ConditionSnapshot, assess_with_history
 
 logger = logging.getLogger(__name__)
 
@@ -65,6 +66,25 @@ class PortfolioIn(BaseModel):
     annual_budget: Optional[float] = Field(default=None, ge=0, le=1_000_000_000)
 
 
+class SnapshotIn(BaseModel):
+    captured_at: str = Field(..., max_length=32, description="ISO date YYYY-MM-DD")
+    pci: float = Field(..., ge=0, le=100)
+    source: str = Field(default="field", max_length=20, description="imagery | drone | field | vision")
+    area_sqft: Optional[float] = Field(default=None, gt=0, le=20_000_000)
+    notes: Optional[str] = Field(default=None, max_length=500)
+
+
+class TimelineIn(BaseModel):
+    label: str = Field(..., max_length=200)
+    snapshots: list[SnapshotIn] = Field(..., min_length=1, max_length=100)
+    pavement_type: str = Field(default="commercial_parking_lot", max_length=40)
+    traffic_level: str = Field(default="medium", max_length=30)
+    drainage_quality: str = Field(default="fair", max_length=30)
+    crack_severity: str = Field(default="low", max_length=30)
+    area_sqft: Optional[float] = Field(default=None, gt=0, le=20_000_000)
+    site_id: Optional[str] = Field(default=None, max_length=100)
+
+
 @router.post("/assess")
 @limiter.limit("30/minute")
 def assess_one(payload: LotIn, request: Request):
@@ -82,3 +102,36 @@ def assess_many(payload: PortfolioIn, request: Request):
         annual_budget=payload.annual_budget,
     )
     return {"status": "ok", "client_name": payload.client_name, **result}
+
+
+@router.post("/timeline")
+@limiter.limit("30/minute")
+def assess_timeline(payload: TimelineIn, request: Request):
+    """Fold a lot's dated capture history into a measured-trend assessment.
+
+    Two or more dated captures replace the generic decay table with this
+    lot's own observed decline — the honest, proprietary 'timeline'.
+    """
+    try:
+        result = assess_with_history(
+            [
+                ConditionSnapshot(
+                    captured_at=s.captured_at,
+                    pci=s.pci,
+                    source=s.source if s.source in {"imagery", "drone", "field", "vision"} else "field",
+                    area_sqft=s.area_sqft,
+                    notes=s.notes,
+                )
+                for s in payload.snapshots
+            ],
+            label=payload.label,
+            pavement_type=payload.pavement_type if payload.pavement_type in _PAVEMENT_TYPES else "commercial_parking_lot",
+            traffic_level=payload.traffic_level if payload.traffic_level in _TRAFFIC else "medium",
+            drainage_quality=payload.drainage_quality if payload.drainage_quality in _DRAINAGE else "fair",
+            crack_severity=payload.crack_severity if payload.crack_severity in _CRACK else "low",
+            area_sqft=payload.area_sqft,
+            site_id=payload.site_id,
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc))
+    return {"status": "ok", **result}
