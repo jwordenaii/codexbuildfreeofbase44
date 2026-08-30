@@ -10,11 +10,12 @@ hit the main pipeline, enabling:
 Two-stage evaluation:
   1. Rule-based (instant, zero API cost): uses lead_scorer signals + keyword
      analysis of the message field.
-  2. GPT-4o intent analysis (when OPENAI_API_KEY is set): structured JSON
-     classification with confidence + reason + recommended action.
+  2. LLM intent analysis via the shared multi-provider router (Claude first,
+     then OpenAI/Gemini/xAI): structured JSON classification with confidence +
+     reason + recommended action. Falls back to stage 1 if no provider answers.
 
 Intent → Action mapping:
-  BUYER      (score ≥ 65 or GPT high-intent) → CALL_NOW
+  BUYER      (score ≥ 65 or LLM high-intent) → CALL_NOW
   RESEARCHER (score 35-64)                   → NURTURE
   TIRE_KICKER (score < 35)                   → DEPRIORITIZE
   BOT        (spam pattern detected)         → DISCARD
@@ -134,10 +135,10 @@ def _rule_qualify(lead_data: dict) -> QualificationResult:
     )
 
 
-# ── GPT-4o enhanced path ──────────────────────────────────────────────────────
+# ── LLM-enhanced path ─────────────────────────────────────────────────────────
 
 def _gpt_qualify(lead_data: dict, rule_result: QualificationResult) -> QualificationResult:
-    """Upgrade rule result with GPT-4o intent analysis. Falls back on any error."""
+    """Upgrade rule result with LLM intent analysis. Falls back on any error."""
     import json
 
     try:
@@ -187,10 +188,10 @@ Return ONLY the raw JSON object — no markdown fences, no commentary."""
             action=data.get("action", rule_result.action),
             reason=data.get("reason", rule_result.reason),
             flags=data.get("flags", rule_result.flags),
-            engine="gpt-4o",
+            engine=f"{result.provider}:{result.model}",
         )
     except Exception as exc:  # noqa: BLE001
-        logger.warning("GPT-4o qualification failed, using rule result: %s", exc)
+        logger.warning("LLM qualification failed, using rule result: %s", exc)
         return rule_result
 
 
@@ -204,7 +205,7 @@ def qualify_lead(lead_data: dict, use_ai: bool = True) -> dict:
         lead_data: dict from the lead submission endpoint.  Include
                    ``_score_value`` if ``lead_scorer.score_lead()`` has
                    already been called.
-        use_ai:    Whether to call GPT-4o (default True, graceful fallback).
+        use_ai:    Whether to call the LLM router (default True, graceful fallback).
 
     Returns dict with: buyer_intent, confidence, action, reason, flags, engine.
     """
