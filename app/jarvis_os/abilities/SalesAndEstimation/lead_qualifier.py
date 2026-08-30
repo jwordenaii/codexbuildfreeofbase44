@@ -141,9 +141,8 @@ def _gpt_qualify(lead_data: dict, rule_result: QualificationResult) -> Qualifica
     import json
 
     try:
-        from openai import OpenAI  # noqa: PLC0415
+        from app.services.llm_client import chat as llm_chat  # noqa: PLC0415
 
-        client = OpenAI(api_key=_OPENAI_KEY)
         prompt = f"""You are a lead qualification specialist for J. Worden & Sons,
 a commercial asphalt paving contractor. Classify this inbound lead.
 
@@ -163,16 +162,25 @@ Respond with JSON only:
   "action": "CALL_NOW" | "NURTURE" | "DEPRIORITIZE" | "DISCARD",
   "reason": "one sentence",
   "flags": ["flag1", "flag2"]
-}}"""
+}}
 
-        resp = client.chat.completions.create(
-            model="gpt-4o",
-            messages=[{"role": "user", "content": prompt}],
-            response_format={"type": "json_object"},
+Return ONLY the raw JSON object — no markdown fences, no commentary."""
+
+        result = llm_chat(
+            task="classification",
+            user=prompt,
             temperature=0.1,
             max_tokens=200,
         )
-        data = json.loads(resp.choices[0].message.content)
+        if result.error:
+            return rule_result
+        raw = (result.text or "").strip()
+        if raw.startswith("```"):
+            raw = raw.split("```")[1]
+            if raw.startswith("json"):
+                raw = raw[4:]
+            raw = raw.strip()
+        data = json.loads(raw)
         return QualificationResult(
             buyer_intent=data.get("buyer_intent", rule_result.buyer_intent),
             confidence=float(data.get("confidence", rule_result.confidence)),
@@ -202,7 +210,7 @@ def qualify_lead(lead_data: dict, use_ai: bool = True) -> dict:
     """
     rule_result = _rule_qualify(lead_data)
 
-    if use_ai and _OPENAI_KEY and rule_result.buyer_intent != "BOT":
+    if use_ai and rule_result.buyer_intent != "BOT":
         final = _gpt_qualify(lead_data, rule_result)
     else:
         final = rule_result

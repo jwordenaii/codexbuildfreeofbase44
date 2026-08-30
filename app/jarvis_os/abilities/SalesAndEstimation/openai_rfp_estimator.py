@@ -1,7 +1,6 @@
 import os
 import json
 import logging
-from openai import AsyncOpenAI
 
 logger = logging.getLogger(__name__)
 
@@ -12,14 +11,10 @@ class OpenAIRFPEstimator:
     heavy commercial paving RFPs and generate calculated cost estimates.
     """
     def __init__(self):
-        self.api_key = os.getenv("OPENAI_API_KEY")
-        if not self.api_key:
-            logger.warning("OPENAI_API_KEY not found in environment.")
-        # Initialize the official Async OpenAI client
-        self.client = AsyncOpenAI(api_key=self.api_key) if self.api_key else None
-        # We use gpt-4o for JSON guaranteed structure, perfectly mimicking deep reasoning.
-        # Ready to drop in "o1-preview" when API structured JSON support drops.
-        self.model = "gpt-4o"
+        # Routed through the shared multi-provider LLM client, so this runs on
+        # whichever provider is live (Claude first, then OpenAI/Gemini/xAI)
+        # rather than being dark whenever OPENAI_API_KEY is unset.
+        self.model = "auto"
 
     def execute(self, params: dict = None) -> dict:
         params = params or {}
@@ -34,9 +29,6 @@ class OpenAIRFPEstimator:
         """
         Takes raw text from an RFP (up to 128k tokens) and reasons through the math.
         """
-        if not self.client:
-            return self._mock_analysis()
-
         prompt = f"""
 You are the elite Chief Estimator for a multi-million dollar paving company.
 Use deep reasoning to analyze the following commercial RFP and calculate our bid.
@@ -55,21 +47,35 @@ Return your final reasoning and estimates STRICTLY in this JSON format:
 {rfp_text}
 """
         try:
-            response = await self.client.chat.completions.create(
-                model=self.model,
-                messages=[
-                    {"role": "system", "content": "You are a highly advanced estimation AI that only outputs valid JSON."},
-                    {"role": "user", "content": prompt}
-                ],
-                response_format={"type": "json_object"},
-                temperature=0.2
+            from starlette.concurrency import run_in_threadpool
+            from app.services.llm_client import chat as llm_chat
+
+            # llm_chat is synchronous — keep it off the event loop.
+            response = await run_in_threadpool(
+                llm_chat,
+                task="reasoning",
+                system=(
+                    "You are a highly advanced estimation AI that only outputs valid JSON. "
+                    "Return ONLY the raw JSON object — no markdown fences, no commentary."
+                ),
+                user=prompt,
+                max_tokens=1500,
+                temperature=0.2,
             )
-            
-            result_json = response.choices[0].message.content
-            return json.loads(result_json)
-            
+            if response.error:
+                logger.error("RFP estimation: no LLM provider available: %s", response.error_detail)
+                return self._mock_analysis()
+
+            raw = (response.text or "").strip()
+            if raw.startswith("```"):
+                raw = raw.split("```")[1]
+                if raw.startswith("json"):
+                    raw = raw[4:]
+                raw = raw.strip()
+            return json.loads(raw)
+
         except Exception as e:
-            logger.error(f"OpenAI RFP Estimation failed: {str(e)}")
+            logger.error(f"RFP Estimation failed: {str(e)}")
             return self._mock_analysis()
 
     def _mock_analysis(self) -> dict:

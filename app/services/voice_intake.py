@@ -26,48 +26,105 @@ from typing import Optional
 
 logger = logging.getLogger(__name__)
 
-_OPENAI_KEY = os.getenv("OPENAI_API_KEY", "")
+def _openai_key() -> str:
+    """Read at call time, not import time, so runtime config changes apply."""
+    return os.getenv("OPENAI_API_KEY", "").strip()
+
+
+def _google_key() -> str:
+    return (os.getenv("GOOGLE_API_KEY", "") or os.getenv("GEMINI_API_KEY", "")).strip()
+
+
+# Gemini accepts these audio mime types directly as inline data.
+_GEMINI_AUDIO_TYPES = {
+    "audio/mpeg", "audio/mp3", "audio/wav", "audio/x-wav",
+    "audio/aiff", "audio/aac", "audio/ogg", "audio/flac",
+    "audio/mp4", "audio/m4a", "audio/webm",
+}
+
+_TRANSCRIBE_PROMPT = (
+    "Transcribe this audio recording verbatim in English. It is a voicemail or "
+    "phone call to an asphalt paving contractor. Return ONLY the transcript "
+    "text with no preamble, commentary, or formatting."
+)
+
+
+def _transcribe_google(audio_bytes: bytes, content_type: str) -> str:
+    """Transcribe audio with Gemini (native audio understanding)."""
+    from google import genai  # type: ignore
+    from google.genai import types  # type: ignore
+
+    client = genai.Client(api_key=_google_key())
+    mime = content_type if content_type in _GEMINI_AUDIO_TYPES else "audio/mp3"
+    resp = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=[
+            _TRANSCRIBE_PROMPT,
+            types.Part.from_bytes(data=audio_bytes, mime_type=mime),
+        ],
+    )
+    return (getattr(resp, "text", "") or "").strip()
 
 
 def transcribe_audio(audio_bytes: bytes, content_type: str) -> str:
     """
-    Transcribe audio using OpenAI Whisper API.
-    Falls back to a stub message if OpenAI is unavailable.
+    Transcribe audio. Uses OpenAI Whisper when configured, otherwise falls
+    back to Gemini's native audio transcription. Returns a clear stub only
+    when neither provider is available.
     """
-    if not _OPENAI_KEY:
-        return "[Transcription unavailable — configure OPENAI_API_KEY]"
+    openai_key = _openai_key()
 
-    try:
-        from openai import OpenAI  # type: ignore
+    if openai_key:
+        try:
+            from openai import OpenAI  # type: ignore
 
-        client = OpenAI(api_key=_OPENAI_KEY)
+            client = OpenAI(api_key=openai_key)
 
-        # Map content type to file extension
-        ext_map = {
-            "audio/mpeg": "mp3",
-            "audio/mp3": "mp3",
-            "audio/wav": "wav",
-            "audio/x-wav": "wav",
-            "audio/mp4": "mp4",
-            "audio/m4a": "m4a",
-            "audio/ogg": "ogg",
-            "audio/webm": "webm",
-        }
-        ext = ext_map.get(content_type, "mp3")
+            # Map content type to file extension
+            ext_map = {
+                "audio/mpeg": "mp3",
+                "audio/mp3": "mp3",
+                "audio/wav": "wav",
+                "audio/x-wav": "wav",
+                "audio/mp4": "mp4",
+                "audio/m4a": "m4a",
+                "audio/ogg": "ogg",
+                "audio/webm": "webm",
+            }
+            ext = ext_map.get(content_type, "mp3")
 
-        # OpenAI requires a file-like object with a name attribute
-        audio_file = io.BytesIO(audio_bytes)
-        audio_file.name = f"recording.{ext}"
+            # OpenAI requires a file-like object with a name attribute
+            audio_file = io.BytesIO(audio_bytes)
+            audio_file.name = f"recording.{ext}"
 
-        response = client.audio.transcriptions.create(
-            model="whisper-1",
-            file=audio_file,
-            language="en",
-        )
-        return response.text or ""
-    except Exception as exc:  # noqa: BLE001
-        logger.error("Whisper transcription error: %s", exc)
+            response = client.audio.transcriptions.create(
+                model="whisper-1",
+                file=audio_file,
+                language="en",
+            )
+            return response.text or ""
+        except Exception as exc:  # noqa: BLE001
+            # Fall through to Gemini rather than losing the lead entirely.
+            logger.error("Whisper transcription error, trying Gemini: %s", exc)
+
+    if _google_key():
+        try:
+            text = _transcribe_google(audio_bytes, content_type)
+            if text:
+                return text
+            logger.error("Gemini transcription returned empty text")
+        except Exception as exc:  # noqa: BLE001
+            logger.error("Gemini transcription error: %s", exc)
         return "[Transcription failed. Please try again or contact us directly.]"
+
+    if openai_key:
+        # OpenAI was configured but failed, and there is no Gemini fallback.
+        return "[Transcription failed. Please try again or contact us directly.]"
+
+    return (
+        "[Transcription unavailable — configure OPENAI_API_KEY or "
+        "GOOGLE_API_KEY / GEMINI_API_KEY]"
+    )
 
 
 def extract_lead_entities(transcript: str) -> dict:
@@ -77,40 +134,35 @@ def extract_lead_entities(transcript: str) -> dict:
     Returns:
       {name, phone, email, address, service_type, urgency, message, confidence}
     """
-    if not _OPENAI_KEY:
-        return _stub_entities()
-
     try:
-        from openai import OpenAI  # type: ignore
+        from .llm_client import chat as llm_chat  # noqa: PLC0415
 
-        client = OpenAI(api_key=_OPENAI_KEY)
-        response = client.chat.completions.create(
-            model="gpt-4o",
-            messages=[
-                {
-                    "role": "system",
-                    "content": (
-                        "You are a lead data extraction assistant for an asphalt paving company. "
-                        "Extract the following from this phone call transcript and return as JSON: "
-                        "name (customer full name or 'Unknown'), "
-                        "phone (phone number or null), "
-                        "email (email or null), "
-                        "address (project address or null), "
-                        "service_type (one of: paving, sealcoating, crackfill, parking_lot, driveway, or 'unknown'), "
-                        "property_type (residential or commercial, default residential), "
-                        "urgency (asap, within_1_week, within_1_month, or flexible), "
-                        "project_size_sqft (number or null), "
-                        "message (brief summary of what they want), "
-                        "confidence (0.0-1.0 how confident you are in the extraction). "
-                        "Return only valid JSON."
-                    ),
-                },
-                {"role": "user", "content": f"Transcript:\n{transcript}"},
-            ],
+        result = llm_chat(
+            task="classification",
+            system=(
+                "You are a lead data extraction assistant for an asphalt paving company. "
+                "Extract the following from this phone call transcript and return as JSON: "
+                "name (customer full name or 'Unknown'), "
+                "phone (phone number or null), "
+                "email (email or null), "
+                "address (project address or null), "
+                "service_type (one of: paving, sealcoating, crackfill, parking_lot, driveway, or 'unknown'), "
+                "property_type (residential or commercial, default residential), "
+                "urgency (asap, within_1_week, within_1_month, or flexible), "
+                "project_size_sqft (number or null), "
+                "message (brief summary of what they want), "
+                "confidence (0.0-1.0 how confident you are in the extraction). "
+                "Return only valid JSON."
+            ),
+            user=f"Transcript:\n{transcript}",
             max_tokens=400,
             temperature=0.2,
         )
-        text = response.choices[0].message.content or "{}"
+        if result.error:
+            logger.error("Entity extraction: no provider available: %s", result.error_detail)
+            return _stub_entities()
+
+        text = result.text or "{}"
         if "```" in text:
             text = text.split("```")[1].lstrip("json").strip()
         return json.loads(text)

@@ -2,17 +2,31 @@
 vector_search_service.py — Pinecone vector database integration for semantic
 search on blog posts.
 
-Embeds blog post content using OpenAI's text-embedding-3-small model and
-stores vectors in a Pinecone index.  Provides semantic similarity search so
-customers can find relevant content even when they use different keywords.
+Embeds blog post content and stores vectors in a Pinecone index.  Provides
+semantic similarity search so customers can find relevant content even when
+they use different keywords.
+
+Embedding provider (auto-selected, OpenAI preferred for index continuity):
+  1. OpenAI  text-embedding-3-small     → 1536 dims  (OPENAI_API_KEY)
+  2. Google  gemini-embedding-001       → 1536 dims via output_dimensionality
+                                          (GOOGLE_API_KEY / GEMINI_API_KEY)
+
+Both produce 1536-dim vectors so either can populate the SAME Pinecone index.
+
+  ⚠️  VECTORS FROM DIFFERENT MODELS ARE NOT COMPARABLE.  Matching dimensions
+      only means Pinecone accepts the write — similarity scores across mixed
+      providers are meaningless.  If the active provider changes, the index
+      must be rebuilt with reindex_all_blog_posts() so every vector comes
+      from one model.  get_index_status() reports the active provider so the
+      mismatch is visible rather than silent.
 
 Required environment variables:
   PINECONE_API_KEY    — Pinecone API key (from console.pinecone.io)
   PINECONE_INDEX_NAME — Name of the Pinecone index (e.g. "blog-posts")
-  OPENAI_API_KEY      — OpenAI API key (for embeddings)
+  OPENAI_API_KEY *or* GOOGLE_API_KEY / GEMINI_API_KEY — for embeddings
 
-The index must be created in Pinecone with dimension=1536 (text-embedding-3-small)
-and metric=cosine before use.  See VECTOR_SEARCH.md for setup instructions.
+The index must be created in Pinecone with dimension=1536 and metric=cosine
+before use.  See VECTOR_SEARCH.md for setup instructions.
 """
 
 from __future__ import annotations
@@ -23,9 +37,27 @@ from typing import Optional
 
 logger = logging.getLogger(__name__)
 
-# Embedding model and its output dimension
-_EMBEDDING_MODEL = "text-embedding-3-small"
+# Embedding models and the shared output dimension the Pinecone index expects.
+_EMBEDDING_MODEL = "text-embedding-3-small"      # OpenAI
+_GOOGLE_EMBEDDING_MODEL = "gemini-embedding-001"  # Google
 _EMBEDDING_DIM = 1536
+
+
+def _google_key() -> str:
+    return (os.getenv("GOOGLE_API_KEY", "") or os.getenv("GEMINI_API_KEY", "")).strip()
+
+
+def embedding_provider() -> str:
+    """Which provider will serve embeddings: 'openai' | 'google' | 'none'.
+
+    OpenAI is preferred when available so an index built with OpenAI vectors
+    keeps working. Google is the fallback when OPENAI_API_KEY is absent.
+    """
+    if os.getenv("OPENAI_API_KEY", "").strip():
+        return "openai"
+    if _google_key():
+        return "google"
+    return "none"
 
 
 def _get_openai_client():
@@ -35,6 +67,38 @@ def _get_openai_client():
         raise RuntimeError("OPENAI_API_KEY is not set")
     from openai import OpenAI  # noqa: PLC0415
     return OpenAI(api_key=api_key)
+
+
+def _get_google_client():
+    """Return a google-genai client, raising clearly if the key is missing."""
+    key = _google_key()
+    if not key:
+        raise RuntimeError("GOOGLE_API_KEY / GEMINI_API_KEY is not set")
+    from google import genai  # noqa: PLC0415
+    return genai.Client(api_key=key)
+
+
+def _embed_google(cleaned: str) -> list[float]:
+    """Embed with gemini-embedding-001, pinned to the index's 1536 dims."""
+    client = _get_google_client()
+    resp = client.models.embed_content(
+        model=_GOOGLE_EMBEDDING_MODEL,
+        contents=cleaned,
+        config={"output_dimensionality": _EMBEDDING_DIM},
+    )
+    embeddings = getattr(resp, "embeddings", None)
+    if not embeddings:
+        raise RuntimeError("Google embedding response contained no embeddings")
+    vector = list(getattr(embeddings[0], "values", None) or [])
+    # Never write a wrong-width vector into a 1536-dim index — fail loudly
+    # instead of silently corrupting search quality.
+    if len(vector) != _EMBEDDING_DIM:
+        raise RuntimeError(
+            f"{_GOOGLE_EMBEDDING_MODEL} returned {len(vector)} dims, expected "
+            f"{_EMBEDDING_DIM}; the installed google-genai may not support "
+            "output_dimensionality. Pin the SDK or recreate the index."
+        )
+    return vector
 
 
 def _get_pinecone_index():
@@ -58,7 +122,12 @@ def _get_pinecone_index():
 
 def _embed_text(text: str) -> list[float]:
     """
-    Generate an embedding vector for the given text using OpenAI.
+    Generate an embedding vector for the given text.
+
+    Uses whichever provider is configured (OpenAI preferred, Google fallback).
+    Both are pinned to 1536 dims so either can serve the same index — but the
+    active provider must be consistent across indexing AND querying, or the
+    similarity scores are meaningless. See the module docstring.
 
     Args:
         text: The text to embed (title + excerpt + body combined).
@@ -66,14 +135,23 @@ def _embed_text(text: str) -> list[float]:
     Returns:
         A list of 1536 floats representing the embedding vector.
     """
-    client = _get_openai_client()
     # Replace newlines to improve embedding quality (OpenAI recommendation)
     cleaned = text.replace("\n", " ").strip()
-    response = client.embeddings.create(
-        model=_EMBEDDING_MODEL,
-        input=cleaned,
+
+    provider = embedding_provider()
+    if provider == "openai":
+        client = _get_openai_client()
+        response = client.embeddings.create(
+            model=_EMBEDDING_MODEL,
+            input=cleaned,
+        )
+        return response.data[0].embedding
+    if provider == "google":
+        return _embed_google(cleaned)
+    raise RuntimeError(
+        "No embedding provider configured — set OPENAI_API_KEY or "
+        "GOOGLE_API_KEY / GEMINI_API_KEY"
     )
-    return response.data[0].embedding
 
 
 def _build_document_text(title: str, excerpt: str, body: str) -> str:
@@ -352,12 +430,22 @@ class VectorSearchService:
         try:
             index = _get_pinecone_index()
             stats = index.describe_index_stats()
+            provider = embedding_provider()
             return {
                 "configured": True,
                 "index_name": os.getenv("PINECONE_INDEX_NAME", ""),
                 "total_vector_count": stats.get("total_vector_count", 0),
                 "dimension": stats.get("dimension", _EMBEDDING_DIM),
                 "namespaces": stats.get("namespaces", {}),
+                # Active embedding provider. If this changed since the vectors
+                # were written, similarity scores are meaningless until
+                # reindex_all_blog_posts() rebuilds the index on one model.
+                "embedding_provider": provider,
+                "embedding_model": (
+                    _EMBEDDING_MODEL if provider == "openai"
+                    else _GOOGLE_EMBEDDING_MODEL if provider == "google"
+                    else None
+                ),
             }
         except RuntimeError as exc:
             return {"configured": False, "reason": str(exc)}

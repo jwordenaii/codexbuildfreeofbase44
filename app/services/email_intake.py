@@ -23,21 +23,12 @@ def _stub_entities() -> Dict[str, Any]:
 
 def extract_lead_from_email(subject: str, body: str, from_email: str, from_name: str) -> Dict[str, Any]:
     """
-    Use GPT-4o to extract lead entities from an unstructured email.
+    Extract lead entities from an unstructured email via the shared
+    multi-provider LLM router (Claude first, then OpenAI/Gemini/xAI).
     """
-    if not _OPENAI_KEY:
-        logger.warning("No OPENAI_API_KEY set. Falling back to stub entities for email intake.")
-        stub = _stub_entities()
-        stub["email"] = from_email
-        stub["name"] = from_name or "Unknown Email Lead"
-        stub["message"] = f"Subject: {subject}\n\n{body}"[:2000]
-        return stub
-
     try:
-        from openai import OpenAI  # type: ignore
+        from .llm_client import chat as llm_chat  # noqa: PLC0415
 
-        client = OpenAI(api_key=_OPENAI_KEY)
-        
         system_prompt = (
             "You are a lead data extraction and email triage assistant for J. Worden & Sons Asphalt Paving. "
             "Extract the following from the incoming email and return as JSON:\n"
@@ -66,18 +57,23 @@ def extract_lead_from_email(subject: str, body: str, from_email: str, from_name:
             f"Body:\n{body}"
         )
 
-        response = client.chat.completions.create(
-            model="gpt-4o",
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_content},
-            ],
+        result = llm_chat(
+            task="classification",
+            system=system_prompt + "\nReturn ONLY the raw JSON object — no markdown fences.",
+            user=user_content,
             max_tokens=500,
             temperature=0.1,
-            response_format={"type": "json_object"}
         )
-        text = response.choices[0].message.content or "{}"
-        
+        if result.error:
+            logger.error("Email intake: no LLM provider available: %s", result.error_detail)
+            stub = _stub_entities()
+            stub["email"] = from_email
+            stub["name"] = from_name or "Unknown Email Lead"
+            stub["message"] = f"Subject: {subject}\n\n{body}"[:2000]
+            return stub
+
+        text = result.text or "{}"
+
         # Clean up Markdown formatting if API ignored response_format (fallback)
         if "```" in text:
             text = text.split("```")[1].lstrip("json").strip()

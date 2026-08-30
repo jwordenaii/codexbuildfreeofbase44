@@ -235,12 +235,8 @@ async def generate_case_study(
 
 
 def _build_case_study(m: ProjectMetric) -> str:
-    api_key = os.getenv("OPENAI_API_KEY", "")
-    if not api_key:
-        return _fallback_case_study(m)
     try:
-        from openai import OpenAI  # noqa: PLC0415
-        client = OpenAI(api_key=api_key)
+        from ..services.llm_client import chat as llm_chat  # noqa: PLC0415
         cost_note = ""
         if m.actual_cost and m.estimated_cost and m.estimated_cost > 0:
             pct = round(abs(m.actual_cost - m.estimated_cost) / m.estimated_cost * 100, 1)
@@ -257,15 +253,17 @@ def _build_case_study(m: ProjectMetric) -> str:
             f"Project: {m.project_name}. {cost_note} {sched_note} {nps_note} "
             f"Be professional, specific, and highlight the firm's craftsmanship and reliability."
         )
-        resp = client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[{"role": "user", "content": prompt}],
+        result = llm_chat(
+            task="fast",
+            user=prompt,
             max_tokens=300,
             temperature=0.7,
         )
-        return resp.choices[0].message.content.strip()
+        if result.error or not (result.text or "").strip():
+            return _fallback_case_study(m)
+        return result.text.strip()
     except Exception as exc:  # noqa: BLE001
-        logger.warning("Case study GPT-4o failed: %s", exc)
+        logger.warning("Case study generation failed: %s", exc)
         return _fallback_case_study(m)
 
 

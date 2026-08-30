@@ -196,13 +196,8 @@ async def win_analysis(
     if len(rows) < 2:
         return {"analysis": "Not enough bid data yet. Record at least 2 bid outcomes to unlock AI analysis.", "insights": []}
 
-    api_key = os.getenv("OPENAI_API_KEY", "")
-    if not api_key:
-        return _rule_based_analysis(rows)
-
     try:
-        from openai import OpenAI  # noqa: PLC0415
-        client = OpenAI(api_key=api_key)
+        from ..services.llm_client import chat as llm_chat  # noqa: PLC0415
 
         bid_summary = "\n".join([
             f"- {r.outcome.upper()} | {r.service_type or '?'} | {r.region or '?'} | "
@@ -219,13 +214,15 @@ async def win_analysis(
             f"Bid history:\n{bid_summary}\n\n"
             "Return ONLY a JSON array of insight strings."
         )
-        resp = client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[{"role": "user", "content": prompt}],
+        result = llm_chat(
+            task="fast",
+            user=prompt,
             max_tokens=400,
             temperature=0.4,
         )
-        raw = resp.choices[0].message.content.strip()
+        if result.error:
+            return _rule_based_analysis(rows)
+        raw = (result.text or "").strip()
         if raw.startswith("```"):
             raw = raw.split("```")[1]
             if raw.startswith("json"):
@@ -268,4 +265,4 @@ def _rule_based_analysis(rows) -> dict:
         avg_price = sum((r.proposal_amount_low or 0) for r in won) / len(won)
         insights.append(f"Average winning bid amount: ${avg_price:,.0f} (low estimate).")
 
-    return {"analysis": "Rule-based analysis (add OpenAI key for AI insights).", "insights": insights}
+    return {"analysis": "Rule-based analysis (configure an AI provider key for AI insights).", "insights": insights}

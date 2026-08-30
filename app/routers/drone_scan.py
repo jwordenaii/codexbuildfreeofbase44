@@ -76,7 +76,7 @@ class DroneScanResponse(BaseModel):
 
 def _generate_ai_summary(scan_type: str, findings_json: Optional[str], risk_level: str) -> Optional[str]:
     """Generate a plain-English deviation summary via GPT-4o if key is set."""
-    if not _OPENAI_KEY or not findings_json:
+    if not findings_json:
         return None
     try:
         findings = json.loads(findings_json) if isinstance(findings_json, str) else findings_json
@@ -86,8 +86,8 @@ def _generate_ai_summary(scan_type: str, findings_json: Optional[str], risk_leve
         findings = []
 
     try:
-        from openai import OpenAI  # local import to avoid startup cost when unused
-        client = OpenAI(api_key=_OPENAI_KEY)
+        from ..services.llm_client import chat as llm_chat  # noqa: PLC0415
+
         prompt = (
             f"A drone {scan_type} scan of a paving site detected {count} deviation(s) "
             f"with an overall risk level of {risk_level}.\n"
@@ -95,13 +95,10 @@ def _generate_ai_summary(scan_type: str, findings_json: Optional[str], risk_leve
             "Write a concise (2-3 sentence) field summary a foreman can act on immediately. "
             "Focus on the highest-severity items and the recommended corrective action."
         )
-        resp = client.chat.completions.create(
-            model="gpt-4o",
-            messages=[{"role": "user", "content": prompt}],
-            max_tokens=200,
-            temperature=0.3,
-        )
-        return resp.choices[0].message.content.strip()
+        result = llm_chat(task="fast", user=prompt, max_tokens=200, temperature=0.3)
+        if result.error or not (result.text or "").strip():
+            return None
+        return result.text.strip()
     except Exception as exc:
         logger.warning("Drone scan AI summary failed: %s", exc)
         return None

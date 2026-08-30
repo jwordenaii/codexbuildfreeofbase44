@@ -67,24 +67,22 @@ Writing rules:
 
 
 def _call_openai_seo(system: str, user: str, max_tokens: int = 600) -> str | None:
-    openai_key = os.getenv("OPENAI_API_KEY", "")
-    if not openai_key:
-        return None
+    """Generate SEO copy via the shared multi-provider router (Claude first)."""
     try:
-        from openai import OpenAI  # type: ignore
-        client = OpenAI(api_key=openai_key)
-        resp = client.chat.completions.create(
-            model="gpt-4o",
-            messages=[
-                {"role": "system", "content": system},
-                {"role": "user", "content": user},
-            ],
+        from ..services.llm_client import chat as llm_chat  # noqa: PLC0415
+        result = llm_chat(
+            task="reasoning",
+            system=system,
+            user=user,
             max_tokens=max_tokens,
             temperature=0.65,
         )
-        return (resp.choices[0].message.content or "").strip()
+        if result.error:
+            logger.error("SEO LLM call failed [endpoint=%s]: %s", "seo_generation", result.error_detail)
+            return None
+        return (result.text or "").strip() or None
     except Exception as exc:  # noqa: BLE001
-        logger.error("SEO OpenAI call failed [endpoint=%s]: %s", "seo_generation", exc)
+        logger.error("SEO LLM call failed [endpoint=%s]: %s", "seo_generation", exc)
         return None
 
 

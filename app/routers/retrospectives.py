@@ -237,13 +237,8 @@ async def surface_lessons(
 
 def _generate_tags(retro: ProjectRetrospective) -> list[str]:
     """Generate AI tags using GPT-4o; fall back to rule-based tags."""
-    api_key = os.getenv("OPENAI_API_KEY", "")
-    if not api_key:
-        return _rule_based_tags(retro)
-
     try:
-        from openai import OpenAI  # noqa: PLC0415
-        client = OpenAI(api_key=api_key)
+        from ..services.llm_client import chat as llm_chat  # noqa: PLC0415
         text = "\n".join(filter(None, [
             f"Project type: {retro.project_type}",
             f"Region: {retro.region}",
@@ -252,25 +247,22 @@ def _generate_tags(retro: ProjectRetrospective) -> list[str]:
             f"Design conflicts: {retro.design_conflicts}",
             f"Lessons: {retro.lessons_learned}",
         ]))
-        resp = client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[
-                {
-                    "role": "system",
-                    "content": (
-                        "You are a construction project risk analyst. "
-                        "Return a JSON array of 3-8 short tags (strings) that best categorize "
-                        "the risk factors and lessons from this project retrospective. "
-                        "Tags should be lowercase kebab-case, e.g. 'drainage-issue', 'supply-delay', 'soil-instability'. "
-                        "Return ONLY the JSON array, no explanation."
-                    ),
-                },
-                {"role": "user", "content": text},
-            ],
+        result = llm_chat(
+            task="classification",
+            system=(
+                "You are a construction project risk analyst. "
+                "Return a JSON array of 3-8 short tags (strings) that best categorize "
+                "the risk factors and lessons from this project retrospective. "
+                "Tags should be lowercase kebab-case, e.g. 'drainage-issue', 'supply-delay', 'soil-instability'. "
+                "Return ONLY the JSON array, no explanation."
+            ),
+            user=text,
             max_tokens=150,
             temperature=0.3,
         )
-        raw = resp.choices[0].message.content.strip()
+        if result.error:
+            return _rule_based_tags(retro)
+        raw = (result.text or "").strip()
         # Strip markdown code fences if present
         if raw.startswith("```"):
             raw = raw.split("```")[1]
