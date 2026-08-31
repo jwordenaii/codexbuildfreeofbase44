@@ -2,6 +2,7 @@
 
 import logging
 import os
+import sys
 from datetime import datetime, timezone
 
 from fastapi import APIRouter, Depends, HTTPException, Request
@@ -16,6 +17,20 @@ from ..services.pricing import estimate_price
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix='/api/v1/payments', tags=['payments'])
+
+
+def _mock_payments_allowed() -> bool:
+    """True when a fake checkout is safe to hand back: pytest, or explicit opt-in.
+
+    Mirrors the test detection in ``core.limiter`` so the two agree on what a
+    test run is. ``ALLOW_MOCK_PAYMENTS`` is the developer escape hatch for
+    working on the quote flow without Stripe credentials.
+    """
+    return (
+        'pytest' in sys.modules
+        or os.getenv('PYTEST_CURRENT_TEST') is not None
+        or os.getenv('ALLOW_MOCK_PAYMENTS', '').strip().lower() in ('1', 'true', 'yes', 'on')
+    )
 
 
 class CheckoutRequest(BaseModel):
@@ -44,6 +59,25 @@ async def create_checkout_session(
     cancel_url = body.cancel_url or os.getenv('STRIPE_CANCEL_URL', 'http://localhost:5173/quote?payment=cancel')
 
     stripe_secret = os.getenv('STRIPE_SECRET_KEY', '').strip()
+
+    # Fail closed when Stripe is not configured. The mock branch below returns a
+    # checkout_url pointing straight at success_url, so without this guard a
+    # customer clicks "pay deposit", lands on the thank-you page, and pays
+    # nothing — believing the deposit is down while no money moved. The
+    # transaction row is written 'pending' so the books stay honest, but the
+    # customer has been told otherwise. A 503 is the truthful answer.
+    if not stripe_secret and not _mock_payments_allowed():
+        logger.error(
+            'checkout-session refused for lead %s: STRIPE_SECRET_KEY is not set. '
+            'Set it to take real deposits, or ALLOW_MOCK_PAYMENTS=1 for local work.',
+            lead.id,
+        )
+        raise HTTPException(
+            status_code=503,
+            detail='Online deposit payment is not enabled yet. '
+                   'Please contact the office to arrange your deposit.',
+        )
+
     checkout_id = f'mock_cs_{lead.id}_{int(datetime.now(timezone.utc).timestamp())}'
     checkout_url = f'{success_url}&session_id={checkout_id}'
 
