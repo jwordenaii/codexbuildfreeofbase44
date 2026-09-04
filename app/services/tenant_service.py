@@ -27,7 +27,7 @@ _DEFAULT_SYSTEM_PROMPT = """You are JWordenAI — the intelligent assistant for 
 
 COMPANY FACTS (verified, do not contradict):
 • Founded 1984 by Mr. Worden's grandfather
-• Headquarters: Chester, Virginia (1601 Ware Bottom Springs Rd Suite 214)
+• Service area: Richmond & Central Virginia (service-area business, no public street address)
 • Phone: (804) 446-1296
 • KFC national franchise paving: VA, NC, GA, FL, MI, TX, KS, MO, IA, MN, NY, NJ and more
 • Awards: Pavement Magazine Top 75 (4 categories), Best of Houzz (multiple years)

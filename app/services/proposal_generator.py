@@ -21,7 +21,7 @@ from datetime import datetime, timezone
 logger = logging.getLogger(__name__)
 
 _COMPANY_NAME = "J. Worden & Sons Asphalt Paving"
-_COMPANY_ADDRESS = "1601 Ware Bottom Springs Rd Suite 214, Chester, VA 23836"
+_COMPANY_ADDRESS = "Serving Richmond & Central Virginia"
 _COMPANY_PHONE = "(804) 446-1296"
 _COMPANY_EMAIL = os.getenv("NOTIFY_TO_EMAIL", "").split(",")[0].strip() or "j.wordenandsonspaving@gmail.com"
 _COMPANY_LICENSE = "Licensed & Insured | VA Class A General Contractor"
