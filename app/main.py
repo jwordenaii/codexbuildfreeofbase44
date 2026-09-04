@@ -262,6 +262,7 @@ from .routers import bid_intelligence as bid_intelligence_router
 from .routers import blog as blog_router
 from .routers import cashflow as cashflow_router
 from .routers import chat as chat_router
+from .routers import commercial_assessment as commercial_assessment_router
 from .routers import compaction as compaction_router
 from .routers import compliance as compliance_router
 from .routers import content as content_router
@@ -272,6 +273,7 @@ from .routers import documents as documents_router
 from .routers import driveway_growth as driveway_growth_router
 from .routers import drone_scan as drone_scan_router
 from .routers import email as email_router
+from .routers import email_sync as email_sync_router
 from .routers import features as features_router
 from .routers import follow_ups as follow_ups_router
 from .routers import foreman as foreman_router
@@ -630,6 +632,7 @@ app.include_router(chat_router.router)
 
 # Email management (SendGrid transactional + follow-up)
 app.include_router(email_router.router)
+app.include_router(email_sync_router.router)
 
 # Mathematical AI (pavement scoring, cost estimation, lead quality, maintenance)
 app.include_router(math_ai_router.router)
@@ -645,6 +648,7 @@ app.include_router(facebook_page_router.router)
 app.include_router(google_reporting_router.router)
 
 # Intelligent compaction telemetry (IoT roller pings + density heat map)
+app.include_router(commercial_assessment_router.router)
 app.include_router(compaction_router.router)
 
 # Drone scan ingest (photogrammetry / LiDAR / thermal per project site)

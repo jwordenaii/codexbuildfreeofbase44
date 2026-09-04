@@ -5,10 +5,12 @@ from pydantic import BaseModel
 from typing import List, Optional
 import os
 import json
-from openai import AsyncOpenAI
+import logging
 
 from app.database import get_db
 from app.models import Course, CourseModule, Lesson, Enrollment, Progress
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/lms", tags=["LMS"])
 
@@ -131,14 +133,12 @@ def get_course(slug: str, tenant_id: str = "default", db: Session = Depends(get_
 # ── AI Generation Background Task ─────────────────────────────────────────────
 
 async def _generate_course_bg(topic: str, category: str, difficulty: str, tenant_id: str, db: Session):
-    """Background task to fully generate a course curriculum via OpenAI."""
+    """Background task to fully generate a course curriculum via the LLM router."""
     try:
-        api_key = os.getenv("OPENAI_API_KEY")
-        if not api_key:
-            return
-            
-        client = AsyncOpenAI(api_key=api_key)
-        
+        from starlette.concurrency import run_in_threadpool  # noqa: PLC0415
+
+        from app.services.llm_client import chat as llm_chat  # noqa: PLC0415
+
         system_prompt = (
             "You are an elite instructional designer and veteran construction engineer for J. Worden University. "
             "Your task is to generate a full JSON syllabus for a course. "
@@ -167,17 +167,27 @@ async def _generate_course_bg(topic: str, category: str, difficulty: str, tenant
         
         prompt = f"Create a comprehensive, expert-level course on '{topic}'. The category is {category} and difficulty is {difficulty}. Write detailed lesson markdown bodies."
         
-        resp = await client.chat.completions.create(
-            model="gpt-4o",
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": prompt}
-            ],
-            response_format={"type": "json_object"},
-            temperature=0.4
+        # llm_client.chat is synchronous — run it off the event loop so this
+        # background task never blocks request handling.
+        resp = await run_in_threadpool(
+            llm_chat,
+            task="reasoning",
+            system=system_prompt + "\nReturn ONLY the raw JSON object — no markdown fences.",
+            user=prompt,
+            max_tokens=8000,
+            temperature=0.4,
         )
-        
-        course_data = json.loads(resp.choices[0].message.content)
+        if resp.error:
+            logger.error("Course generation: no LLM provider available: %s", resp.error_detail)
+            return
+
+        raw = (resp.text or "").strip()
+        if raw.startswith("```"):
+            raw = raw.split("```")[1]
+            if raw.startswith("json"):
+                raw = raw[4:]
+            raw = raw.strip()
+        course_data = json.loads(raw)
         
         # Save to DB
         course = Course(

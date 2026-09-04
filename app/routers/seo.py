@@ -53,7 +53,7 @@ class FAQGenRequest(BaseModel):
 # ── AI helpers ────────────────────────────────────────────────────────────────
 
 _SEO_SYSTEM = """You are an SEO specialist writing content for J. Worden & Sons Asphalt Paving — 
-a 4th-generation family-owned contractor based in Chester, Virginia (est. 1984).
+a 4th-generation family-owned contractor serving Virginia and the Southeast (est. 1984).
 
 Writing rules:
 • Be naturally conversational — not keyword-stuffed
@@ -67,24 +67,22 @@ Writing rules:
 
 
 def _call_openai_seo(system: str, user: str, max_tokens: int = 600) -> str | None:
-    openai_key = os.getenv("OPENAI_API_KEY", "")
-    if not openai_key:
-        return None
+    """Generate SEO copy via the shared multi-provider router (Claude first)."""
     try:
-        from openai import OpenAI  # type: ignore
-        client = OpenAI(api_key=openai_key)
-        resp = client.chat.completions.create(
-            model="gpt-4o",
-            messages=[
-                {"role": "system", "content": system},
-                {"role": "user", "content": user},
-            ],
+        from ..services.llm_client import chat as llm_chat  # noqa: PLC0415
+        result = llm_chat(
+            task="reasoning",
+            system=system,
+            user=user,
             max_tokens=max_tokens,
             temperature=0.65,
         )
-        return (resp.choices[0].message.content or "").strip()
+        if result.error:
+            logger.error("SEO LLM call failed [endpoint=%s]: %s", "seo_generation", result.error_detail)
+            return None
+        return (result.text or "").strip() or None
     except Exception as exc:  # noqa: BLE001
-        logger.error("SEO OpenAI call failed [endpoint=%s]: %s", "seo_generation", exc)
+        logger.error("SEO LLM call failed [endpoint=%s]: %s", "seo_generation", exc)
         return None
 
 
@@ -139,7 +137,7 @@ Provide EXACTLY this JSON structure (no markdown fences):
     return {
         "hero_headline":     f"Asphalt Paving Contractor in {city}, {sc}",
         "tagline":           f"Trusted by {city} homeowners and businesses since 1984 — free estimates.",
-        "description":       f"J. Worden & Sons Asphalt Paving serves {city}, {req.state} with professional {services_str}. Based in Chester, VA, our 4th-generation family-owned team brings 40+ years of expertise to every project in {city}. We are fully licensed, insured, and offer free on-site estimates. Call (804) 446-1296 today.",
+        "description":       f"J. Worden & Sons Asphalt Paving serves {city}, {req.state} with professional {services_str}. Our 4th-generation family-owned team brings 40+ years of expertise to every project in {city}. We are fully licensed, insured, and offer free on-site estimates. Call (804) 446-1296 today.",
         "cta_text":          f"Free Estimate in {city}",
         "h2_headings":       [
             f"Why {city} Chooses J. Worden & Sons",
@@ -169,7 +167,7 @@ async def generate_meta_tags(
 Generate an SEO meta title and meta description for:
 {' | '.join(context_parts)}
 Page type: {req.page_type}
-Company: J. Worden & Sons Asphalt Paving, Chester VA, Est. 1984
+Company: J. Worden & Sons Asphalt Paving, Virginia, Est. 1984
 
 Return JSON (no fences):
 {{"meta_title": "under 60 chars", "meta_description": "150–160 chars"}}

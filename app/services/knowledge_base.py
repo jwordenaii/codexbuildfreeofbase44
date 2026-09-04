@@ -31,7 +31,7 @@ CORE_FACTS = """
 IDENTITY:
 • Full name: J. Worden & Sons Asphalt Paving LLC
 • Founded: 1984 by Mr. Worden's grandfather (after 30+ years in roofing)
-• Headquarters: 1601 Ware Bottom Springs Rd Suite 214, Chester, VA 23836
+• Service-area business: no public street address; serving Richmond & Central Virginia
 • Phone: (804) 446-1296 | Email: contact@jwordenasphaltpaving.com
 • Website: https://jwordenasphaltpaving.com
 • Owner: Mr. Worden (took over 2016 after grandfather passed 2015)
@@ -69,7 +69,7 @@ DOCUMENTATION:
 
 GEOGRAPHIC ROOTS:
 • Company built reputation from Motels, VA to Virginia Beach (1984–2000s)
-• Currently based in Chester, VA serving Richmond metro + surrounding regions
+• Serving Richmond metro + surrounding regions
 • Commercial travel available for franchise and large commercial projects
 
 === END CORE FACTS ===

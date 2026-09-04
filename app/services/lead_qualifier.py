@@ -10,11 +10,12 @@ hit the main pipeline, enabling:
 Two-stage evaluation:
   1. Rule-based (instant, zero API cost): uses lead_scorer signals + keyword
      analysis of the message field.
-  2. GPT-4o intent analysis (when OPENAI_API_KEY is set): structured JSON
-     classification with confidence + reason + recommended action.
+  2. LLM intent analysis via the shared multi-provider router (Claude first,
+     then OpenAI/Gemini/xAI): structured JSON classification with confidence +
+     reason + recommended action. Falls back to stage 1 if no provider answers.
 
 Intent → Action mapping:
-  BUYER      (score ≥ 65 or GPT high-intent) → CALL_NOW
+  BUYER      (score ≥ 65 or LLM high-intent) → CALL_NOW
   RESEARCHER (score 35-64)                   → NURTURE
   TIRE_KICKER (score < 35)                   → DEPRIORITIZE
   BOT        (spam pattern detected)         → DISCARD
@@ -134,16 +135,15 @@ def _rule_qualify(lead_data: dict) -> QualificationResult:
     )
 
 
-# ── GPT-4o enhanced path ──────────────────────────────────────────────────────
+# ── LLM-enhanced path ─────────────────────────────────────────────────────────
 
 def _gpt_qualify(lead_data: dict, rule_result: QualificationResult) -> QualificationResult:
-    """Upgrade rule result with GPT-4o intent analysis. Falls back on any error."""
+    """Upgrade rule result with LLM intent analysis. Falls back on any error."""
     import json
 
     try:
-        from openai import OpenAI  # noqa: PLC0415
+        from .llm_client import chat as llm_chat  # noqa: PLC0415
 
-        client = OpenAI(api_key=_OPENAI_KEY)
         prompt = f"""You are a lead qualification specialist for J. Worden & Sons,
 a commercial asphalt paving contractor. Classify this inbound lead.
 
@@ -163,26 +163,35 @@ Respond with JSON only:
   "action": "CALL_NOW" | "NURTURE" | "DEPRIORITIZE" | "DISCARD",
   "reason": "one sentence",
   "flags": ["flag1", "flag2"]
-}}"""
+}}
 
-        resp = client.chat.completions.create(
-            model="gpt-4o",
-            messages=[{"role": "user", "content": prompt}],
-            response_format={"type": "json_object"},
+Return ONLY the raw JSON object — no markdown fences, no commentary."""
+
+        result = llm_chat(
+            task="classification",
+            user=prompt,
             temperature=0.1,
             max_tokens=200,
         )
-        data = json.loads(resp.choices[0].message.content)
+        if result.error:
+            return rule_result
+        raw = (result.text or "").strip()
+        if raw.startswith("```"):
+            raw = raw.split("```")[1]
+            if raw.startswith("json"):
+                raw = raw[4:]
+            raw = raw.strip()
+        data = json.loads(raw)
         return QualificationResult(
             buyer_intent=data.get("buyer_intent", rule_result.buyer_intent),
             confidence=float(data.get("confidence", rule_result.confidence)),
             action=data.get("action", rule_result.action),
             reason=data.get("reason", rule_result.reason),
             flags=data.get("flags", rule_result.flags),
-            engine="gpt-4o",
+            engine=f"{result.provider}:{result.model}",
         )
     except Exception as exc:  # noqa: BLE001
-        logger.warning("GPT-4o qualification failed, using rule result: %s", exc)
+        logger.warning("LLM qualification failed, using rule result: %s", exc)
         return rule_result
 
 
@@ -196,13 +205,13 @@ def qualify_lead(lead_data: dict, use_ai: bool = True) -> dict:
         lead_data: dict from the lead submission endpoint.  Include
                    ``_score_value`` if ``lead_scorer.score_lead()`` has
                    already been called.
-        use_ai:    Whether to call GPT-4o (default True, graceful fallback).
+        use_ai:    Whether to call the LLM router (default True, graceful fallback).
 
     Returns dict with: buyer_intent, confidence, action, reason, flags, engine.
     """
     rule_result = _rule_qualify(lead_data)
 
-    if use_ai and _OPENAI_KEY and rule_result.buyer_intent != "BOT":
+    if use_ai and rule_result.buyer_intent != "BOT":
         final = _gpt_qualify(lead_data, rule_result)
     else:
         final = rule_result

@@ -243,7 +243,8 @@ def _ai_proposal_narrative(build_config: dict) -> str:
             if k in build_config
         }
 
-        client   = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+        from ..services.llm_client import chat as llm_chat  # noqa: PLC0415
+
         config_s = _json.dumps(safe_config, indent=2)
         prompt   = (
             "You are a proposal writer for J. Worden & Sons, a 4th-generation contractor. "
@@ -252,12 +253,10 @@ def _ai_proposal_narrative(build_config: dict) -> str:
             "and size. Close by noting a free on-site consultation is included.\n\n"
             f"Configuration:\n{config_s}"
         )
-        resp = client.chat.completions.create(
-            model="gpt-4o",
-            messages=[{"role": "user", "content": prompt}],
-            max_tokens=400,
-        )
-        return resp.choices[0].message.content or _build_proposal_narrative(build_config)
+        result = llm_chat(task="proposal", user=prompt, max_tokens=400)
+        if result.error or not (result.text or "").strip():
+            return _build_proposal_narrative(build_config)
+        return result.text
     except Exception as exc:  # noqa: BLE001
         logger.debug("AI proposal narrative failed, using stub: %s", exc)
         return _build_proposal_narrative(build_config)
@@ -358,35 +357,35 @@ async def ai_design_suggestions(request: Request, req: AIDesignRequest):
     configuration.  Falls back to curated static suggestions when OpenAI is
     not configured.
     """
-    openai_key = os.getenv("OPENAI_API_KEY", "")
+    try:
+        from ..services.llm_client import chat as llm_chat  # noqa: PLC0415
 
-    if openai_key:
-        try:
-            from openai import OpenAI  # type: ignore  # noqa: PLC0415
-
-            client = OpenAI(api_key=openai_key)
-            prompt = (
-                "You are Jay Worden, an AI design consultant for J. Worden & Sons contractors. "
-                f"A customer is planning a {req.sqft:,.0f} sq ft {req.property_type} {req.build_type.replace('_', ' ')} "
-                f"in {req.state_code or 'their area'}. "
-                "Give 3 specific, practical upgrade suggestions (each 1–2 sentences) that would increase "
-                "property value and durability. Be specific to the build type and size. "
-                "Format: return a JSON array of objects with keys 'title' and 'description'."
-            )
-            resp = client.chat.completions.create(
-                model="gpt-4o",
-                messages=[{"role": "user", "content": prompt}],
-                max_tokens=350,
-                response_format={"type": "json_object"},
-            )
+        prompt = (
+            "You are Jay Worden, an AI design consultant for J. Worden & Sons contractors. "
+            f"A customer is planning a {req.sqft:,.0f} sq ft {req.property_type} {req.build_type.replace('_', ' ')} "
+            f"in {req.state_code or 'their area'}. "
+            "Give 3 specific, practical upgrade suggestions (each 1–2 sentences) that would increase "
+            "property value and durability. Be specific to the build type and size. "
+            "Format: return a JSON array of objects with keys 'title' and 'description'. "
+            "Return ONLY the raw JSON — no markdown fences, no commentary."
+        )
+        result = llm_chat(task="reasoning", user=prompt, max_tokens=350)
+        if not result.error:
             import json as _json  # noqa: PLC0415
-            text = resp.choices[0].message.content or "{}"
+            text = (result.text or "{}").strip()
+            # Providers other than OpenAI have no json_object mode, so strip
+            # any markdown fence before parsing.
+            if text.startswith("```"):
+                text = text.split("```")[1]
+                if text.startswith("json"):
+                    text = text[4:]
+                text = text.strip()
             parsed = _json.loads(text)
             suggestions = parsed.get("suggestions", parsed) if isinstance(parsed, dict) else parsed
             if isinstance(suggestions, list):
                 return {"suggestions": suggestions[:4]}
-        except Exception as exc:  # noqa: BLE001
-            logger.debug("AI suggestions failed: %s", exc)
+    except Exception as exc:  # noqa: BLE001
+        logger.debug("AI suggestions failed: %s", exc)
 
     # ── Static fallback suggestions keyed by build type ───────────────────────
     static: dict[str, list[dict]] = {

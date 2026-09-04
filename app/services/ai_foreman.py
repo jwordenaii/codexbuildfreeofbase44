@@ -43,7 +43,7 @@ _TENANT_BRANDS: dict[str, dict[str, str]] = {
     "jworden": {
         "brand_descriptor": (
             "J. Worden | Authority, the digital foreman for a 4th-generation "
-            "Virginia Class A asphalt paving contractor based in Chester, VA"
+            "Virginia Class A asphalt paving contractor serving Richmond & Central Virginia"
         ),
         "default_state": "VA",
     },

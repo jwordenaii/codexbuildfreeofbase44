@@ -129,30 +129,11 @@ class PublicChatResponse(BaseModel):
     session_id: str
 
 
-# ── OpenAI helper (mirrors ai.py but uses proof-pack system prompt) ────────────
-
-_openai_client = None
-
-
-def _get_openai_client():
-    global _openai_client
-    api_key = os.getenv("OPENAI_API_KEY", "")
-    if not api_key:
-        return None
-    if _openai_client is not None:
-        return _openai_client
-    try:
-        from openai import OpenAI  # type: ignore
-        _openai_client = OpenAI(api_key=api_key)
-        return _openai_client
-    except Exception as exc:  # noqa: BLE001
-        logger.error("Could not create OpenAI client for public concierge: %s", exc)
-        return None
-
+# ── LLM helpers (proof-pack system prompt, routed via llm_client) ─────────────
 
 def _stub_response(message: str, service_type: str | None = None) -> str:
     """
-    Rule-based fallback when OpenAI is not configured.
+    Rule-based fallback when no LLM provider is configured.
     Returns a warm, on-brand reply that nudges toward conversion.
     """
     m = message.lower()
@@ -233,20 +214,38 @@ def _build_openai_messages(
 
 
 def _call_openai(messages: list[dict]) -> str:
-    client = _get_openai_client()
-    if client is None:
-        return ""
+    """Generate the concierge reply via the shared multi-provider router.
+
+    Name kept for its call sites. `messages` arrives in OpenAI shape: a
+    leading system message followed by the conversation, so split it back
+    into the router's system/history/user arguments.
+    """
     try:
-        resp = client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=messages,
+        from ..services.llm_client import chat as llm_chat  # noqa: PLC0415
+
+        system = ""
+        convo = list(messages)
+        if convo and convo[0].get("role") == "system":
+            system = convo.pop(0).get("content", "")
+        if not convo:
+            return ""
+        user = convo[-1].get("content", "")
+        history = convo[:-1]
+
+        result = llm_chat(
+            task="jarvis_fast",
+            system=system,
+            user=user,
+            history=history,
             max_tokens=300,
             temperature=0.72,
-            timeout=20,
         )
-        return (resp.choices[0].message.content or "").strip()
+        if result.error:
+            logger.error("Public concierge: no provider available: %s", result.error_detail)
+            return ""
+        return (result.text or "").strip()
     except Exception as exc:  # noqa: BLE001
-        logger.error("OpenAI public concierge call failed: %s", exc, exc_info=True)
+        logger.error("Public concierge LLM call failed: %s", exc, exc_info=True)
         return ""
 
 

@@ -88,21 +88,25 @@ def simulate_delay(
 def _run_ai_simulation(user_content: str) -> dict:
     """Call GPT-4o for intelligent what-if analysis."""
     try:
-        from openai import OpenAI
-        client = OpenAI(api_key=_OPENAI_KEY)
-        resp = client.chat.completions.create(
-            model="gpt-4o",
-            messages=[
-                {"role": "system", "content": _SYSTEM_PROMPT},
-                {"role": "user",   "content": user_content},
-            ],
+        from .llm_client import chat as llm_chat  # noqa: PLC0415
+
+        response = llm_chat(
+            task="reasoning",
+            system=_SYSTEM_PROMPT + "\nReturn ONLY the raw JSON object — no markdown fences.",
+            user=user_content,
             temperature=0.2,
             max_tokens=1200,
-            response_format={"type": "json_object"},
         )
-        raw = resp.choices[0].message.content
+        if response.error:
+            raise RuntimeError(response.error_detail or "no LLM provider available")
+        raw = (response.text or "").strip()
+        if raw.startswith("```"):
+            raw = raw.split("```")[1]
+            if raw.startswith("json"):
+                raw = raw[4:]
+            raw = raw.strip()
         result = json.loads(raw)
-        result["_source"] = "gpt-4o"
+        result["_source"] = f"{response.provider}:{response.model}"
         return result
     except Exception as exc:
         logger.error("AI simulation failed: %s", exc)

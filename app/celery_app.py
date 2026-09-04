@@ -57,6 +57,13 @@ celery_app.conf.update(
     result_expires=3600,
     # Beat schedule — long-running periodic tasks
     beat_schedule={
+        # Multi-mailbox lead intake. Every business inbox is read on a cycle so
+        # a lead landing in a mailbox nobody opened still becomes a CRM lead.
+        # Idle and cheap when EMAIL_ACCOUNTS_JSON is unset.
+        "sync-email-accounts-every-15m": {
+            "task": "app.tasks.email_tasks.sync_email_accounts",
+            "schedule": crontab(minute="*/15"),
+        },
         "scrape-virginia-lis-every-6h": {
             "task": "app.tasks.scraper.scrape_virginia_lis",
             "schedule": crontab(minute=0, hour="*/6"),

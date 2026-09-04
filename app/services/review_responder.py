@@ -26,7 +26,7 @@ _SYSTEM_PROMPT = f"""You are a professional review response writer for {_COMPANY
 
 Company context:
 • Family-owned, 4th-generation asphalt paving contractor since 1984
-• Headquarters: Chester, Virginia
+• Service area: Richmond & Central Virginia
 • Owner: {_OWNER_NAME} (took over in 2016)
 • Services: asphalt paving, sealcoating, crack filling, parking lots, driveways
 • KFC national franchise paving vendor — 12+ states
@@ -65,14 +65,8 @@ def generate_review_response(
     Returns:
         A draft response string, or a fallback template on OpenAI error.
     """
-    openai_key = os.getenv("OPENAI_API_KEY", "")
-    if not openai_key:
-        return _template_response(review_text, reviewer_name, rating, tone)
-
     try:
-        from openai import OpenAI  # type: ignore
-
-        client = OpenAI(api_key=openai_key)
+        from .llm_client import chat as llm_chat
 
         # Build context message
         name_str = f"Reviewer name: {reviewer_name}" if reviewer_name else "Reviewer name: not provided"
@@ -92,19 +86,19 @@ Tone instruction: {tone_instructions}
 Write the review response now:
 """
 
-        response = client.chat.completions.create(
-            model="gpt-4o",
-            messages=[
-                {"role": "system", "content": _SYSTEM_PROMPT},
-                {"role": "user", "content": user_message},
-            ],
+        result = llm_chat(
+            task="review_reply",
+            system=_SYSTEM_PROMPT,
+            user=user_message,
             max_tokens=200,
             temperature=0.6,
         )
-        return (response.choices[0].message.content or "").strip()
+        if result.error or not result.text.strip():
+            return _template_response(review_text, reviewer_name, rating, tone)
+        return result.text.strip()
 
     except Exception as exc:  # noqa: BLE001
-        logger.error("OpenAI review response (tone=%s, rating=%d) failed: %s", tone, rating, exc)
+        logger.error("LLM review response (tone=%s, rating=%d) failed: %s", tone, rating, exc)
         return _template_response(review_text, reviewer_name, rating, tone)
 
 

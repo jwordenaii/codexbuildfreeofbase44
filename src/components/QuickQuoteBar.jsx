@@ -8,10 +8,9 @@ import { PHONE_E164, PHONE_DISPLAY, SMS_E164, SMS_PREFILL } from '../lib/busines
  *
  * Why it exists: the long quote form on /quote was scaring people away
  * (348 ad clicks → 0 real submissions). This component asks for ONE
- * thing — a phone number — and ships it to the lead pipeline plus the
- * always-on Netlify Forms fallback. We auto-fill safe defaults for
- * required backend fields (property_type, urgency, service_type) so
- * the customer doesn't have to think.
+ * thing — a phone number — and ships it to the lead pipeline. We auto-fill
+ * safe defaults for required backend fields (property_type, urgency,
+ * service_type) so the customer doesn't have to think.
  *
  * Drop in anywhere above the fold. Renders as a horizontal row on
  * desktop and stacks on mobile. Always shows the call-to-call button
@@ -61,33 +60,22 @@ export default function QuickQuoteBar({
       message: `1-tap quick-quote request from ${source}. Customer wants to be texted at ${digits}.`,
     }
 
-    // Fire both the primary API call and the Netlify Forms fallback in
-    // parallel; the fallback guarantees Gene gets emailed even if the
-    // backend or SendGrid is misbehaving.
-    const promises = [
-      api.submitQuote(payload).catch((e) => ({ __error: e })),
-      fetch('/.netlify/functions/lead-fallback-notify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          source: `quickquote:${source}`,
-          name: payload.name,
-          email: payload.email,
-          phone: payload.phone,
-          message: payload.message,
-        }),
-      }).catch(() => null),
-    ]
-
-    const [apiResult] = await Promise.all(promises)
+    // The backend API is the only lead sink now.
+    //
+    // This used to fire a '/.netlify/functions/lead-fallback-notify' request in
+    // parallel as an "always-on" safety net. Hosting moved off Netlify, so that
+    // function no longer exists — the request just hit the SPA catch-all. The
+    // net effect was worse than having no fallback: on a backend outage the code
+    // below still showed the customer a success screen, on the assumption the
+    // fallback had captured the lead. It had not.
+    const apiResult = await api.submitQuote(payload).catch((e) => ({ __error: e }))
 
     setBusy(false)
     if (apiResult && apiResult.__error) {
-      // Backend rejected — most likely a transient outage. The Netlify
-      // Forms fallback already fired, so the lead is not lost; surface
-      // a soft error so the customer knows we got it.
-      trackEvent('quick_quote_partial', { source, error: String(apiResult.__error?.message || apiResult.__error) })
-      setDone(true)
+      // Backend rejected and there is no secondary capture — do NOT claim
+      // success. Tell the customer plainly and give them the phone number.
+      trackEvent('quick_quote_failed', { source, error: String(apiResult.__error?.message || apiResult.__error) })
+      setErr(`We couldn't submit that just now. Please call or text us at ${PHONE_DISPLAY}.`)
       return
     }
 

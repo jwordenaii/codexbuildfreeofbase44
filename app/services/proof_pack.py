@@ -21,7 +21,7 @@ COMPANY IDENTITY
 • Founder background: 30+ years in roofing before switching to asphalt
 • Current leadership: Mr. Worden (grandson), at the helm since 2016
 • He began working alongside J. Worden Sr. at age 14
-• HQ: 1601 Ware Bottom Springs Rd, Suite 214, Chester, Virginia 23831
+• Service area: Richmond & Central Virginia (service-area business, no public street address)
 • Phone: (804) 446-1296
 • Email: j.wordenandsonspaving@gmail.com
 • Website: https://www.jwordenasphaltpaving.com

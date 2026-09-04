@@ -132,15 +132,10 @@ export default function Quote() {
       project_size_sqft: form.project_size_sqft ? parseFloat(form.project_size_sqft) : null,
     }
 
-    // Fire the always-on Netlify fallback in parallel with the primary
-    // backend POST. Even if the backend or SendGrid is broken, this
-    // guarantees Gene gets an email about every lead.
-    fetch('/.netlify/functions/lead-fallback-notify', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...payload, source: 'quote_page' }),
-    }).catch((err) => console.warn('[lead-fallback] non-blocking error', err))
-
+    // A non-blocking '/.netlify/functions/lead-fallback-notify' call used to fire
+    // here as an email safety net. Hosting moved off Netlify, so that function no
+    // longer exists and the request only ever hit the SPA catch-all. Removed —
+    // api.submitQuote below is the lead sink, and it surfaces failures properly.
     try {
       const data = await api.submitQuote(payload)
       setResult(data)

@@ -1,6 +1,7 @@
 import json
 import logging
 import imaplib
+import os
 import email
 from email.header import decode_header
 from pathlib import Path
@@ -10,12 +11,103 @@ from ..database import SessionLocal
 from ..models import Lead, InboxMessage
 from .email_intake import extract_lead_from_email
 from .email_service import send_admin_notification
-from .geocoding import geocode_address
+
+
+def geocode_address(address: str):
+    """Resolve an address to (lat, lng), or None.
+
+    WHY THIS WRAPPER EXISTS
+    ───────────────────────
+    This module imported `from .geocoding import geocode_address`, and
+    app/services/geocoding.py does not exist and never has. That made
+    email_sync UNIMPORTABLE — not merely unwired: any caller, task or test
+    touching it died at import with ModuleNotFoundError. It is the reason the
+    multi-mailbox intake could not have run even if something had called it.
+
+    The real geocoder lives in weather_service (_geocode: Google Geocoding
+    first, OpenWeather as fallback). Imported lazily so a missing key or an
+    unavailable weather module degrades to "no coordinates" rather than
+    taking the whole lead-intake path down with it — a lead without a pin on
+    the map is still a lead.
+    """
+    if not address:
+        return None
+    try:
+        from .weather_service import _geocode  # noqa: PLC0415
+        return _geocode(address)
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("geocode failed for %r: %s", address, exc)
+        return None
 
 logger = logging.getLogger(__name__)
 
 _REPO_ROOT = Path(__file__).resolve().parents[2]
 _ACCOUNTS_FILE = _REPO_ROOT / "email_accounts.json"
+
+# App passwords are live credentials. They belong in a Fly secret, never in a
+# file that could be committed — so the environment is the primary source and
+# the JSON file is a local-development fallback only.
+_ACCOUNTS_ENV = "EMAIL_ACCOUNTS_JSON"
+_PLACEHOLDER_PASSWORD = "ENTER_16_LETTER_PASSWORD_HERE"
+
+
+def load_accounts() -> tuple[List[Dict[str, Any]], str | None]:
+    """Return (accounts, error). Environment first, file second.
+
+    The env var holds a JSON array of objects:
+      [{"email": "you@gmail.com", "app_password": "abcd efgh ijkl mnop",
+        "active": true, "tenant_id": "optional"}]
+
+    Passwords are never logged, and a malformed value is reported without
+    echoing its contents.
+    """
+    raw = os.getenv(_ACCOUNTS_ENV, "").strip()
+    if raw:
+        try:
+            accounts = json.loads(raw)
+        except Exception:
+            return [], f"{_ACCOUNTS_ENV} is not valid JSON"
+        if not isinstance(accounts, list):
+            return [], f"{_ACCOUNTS_ENV} must be a JSON array of account objects"
+        return accounts, None
+
+    if not _ACCOUNTS_FILE.exists():
+        return [], (
+            f"no mailboxes configured — set the {_ACCOUNTS_ENV} secret "
+            "(JSON array of {email, app_password, active})"
+        )
+    try:
+        with open(_ACCOUNTS_FILE, "r") as fh:
+            accounts = json.load(fh)
+    except Exception as exc:  # noqa: BLE001
+        return [], f"failed to parse email_accounts.json: {exc}"
+    if not isinstance(accounts, list):
+        return [], "email_accounts.json must be a JSON array of account objects"
+    return accounts, None
+
+
+def account_status() -> Dict[str, Any]:
+    """Non-secret view of what is configured — safe to expose and to log."""
+    accounts, error = load_accounts()
+    if error:
+        return {"configured": False, "reason": error, "accounts": []}
+    view = []
+    for acc in accounts:
+        pw = acc.get("app_password") or ""
+        view.append({
+            "email": acc.get("email"),
+            "active": bool(acc.get("active", False)),
+            "has_password": bool(pw) and pw != _PLACEHOLDER_PASSWORD,
+            "tenant_id": acc.get("tenant_id"),
+        })
+    ready = [a for a in view if a["active"] and a["has_password"] and a["email"]]
+    return {
+        "configured": True,
+        "source": _ACCOUNTS_ENV if os.getenv(_ACCOUNTS_ENV, "").strip() else "email_accounts.json",
+        "total": len(view),
+        "ready": len(ready),
+        "accounts": view,
+    }
 
 def _decode_header_value(header_value: str | None) -> str:
     if not header_value:
@@ -66,16 +158,10 @@ def sync_gmail_accounts() -> Dict[str, Any]:
     Connects to configured Gmail accounts, reads unread emails, parses them as leads, 
     saves to DB, and marks them as read.
     """
-    if not _ACCOUNTS_FILE.exists():
-        logger.warning(f"Email accounts file not found at {_ACCOUNTS_FILE}")
-        return {"status": "error", "detail": "email_accounts.json not found"}
-
-    try:
-        with open(_ACCOUNTS_FILE, "r") as f:
-            accounts = json.load(f)
-    except Exception as e:
-        logger.error(f"Failed to parse email_accounts.json: {e}")
-        return {"status": "error", "detail": f"Failed to parse JSON: {e}"}
+    accounts, load_error = load_accounts()
+    if load_error:
+        logger.warning("email_sync: %s", load_error)
+        return {"status": "error", "detail": load_error}
 
     results = {
         "accounts_processed": 0,
@@ -92,7 +178,7 @@ def sync_gmail_accounts() -> Dict[str, Any]:
             password = acc.get("app_password")
             active = acc.get("active", False)
 
-            if not active or password == "ENTER_16_LETTER_PASSWORD_HERE" or not email_addr:
+            if not active or password == _PLACEHOLDER_PASSWORD or not password or not email_addr:
                 logger.info(f"Skipping account {email_addr} (inactive or placeholder password)")
                 results["accounts_skipped"] += 1
                 continue

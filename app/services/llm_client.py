@@ -23,7 +23,7 @@ Every model has ONE job it does better than the others. No redundancy.
   vision                  → gpt-4o               → gemini-2.5-pro
   math / long_context     → gemini-2.5-pro       → claude-opus-5
   web_research            → perplexity-sonar-pro → gpt-4o
-  social_signal (X)       → grok-4               → (none)
+  social_signal (X)       → grok-4.6             → grok-4.5 → claude-opus-5
   fast / classification   → gpt-4o-mini          → claude-haiku-4-5
 
 Jarvis is the product surface customers see and judge, so it runs on the
@@ -44,7 +44,7 @@ Environment variables (set in Railway → Variables)
   ANTHROPIC_API_KEY     — Anthropic (Claude Opus 5, Sonnet 5, Haiku 4.5)
   GOOGLE_API_KEY        — Google AI Studio (Gemini 2.5 Pro)
   PERPLEXITY_API_KEY    — Perplexity (Sonar Pro — live web + citations)
-  XAI_API_KEY           — xAI (Grok 4 — X firehose)
+  XAI_API_KEY           — xAI (Grok 4.6 — X firehose)
   LLM_FALLBACK_SILENT   — "1" (default): silently fall through on error.
                            "0": raise on primary failure.
   JARVIS_MAX_TIER       — "opus" (default) | "sonnet". Caps Jarvis spend.
@@ -80,8 +80,8 @@ _ROUTES: dict[str, list[tuple[str, str]]] = {
     # full generation behind, while /jarvis/readiness advertised the tool
     # lane's claude-opus-5 — so the reported model and the answering model
     # were different things.
-    "jarvis":          [("anthropic", "claude-opus-5"),       ("anthropic", "claude-sonnet-5"),   ("openai", "gpt-4o"),               ("xai", "grok-4"),                   ("google", "gemini-2.5-pro")],
-    "jarvis_fast":     [("anthropic", "claude-opus-5"),       ("anthropic", "claude-sonnet-5"),     ("openai", "gpt-4o-mini"),          ("xai", "grok-4"),                  ("google", "gemini-2.5-pro"),        ("openai", "gpt-4o")],
+    "jarvis":          [("anthropic", "claude-opus-5"),       ("anthropic", "claude-sonnet-5"),   ("openai", "gpt-4o"),               ("xai", "grok-4.6"),                   ("google", "gemini-2.5-pro")],
+    "jarvis_fast":     [("anthropic", "claude-opus-5"),       ("anthropic", "claude-sonnet-5"),     ("openai", "gpt-4o-mini"),          ("xai", "grok-4.6"),                  ("google", "gemini-2.5-pro"),        ("openai", "gpt-4o")],
     "reasoning":       [("anthropic", "claude-opus-5"),       ("anthropic", "claude-sonnet-5"),   ("openai", "gpt-4o")],
     "persona":         [("anthropic", "claude-opus-5"),       ("anthropic", "claude-sonnet-5"),   ("openai", "gpt-4o")],
     "proposal":        [("anthropic", "claude-opus-5"),       ("anthropic", "claude-sonnet-5"),   ("openai", "gpt-4o")],
@@ -91,7 +91,9 @@ _ROUTES: dict[str, list[tuple[str, str]]] = {
     "math":            [("anthropic", "claude-opus-5"),       ("google", "gemini-2.5-pro"),       ("openai", "gpt-4o")],
     "long_context":    [("anthropic", "claude-opus-5"),       ("google", "gemini-2.5-pro"),       ("anthropic", "claude-sonnet-5")],
     "web_research":    [("perplexity", "sonar-pro"),          ("openai", "gpt-4o")],
-    "social_signal":   [("xai", "grok-4")],
+    # Grok is preferred here for its X/firehose grounding; the Claude entries
+    # are a degradation path so a dark XAI_API_KEY cannot kill the task.
+    "social_signal":   [("xai", "grok-4.6"),          ("xai", "grok-4.5"),                ("anthropic", "claude-opus-5")],
     "fast":            [("anthropic", "claude-haiku-4-5-20251001"), ("openai", "gpt-4o-mini")],
     "classification":  [("anthropic", "claude-haiku-4-5-20251001"), ("openai", "gpt-4o-mini")],
     "analytics":       [("anthropic", "claude-opus-5"),       ("anthropic", "claude-sonnet-5"),   ("openai", "gpt-4o")],
